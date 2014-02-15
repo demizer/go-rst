@@ -49,9 +49,17 @@ func equal(i1, i2 []item, checkPos bool) bool {
 	return true
 }
 
-func SetDebug() {
+func setDebug() {
 	log.SetLevel(log.LEVEL_DEBUG)
 	log.SetFlags(log.Lansi | log.LnoFileAnsi | log.LnoPrefix)
+}
+
+func checkLexTest(t *testing.T, test *lexTest) {
+	items := collect(test)
+	if !equal(items, test.items, false) {
+		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
+			test.items)
+	}
 }
 
 func TestParagraphLex(t *testing.T) {
@@ -63,12 +71,7 @@ func TestParagraphLex(t *testing.T) {
 		}},
 	}
 	for _, test := range lexParagraphTests {
-		items := collect(&test)
-		if !equal(items, test.items, false) {
-			t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v",
-				test.name, items, test.items)
-		}
-
+		checkLexTest(t, &test)
 	}
 }
 
@@ -80,12 +83,7 @@ func TestSectionNoBlankLine(t *testing.T) {
 		{itemParagraph, 13, "Paragraph (no blank line)."},
 		tEOF,
 	}}
-
-	items := collect(test)
-	if !equal(items, test.items, false) {
-		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
-			test.items)
-	}
+	checkLexTest(t, test)
 }
 
 func TestSectionWithBlankLine(t *testing.T) {
@@ -95,25 +93,16 @@ func TestSectionWithBlankLine(t *testing.T) {
 		{itemParagraph, 13, "Paragraph."},
 		tEOF,
 	}}
-	items := collect(test)
-	if !equal(items, test.items, false) {
-		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
-			test.items)
-	}
+	checkLexTest(t, test)
 }
 
 func TestSectionWithOverline(t *testing.T) {
 	test := &lexTest{"Section and paragraph (overline)", "=====\nTitle\n=====\nParagraph.", []item{
-			{itemSectionAdornment, 7, "====="},
-			{itemTitle, 0, "Title"},
-			{itemSectionAdornment, 7, "====="},
-			{itemParagraph, 13, "Paragraph."},
-			tEOF,
-		}}
-
-	items := collect(test)
-	if !equal(items, test.items, false) {
-		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
-			test.items)
-	}
+		{itemSectionAdornment, 7, "====="},
+		{itemTitle, 0, "Title"},
+		{itemSectionAdornment, 7, "====="},
+		{itemParagraph, 13, "Paragraph."},
+		tEOF,
+	}}
+	checkLexTest(t, test)
 }
