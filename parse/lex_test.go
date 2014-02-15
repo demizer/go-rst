@@ -4,72 +4,116 @@
 package parse
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
 	"testing"
-	"encoding/json"
+	"github.com/demizer/go-elog"
 )
 
 type lexTest struct {
-	description []byte
-	input       []byte
-	expectJson  []byte
+	name  string
+	input string
+	items []item
 }
 
-func parseTestData(filepath string) ([]lexTest, error) {
-	testData, err := os.Open(filepath)
-	defer testData.Close()
-	if err != nil {
-		return nil, err
-	}
-	var lexTests []lexTest
-	var curTest lexTest
-	var buffer []byte
-	scanner := bufio.NewScanner(testData)
-	for scanner.Scan() {
-		switch scanner.Text() {
-		case "#description":
-			if len(buffer) > 0 {
-				curTest.expectJson = buffer
-				lexTests = append(lexTests, curTest)
-				curTest = lexTest{}
-			} else {
-				curTest = lexTest{}
-			}
-			buffer = nil
-		case "#data":
-			curTest.description = buffer
-			buffer = nil
-		case "#tree":
-			curTest.input = buffer
-			buffer = nil
-		default:
-			if len(scanner.Text()) == 0 ||
-				strings.TrimLeft(scanner.Text(), " ")[0] == '#' {
-				continue
-			}
-			buffer = append(buffer, scanner.Bytes()...)
+var (
+	tEOF = item{itemEOF, 0, ""}
+)
+
+// collect gathers the emitted items into a slice.
+func collect(t *lexTest) (items []item) {
+	l := lex(t.name, t.input)
+	for {
+		item := l.nextItem()
+		items = append(items, item)
+		if item.typ == itemEOF || item.typ == itemError {
+			break
 		}
 	}
-	return lexTests, nil
+	return
 }
 
-func TestSection(t *testing.T) {
-	lexTests, err := parseTestData("../testdata/test_section_headers.dat")
-	if err != nil {
-		t.FailNow()
+func equal(i1, i2 []item, checkPos bool) bool {
+	if len(i1) != len(i2) {
+		return false
 	}
-	// for _, iTest := range lexTests {
-		// fmt.Printf("DESCRIPTION: %#v\n", iTest.description)
-		// fmt.Printf("INPUT: %#v\n", iTest.input)
-		// fmt.Printf("JSON: %#v\n", iTest.expectJson)
-	// }
-	var i interface{}
-	err = json.Unmarshal(lexTests[0].expectJson, &i)
-	if err != nil {
-		t.Errorf("JSON Error: %s, IN: %s", err, lexTests[0])
+	for k := range i1 {
+		if i1[k].typ != i2[k].typ {
+			return false
+		}
+		if i1[k].val != i2[k].val {
+			return false
+		}
+		if checkPos && i1[k].pos != i2[k].pos {
+			return false
+		}
 	}
-	fmt.Printf("%#v\n", i)
+	return true
+}
+
+func SetDebug() {
+	log.SetLevel(log.LEVEL_DEBUG)
+	log.SetFlags(log.Lansi | log.LnoFileAnsi | log.LnoPrefix)
+}
+
+func TestParagraphLex(t *testing.T) {
+	var lexParagraphTests = []lexTest{
+		{"Empty", "", []item{tEOF}},
+		{"paragraph", "A paragraph.", []item{
+			{itemParagraph, 0, "A paragraph."},
+			tEOF,
+		}},
+	}
+	for _, test := range lexParagraphTests {
+		items := collect(&test)
+		if !equal(items, test.items, false) {
+			t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v",
+				test.name, items, test.items)
+		}
+
+	}
+}
+
+func TestSectionNoBlankLine(t *testing.T) {
+	test := &lexTest{"section header, no blank line",
+		"Title\n=====\nParagraph (no blank line).", []item{
+		{itemTitle, 0, "Title"},
+		{itemSectionAdornment, 7, "====="},
+		{itemParagraph, 13, "Paragraph (no blank line)."},
+		tEOF,
+	}}
+
+	items := collect(test)
+	if !equal(items, test.items, false) {
+		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
+			test.items)
+	}
+}
+
+func TestSectionWithBlankLine(t *testing.T) {
+	test := &lexTest{"Section and paragraph", "Title\n=====\n\nParagraph.", []item{
+		{itemTitle, 0, "Title"},
+		{itemSectionAdornment, 7, "====="},
+		{itemParagraph, 13, "Paragraph."},
+		tEOF,
+	}}
+	items := collect(test)
+	if !equal(items, test.items, false) {
+		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
+			test.items)
+	}
+}
+
+func TestSectionWithOverline(t *testing.T) {
+	test := &lexTest{"Section and paragraph (overline)", "=====\nTitle\n=====\nParagraph.", []item{
+			{itemSectionAdornment, 7, "====="},
+			{itemTitle, 0, "Title"},
+			{itemSectionAdornment, 7, "====="},
+			{itemParagraph, 13, "Paragraph."},
+			tEOF,
+		}}
+
+	items := collect(test)
+	if !equal(items, test.items, false) {
+		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
+			test.items)
+	}
 }
