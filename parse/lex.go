@@ -7,8 +7,8 @@ import (
 	// "strings"
 	// "unicode"
 	"fmt"
-	"unicode/utf8"
 	"github.com/demizer/go-elog"
+	"unicode/utf8"
 )
 
 type itemElement int
@@ -55,14 +55,14 @@ func (i item) String() string {
 }
 
 type lexer struct {
-	name       string
-	input      string
-	state      stateFn
-	pos        Pos
-	start      Pos
-	width      Pos
-	lastPos    Pos
-	items      chan item
+	name    string
+	input   string
+	state   stateFn
+	pos     Pos
+	start   Pos
+	width   Pos
+	lastPos Pos
+	items   chan item
 }
 
 func lex(name, input string) *lexer {
