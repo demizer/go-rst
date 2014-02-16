@@ -21,6 +21,16 @@ const (
 	itemParagraph
 )
 
+var elements = [...]string{
+	"itemEOF",
+	"itemError",
+	"itemTitle",
+	"itemSectionAdornment",
+	"itemParagraph",
+}
+
+func (t itemElement) String() string { return elements[t] }
+
 var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*',
 	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',
 	']', '^', '_', '`', '{', '|', '}', '~'}
@@ -77,6 +87,7 @@ func lex(name, input string) *lexer {
 
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
+	log.Debugf("\tEmit %s!\n", t)
 	l.items <- item{t, l.start, l.input[l.start:l.pos]}
 	l.start = l.pos
 
@@ -139,6 +150,7 @@ func isEndOfLine(r rune) bool {
 }
 
 func lexStart(l *lexer) stateFn {
+	log.Debugln("Transition lexStart...")
 	for {
 		if len(l.input) == 0 {
 			log.Debugln("\tEmit EOF!")
@@ -146,7 +158,7 @@ func lexStart(l *lexer) stateFn {
 			return nil
 		}
 
-		log.Debugf("\tlexParagraph: %q, Start: %d, Pos: %d\n",
+		log.Debugf("\tlexStart: %q, Start: %d, Pos: %d\n",
 			l.input[l.start:l.pos], l.start, l.pos)
 
 		switch r := l.current(); {
@@ -169,7 +181,6 @@ func lexStart(l *lexer) stateFn {
 
 	// Correctly reached EOF.
 	if l.pos > l.start {
-		log.Debugln("\tEmit Paragraph!")
 		l.emit(itemParagraph)
 	}
 
@@ -184,7 +195,6 @@ func lexSection(l *lexer) stateFn {
 	}
 
 	if isEndOfLine(l.peek()) {
-		log.Debugln("\tEmit itemTitle")
 		l.emit(itemTitle)
 		l.ignore()
 	}
@@ -199,13 +209,10 @@ Loop:
 			}
 		case isEndOfLine(r):
 			l.backup()
-			log.Debugf("\tEmit itemSectionAdornment: %d-%d\n",
-				l.start, l.pos)
 			l.emit(itemSectionAdornment)
 			l.ignore()
 			break Loop
 		}
 	}
-	log.Debugln("Transition lexStart...")
 	return lexStart
 }
