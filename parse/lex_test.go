@@ -106,3 +106,14 @@ func TestSectionWithOverline(t *testing.T) {
 	}}
 	checkLexTest(t, test)
 }
+
+func TestParagraphSectionParagraph(t *testing.T) {
+	test := &lexTest{"Paragraph section paragraph", "Paragraph.\nTitle\n=====\n\nParagraph.", []item{
+		{itemParagraph, 0, "Paragraph."},
+		{itemTitle, 0, "Title"},
+		{itemSectionAdornment, 0, "====="},
+		{itemParagraph, 0, "Paragraph."},
+		tEOF,
+	}}
+	checkLexTest(t, test)
+}

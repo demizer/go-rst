@@ -171,6 +171,9 @@ func lexStart(l *lexer) stateFn {
 				log.Debugln("Transition lexSection...")
 				return lexSection
 			}
+			if l.pos > l.start {
+				l.emit(itemParagraph)
+			}
 			l.ignore()
 		}
 
