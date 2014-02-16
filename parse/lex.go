@@ -50,8 +50,6 @@ func (i item) String() string {
 		return "EOF"
 	case i.typ == itemError:
 		return i.val
-	/* case len(i.val) > 10:
-		return fmt.Sprintf("%.10q...", i.val) */
 	}
 	return fmt.Sprintf("%q", i.val)
 }
@@ -125,11 +123,10 @@ func (l *lexer) nextItem() item {
 }
 
 func (l *lexer) run() {
-	for l.state = lexParagraph; l.state != nil; {
+	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
 }
-
 
 // isSpace reports whether r is a space character.
 func isSpace(r rune) bool {
@@ -141,13 +138,14 @@ func isEndOfLine(r rune) bool {
 	return r == '\r' || r == '\n'
 }
 
-func lexParagraph(l *lexer) stateFn {
+func lexStart(l *lexer) stateFn {
 	for {
 		if len(l.input) == 0 {
 			log.Debugln("\tEmit EOF!")
 			l.emit(itemEOF)
 			return nil
 		}
+
 		log.Debugf("\tlexParagraph: %q, Start: %d, Pos: %d\n",
 			l.input[l.start:l.pos], l.start, l.pos)
 		if isEndOfLine(l.current()) || isEndOfLine(l.peek()) {
@@ -158,15 +156,18 @@ func lexParagraph(l *lexer) stateFn {
 			}
 			l.ignore()
 		}
+
 		if l.next() == eof {
 			break
 		}
 	}
+
 	// Correctly reached EOF.
 	if l.pos > l.start {
 		log.Debugln("\tEmit Paragraph!")
 		l.emit(itemParagraph)
 	}
+
 	l.emit(itemEOF)
 	return nil
 }
@@ -177,15 +178,16 @@ func lexSection(l *lexer) stateFn {
 		log.Debugf("\tlexSection: %q, Pos: %d, titleWidth: %d, sectionWidth: %d\n",
 			l.input[l.start:l.pos], l.pos, titleWidth, sectionWidth)
 	}
+
 	if isEndOfLine(l.peek()) {
 		titleWidth = l.pos - l.start
 		log.Debugf("\tEmit itemTitle: %d-%d\n", l.start, l.pos)
 		l.emit(itemTitle)
 		l.ignore()
 	}
+
 Loop:
 	for {
-		// log.Debugln(sectionWidth, titleWidth)
 		switch r := l.next(); {
 		case isSectionAdornment(r):
 			if len(l.input) > 0 {
@@ -206,6 +208,6 @@ Loop:
 			}
 		}
 	}
-	log.Debugln("Transition lexParagraph...")
-	return lexParagraph
+	log.Debugln("Transition lexStart...")
+	return lexStart
 }
