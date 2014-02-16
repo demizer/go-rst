@@ -148,7 +148,12 @@ func lexStart(l *lexer) stateFn {
 
 		log.Debugf("\tlexParagraph: %q, Start: %d, Pos: %d\n",
 			l.input[l.start:l.pos], l.start, l.pos)
-		if isEndOfLine(l.current()) || isEndOfLine(l.peek()) {
+
+		switch r := l.current(); {
+		case isSectionAdornment(r) && isSectionAdornment(l.peek()) && l.pos == 1:
+			log.Debugln("Transition lexSection...")
+			return lexSection
+		case isEndOfLine(r):
 			log.Debugln("\tFound newline!")
 			if isSectionAdornment(rune(l.input[l.pos+2])) {
 				log.Debugln("Transition lexSection...")
@@ -173,15 +178,13 @@ func lexStart(l *lexer) stateFn {
 }
 
 func lexSection(l *lexer) stateFn {
-	var titleWidth, sectionWidth Pos
 	if len(l.input) > 0 {
-		log.Debugf("\tlexSection: %q, Pos: %d, titleWidth: %d, sectionWidth: %d\n",
-			l.input[l.start:l.pos], l.pos, titleWidth, sectionWidth)
+		log.Debugf("\tlexSection: %q, Pos: %d\n",
+			l.input[l.start:l.pos], l.pos)
 	}
 
 	if isEndOfLine(l.peek()) {
-		titleWidth = l.pos - l.start
-		log.Debugf("\tEmit itemTitle: %d-%d\n", l.start, l.pos)
+		log.Debugln("\tEmit itemTitle")
 		l.emit(itemTitle)
 		l.ignore()
 	}
@@ -191,21 +194,16 @@ Loop:
 		switch r := l.next(); {
 		case isSectionAdornment(r):
 			if len(l.input) > 0 {
-				log.Debugf("\tlexSection: %q, Pos: %d, " +
-				           "titleWidth: %d, sectionWidth: %d\n",
-					   l.input[l.start:l.pos], l.pos,
-					   titleWidth, sectionWidth)
+				log.Debugf("\tlexSection: %q, Pos: %d\n",
+					l.input[l.start:l.pos], l.pos)
 			}
-			sectionWidth += 1
 		case isEndOfLine(r):
-			if sectionWidth == titleWidth {
-				l.backup()
-				log.Debugf("\tEmit itemSectionAdornment: " +
-					   "%d-%d\n", l.start, l.pos)
-				l.emit(itemSectionAdornment)
-				l.ignore()
-				break Loop
-			}
+			l.backup()
+			log.Debugf("\tEmit itemSectionAdornment: %d-%d\n",
+				l.start, l.pos)
+			l.emit(itemSectionAdornment)
+			l.ignore()
+			break Loop
 		}
 	}
 	log.Debugln("Transition lexStart...")
