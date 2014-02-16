@@ -1,3 +1,5 @@
+#name
+SECTIONTEST1
 #description
 Test section header and paragraph.
 #data
@@ -6,17 +8,25 @@ Title
 
 Paragraph.
 #tree
-{"document": {
-    "name": "test data",
-    "section_1": {
-        "ids": "title",
-        "names": "title",
-        "items": {
-            "title_1": "Title",
-            "paragraph_1": "Paragraph."
-        }
+{
+    "section_title_1": {
+        "elementType": "itemSectionTitle",
+        "position": 0,
+        "value": "Title"
+    },
+    "section_adornment_1": {
+        "elementType": "itemSectionAdornment",
+        "position": 0,
+        "value": "Title"
+    },
+    "paragraph_1": {
+        "elementType": "itemParagraph",
+        "position": 0,
+        "value": "Paragraph."
     }
-}}
+}
+#name
+SECTIONTEST2
 #description
 Test section header no blank line.
 #data
@@ -24,17 +34,25 @@ Title
 =====
 Paragraph (no blank line).
 #tree
-{"document": {
-    "name": "test data",
-    "section_1": {
-        "ids": "title",
-        "names": "title",
-        "items": {
-            "title_1": "Title",
-            "paragraph_1": "Paragraph (no blank line)."
-        }
+{
+    "section_title_1": {
+        "elementType": "itemSectionTitle",
+        "position": 0,
+        "value": "Title"
+    },
+    "section_adornment_1": {
+        "elementType": "itemSectionAdornment",
+        "position": 0,
+        "value": "====="
+    },
+    "paragraph_1": {
+        "elementType": "itemParagraph",
+        "position": 0,
+        "value": "Paragraph (no blank line)."
     }
-}}
+}
+#name
+SECTIONTEST3
 #description
 Test paragraph section header and paragraph.
 #data
@@ -45,18 +63,30 @@ Title
 
 Paragraph.
 #tree
-{"document": {
-    "name": "test data",
-    "section_1": {
-        "ids": "title",
-        "names": "title",
-        "items": {
-            "paragraph_1": "Paragraph."
-            "title_1": "Title",
-            "paragraph_2": "Paragraph."
-        }
+{
+    "paragraph_1": {
+        "elementType": "itemParagraph",
+        "position": 0,
+        "value": "Paragraph."
     }
-}}
+    "section_title_1": {
+        "elementType": "itemSectionTitle",
+        "position": 0,
+        "value": "Title"
+    },
+    "section_adornment_1": {
+        "elementType": "itemSectionAdornment",
+        "position": 0,
+        "value": "====="
+    },
+    "paragraph_2": {
+        "elementType": "itemParagraph",
+        "position": 0,
+        "value": "Paragraph."
+    }
+}
+#name
+SECTIONTEST4
 #description
 Test unexpected section titles.
 #data
@@ -71,45 +101,91 @@ Test unexpected section titles.
     -----
     Paragraph.
 #tree
-{"document": {
-    "name": "test data",
-    "items": {
-        "paragraph_1": "Test unexpected section titles.",
-        "block_quote_1": {
+{
+    "paragraph_1": {
+        "elementType": "itemParagraph",
+        "postion": 0,
+        "value": "Test unexpected section titles."
+    },
+    "block_quote_1": {
+        "elementType": "itemBlockQuote",
+        "position": 0,
+        "value": {
             "system_message_1": {
-                "level": 4,
-                "line": 4,
-                "source": "test data",
-                "type": "SEVERE",
-                "items": {
-                    "paragraph_1": "Unexpected section title.",
-                    "literal_block_1": "Title\n====="
+                "elementType": "itemSystemMessage",
+                "position": 0,
+                "value": {
+                    "level": "SEVERE",
+                    "line": 4,
+                    "source": "test data",
+                    "items": {
+                        "paragraph_1": {
+                            "elementType": "itemParagraph",
+                            "position:": 0,
+                            "value": "Unexpected section title."
+                        },
+                        "literal_block_1": {
+                            "elementType": "itemLiteralBlock",
+                            "position:": 0,
+                            "value": "Title\n====="
+                        }
+                    }
                 }
             },
-            "paragraph_1": "Paragraph.",
+            "paragraph_1": {
+                "elementType": "itemParagraph",
+                "position": 0,
+                "value": "Paragraph."
+            },
             "system_message_2": {
-                "level": 4,
-                "line": 7,
-                "source": "test data",
-                "type": "SEVERE",
-                "items": {
-                    "paragraph_1": "Unexpected section title or transition.",
-                    "literal_block_1": "-----"
+                "elementType": "itemSystemMessage",
+                "position": 0,
+                "value": {
+                    "level": "SEVERE",
+                    "line": 7,
+                    "source": "test data",
+                    "items": {
+                        "paragraph_1": {
+                            "elementType": "itemParagraph",
+                            "position:": 0,
+                            "value": "Unexpected section title or transition."
+                        },
+                        "literal_block_1": {
+                            "elementType": "itemLiteralBlock",
+                            "position:": 0,
+                            "value": "-----"
+                        }
+                    }
                 }
             },
             "system_message_3": {
-                "level": 4,
-                "line": 9,
-                "source": "test data",
-                "type": "SEVERE",
-                "items": {
-                    "paragraph_1": "Unexpected section title.",
-                    "literal_block_1": "Title\n-----"
+                "elementType": "itemSystemMessage",
+                "position": 0,
+                "value": {
+                    "level": "SEVERE",
+                    "line": 9,
+                    "source": "test data",
+                    "items": {
+                        "paragraph_1": {
+                            "elementType": "itemParagraph",
+                            "position:": 0,
+                            "value": "Unexpected section title."
+                        },
+                        "literal_block_1": {
+                            "elementType": "itemLiteralBlock",
+                            "position:": 0,
+                            "value": "Title\n-----"
+                        }
+                    }
                 }
             },
-            "paragraph_2": "Paragraph."
+            "paragraph_2": {
+                "elementType": "itemParagraph",
+                "position:": 0,
+                "value": "Paragraph."
+            }
         }
-    }}
+    }
 }
 #
 #
