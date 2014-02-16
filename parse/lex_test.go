@@ -79,8 +79,8 @@ func TestSectionNoBlankLine(t *testing.T) {
 	test := &lexTest{"section header, no blank line",
 		"Title\n=====\nParagraph (no blank line).", []item{
 		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 7, "====="},
-		{itemParagraph, 13, "Paragraph (no blank line)."},
+		{itemSectionAdornment, 0, "====="},
+		{itemParagraph, 0, "Paragraph (no blank line)."},
 		tEOF,
 	}}
 	checkLexTest(t, test)
@@ -89,8 +89,8 @@ func TestSectionNoBlankLine(t *testing.T) {
 func TestSectionWithBlankLine(t *testing.T) {
 	test := &lexTest{"Section and paragraph", "Title\n=====\n\nParagraph.", []item{
 		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 7, "====="},
-		{itemParagraph, 13, "Paragraph."},
+		{itemSectionAdornment, 0, "====="},
+		{itemParagraph, 0, "Paragraph."},
 		tEOF,
 	}}
 	checkLexTest(t, test)
@@ -98,10 +98,10 @@ func TestSectionWithBlankLine(t *testing.T) {
 
 func TestSectionWithOverline(t *testing.T) {
 	test := &lexTest{"Section and paragraph (overline)", "=====\nTitle\n=====\nParagraph.", []item{
-		{itemSectionAdornment, 7, "====="},
+		{itemSectionAdornment, 0, "====="},
 		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 7, "====="},
-		{itemParagraph, 13, "Paragraph."},
+		{itemSectionAdornment, 0, "====="},
+		{itemParagraph, 0, "Paragraph."},
 		tEOF,
 	}}
 	checkLexTest(t, test)
