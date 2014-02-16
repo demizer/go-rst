@@ -7,7 +7,7 @@ Title
 =====
 
 Paragraph.
-#tree
+#expect
 {
     "section_title_1": {
         "elementType": "itemSectionTitle",
@@ -33,7 +33,7 @@ Test section header no blank line.
 Title
 =====
 Paragraph (no blank line).
-#tree
+#expect
 {
     "section_title_1": {
         "elementType": "itemSectionTitle",
@@ -62,7 +62,7 @@ Title
 =====
 
 Paragraph.
-#tree
+#expect
 {
     "paragraph_1": {
         "elementType": "itemParagraph",
@@ -100,7 +100,7 @@ Test unexpected section titles.
     Title
     -----
     Paragraph.
-#tree
+#expect
 {
     "paragraph_1": {
         "elementType": "itemParagraph",
@@ -196,7 +196,7 @@ Test unexpected section titles.
 # ====
 
 # Test short underline.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="title" names="title">
         # <title>
@@ -215,7 +215,7 @@ Test unexpected section titles.
 # ======================
 
 # Do not count combining chars in title column width.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="a-with-combining-varia" names="a\u0300\ with\ combining\ varia">
         # <title>
@@ -229,7 +229,7 @@ Test unexpected section titles.
 # =====
 
 # Test overline title.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="title" names="title">
         # <title>
@@ -243,7 +243,7 @@ Test unexpected section titles.
 # =======
 
 # Test overline title with inset.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="title" names="title">
         # <title>
@@ -254,7 +254,7 @@ Test unexpected section titles.
 # #%data%#
 # ========================
  # Test Missing Underline
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="4" line="1" source="test data" type="SEVERE">
         # <paragraph>
@@ -267,7 +267,7 @@ Test unexpected section titles.
 # ========================
  # Test Missing Underline
 
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="4" line="1" source="test data" type="SEVERE">
         # <paragraph>
@@ -281,7 +281,7 @@ Test unexpected section titles.
  # Title
 
 # Test missing underline, with paragraph.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="4" line="1" source="test data" type="SEVERE">
         # <paragraph>
@@ -298,7 +298,7 @@ Test unexpected section titles.
 # =======
 
 # Test long title and space normalization.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="long-title" names="long\ title">
         # <title>
@@ -319,7 +319,7 @@ Test unexpected section titles.
 # -------
 
 # Paragraph.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="4" line="1" source="test data" type="SEVERE">
         # <paragraph>
@@ -341,7 +341,7 @@ Test unexpected section titles.
 # ========================
 
 # ========================
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <transition>
     # <transition>
@@ -358,7 +358,7 @@ Test unexpected section titles.
 
 # ========================
 # ========================
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="3" line="1" source="test data" type="ERROR">
         # <paragraph>
@@ -393,7 +393,7 @@ Test unexpected section titles.
 # Title 4
 # -------
 # Paragraph 4.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <comment xml:space="preserve">
         # Test return to existing, highest-level section (Title 3).
@@ -440,7 +440,7 @@ Test unexpected section titles.
 # Title 4
 # -------
 # Paragraph 4.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Test return to existing, highest-level section (Title 3, with overlines).
@@ -483,7 +483,7 @@ Test unexpected section titles.
 # Title 4
 # -------
 # Paragraph 4.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Test return to existing, higher-level section (Title 4).
@@ -526,7 +526,7 @@ Test unexpected section titles.
 # Title 4
 # ```````
 # Paragraph 4.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Test bad subsection order (Title 4).
@@ -576,7 +576,7 @@ Test unexpected section titles.
 # Title 4
 # ```````
 # Paragraph 4.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Test bad subsection order (Title 4, with overlines).
@@ -610,7 +610,7 @@ Test unexpected section titles.
 # ====================================
 
 # Paragraph.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
         # <title>
@@ -628,7 +628,7 @@ Test unexpected section titles.
 # =================
 
 # Paragraph.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="numbered-title" names="1.\ numbered\ title">
         # <title>
@@ -643,7 +643,7 @@ Test unexpected section titles.
 # =================
 
 # Paragraph.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <enumerated_list enumtype="arabic" prefix="" suffix=".">
         # <list_item>
@@ -666,7 +666,7 @@ Test unexpected section titles.
 # ===
 
 # Short title.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="abc" names="abc">
         # <title>
@@ -679,7 +679,7 @@ Test unexpected section titles.
 # ==
 
 # Underline too short.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="2" source="test data" type="INFO">
         # <paragraph>
@@ -697,7 +697,7 @@ Test unexpected section titles.
 # ==
 
 # Over & underline too short.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -715,7 +715,7 @@ Test unexpected section titles.
 # ABC
 
 # Overline too short, no underline.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -730,7 +730,7 @@ Test unexpected section titles.
 # #%data%#
 # ==
 # ABC
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -743,7 +743,7 @@ Test unexpected section titles.
 # #%data%#
 # ==
   # Not a title: a definition list item.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -767,7 +767,7 @@ Test unexpected section titles.
 
   # The next line will trigger a warning:
 # ==
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -812,7 +812,7 @@ Test unexpected section titles.
     # ==
 
     # Over & underline too short.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Paragraph
@@ -835,7 +835,7 @@ Test unexpected section titles.
     # ==
 
     # Underline too short.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <paragraph>
         # Paragraph
@@ -856,7 +856,7 @@ Test unexpected section titles.
 # ...
 # ...
 # ...
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <system_message level="1" line="1" source="test data" type="INFO">
         # <paragraph>
@@ -902,7 +902,7 @@ Test unexpected section titles.
 # ...
 
 # Ho
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <comment xml:space="preserve">
     # <system_message level="2" line="2" source="test data" type="WARNING">
@@ -920,7 +920,7 @@ Test unexpected section titles.
 # #%data%#
 # Empty Section
 # =============
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="empty-section" names="empty\ section">
         # <title>
@@ -940,7 +940,7 @@ Test unexpected section titles.
 
 # The parser currently contains a work-around kludge.
 # Without it, the parser ends up in an infinite loop.
-# #%tree%#
+# #%expect%#
 # <document source="test data">
     # <section ids="one" names="one">
         # <title>
