@@ -173,7 +173,7 @@ func lexStart(l *lexer) stateFn {
 			return lexSection
 		case isEndOfLine(r):
 			log.Debugln("\tFound newline!")
-			if isSectionAdornment(rune(l.input[l.pos+2])) {
+			if isSectionAdornment(l.peek()) {
 				log.Debugln("Transition lexSection...")
 				return lexSection
 			}
