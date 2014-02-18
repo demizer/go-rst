@@ -70,6 +70,31 @@ func (i item) String() string {
 	return fmt.Sprintf("%q", i.Value)
 }
 
+type systemMessageLevel int
+
+const (
+	levelInfo systemMessageLevel = iota
+	levelWarning
+	levelError
+	levelSevere
+)
+
+var systemMessageLevels = [...]string{
+	"INFO",
+	"WARNING",
+	"ERROR",
+	"SEVERE",
+}
+
+func (s systemMessageLevel) String() string { return systemMessageLevels[s] }
+
+type systemMessage struct {
+	level  systemMessageLevel
+	line   int
+	source string
+	items  []item
+}
+
 type lexer struct {
 	name    string
 	input   string
