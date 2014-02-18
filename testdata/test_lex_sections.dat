@@ -1,5 +1,5 @@
 #name
-SECTIONTEST1
+ST-TITLE-PARA
 #description
 Test section header and paragraph.
 #data
@@ -8,25 +8,25 @@ Title
 
 Paragraph.
 #expect
-{
-    "section_title_1": {
+[
+    {
         "elementType": "itemSectionTitle",
         "position": 0,
         "value": "Title"
     },
-    "section_adornment_1": {
+    {
         "elementType": "itemSectionAdornment",
         "position": 0,
-        "value": "Title"
+        "value": "====="
     },
-    "paragraph_1": {
+    {
         "elementType": "itemParagraph",
         "position": 0,
-        "value": "Paragraph."
+        "value": "Paragraph (no blank line)."
     }
-}
+]
 #name
-SECTIONTEST2
+ST-TITLE-PARA-NONL
 #description
 Test section header no blank line.
 #data
@@ -34,25 +34,25 @@ Title
 =====
 Paragraph (no blank line).
 #expect
-{
-    "section_title_1": {
+[
+    {
         "elementType": "itemSectionTitle",
         "position": 0,
         "value": "Title"
     },
-    "section_adornment_1": {
+    {
         "elementType": "itemSectionAdornment",
         "position": 0,
         "value": "====="
     },
-    "paragraph_1": {
+    {
         "elementType": "itemParagraph",
         "position": 0,
         "value": "Paragraph (no blank line)."
     }
-}
+]
 #name
-SECTIONTEST3
+ST-PARA-HEAD-PARA
 #description
 Test paragraph section header and paragraph.
 #data
@@ -63,30 +63,30 @@ Title
 
 Paragraph.
 #expect
-{
-    "paragraph_1": {
+[
+    {
         "elementType": "itemParagraph",
         "position": 0,
         "value": "Paragraph."
-    }
-    "section_title_1": {
+    },
+    {
         "elementType": "itemSectionTitle",
         "position": 0,
         "value": "Title"
     },
-    "section_adornment_1": {
+    {
         "elementType": "itemSectionAdornment",
         "position": 0,
         "value": "====="
     },
-    "paragraph_2": {
+    {
         "elementType": "itemParagraph",
         "position": 0,
         "value": "Paragraph."
     }
-}
+]
 #name
-SECTIONTEST4
+ST-UNEXP-TITLES
 #description
 Test unexpected section titles.
 #data
@@ -101,856 +101,89 @@ Test unexpected section titles.
     -----
     Paragraph.
 #expect
-{
-    "paragraph_1": {
+[
+    {
         "elementType": "itemParagraph",
         "postion": 0,
         "value": "Test unexpected section titles."
     },
-    "block_quote_1": {
+    {
         "elementType": "itemBlockQuote",
         "position": 0,
-        "value": {
-            "system_message_1": {
+        "value": [
+            {
                 "elementType": "itemSystemMessage",
                 "position": 0,
                 "value": {
                     "level": "SEVERE",
                     "line": 4,
                     "source": "test data",
-                    "items": {
-                        "paragraph_1": {
+                    "items": [
+                        {
                             "elementType": "itemParagraph",
                             "position:": 0,
                             "value": "Unexpected section title."
                         },
-                        "literal_block_1": {
+                        {
                             "elementType": "itemLiteralBlock",
                             "position:": 0,
                             "value": "Title\n====="
                         }
-                    }
+                    ]
                 }
             },
-            "paragraph_1": {
+            {
                 "elementType": "itemParagraph",
                 "position": 0,
                 "value": "Paragraph."
             },
-            "system_message_2": {
+            {
                 "elementType": "itemSystemMessage",
                 "position": 0,
                 "value": {
                     "level": "SEVERE",
                     "line": 7,
                     "source": "test data",
-                    "items": {
-                        "paragraph_1": {
+                    "items": [
+                        {
                             "elementType": "itemParagraph",
                             "position:": 0,
                             "value": "Unexpected section title or transition."
                         },
-                        "literal_block_1": {
+                        {
                             "elementType": "itemLiteralBlock",
                             "position:": 0,
                             "value": "-----"
                         }
-                    }
+                    ]
                 }
             },
-            "system_message_3": {
+            {
                 "elementType": "itemSystemMessage",
                 "position": 0,
                 "value": {
                     "level": "SEVERE",
                     "line": 9,
                     "source": "test data",
-                    "items": {
-                        "paragraph_1": {
+                    "items": [
+                        {
                             "elementType": "itemParagraph",
                             "position:": 0,
                             "value": "Unexpected section title."
                         },
-                        "literal_block_1": {
+                        {
                             "elementType": "itemLiteralBlock",
                             "position:": 0,
                             "value": "Title\n-----"
                         }
-                    }
+                    ]
                 }
             },
-            "paragraph_2": {
+            {
                 "elementType": "itemParagraph",
                 "position:": 0,
                 "value": "Paragraph."
             }
-        }
+        ]
     }
-}
-#
-#
-#
-# #%description%#
-# #%data%#
-# Title
-# ====
-
-# Test short underline.
-# #%expect%#
-# <document source="test data">
-    # <section ids="title" names="title">
-        # <title>
-            # Title
-        # <system_message level="2" line="2" source="test data" type="WARNING">
-            # <paragraph>
-                # Title underline too short.
-            # <literal_block xml:space="preserve">
-                # Title
-                # ====
-        # <paragraph>
-            # Test short underline.
-# #%description%#
-# #%data%#
-# à with combining varia
-# ======================
-
-# Do not count combining chars in title column width.
-# #%expect%#
-# <document source="test data">
-    # <section ids="a-with-combining-varia" names="a\u0300\ with\ combining\ varia">
-        # <title>
-            # à with combining varia
-        # <paragraph>
-            # Do not count combining chars in title column width.
-# #%description%#
-# #%data%#
-# =====
-# Title
-# =====
-
-# Test overline title.
-# #%expect%#
-# <document source="test data">
-    # <section ids="title" names="title">
-        # <title>
-            # Title
-        # <paragraph>
-            # Test overline title.
-# #%description%#
-# #%data%#
-# =======
- # Title
-# =======
-
-# Test overline title with inset.
-# #%expect%#
-# <document source="test data">
-    # <section ids="title" names="title">
-        # <title>
-            # Title
-        # <paragraph>
-            # Test overline title with inset.
-# #%description%#
-# #%data%#
-# ========================
- # Test Missing Underline
-# #%expect%#
-# <document source="test data">
-    # <system_message level="4" line="1" source="test data" type="SEVERE">
-        # <paragraph>
-            # Incomplete section title.
-        # <literal_block xml:space="preserve">
-            # ========================
-             # Test Missing Underline
-# #%description%#
-# #%data%#
-# ========================
- # Test Missing Underline
-
-# #%expect%#
-# <document source="test data">
-    # <system_message level="4" line="1" source="test data" type="SEVERE">
-        # <paragraph>
-            # Missing matching underline for section title overline.
-        # <literal_block xml:space="preserve">
-            # ========================
-             # Test Missing Underline
-# #%description%#
-# #%data%#
-# =======
- # Title
-
-# Test missing underline, with paragraph.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="4" line="1" source="test data" type="SEVERE">
-        # <paragraph>
-            # Missing matching underline for section title overline.
-        # <literal_block xml:space="preserve">
-            # =======
-             # Title
-    # <paragraph>
-        # Test missing underline, with paragraph.
-# #%description%#
-# #%data%#
-# =======
- # Long    Title
-# =======
-
-# Test long title and space normalization.
-# #%expect%#
-# <document source="test data">
-    # <section ids="long-title" names="long\ title">
-        # <title>
-            # Long    Title
-        # <system_message level="2" line="1" source="test data" type="WARNING">
-            # <paragraph>
-                # Title overline too short.
-            # <literal_block xml:space="preserve">
-                # =======
-                 # Long    Title
-                # =======
-        # <paragraph>
-            # Test long title and space normalization.
-# #%description%#
-# #%data%#
-# =======
- # Title
-# -------
-
-# Paragraph.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="4" line="1" source="test data" type="SEVERE">
-        # <paragraph>
-            # Title overline & underline mismatch.
-        # <literal_block xml:space="preserve">
-            # =======
-             # Title
-            # -------
-    # <paragraph>
-        # Paragraph.
-# #%description%#
-# #%data%#
-# ========================
-
-# ========================
-
-# Test missing titles; blank line in-between.
-
-# ========================
-
-# ========================
-# #%expect%#
-# <document source="test data">
-    # <transition>
-    # <transition>
-    # <paragraph>
-        # Test missing titles; blank line in-between.
-    # <transition>
-    # <transition>
-# #%description%#
-# #%data%#
-# ========================
-# ========================
-
-# Test missing titles; nothing in-between.
-
-# ========================
-# ========================
-# #%expect%#
-# <document source="test data">
-    # <system_message level="3" line="1" source="test data" type="ERROR">
-        # <paragraph>
-            # Invalid section title or transition marker.
-        # <literal_block xml:space="preserve">
-            # ========================
-            # ========================
-    # <paragraph>
-        # Test missing titles; nothing in-between.
-    # <system_message level="3" line="6" source="test data" type="ERROR">
-        # <paragraph>
-            # Invalid section title or transition marker.
-        # <literal_block xml:space="preserve">
-            # ========================
-            # ========================
-# #%description%#
-# #%data%#
-# .. Test return to existing, highest-level section (Title 3).
-
-# Title 1
-# =======
-# Paragraph 1.
-
-# Title 2
-# -------
-# Paragraph 2.
-
-# Title 3
-# =======
-# Paragraph 3.
-
-# Title 4
-# -------
-# Paragraph 4.
-# #%expect%#
-# <document source="test data">
-    # <comment xml:space="preserve">
-        # Test return to existing, highest-level section (Title 3).
-    # <section ids="title-1" names="title\ 1">
-        # <title>
-            # Title 1
-        # <paragraph>
-            # Paragraph 1.
-        # <section ids="title-2" names="title\ 2">
-            # <title>
-                # Title 2
-            # <paragraph>
-                # Paragraph 2.
-    # <section ids="title-3" names="title\ 3">
-        # <title>
-            # Title 3
-        # <paragraph>
-            # Paragraph 3.
-        # <section ids="title-4" names="title\ 4">
-            # <title>
-                # Title 4
-            # <paragraph>
-                # Paragraph 4.
-# #%description%#
-# #%data%#
-# Test return to existing, highest-level section (Title 3, with overlines).
-
-# =======
-# Title 1
-# =======
-# Paragraph 1.
-
-# -------
-# Title 2
-# -------
-# Paragraph 2.
-
-# =======
-# Title 3
-# =======
-# Paragraph 3.
-
-# -------
-# Title 4
-# -------
-# Paragraph 4.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Test return to existing, highest-level section (Title 3, with overlines).
-    # <section ids="title-1" names="title\ 1">
-        # <title>
-            # Title 1
-        # <paragraph>
-            # Paragraph 1.
-        # <section ids="title-2" names="title\ 2">
-            # <title>
-                # Title 2
-            # <paragraph>
-                # Paragraph 2.
-    # <section ids="title-3" names="title\ 3">
-        # <title>
-            # Title 3
-        # <paragraph>
-            # Paragraph 3.
-        # <section ids="title-4" names="title\ 4">
-            # <title>
-                # Title 4
-            # <paragraph>
-                # Paragraph 4.
-# #%description%#
-# #%data%#
-# Test return to existing, higher-level section (Title 4).
-
-# Title 1
-# =======
-# Paragraph 1.
-
-# Title 2
-# -------
-# Paragraph 2.
-
-# Title 3
-# ```````
-# Paragraph 3.
-
-# Title 4
-# -------
-# Paragraph 4.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Test return to existing, higher-level section (Title 4).
-    # <section ids="title-1" names="title\ 1">
-        # <title>
-            # Title 1
-        # <paragraph>
-            # Paragraph 1.
-        # <section ids="title-2" names="title\ 2">
-            # <title>
-                # Title 2
-            # <paragraph>
-                # Paragraph 2.
-            # <section ids="title-3" names="title\ 3">
-                # <title>
-                    # Title 3
-                # <paragraph>
-                    # Paragraph 3.
-        # <section ids="title-4" names="title\ 4">
-            # <title>
-                # Title 4
-            # <paragraph>
-                # Paragraph 4.
-# #%description%#
-# #%data%#
-# Test bad subsection order (Title 4).
-
-# Title 1
-# =======
-# Paragraph 1.
-
-# Title 2
-# -------
-# Paragraph 2.
-
-# Title 3
-# =======
-# Paragraph 3.
-
-# Title 4
-# ```````
-# Paragraph 4.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Test bad subsection order (Title 4).
-    # <section ids="title-1" names="title\ 1">
-        # <title>
-            # Title 1
-        # <paragraph>
-            # Paragraph 1.
-        # <section ids="title-2" names="title\ 2">
-            # <title>
-                # Title 2
-            # <paragraph>
-                # Paragraph 2.
-    # <section ids="title-3" names="title\ 3">
-        # <title>
-            # Title 3
-        # <paragraph>
-            # Paragraph 3.
-        # <system_message level="4" line="15" source="test data" type="SEVERE">
-            # <paragraph>
-                # Title level inconsistent:
-            # <literal_block xml:space="preserve">
-                # Title 4
-                # ```````
-        # <paragraph>
-            # Paragraph 4.
-# #%description%#
-# #%data%#
-# Test bad subsection order (Title 4, with overlines).
-
-# =======
-# Title 1
-# =======
-# Paragraph 1.
-
-# -------
-# Title 2
-# -------
-# Paragraph 2.
-
-# =======
-# Title 3
-# =======
-# Paragraph 3.
-
-# ```````
-# Title 4
-# ```````
-# Paragraph 4.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Test bad subsection order (Title 4, with overlines).
-    # <section ids="title-1" names="title\ 1">
-        # <title>
-            # Title 1
-        # <paragraph>
-            # Paragraph 1.
-        # <section ids="title-2" names="title\ 2">
-            # <title>
-                # Title 2
-            # <paragraph>
-                # Paragraph 2.
-    # <section ids="title-3" names="title\ 3">
-        # <title>
-            # Title 3
-        # <paragraph>
-            # Paragraph 3.
-        # <system_message level="4" line="19" source="test data" type="SEVERE">
-            # <paragraph>
-                # Title level inconsistent:
-            # <literal_block xml:space="preserve">
-                # ```````
-                # Title 4
-                # ```````
-        # <paragraph>
-            # Paragraph 4.
-# #%description%#
-# #%data%#
-# Title containing *inline* ``markup``
-# ====================================
-
-# Paragraph.
-# #%expect%#
-# <document source="test data">
-    # <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
-        # <title>
-            # Title containing \n\
-            # <emphasis>
-                # inline
-             # \n\
-            # <literal>
-                # markup
-        # <paragraph>
-            # Paragraph.
-# #%description%#
-# #%data%#
-# 1. Numbered Title
-# =================
-
-# Paragraph.
-# #%expect%#
-# <document source="test data">
-    # <section ids="numbered-title" names="1.\ numbered\ title">
-        # <title>
-            # 1. Numbered Title
-        # <paragraph>
-            # Paragraph.
-# #%description%#
-# #%data%#
-# 1. Item 1.
-# 2. Item 2.
-# 3. Numbered Title
-# =================
-
-# Paragraph.
-# #%expect%#
-# <document source="test data">
-    # <enumerated_list enumtype="arabic" prefix="" suffix=".">
-        # <list_item>
-            # <paragraph>
-                # Item 1.
-        # <list_item>
-            # <paragraph>
-                # Item 2.
-    # <system_message level="2" line="3" source="test data" type="WARNING">
-        # <paragraph>
-            # Enumerated list ends without a blank line; unexpected unindent.
-    # <section ids="numbered-title" names="3.\ numbered\ title">
-        # <title>
-            # 3. Numbered Title
-        # <paragraph>
-            # Paragraph.
-# #%description%#
-# #%data%#
-# ABC
-# ===
-
-# Short title.
-# #%expect%#
-# <document source="test data">
-    # <section ids="abc" names="abc">
-        # <title>
-            # ABC
-        # <paragraph>
-            # Short title.
-# #%description%#
-# #%data%#
-# ABC
-# ==
-
-# Underline too short.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="2" source="test data" type="INFO">
-        # <paragraph>
-            # Possible title underline, too short for the title.
-            # Treating it as ordinary text because it's so short.
-    # <paragraph>
-        # ABC
-        # ==
-    # <paragraph>
-        # Underline too short.
-# #%description%#
-# #%data%#
-# ==
-# ABC
-# ==
-
-# Over & underline too short.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <paragraph>
-        # ==
-        # ABC
-        # ==
-    # <paragraph>
-        # Over & underline too short.
-# #%description%#
-# #%data%#
-# ==
-# ABC
-
-# Overline too short, no underline.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <paragraph>
-        # ==
-        # ABC
-    # <paragraph>
-        # Overline too short, no underline.
-# #%description%#
-# #%data%#
-# ==
-# ABC
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <paragraph>
-        # ==
-        # ABC
-# #%description%#
-# #%data%#
-# ==
-  # Not a title: a definition list item.
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <definition_list>
-        # <definition_list_item>
-            # <term>
-                # ==
-            # <definition>
-                # <paragraph>
-                    # Not a title: a definition list item.
-# #%description%#
-# #%data%#
-# ==
-  # Not a title: a definition list item.
-# --
-  # Another definition list item.  It's in a different list,
-  # but that's an acceptable limitation given that this will
-  # probably never happen in real life.
-
-  # The next line will trigger a warning:
-# ==
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <definition_list>
-        # <definition_list_item>
-            # <term>
-                # ==
-            # <definition>
-                # <paragraph>
-                    # Not a title: a definition list item.
-    # <system_message level="2" line="3" source="test data" type="WARNING">
-        # <paragraph>
-            # Definition list ends without a blank line; unexpected unindent.
-    # <system_message level="1" line="3" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <definition_list>
-        # <definition_list_item>
-            # <term>
-                # --
-            # <definition>
-                # <paragraph>
-                    # Another definition list item.  It's in a different list,
-                    # but that's an acceptable limitation given that this will
-                    # probably never happen in real life.
-                # <paragraph>
-                    # The next line will trigger a warning:
-    # <system_message level="2" line="9" source="test data" type="WARNING">
-        # <paragraph>
-            # Definition list ends without a blank line; unexpected unindent.
-    # <paragraph>
-        # ==
-# #%description%#
-# #%data%#
-# Paragraph
-
-    # ==
-    # ABC
-    # ==
-
-    # Over & underline too short.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Paragraph
-    # <block_quote>
-        # <system_message level="1" line="3" source="test data" type="INFO">
-            # <paragraph>
-                # Unexpected possible title overline or transition.
-                # Treating it as ordinary text because it's so short.
-        # <paragraph>
-            # ==
-            # ABC
-            # ==
-        # <paragraph>
-            # Over & underline too short.
-# #%description%#
-# #%data%#
-# Paragraph
-
-    # ABC
-    # ==
-
-    # Underline too short.
-# #%expect%#
-# <document source="test data">
-    # <paragraph>
-        # Paragraph
-    # <block_quote>
-        # <paragraph>
-            # ABC
-            # ==
-        # <paragraph>
-            # Underline too short.
-# #%description%#
-# #%data%#
-# ...
-# ...
-
-# ...
-# ---
-
-# ...
-# ...
-# ...
-# #%expect%#
-# <document source="test data">
-    # <system_message level="1" line="1" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <section dupnames="..." ids="id1">
-        # <title>
-            # ...
-        # <system_message level="1" line="4" source="test data" type="INFO">
-            # <paragraph>
-                # Possible incomplete section title.
-                # Treating the overline as ordinary text because it's so short.
-        # <section dupnames="..." ids="id2">
-            # <title>
-                # ...
-            # <system_message backrefs="id2" level="1" line="5" source="test data" type="INFO">
-                # <paragraph>
-                    # Duplicate implicit target name: "...".
-            # <system_message level="1" line="7" source="test data" type="INFO">
-                # <paragraph>
-                    # Possible incomplete section title.
-                    # Treating the overline as ordinary text because it's so short.
-    # <system_message level="1" line="7" source="test data" type="INFO">
-        # <paragraph>
-            # Possible incomplete section title.
-            # Treating the overline as ordinary text because it's so short.
-    # <section dupnames="..." ids="id3">
-        # <title>
-            # ...
-        # <system_message backrefs="id3" level="1" line="8" source="test data" type="INFO">
-            # <paragraph>
-                # Duplicate implicit target name: "...".
-        # <paragraph>
-            # ...
-# #%description%#
-# #%data%#
-# ..
-# Hi
-# ..
-
-# ...
-# Yo
-# ...
-
-# Ho
-# #%expect%#
-# <document source="test data">
-    # <comment xml:space="preserve">
-    # <system_message level="2" line="2" source="test data" type="WARNING">
-        # <paragraph>
-            # Explicit markup ends without a blank line; unexpected unindent.
-    # <section ids="hi" names="hi">
-        # <title>
-            # Hi
-        # <section ids="yo" names="yo">
-            # <title>
-                # Yo
-            # <paragraph>
-                # Ho
-# #%description%#
-# #%data%#
-# Empty Section
-# =============
-# #%expect%#
-# <document source="test data">
-    # <section ids="empty-section" names="empty\ section">
-        # <title>
-            # Empty Section
-# #%description%#
-# #%data%#
-# ===
-# One
-# ===
-
-# The bubble-up parser strategy conflicts with short titles
-# (<= 3 char-long over- & underlines).
-
-# ===
-# Two
-# ===
-
-# The parser currently contains a work-around kludge.
-# Without it, the parser ends up in an infinite loop.
-# #%expect%#
-# <document source="test data">
-    # <section ids="one" names="one">
-        # <title>
-            # One
-        # <paragraph>
-            # The bubble-up parser strategy conflicts with short titles
-            # (<= 3 char-long over- & underlines).
-    # <section ids="two" names="two">
-        # <title>
-            # Two
-        # <paragraph>
-            # The parser currently contains a work-around kludge.
-            # Without it, the parser ends up in an infinite loop.
+]
