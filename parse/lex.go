@@ -19,6 +19,9 @@ const (
 	itemTitle
 	itemSectionAdornment
 	itemParagraph
+	itemBlockquote
+	itemLiteralBlock
+	itemSystemMessage
 )
 
 var elements = [...]string{
@@ -27,6 +30,9 @@ var elements = [...]string{
 	"itemTitle",
 	"itemSectionAdornment",
 	"itemParagraph",
+	"itemBlockquote",
+	"itemLiteralBlock",
+	"itemSystemMessage",
 }
 
 func (t itemElement) String() string { return elements[t] }
@@ -49,19 +55,19 @@ const eof = -1
 type stateFn func(*lexer) stateFn
 
 type item struct {
-	typ itemElement
-	pos Pos
-	val string
+	ElementType itemElement
+	Position    Pos
+	Value       interface{}
 }
 
 func (i item) String() string {
 	switch {
-	case i.typ == itemEOF:
+	case i.ElementType == itemEOF:
 		return "EOF"
-	case i.typ == itemError:
-		return i.val
+	case i.ElementType == itemError:
+		return i.Value.(string)
 	}
-	return fmt.Sprintf("%q", i.val)
+	return fmt.Sprintf("%q", i.Value)
 }
 
 type lexer struct {
@@ -128,7 +134,7 @@ func (l *lexer) next() rune {
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() item {
 	item := <-l.items
-	l.lastPos = item.pos
+	l.lastPos = item.Position
 	return item
 
 }
@@ -150,7 +156,7 @@ func isEndOfLine(r rune) bool {
 }
 
 func lexStart(l *lexer) stateFn {
-	log.Debugln("Transition lexStart...")
+	log.Debugln("\nTransition lexStart...")
 	for {
 		if len(l.input) == 0 {
 			log.Debugln("\tEmit EOF!")

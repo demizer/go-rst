@@ -44,8 +44,8 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
 }
 
 func (t *Tree) parse(tree *Tree) (next Node) {
-	t.Root = newList(t.peek().pos)
-	for t.peek().typ != itemEOF {
+	t.Root = newList(t.peek().Position)
+	for t.peek().ElementType != itemEOF {
 		//
 	}
 	return nil
