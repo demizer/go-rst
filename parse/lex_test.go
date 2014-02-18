@@ -4,116 +4,129 @@
 package parse
 
 import (
-	"testing"
+	"bufio"
+	"encoding/json"
 	"github.com/demizer/go-elog"
+	"github.com/demizer/go-spew/spew"
+	"os"
+	"bytes"
+	"strings"
+	"testing"
+	"fmt"
 )
 
 type lexTest struct {
-	name  string
-	input string
-	items []item
+	name        string
+	description string
+	data        string
+	expect      string
+	items       []item
 }
 
 var (
 	tEOF = item{itemEOF, 0, ""}
 )
 
+var spd = spew.ConfigState{Indent: "\t"}
+
+func TestAll(t *testing.T) {
+	// log.SetLevel(log.LEVEL_DEBUG)
+	log.SetFlags(log.Lansi | log.LnoFileAnsi | log.LnoPrefix)
+}
+
+func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
+	testData, err := os.Open(filepath)
+	defer testData.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	var lexTests []lexTest
+	var curTest = new(lexTest)
+	var buffer bytes.Buffer
+
+	scanner := bufio.NewScanner(testData)
+
+	for scanner.Scan() {
+		switch scanner.Text() {
+		case "#name":
+			// buffer = bytes.NewBuffer(buffer.Bytes())
+			// name starts a new section
+			if buffer.Len() > 0 {
+				// Apend the last section to the array and
+				// reset
+				curTest.expect = buffer.String()
+				lexTests = append(lexTests, *curTest)
+			}
+			curTest = new(lexTest)
+			buffer.Reset()
+		case "#description":
+			curTest.name = strings.TrimRight(buffer.String(), "\n")
+			buffer.Reset()
+		case "#data":
+			curTest.description = strings.TrimRight(buffer.String(), "\n")
+			buffer.Reset()
+		case "#expect":
+			curTest.data = buffer.String()
+			buffer.Reset()
+		default:
+			// Collect the text in between sections
+			if len(scanner.Text()) == 0 ||
+				strings.TrimLeft(scanner.Text(), " ")[0] == '#' {
+				continue
+			}
+			buffer.WriteString(fmt.Sprintln(scanner.Text()))
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		t.Error(err)
+	}
+
+	if buffer.Len() > 0 {
+		// Apend the last section to the array and
+		curTest.expect = buffer.String()
+		lexTests = append(lexTests, *curTest)
+	}
+
+	return lexTests, nil
+}
+
 // collect gathers the emitted items into a slice.
 func collect(t *lexTest) (items []item) {
-	l := lex(t.name, t.input)
+	l := lex(t.name, t.data)
 	for {
 		item := l.nextItem()
 		items = append(items, item)
-		if item.typ == itemEOF || item.typ == itemError {
+		if item.ElementType == itemEOF || item.ElementType == itemError {
 			break
 		}
 	}
 	return
 }
 
-func equal(i1, i2 []item, checkPos bool) bool {
-	if len(i1) != len(i2) {
-		return false
+func TestSection(t *testing.T) {
+	lexTests, err := parseTestData(t, "../testdata/test_lex_sections.dat")
+	if err != nil {
+		t.FailNow()
 	}
-	for k := range i1 {
-		if i1[k].typ != i2[k].typ {
-			return false
+	for _, test := range lexTests {
+		if test.name == "ST-UNEXP-TITLES" {
+			log.Printf("Test Name: \t%s\n", test.name)
+			log.Printf("Description: \t%s\n", test.description)
+			items := collect(&test)
+			b, err := json.MarshalIndent(items, "", "\t")
+			if err != nil {
+				t.Errorf("JSON Error: %s, IN: %+v\n", err, test)
+			}
+			log.Println("Collected items:\n\n", spd.Sdump(items))
+			log.Println("items JSON object:\n\n", string(b))
+			var i interface{}
+			err = json.Unmarshal([]byte(test.expect), &i)
+			if err != nil {
+				t.Errorf("JSON Error: %s, IN: %+v\n", err, test)
+			}
+			log.Println("JSON object:\n\n", spd.Sdump(i))
 		}
-		if i1[k].val != i2[k].val {
-			return false
-		}
-		if checkPos && i1[k].pos != i2[k].pos {
-			return false
-		}
 	}
-	return true
-}
-
-func setDebug() {
-	log.SetLevel(log.LEVEL_DEBUG)
-	log.SetFlags(log.Lansi | log.LnoFileAnsi | log.LnoPrefix)
-}
-
-func checkLexTest(t *testing.T, test *lexTest) {
-	items := collect(test)
-	if !equal(items, test.items, false) {
-		t.Errorf("Test Name: %s\nGot:\n\t%+v\nExpected:\n\t%+v", test.name, items,
-			test.items)
-	}
-}
-
-func TestParagraphLex(t *testing.T) {
-	var lexParagraphTests = []lexTest{
-		{"Empty", "", []item{tEOF}},
-		{"paragraph", "A paragraph.", []item{
-			{itemParagraph, 0, "A paragraph."},
-			tEOF,
-		}},
-	}
-	for _, test := range lexParagraphTests {
-		checkLexTest(t, &test)
-	}
-}
-
-func TestSectionNoBlankLine(t *testing.T) {
-	test := &lexTest{"section header, no blank line",
-		"Title\n=====\nParagraph (no blank line).", []item{
-		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 0, "====="},
-		{itemParagraph, 0, "Paragraph (no blank line)."},
-		tEOF,
-	}}
-	checkLexTest(t, test)
-}
-
-func TestSectionWithBlankLine(t *testing.T) {
-	test := &lexTest{"Section and paragraph", "Title\n=====\n\nParagraph.", []item{
-		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 0, "====="},
-		{itemParagraph, 0, "Paragraph."},
-		tEOF,
-	}}
-	checkLexTest(t, test)
-}
-
-func TestSectionWithOverline(t *testing.T) {
-	test := &lexTest{"Section and paragraph (overline)", "=====\nTitle\n=====\nParagraph.", []item{
-		{itemSectionAdornment, 0, "====="},
-		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 0, "====="},
-		{itemParagraph, 0, "Paragraph."},
-		tEOF,
-	}}
-	checkLexTest(t, test)
-}
-
-func TestParagraphSectionParagraph(t *testing.T) {
-	test := &lexTest{"Paragraph section paragraph", "Paragraph.\nTitle\n=====\n\nParagraph.", []item{
-		{itemParagraph, 0, "Paragraph."},
-		{itemTitle, 0, "Title"},
-		{itemSectionAdornment, 0, "====="},
-		{itemParagraph, 0, "Paragraph."},
-		tEOF,
-	}}
-	checkLexTest(t, test)
 }
