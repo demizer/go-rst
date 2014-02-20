@@ -4,8 +4,6 @@
 package parse
 
 import (
-	// "strings"
-	// "unicode"
 	"fmt"
 	"github.com/demizer/go-elog"
 	"unicode/utf8"
@@ -55,8 +53,10 @@ const eof = -1
 type stateFn func(*lexer) stateFn
 
 type item struct {
+	ElementName string
 	ElementType itemElement
 	Position    Pos
+	Line        int
 	Value       interface{}
 }
 
@@ -104,6 +104,7 @@ type lexer struct {
 	width   Pos
 	lastPos Pos
 	items   chan item
+	line    int
 }
 
 func lex(name, input string) *lexer {
@@ -119,7 +120,8 @@ func lex(name, input string) *lexer {
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
 	log.Debugf("\tEmit %s!\n", t)
-	l.items <- item{t, l.start, l.input[l.start:l.pos]}
+	l.items <- item{ElementType: t, ElementName: fmt.Sprint(t),
+		Position: l.start, Line: l.line, Value: l.input[l.start:l.pos]}
 	l.start = l.pos
 
 }
@@ -165,6 +167,7 @@ func (l *lexer) nextItem() item {
 }
 
 func (l *lexer) run() {
+	l.line += 1
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
@@ -189,8 +192,8 @@ func lexStart(l *lexer) stateFn {
 			return nil
 		}
 
-		log.Debugf("\tlexStart: %q, Start: %d, Pos: %d\n",
-			l.input[l.start:l.pos], l.start, l.pos)
+		log.Debugf("\tlexStart: %q, Start: %d, Pos: %d, Line: %d\n",
+			l.input[l.start:l.pos], l.start, l.pos, l.line)
 
 		switch r := l.current(); {
 		case isSectionAdornment(r) && isSectionAdornment(l.peek()) && l.pos == 1:
@@ -198,6 +201,7 @@ func lexStart(l *lexer) stateFn {
 			return lexSection
 		case isEndOfLine(r):
 			log.Debugln("\tFound newline!")
+			l.line += 1
 			if isSectionAdornment(l.peek()) {
 				log.Debugln("Transition lexSection...")
 				return lexSection
@@ -244,6 +248,7 @@ Loop:
 		case isEndOfLine(r):
 			l.backup()
 			l.emit(itemSectionAdornment)
+			l.line += 1
 			l.ignore()
 			break Loop
 		}

@@ -5,26 +5,27 @@ package parse
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
 	"os"
-	"bytes"
 	"strings"
 	"testing"
-	"fmt"
 )
 
 type lexTest struct {
-	name        string
-	description string
-	data        string
-	expect      string
-	items       []item
+	name           string
+	description    string
+	data           string
+	items          string
+	expect         string
+	collectedItems []item
 }
 
 var (
-	tEOF = item{itemEOF, 0, ""}
+	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
 )
 
 var spd = spew.ConfigState{Indent: "\t"}
@@ -66,8 +67,11 @@ func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
 		case "#data":
 			curTest.description = strings.TrimRight(buffer.String(), "\n")
 			buffer.Reset()
+		case "#items":
+			curTest.data = strings.TrimRight(buffer.String(), "\n")
+			buffer.Reset()
 		case "#expect":
-			curTest.data = buffer.String()
+			curTest.items = buffer.String()
 			buffer.Reset()
 		default:
 			// Collect the text in between sections
