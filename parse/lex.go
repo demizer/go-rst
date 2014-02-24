@@ -257,6 +257,24 @@ func lexSection(l *lexer) stateFn {
 			lexWhiteSpace(l)
 		}
 	}
+}
+
+func lexWhiteSpace(l *lexer) stateFn {
+	log.Debugln("\nTransition...")
+	if isEndOfLine(l.previous()) {
+		l.emit(itemBlankLine)
+		l.line += 1
+		l.next()
+	}
+	for isWhiteSpace(l.peek()) {
+		log.Debugf("%q, Start: %d, Pos: %d, Line: %d\n",
+			l.input[l.start:l.pos], l.start, l.pos, l.line)
+		l.next()
+	}
+	log.Debugf("%q, Start: %d, Pos: %d, Line: %d\n",
+		l.input[l.start:l.pos], l.start, l.pos, l.line)
+	l.emit(itemSpace)
+	l.next()
 	return lexStart
 }
 
