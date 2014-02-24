@@ -96,6 +96,7 @@ func lex(name, input string) *lexer {
 	l := &lexer{
 		name:  name,
 		input: input,
+		line: 1,
 		items: make(chan item),
 	}
 	go l.run()
@@ -153,7 +154,6 @@ func (l *lexer) nextItem() item {
 }
 
 func (l *lexer) run() {
-	l.line += 1
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
