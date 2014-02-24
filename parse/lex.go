@@ -121,6 +121,13 @@ func (l *lexer) current() rune {
 	return r
 }
 
+func (l *lexer) previous() rune {
+	l.backup()
+	r := l.current()
+	l.next()
+	return r
+}
+
 func (l *lexer) peek() rune {
 	r := l.next()
 	l.backup()
