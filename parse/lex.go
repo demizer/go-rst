@@ -228,30 +228,33 @@ func lexStart(l *lexer) stateFn {
 }
 
 func lexSection(l *lexer) stateFn {
-	if len(l.input) > 0 {
-		log.Debugf("\tlexSection: %q, Pos: %d\n",
-			l.input[l.start:l.pos], l.pos)
+	var lexTitle bool
+	log.Debugln("\nTransition...")
+
+	if !isSectionAdornment(l.current()) {
+		lexTitle = true
 	}
 
-	if isEndOfLine(l.peek()) {
-		l.emit(itemTitle)
-		l.ignore()
-	}
-
-Loop:
 	for {
+		if len(l.input) > 0 {
+			log.Debugf("%q, Start: %d, Pos: %d\n", l.input[l.start:l.pos], l.start, l.pos)
+		}
 		switch r := l.next(); {
-		case isSectionAdornment(r):
-			if len(l.input) > 0 {
-				log.Debugf("\tlexSection: %q, Pos: %d\n",
-					l.input[l.start:l.pos], l.pos)
-			}
 		case isEndOfLine(r):
 			l.backup()
-			l.emit(itemSectionAdornment)
-			l.line += 1
-			l.ignore()
-			break Loop
+			if lexTitle {
+				l.emit(itemTitle)
+				lexTitle = false
+				l.line += 1
+				l.skip()
+				l.next()
+				continue
+			} else {
+				l.emit(itemSectionAdornment)
+				return lexStart
+			}
+		case isWhiteSpace(r):
+			lexWhiteSpace(l)
 		}
 	}
 	return lexStart
