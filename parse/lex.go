@@ -139,6 +139,14 @@ func (l *lexer) skip() {
         l.next()
 }
 
+func (l *lexer) advance(to rune) {
+	for {
+		if l.next() == EOF || to == l.current() {
+			break
+		}
+	}
+}
+
 // next returns the next rune in the input.
 func (l *lexer) next() rune {
 	if int(l.pos) >= len(l.input) {
