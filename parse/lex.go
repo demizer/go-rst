@@ -174,9 +174,9 @@ func (l *lexer) run() {
 	}
 }
 
-// isSpace reports whether r is a space character.
-func isSpace(r rune) bool {
-	return r == ' ' || r == '\t'
+// isWhiteSpace reports whether r is a space character.
+func isWhiteSpace(r rune) bool {
+	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
 }
 
 // isEndOfLine reports whether r is an end-of-line character.
