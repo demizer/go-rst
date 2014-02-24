@@ -31,8 +31,19 @@ var (
 var spd = spew.ConfigState{Indent: "\t"}
 
 func TestAll(t *testing.T) {
-	// log.SetLevel(log.LEVEL_DEBUG)
-	log.SetFlags(log.Lansi | log.LnoFileAnsi | log.LnoPrefix)
+	log.SetLevel(log.LEVEL_DEBUG)
+	err := log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
+		"{{if .Prefix}}{{.Prefix}} {{end}}" +
+		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
+		"{{if .FileName}}{{.FileName}}: {{end}}" +
+		"{{if .FunctionName}}{{.FunctionName}}{{end}}" +
+		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
+		"{{if .Text}}{{.Text}}{{end}}")
+	if err != nil {
+		t.Error(err)
+	}
+	log.SetFlags(log.Lansi | log.LnoPrefix | log.LfunctionName |
+		log.LlineNumber)
 }
 
 func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
