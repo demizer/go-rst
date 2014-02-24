@@ -43,15 +43,6 @@ var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*'
 	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',
 	']', '^', '_', '`', '{', '|', '}', '~'}
 
-func isSectionAdornment(r rune) bool {
-	for _, a := range sectionAdornments {
-		if a == r {
-			return true
-		}
-	}
-	return false
-}
-
 const EOF rune = -1
 
 type stateFn func(*lexer) stateFn
@@ -248,4 +239,13 @@ Loop:
 		}
 	}
 	return lexStart
+}
+
+func isSectionAdornment(r rune) bool {
+	for _, a := range sectionAdornments {
+		if a == r {
+			return true
+		}
+	}
+	return false
 }
