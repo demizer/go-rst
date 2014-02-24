@@ -134,9 +134,9 @@ func (l *lexer) peek() rune {
 	return r
 }
 
-func (l *lexer) ignore() {
-	l.pos += 1
-	l.start = l.pos
+func (l *lexer) skip() {
+	l.start += 1
+        l.next()
 }
 
 // next returns the next rune in the input.
