@@ -278,6 +278,74 @@ func lexWhiteSpace(l *lexer) stateFn {
 	return lexStart
 }
 
+// isSection compares a number of positions (skipping whitespace) to
+// determine if the runes are sectionAdornments and returns a true if the
+// positions match each other. Rune comparison begins at the current lexer
+// position. isSection returns false if there is a blank line between the
+// positions or if there is a rune mismatch between positions.
+func isSection(l *lexer) bool {
+	var lookPositions = 2
+	var lastAdornment rune
+	var newLineNum int
+	var runePositions []rune
+	var matchCount int
+	cPos := l.pos
+
+	exit := func(value bool) bool {
+		l.pos = cPos
+		log.Debugln("Returning", value)
+		return value
+	}
+
+	log.Debugln("\nLooking ahead", lookPositions, "position(s) for sectionAdornments...")
+
+	// Check two runes to see if they are section adornments, if not, we will check the next
+	// line (after whitespace).
+	if isSectionAdornment(l.current()) && isSectionAdornment(l.peek()) &&
+		l.current() == l.peek() {
+		return true
+	}
+
+	// Advance to the end of the line
+	l.advance('\n')
+	if l.current() == EOF {
+		return false
+	}
+
+	for j := 0; j < lookPositions; j++ {
+		for isWhiteSpace(l.current()) {
+			if isEndOfLine(l.current()) {
+				if newLineNum == 1 {
+					log.Debugln("Too many newlines!")
+					return exit(false)
+				}
+				newLineNum += 1
+				log.Debugln("newLineNum:", newLineNum)
+			}
+			l.next()
+		}
+
+		if isSectionAdornment(l.current()) {
+			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.pos)
+			if lastAdornment != 0 && l.current() != lastAdornment {
+				log.Debugf("Adornment mismatch, last: %s current: %s\n",
+					string(lastAdornment), string(l.current()))
+				return exit(false)
+			}
+			runePositions = append(runePositions, l.current())
+			lastAdornment = l.current()
+			matchCount += 1
+		}
+		l.next()
+	}
+
+	if len(runePositions) == 0 || matchCount != lookPositions {
+		return exit(false)
+	}
+
+	return exit(true)
+}
+
 func isSectionAdornment(r rune) bool {
 	for _, a := range sectionAdornments {
 		if a == r {
