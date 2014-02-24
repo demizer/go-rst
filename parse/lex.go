@@ -105,11 +105,10 @@ func lex(name, input string) *lexer {
 
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
-	log.Debugf("\tEmit %s!\n", t)
 	l.items <- item{ElementType: t, ElementName: fmt.Sprint(t),
 		Position: l.start, Line: l.line, Value: l.input[l.start:l.pos]}
+	log.Debugf("%s: %q\n", t, l.input[l.start:l.pos])
 	l.start = l.pos
-
 }
 
 func (l *lexer) backup() {
@@ -147,7 +146,6 @@ func (l *lexer) advance(to rune) {
 	}
 }
 
-// next returns the next rune in the input.
 func (l *lexer) next() rune {
 	if int(l.pos) >= len(l.input) {
 		log.Debugln("Reached EOF!")
@@ -185,32 +183,35 @@ func isEndOfLine(r rune) bool {
 }
 
 func lexStart(l *lexer) stateFn {
-	log.Debugln("\nTransition lexStart...")
+	log.Debugln("\nTransition...")
 	for {
 		if len(l.input) == 0 {
-			log.Debugln("\tEmit EOF!")
 			l.emit(itemEOF)
 			return nil
 		}
 
-		log.Debugf("\tlexStart: %q, Start: %d, Pos: %d, Line: %d\n",
-			l.input[l.start:l.pos], l.start, l.pos, l.line)
+		if l.pos > l.start {
+			log.Debugf("%q, Current: %q, Start: %d, Pos: %d, Line: %d\n",
+				l.input[l.start:l.pos], l.current(), l.start, l.pos, l.line)
+		}
+
+		isStartOfToken := l.start == l.pos-l.width
 
 		switch r := l.current(); {
-		case isSectionAdornment(r) && isSectionAdornment(l.peek()) && l.pos == 1:
-			log.Debugln("Transition lexSection...")
-			return lexSection
-		case isEndOfLine(r):
-			log.Debugln("\tFound newline!")
-			l.line += 1
-			if isSectionAdornment(l.peek()) {
-				log.Debugln("Transition lexSection...")
+		case isStartOfToken:
+			if isWhiteSpace(r) {
+				lexWhiteSpace(l)
+			}
+			if isSection(l) {
 				return lexSection
 			}
+			l.next()
+		case isEndOfLine(r):
 			if l.pos > l.start {
 				l.emit(itemParagraph)
 			}
-			l.ignore()
+			l.line += 1
+			l.skip() // Skip the newline
 		}
 		if l.next() == EOF {
 			break
