@@ -86,10 +86,6 @@ func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
 			buffer.Reset()
 		default:
 			// Collect the text in between sections
-			if len(scanner.Text()) == 0 ||
-				strings.TrimLeft(scanner.Text(), " ")[0] == '#' {
-				continue
-			}
 			buffer.WriteString(fmt.Sprintln(scanner.Text()))
 		}
 	}
