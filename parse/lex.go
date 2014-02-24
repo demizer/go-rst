@@ -60,16 +60,6 @@ type item struct {
 	Value       interface{}
 }
 
-func (i item) String() string {
-	switch {
-	case i.ElementType == itemEOF:
-		return "EOF"
-	case i.ElementType == itemError:
-		return i.Value.(string)
-	}
-	return fmt.Sprintf("%q", i.Value)
-}
-
 type systemMessageLevel int
 
 const (
