@@ -52,7 +52,7 @@ func isSectionAdornment(r rune) bool {
 	return false
 }
 
-const eof = -1
+const EOF rune = -1
 
 type stateFn func(*lexer) stateFn
 
@@ -143,8 +143,9 @@ func (l *lexer) ignore() {
 // next returns the next rune in the input.
 func (l *lexer) next() rune {
 	if int(l.pos) >= len(l.input) {
+		log.Debugln("Reached EOF!")
 		l.width = 0
-		return eof
+		return EOF
 	}
 	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
 	l.width = Pos(w)
@@ -205,8 +206,7 @@ func lexStart(l *lexer) stateFn {
 			}
 			l.ignore()
 		}
-
-		if l.next() == eof {
+		if l.next() == EOF {
 			break
 		}
 	}
