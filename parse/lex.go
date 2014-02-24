@@ -20,6 +20,8 @@ const (
 	itemBlockquote
 	itemLiteralBlock
 	itemSystemMessage
+	itemSpace
+	itemBlankLine
 )
 
 var elements = [...]string{
@@ -31,6 +33,8 @@ var elements = [...]string{
 	"itemBlockquote",
 	"itemLiteralBlock",
 	"itemSystemMessage",
+	"itemSpace",
+	"itemBlankLine",
 }
 
 func (t itemElement) String() string { return elements[t] }
