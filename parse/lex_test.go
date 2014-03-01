@@ -6,7 +6,6 @@ package parse
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
@@ -14,6 +13,8 @@ import (
 	"strings"
 	"testing"
 )
+
+var lexTests []lexTest
 
 type lexTest struct {
 	name           string
@@ -116,28 +117,42 @@ func collect(t *lexTest) (items []item) {
 	return
 }
 
-func TestSection(t *testing.T) {
-	lexTests, err := parseTestData(t, "../testdata/test_lex_sections.dat")
-	if err != nil {
-		t.FailNow()
-	}
-	for _, test := range lexTests {
-		if test.name == "ST-UNEXP-TITLES" {
-			log.Printf("Test Name: \t%s\n", test.name)
-			log.Printf("Description: \t%s\n", test.description)
-			items := collect(&test)
-			b, err := json.MarshalIndent(items, "", "\t")
-			if err != nil {
-				t.Errorf("JSON Error: %s, IN: %+v\n", err, test)
-			}
-			log.Println("Collected items:\n\n", spd.Sdump(items))
-			log.Println("items JSON object:\n\n", string(b))
-			var i interface{}
-			err = json.Unmarshal([]byte(test.expect), &i)
-			if err != nil {
-				t.Errorf("JSON Error: %s, IN: %+v\n", err, test)
-			}
-			log.Println("JSON object:\n\n", spd.Sdump(i))
+func runTest(t *testing.T, testName string) []item {
+	var err error
+	if lexTests == nil {
+		lexTests, err = parseTestData(t, "../testdata/test_lex_sections.dat")
+		if err != nil {
+			t.FailNow()
 		}
 	}
+	for _, test := range lexTests {
+		if test.name == testName {
+			log.Printf("Test Name: \t%s\n", test.name)
+			log.Printf("Description: \t%s\n", test.description)
+			log.Printf("Test Input:\n-----------\n%s\n----------\n", test.data)
+			items := collect(&test)
+			return items
+		}
+	}
+	return nil
+}
+
+func TestSectionTitlePara(t *testing.T) {
+	items := runTest(t, "SectionTitlePara")
+	log.Println("Collected items:\n\n", spd.Sdump(items))
+}
+
+func TestSectionTitleParaNoBlankline(t *testing.T) {
+	items := runTest(t, "SectionTitleParaNoBlankline")
+	log.Println("Collected items:\n\n", spd.Sdump(items))
+}
+
+func TestSectionParaHeadPara(t *testing.T) {
+	items := runTest(t, "SectionParaHeadPara")
+	log.Println("Collected items:\n\n", spd.Sdump(items))
+}
+
+func TestSectionUnexpectedTitles(t *testing.T) {
+	items := runTest(t, "SectionUnexpectedTitles")
+	log.Println("Collected items:\n\n", spd.Sdump(items))
 }

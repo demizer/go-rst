@@ -1,5 +1,5 @@
 #name
-ST-TITLE-PARA
+SectionTitlePara
 #description
 Test section header and paragraph.
 #data
@@ -51,7 +51,7 @@ Paragraph.
     }
 ]
 #name
-ST-TITLE-PARA-NONL
+SectionTitleParaNoBlankline
 #description
 Test section header no blank line.
 #data
@@ -81,7 +81,7 @@ Paragraph (no blank line).
     }
 ]
 #name
-ST-PARA-HEAD-PARA
+SectionParaHeadPara
 #description
 Test paragraph section header and paragraph.
 #data
@@ -120,7 +120,7 @@ Paragraph.
     }
 ]
 #name
-ST-UNEXP-TITLES
+SectionUnexpectedTitles
 #description
 Test unexpected section titles.
 #data
