@@ -124,9 +124,9 @@ func runTest(t *testing.T, testName string) []item {
 	}
 	for _, test := range lexTests {
 		if test.name == testName {
-			log.Printf("Test Name: \t%s\n", test.name)
-			log.Printf("Description: \t%s\n", test.description)
-			log.Printf("Test Input:\n-----------\n%s\n----------\n", test.data)
+			log.Debugf("Test Name: \t%s\n", test.name)
+			log.Debugf("Description: \t%s\n", test.description)
+			log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 			items := collect(&test)
 			return items
 		}
@@ -136,20 +136,20 @@ func runTest(t *testing.T, testName string) []item {
 
 func TestSectionTitlePara(t *testing.T) {
 	items := runTest(t, "SectionTitlePara")
-	log.Println("Collected items:\n\n", spd.Sdump(items))
+	log.Debugln("Collected items:\n\n", spd.Sdump(items))
 }
 
 func TestSectionTitleParaNoBlankline(t *testing.T) {
 	items := runTest(t, "SectionTitleParaNoBlankline")
-	log.Println("Collected items:\n\n", spd.Sdump(items))
+	log.Debugln("Collected items:\n\n", spd.Sdump(items))
 }
 
 func TestSectionParaHeadPara(t *testing.T) {
 	items := runTest(t, "SectionParaHeadPara")
-	log.Println("Collected items:\n\n", spd.Sdump(items))
+	log.Debugln("Collected items:\n\n", spd.Sdump(items))
 }
 
 func TestSectionUnexpectedTitles(t *testing.T) {
 	items := runTest(t, "SectionUnexpectedTitles")
-	log.Println("Collected items:\n\n", spd.Sdump(items))
+	log.Debugln("Collected items:\n\n", spd.Sdump(items))
 }
