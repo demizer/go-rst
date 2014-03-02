@@ -6,6 +6,7 @@ package parse
 import (
 	"fmt"
 	"github.com/demizer/go-elog"
+	"unicode"
 	"unicode/utf8"
 )
 
@@ -106,9 +107,14 @@ func lex(name, input string) *lexer {
 
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
-	l.items <- item{ElementType: t, ElementName: fmt.Sprint(t),
-		Position: l.start, Line: l.line, Value: l.input[l.start:l.pos]}
-	log.Debugf("%s: %q\n", t, l.input[l.start:l.pos])
+	if l.start == l.pos && int(l.pos) < len(l.input) {
+		l.pos += 1
+	}
+	log.Debugf("#### %s: %q start: %d pos: %d\n", t, l.input[l.start:l.pos], l.start, l.pos)
+	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start+1, Line: l.line,
+		Value: l.input[l.start:l.pos]}
+	l.items <- nItem
+	l.lastItem = &nItem
 	l.start = l.pos
 }
 
@@ -144,6 +150,7 @@ func (l *lexer) next() rune {
 	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
 	l.width = Pos(w)
 	l.pos += l.width
+	log.Debugf("cur: %q start: %d pos: %d\n", r, l.start, l.pos)
 	return r
 }
 
@@ -161,8 +168,8 @@ func (l *lexer) run() {
 	}
 }
 
-// isWhiteSpace reports whether r is a space character.
-func isWhiteSpace(r rune) bool {
+// isSpace reports whether r is a space character.
+func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
 }
 
@@ -172,35 +179,31 @@ func isEndOfLine(r rune) bool {
 }
 
 func lexStart(l *lexer) stateFn {
-	log.Debugln("\nTransition...")
+	log.Debugln("Start")
 	for {
-		if len(l.input) == 0 {
-			l.emit(itemEOF)
-			return nil
-		}
-
-		if l.pos > l.start {
-			log.Debugf("%q, Current: %q, Start: %d, Pos: %d, Line: %d\n",
-				l.input[l.start:l.pos], l.current(), l.start, l.pos, l.line)
-		}
-
-		isStartOfToken := l.start == l.pos-l.width
-
+		var tokenLength = l.pos - l.start
 		switch r := l.current(); {
-		case isStartOfToken:
-			if isWhiteSpace(r) {
-				lexWhiteSpace(l)
-			}
-			if isSection(l) {
+		case tokenLength == 1:
+			log.Debugln("tokenLength == 1; Start of new token")
+			if isEndOfLine(r) {
+				l.emit(itemBlankLine)
+				l.start += 1
+				l.line += 1
+			} else if isSpace(r) {
+				return lexSpace
+			} else if isSection(l) {
 				return lexSection
 			}
-			l.next()
 		case isEndOfLine(r):
+			log.Debugln("isEndOfLine == true")
 			if l.pos > l.start {
 				l.emit(itemParagraph)
+				l.start += 1 // Skip the new line
+			} else if l.start == l.pos {
+				l.emit(itemBlankLine)
 			}
 			l.line += 1
-			l.skip() // Skip the newline
+
 		}
 		if l.next() == EOF {
 			break
@@ -213,57 +216,41 @@ func lexStart(l *lexer) stateFn {
 	}
 
 	l.emit(itemEOF)
+	log.Debugln("End")
 	return nil
 }
 
 func lexSection(l *lexer) stateFn {
-	var lexTitle bool
-	log.Debugln("\nTransition...")
-
-	if !isSectionAdornment(l.current()) {
-		lexTitle = true
-	}
-
-	for {
-		if len(l.input) > 0 {
-			log.Debugf("%q, Start: %d, Pos: %d\n", l.input[l.start:l.pos], l.start, l.pos)
+	log.Debugln("Start")
+	// The order of the case statement matter here
+	switch r := l.next(); {
+	case isSectionAdornment(r):
+		if l.lastItem.ElementType != itemTitle {
+			return lexSectionAdornment
 		}
-		switch r := l.next(); {
-		case isEndOfLine(r):
-			l.backup()
-			if lexTitle {
-				l.emit(itemTitle)
-				lexTitle = false
-				l.line += 1
-				l.skip()
-				l.next()
-				continue
-			} else {
-				l.emit(itemSectionAdornment)
-				return lexStart
-			}
-		case isWhiteSpace(r):
-			lexWhiteSpace(l)
-		}
+		lexSectionAdornment(l)
+	case isSpace(r):
+		return lexSpace
+	case r <= unicode.MaxASCII && unicode.IsPrint(r):
+		return lexTitle
+	case isEndOfLine(r):
+		l.start += 1
+		l.line += 1
 	}
+	log.Debugln("Exit")
+	return lexStart
 }
 
-func lexWhiteSpace(l *lexer) stateFn {
-	log.Debugln("\nTransition...")
-	if isEndOfLine(l.previous()) {
-		l.emit(itemBlankLine)
-		l.line += 1
+func lexSpace(l *lexer) stateFn {
+	log.Debugln("Start")
+	for isSpace(l.current()) {
 		l.next()
 	}
-	for isWhiteSpace(l.peek()) {
-		log.Debugf("%q, Start: %d, Pos: %d, Line: %d\n",
-			l.input[l.start:l.pos], l.start, l.pos, l.line)
+	if l.start < l.pos {
+		l.emit(itemSpace)
 		l.next()
 	}
-	log.Debugf("%q, Start: %d, Pos: %d, Line: %d\n",
-		l.input[l.start:l.pos], l.start, l.pos, l.line)
-	l.emit(itemSpace)
-	l.next()
+	log.Debugln("End")
 	return lexStart
 }
 
@@ -273,6 +260,7 @@ func lexWhiteSpace(l *lexer) stateFn {
 // position. isSection returns false if there is a blank line between the
 // positions or if there is a rune mismatch between positions.
 func isSection(l *lexer) bool {
+	log.Debugln("Start")
 	var lookPositions = 2
 	var lastAdornment rune
 	var newLineNum int
@@ -286,7 +274,7 @@ func isSection(l *lexer) bool {
 		return value
 	}
 
-	log.Debugln("\nLooking ahead", lookPositions, "position(s) for sectionAdornments...")
+	log.Debugln("Looking ahead", lookPositions, "position(s) for sectionAdornments...")
 
 	// Check two runes to see if they are section adornments, if not, we will check the next
 	// line (after whitespace).
@@ -302,7 +290,7 @@ func isSection(l *lexer) bool {
 	}
 
 	for j := 0; j < lookPositions; j++ {
-		for isWhiteSpace(l.current()) {
+		for isSpace(l.current()) {
 			if isEndOfLine(l.current()) {
 				if newLineNum == 1 {
 					log.Debugln("Too many newlines!")
@@ -342,4 +330,37 @@ func isSectionAdornment(r rune) bool {
 		}
 	}
 	return false
+}
+
+func lexSectionAdornment(l *lexer) stateFn {
+	log.Debugln("Start")
+	for {
+		//TODO: Add adornment rune check
+		l.next()
+		if l.peek() == '\n' {
+			l.emit(itemSectionAdornment)
+			l.start += 1
+			l.pos += 1
+			l.line += 1
+			break
+		}
+	}
+	log.Debugln("End")
+	return lexSection
+}
+
+func lexTitle(l *lexer) stateFn {
+	log.Debugln("Start")
+	for {
+		l.next()
+		if l.peek() == '\n' {
+			l.emit(itemTitle)
+			l.start += 1
+			l.pos += 1
+			l.line += 1
+			break
+		}
+	}
+	log.Debugln("End")
+	return lexSection
 }
