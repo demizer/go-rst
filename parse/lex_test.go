@@ -134,14 +134,13 @@ func lexSectionTest(t *testing.T, testName string) []item {
 			t.FailNow()
 		}
 	}
-	for _, test := range lexTests {
-		if test.name == testName {
-			log.Debugf("Test Name: \t%s\n", test.name)
-			log.Debugf("Description: \t%s\n", test.description)
-			log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
-			items := collect(&test)
-			return items
-		}
+	test := tests.SearchByName(testName)
+	if test != nil {
+		log.Debugf("Test Name: \t%s\n", test.name)
+		log.Debugf("Description: \t%s\n", test.description)
+		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+		items := collect(test)
+		return items
 	}
 	return nil
 }
