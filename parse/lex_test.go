@@ -125,7 +125,7 @@ func collect(t *lexTest) (items []item) {
 	return
 }
 
-func runTest(t *testing.T, testName string) []item {
+func lexSectionTest(t *testing.T, testName string) []item {
 	var err error
 	if tests == nil {
 		tests, err = parseTestData(t, "../testdata/test_lex_sections.dat")
