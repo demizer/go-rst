@@ -11,6 +11,7 @@ import (
 	"unicode/utf8"
 )
 
+// itemElement are the types that are emitted by the lexer.
 type itemElement int
 
 const (
@@ -39,16 +40,21 @@ var elements = [...]string{
 	"itemBlankLine",
 }
 
+// String implements the Stringer interface for printing itemElement types.
 func (t itemElement) String() string { return elements[t] }
 
+// Valid section adornment runes
 var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*',
 	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',
 	']', '^', '_', '`', '{', '|', '}', '~'}
 
+// Emitted by the lexer on End of File
 const eof rune = -1
 
+// Function prototype for scanner functions
 type stateFn func(*lexer) stateFn
 
+// Struct for tokens emitted by the scanning process
 type item struct {
 	ElementName string      `json:"element-name"`
 	ElementType itemElement `json: "-"`
@@ -57,18 +63,20 @@ type item struct {
 	Value       interface{} `json: "value"`
 }
 
+// The lexer struct tracks the state of the lexer
 type lexer struct {
-	name     string
-	input    string
-	state    stateFn
-	pos      Pos
-	start    Pos
-	width    Pos
-	items    chan item
-	lastItem *item
-	line     int
+	name     string  // The name of the current lexer
+	input    string // The input text
+	state    stateFn // The current state of the lexer
+	pos      Pos // Position in input
+	start    Pos // The start of the current token
+	width    Pos // The width of the current position
+	items    chan item // The channel items are emitted to
+	lastItem *item // The last item emitted to the channel
+	line     int // Used to count the number of line encountered in the input
 }
 
+// lex is the entry point of the lexer
 func lex(name, input string) *lexer {
 	l := &lexer{
 		name:  name,
@@ -80,6 +88,7 @@ func lex(name, input string) *lexer {
 	return l
 }
 
+// run is the engine of the lexing process.
 func (l *lexer) run() {
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
@@ -99,21 +108,26 @@ func (l *lexer) emit(t itemElement) {
 	l.start = l.pos
 }
 
+// backup backs up the lexer by one position using the width of the last rune retrieved from the
+// input.
 func (l *lexer) backup() {
 	l.pos -= l.width
 }
 
+// current returns the rune at the current position in the input.
 func (l *lexer) current() rune {
 	r, _ := utf8.DecodeRuneInString(l.input[l.pos:])
 	return r
 }
 
+// peek looks ahead in the input by one position and returns the rune.
 func (l *lexer) peek() rune {
 	r := l.next()
 	l.backup()
 	return r
 }
 
+// advance fast forwards the lexer to the next rune in the input specified by "to".
 func (l *lexer) advance(to rune) {
 	for {
 		if l.next() == eof || to == l.current() {
@@ -122,6 +136,7 @@ func (l *lexer) advance(to rune) {
 	}
 }
 
+// next advances the position of the lexer by one rune and returns that rune.
 func (l *lexer) next() rune {
 	if int(l.pos) >= len(l.input) {
 		log.Debugln("Reached eof!")
@@ -221,6 +236,7 @@ func isSection(l *lexer) bool {
 	return exit(true)
 }
 
+// isSectionAdornment returns true if r matches a section adornment.
 func isSectionAdornment(r rune) bool {
 	for _, a := range sectionAdornments {
 		if a == r {
@@ -230,6 +246,8 @@ func isSectionAdornment(r rune) bool {
 	return false
 }
 
+// lexStart is the first stateFn called by run(). From here other stateFn's are called depending on
+// the input. When this function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
@@ -272,6 +290,7 @@ func lexStart(l *lexer) stateFn {
 	return nil
 }
 
+// lexSpace consumes space characters (space and tab) in the input and emits a itemSpace token.
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("Start")
 	for isSpace(l.current()) {
@@ -285,6 +304,8 @@ func lexSpace(l *lexer) stateFn {
 	return lexStart
 }
 
+// lexSection is used after isSection() has determined that the next runes of input are section.
+// From here, the lexTitle() and lexSectionAdornment() are called based on the input.
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
 	// The order of the case statement matter here
@@ -306,6 +327,8 @@ func lexSection(l *lexer) stateFn {
 	return lexStart
 }
 
+// lexTitle consumes input until newline and emits an itemTitle token. Once the token is emitted,
+// control is returned to lexSection().
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
@@ -322,6 +345,8 @@ func lexTitle(l *lexer) stateFn {
 	return lexSection
 }
 
+// lexSectionAdornment advances the lexer until a newline is encountered and emits a
+// itemSectionAdornment token. Control is returned to lexSection() on completion.
 func lexSectionAdornment(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
