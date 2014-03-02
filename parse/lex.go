@@ -81,22 +81,23 @@ type systemMessage struct {
 }
 
 type lexer struct {
-	name    string
-	input   string
-	state   stateFn
-	pos     Pos
-	start   Pos
-	width   Pos
-	lastPos Pos
-	items   chan item
-	line    int
+	name     string
+	input    string
+	state    stateFn
+	pos      Pos
+	start    Pos
+	width    Pos
+	lastPos  Pos
+	items    chan item
+	lastItem *item
+	line     int
 }
 
 func lex(name, input string) *lexer {
 	l := &lexer{
 		name:  name,
 		input: input,
-		line: 1,
+		line:  1,
 		items: make(chan item),
 	}
 	go l.run()
