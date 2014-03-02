@@ -178,82 +178,6 @@ func isEndOfLine(r rune) bool {
 	return r == '\r' || r == '\n'
 }
 
-func lexStart(l *lexer) stateFn {
-	log.Debugln("Start")
-	for {
-		var tokenLength = l.pos - l.start
-		switch r := l.current(); {
-		case tokenLength == 1:
-			log.Debugln("tokenLength == 1; Start of new token")
-			if isEndOfLine(r) {
-				l.emit(itemBlankLine)
-				l.start += 1
-				l.line += 1
-			} else if isSpace(r) {
-				return lexSpace
-			} else if isSection(l) {
-				return lexSection
-			}
-		case isEndOfLine(r):
-			log.Debugln("isEndOfLine == true")
-			if l.pos > l.start {
-				l.emit(itemParagraph)
-				l.start += 1 // Skip the new line
-			} else if l.start == l.pos {
-				l.emit(itemBlankLine)
-			}
-			l.line += 1
-
-		}
-		if l.next() == EOF {
-			break
-		}
-	}
-
-	// Correctly reached EOF.
-	if l.pos > l.start {
-		l.emit(itemParagraph)
-	}
-
-	l.emit(itemEOF)
-	log.Debugln("End")
-	return nil
-}
-
-func lexSection(l *lexer) stateFn {
-	log.Debugln("Start")
-	// The order of the case statement matter here
-	switch r := l.next(); {
-	case isSectionAdornment(r):
-		if l.lastItem.ElementType != itemTitle {
-			return lexSectionAdornment
-		}
-		lexSectionAdornment(l)
-	case isSpace(r):
-		return lexSpace
-	case r <= unicode.MaxASCII && unicode.IsPrint(r):
-		return lexTitle
-	case isEndOfLine(r):
-		l.start += 1
-		l.line += 1
-	}
-	log.Debugln("Exit")
-	return lexStart
-}
-
-func lexSpace(l *lexer) stateFn {
-	log.Debugln("Start")
-	for isSpace(l.current()) {
-		l.next()
-	}
-	if l.start < l.pos {
-		l.emit(itemSpace)
-		l.next()
-	}
-	log.Debugln("End")
-	return lexStart
-}
-
 // isSection compares a number of positions (skipping whitespace) to
 // determine if the runes are sectionAdornments and returns a true if the
 // positions match each other. Rune comparison begins at the current lexer
@@ -332,13 +256,88 @@ func isSectionAdornment(r rune) bool {
 	return false
 }
 
-func lexSectionAdornment(l *lexer) stateFn {
+func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		//TODO: Add adornment rune check
+		var tokenLength = l.pos - l.start
+		switch r := l.current(); {
+		case tokenLength == 1:
+			log.Debugln("tokenLength == 1; Start of new token")
+			if isEndOfLine(r) {
+				l.emit(itemBlankLine)
+				l.start += 1
+				l.line += 1
+			} else if isSpace(r) {
+				return lexSpace
+			} else if isSection(l) {
+				return lexSection
+			}
+		case isEndOfLine(r):
+			log.Debugln("isEndOfLine == true")
+			if l.pos > l.start {
+				l.emit(itemParagraph)
+				l.start += 1 // Skip the new line
+			} else if l.start == l.pos {
+				l.emit(itemBlankLine)
+			}
+			l.line += 1
+
+		}
+		if l.next() == EOF {
+			break
+		}
+	}
+
+	// Correctly reached EOF.
+	if l.pos > l.start {
+		l.emit(itemParagraph)
+	}
+
+	l.emit(itemEOF)
+	log.Debugln("End")
+	return nil
+}
+
+func lexSpace(l *lexer) stateFn {
+	log.Debugln("Start")
+	for isSpace(l.current()) {
+		l.next()
+	}
+	if l.start < l.pos {
+		l.emit(itemSpace)
+		l.next()
+	}
+	log.Debugln("End")
+	return lexStart
+}
+
+func lexSection(l *lexer) stateFn {
+	log.Debugln("Start")
+	// The order of the case statement matter here
+	switch r := l.next(); {
+	case isSectionAdornment(r):
+		if l.lastItem.ElementType != itemTitle {
+			return lexSectionAdornment
+		}
+		lexSectionAdornment(l)
+	case isSpace(r):
+		return lexSpace
+	case r <= unicode.MaxASCII && unicode.IsPrint(r):
+		return lexTitle
+	case isEndOfLine(r):
+		l.start += 1
+		l.line += 1
+	}
+	log.Debugln("Exit")
+	return lexStart
+}
+
+func lexTitle(l *lexer) stateFn {
+	log.Debugln("Start")
+	for {
 		l.next()
 		if l.peek() == '\n' {
-			l.emit(itemSectionAdornment)
+			l.emit(itemTitle)
 			l.start += 1
 			l.pos += 1
 			l.line += 1
@@ -349,12 +348,13 @@ func lexSectionAdornment(l *lexer) stateFn {
 	return lexSection
 }
 
-func lexTitle(l *lexer) stateFn {
+func lexSectionAdornment(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
+		//TODO: Add adornment rune check
 		l.next()
 		if l.peek() == '\n' {
-			l.emit(itemTitle)
+			l.emit(itemSectionAdornment)
 			l.start += 1
 			l.pos += 1
 			l.line += 1
