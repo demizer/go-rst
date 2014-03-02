@@ -14,8 +14,6 @@ import (
 	"testing"
 )
 
-var lexTests []lexTest
-
 type lexTest struct {
 	name           string
 	description    string
@@ -24,6 +22,19 @@ type lexTest struct {
 	expect         string
 	collectedItems []item
 }
+
+type lexTests []lexTest
+
+func (l lexTests) SearchByName(name string) *lexTest {
+	for _, test := range l {
+		if test.name == name {
+			return &test
+		}
+	}
+	return nil
+}
+
+var tests lexTests
 
 var (
 	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
@@ -116,8 +127,8 @@ func collect(t *lexTest) (items []item) {
 
 func runTest(t *testing.T, testName string) []item {
 	var err error
-	if lexTests == nil {
-		lexTests, err = parseTestData(t, "../testdata/test_lex_sections.dat")
+	if tests == nil {
+		tests, err = parseTestData(t, "../testdata/test_lex_sections.dat")
 		if err != nil {
 			t.FailNow()
 		}
