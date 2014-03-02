@@ -10,19 +10,19 @@ Paragraph.
 #items
 [
     {
-        "element-type": "itemTitle",
+        "element-name": "itemTitle",
         "position": 1,
         "line": 1,
         "value": "Title"
     },
     {
-        "element-type": "itemSectionAdornment",
+        "element-name": "itemSectionAdornment",
         "position": 7,
         "line": 2,
         "value": "====="
     },
     {
-        "element-type": "itemBlankLine",
+        "element-name": "itemBlankLine",
         "position": 13,
         "line": 3,
         "value": "Paragraph."
@@ -31,19 +31,19 @@ Paragraph.
 #expect
 [
     {
-        "element-type": "itemSectionTitle",
+        "element-name": "itemSectionTitle",
         "position": 0,
         "line": 1,
         "value": "Title"
     },
     {
-        "element-type": "itemSectionAdornment",
+        "element-name": "itemSectionAdornment",
         "position": 0,
         "line": 1,
         "value": "====="
     },
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position": 0,
         "line": 1,
         "value": "Paragraph (no blank line)."
@@ -61,19 +61,19 @@ Paragraph (no blank line).
 #expect
 [
     {
-        "element-type": "itemSectionTitle",
+        "element-name": "itemSectionTitle",
         "position": 0,
         "line": 1,
         "value": "Title"
     },
     {
-        "element-type": "itemSectionAdornment",
+        "element-name": "itemSectionAdornment",
         "position": 0,
         "line": 1,
         "value": "====="
     },
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position": 0,
         "line": 1,
         "value": "Paragraph (no blank line)."
@@ -94,25 +94,25 @@ Paragraph.
 #expect
 [
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position": 0,
         "line": 1,
         "value": "Paragraph."
     },
     {
-        "element-type": "itemSectionTitle",
+        "element-name": "itemSectionTitle",
         "position": 0,
         "line": 1,
         "value": "Title"
     },
     {
-        "element-type": "itemSectionAdornment",
+        "element-name": "itemSectionAdornment",
         "position": 0,
         "line": 1,
         "value": "====="
     },
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position": 0,
         "line": 1,
         "value": "Paragraph."
@@ -136,49 +136,49 @@ Test unexpected section titles.
 #items
 [
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "postion": 0,
         "line": 1,
         "value": "Test unexpected section titles."
     },
     {
-        "element-type": "itemLiteralBlock",
+        "element-name": "itemLiteralBlock",
         "position:": 0,
         "line": 1,
         "value": "Title\n====="
     }
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position": 0,
         "line": 1,
         "value": "Paragraph."
     },
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position:": 0,
         "line": 1,
         "value": "Unexpected section title or transition."
     },
     {
-        "element-type": "itemLiteralBlock",
+        "element-name": "itemLiteralBlock",
         "position:": 0,
         "line": 1,
         "value": "-----"
     }
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position:": 0,
         "line": 1,
         "value": "Unexpected section title."
     },
     {
-        "element-type": "itemLiteralBlock",
+        "element-name": "itemLiteralBlock",
         "position:": 0,
         "line": 1,
         "value": "Title\n-----"
     }
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "position:": 0,
         "line": 1,
         "value": "Paragraph."
@@ -187,18 +187,18 @@ Test unexpected section titles.
 #expect
 [
     {
-        "element-type": "itemParagraph",
+        "element-name": "itemParagraph",
         "postion": 0,
         "line": 1,
         "value": "Test unexpected section titles."
     },
     {
-        "element-type": "itemBlockQuote",
+        "element-name": "itemBlockQuote",
         "position": 0,
         "line": 1,
         "value": [
             {
-                "element-type": "itemSystemMessage",
+                "element-name": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -207,13 +207,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "items": [
                         {
-                            "element-type": "itemParagraph",
+                            "element-name": "itemParagraph",
                             "position:": 0,
                             "line": 1,
                             "value": "Unexpected section title."
                         },
                         {
-                            "element-type": "itemLiteralBlock",
+                            "element-name": "itemLiteralBlock",
                             "position:": 0,
                             "line": 1,
                             "value": "Title\n====="
@@ -222,13 +222,13 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-type": "itemParagraph",
+                "element-name": "itemParagraph",
                 "position": 0,
                 "line": 1,
                 "value": "Paragraph."
             },
             {
-                "element-type": "itemSystemMessage",
+                "element-name": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -237,13 +237,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "items": [
                         {
-                            "element-type": "itemParagraph",
+                            "element-name": "itemParagraph",
                             "position:": 0,
                             "line": 1,
                             "value": "Unexpected section title or transition."
                         },
                         {
-                            "element-type": "itemLiteralBlock",
+                            "element-name": "itemLiteralBlock",
                             "position:": 0,
                             "line": 1,
                             "value": "-----"
@@ -252,7 +252,7 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-type": "itemSystemMessage",
+                "element-name": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -261,13 +261,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "items": [
                         {
-                            "element-type": "itemParagraph",
+                            "element-name": "itemParagraph",
                             "position:": 0,
                             "line": 1,
                             "value": "Unexpected section title."
                         },
                         {
-                            "element-type": "itemLiteralBlock",
+                            "element-name": "itemLiteralBlock",
                             "position:": 0,
                             "line": 1,
                             "value": "Title\n-----"
@@ -276,7 +276,7 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-type": "itemParagraph",
+                "element-name": "itemParagraph",
                 "position:": 0,
                 "line": 1,
                 "value": "Paragraph."
