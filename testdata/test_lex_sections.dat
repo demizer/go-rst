@@ -25,7 +25,19 @@ Paragraph.
         "element-name": "itemBlankLine",
         "position": 13,
         "line": 3,
+        "value": "\n"
+    },
+    {
+        "element-name": "itemParagraph",
+        "position": 14,
+        "line": 4,
         "value": "Paragraph."
+    },
+    {
+        "element-name": "itemEOF",
+        "position": 24,
+        "line": 4,
+        "value": ""
     }
 ]
 #expect
