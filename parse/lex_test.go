@@ -145,25 +145,6 @@ func lexSectionTest(t *testing.T, testName string) []item {
 	return nil
 }
 
-func TestSectionTitlePara(t *testing.T) {
-	items := runTest(t, "SectionTitlePara")
-	log.Debugln("Collected items:\n\n", spd.Sdump(items))
-}
-
-func TestSectionTitleParaNoBlankline(t *testing.T) {
-	items := runTest(t, "SectionTitleParaNoBlankline")
-	log.Debugln("Collected items:\n\n", spd.Sdump(items))
-}
-
-func TestSectionParaHeadPara(t *testing.T) {
-	items := runTest(t, "SectionParaHeadPara")
-	log.Debugln("Collected items:\n\n", spd.Sdump(items))
-}
-
-func TestSectionUnexpectedTitles(t *testing.T) {
-	items := runTest(t, "SectionUnexpectedTitles")
-	log.Debugln("Collected items:\n\n", spd.Sdump(items))
-}
 // Unmarshals input into []items, the json input from test data does not include ElementType, so
 // this is filled in manually. Returns error if there is a json parsing error.
 func jsonToItems(input []byte) ([]item, error) {
@@ -224,4 +205,48 @@ func equal(t *testing.T, items []item, testName string) []error {
 		}
 	}
 	return nil
+}
+
+func TestSectionTitlePara(t *testing.T) {
+	testName := "SectionTitlePara"
+	items := lexSectionTest(t, testName)
+	errors := equal(t, items, testName)
+	if errors != nil {
+		for err := range errors {
+			t.Error(err)
+		}
+	}
+}
+
+func TestSectionTitleParaNoBlankline(t *testing.T) {
+	testName := "SectionTitleParaNoBlankline"
+	items := lexSectionTest(t, testName)
+	errors := equal(t, items, testName)
+	if errors != nil {
+		for err := range errors {
+			t.Error(err)
+		}
+	}
+}
+
+func TestSectionParaHeadPara(t *testing.T) {
+	testName := "SectionParaHeadPara"
+	items := lexSectionTest(t, testName)
+	errors := equal(t, items, testName)
+	if errors != nil {
+		for err := range errors {
+			t.Error(err)
+		}
+	}
+}
+
+func TestSectionUnexpectedTitles(t *testing.T) {
+	testName := "SectionUnexpectedTitles"
+	items := lexSectionTest(t, testName)
+	errors := equal(t, items, testName)
+	if errors != nil {
+		for err := range errors {
+			t.Error(err)
+		}
+	}
 }
