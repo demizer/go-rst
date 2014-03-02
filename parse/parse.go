@@ -13,6 +13,31 @@ type Tree struct {
 	token     [3]item // three-token lookahead for parser.
 }
 
+type systemMessageLevel int
+
+const (
+	levelInfo systemMessageLevel = iota
+	levelWarning
+	levelError
+	levelSevere
+)
+
+var systemMessageLevels = [...]string{
+	"INFO",
+	"WARNING",
+	"ERROR",
+	"SEVERE",
+}
+
+func (s systemMessageLevel) String() string { return systemMessageLevels[s] }
+
+type systemMessage struct {
+	level  systemMessageLevel
+	line   int
+	source string
+	items  []item
+}
+
 func Parse(name, text string) (t *Tree, err error) {
 	t = New(name)
 	t.text = text
