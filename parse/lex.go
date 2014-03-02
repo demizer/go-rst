@@ -45,7 +45,7 @@ var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*'
 	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',
 	']', '^', '_', '`', '{', '|', '}', '~'}
 
-const EOF rune = -1
+const eof rune = -1
 
 type stateFn func(*lexer) stateFn
 
@@ -116,7 +116,7 @@ func (l *lexer) peek() rune {
 
 func (l *lexer) advance(to rune) {
 	for {
-		if l.next() == EOF || to == l.current() {
+		if l.next() == eof || to == l.current() {
 			break
 		}
 	}
@@ -124,9 +124,9 @@ func (l *lexer) advance(to rune) {
 
 func (l *lexer) next() rune {
 	if int(l.pos) >= len(l.input) {
-		log.Debugln("Reached EOF!")
+		log.Debugln("Reached eof!")
 		l.width = 0
-		return EOF
+		return eof
 	}
 	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
 	l.width = Pos(w)
@@ -183,7 +183,7 @@ func isSection(l *lexer) bool {
 
 	// Advance to the end of the line
 	l.advance('\n')
-	if l.current() == EOF {
+	if l.current() == eof {
 		return false
 	}
 
@@ -257,12 +257,12 @@ func lexStart(l *lexer) stateFn {
 			l.line += 1
 
 		}
-		if l.next() == EOF {
+		if l.next() == eof {
 			break
 		}
 	}
 
-	// Correctly reached EOF.
+	// Correctly reached eof.
 	if l.pos > l.start {
 		l.emit(itemParagraph)
 	}
