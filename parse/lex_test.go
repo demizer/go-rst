@@ -44,7 +44,7 @@ var (
 var spd = spew.ConfigState{Indent: "\t"}
 
 func init() {
-	log.SetLevel(log.LEVEL_DEBUG)
+	// log.SetLevel(log.LEVEL_DEBUG)
 	log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
 		"{{if .Prefix}}{{.Prefix}} {{end}}" +
 		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
