@@ -80,6 +80,12 @@ func lex(name, input string) *lexer {
 	return l
 }
 
+func (l *lexer) run() {
+	for l.state = lexStart; l.state != nil; {
+		l.state = l.state(l)
+	}
+}
+
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
 	if l.start == l.pos && int(l.pos) < len(l.input) {
@@ -134,12 +140,6 @@ func (l *lexer) nextItem() item {
 	item := <-l.items
 	return item
 
-}
-
-func (l *lexer) run() {
-	for l.state = lexStart; l.state != nil; {
-		l.state = l.state(l)
-	}
 }
 
 // isSpace reports whether r is a space character.
