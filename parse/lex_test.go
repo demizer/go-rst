@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"encoding/json"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
 	"os"
@@ -163,4 +164,22 @@ func TestSectionParaHeadPara(t *testing.T) {
 func TestSectionUnexpectedTitles(t *testing.T) {
 	items := runTest(t, "SectionUnexpectedTitles")
 	log.Debugln("Collected items:\n\n", spd.Sdump(items))
+}
+// Unmarshals input into []items, the json input from test data does not include ElementType, so
+// this is filled in manually. Returns error if there is a json parsing error.
+func jsonToItems(input []byte) ([]item, error) {
+	var exp []item
+	err := json.Unmarshal(input, &exp)
+	if err != nil {
+		return nil, err
+	}
+	// Set the correct ElementType (int), this is not included in the json from the test data.
+	for i, item := range exp {
+		for j, elm := range elements {
+			if item.ElementName == elm {
+				exp[i].ElementType = itemElement(j)
+			}
+		}
+	}
+	return exp, nil
 }

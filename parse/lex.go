@@ -48,11 +48,11 @@ const EOF rune = -1
 type stateFn func(*lexer) stateFn
 
 type item struct {
-	ElementName string
-	ElementType itemElement
-	Position    Pos
-	Line        int
-	Value       interface{}
+	ElementName string      `json:"element-name"`
+	ElementType itemElement `json: "-"`
+	Position    Pos         `json: "position"`
+	Line        int         `json: "line"`
+	Value       interface{} `json: "value"`
 }
 
 type systemMessageLevel int
