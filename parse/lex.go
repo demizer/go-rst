@@ -64,7 +64,6 @@ type lexer struct {
 	pos      Pos
 	start    Pos
 	width    Pos
-	lastPos  Pos
 	items    chan item
 	lastItem *item
 	line     int
@@ -133,7 +132,6 @@ func (l *lexer) next() rune {
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() item {
 	item := <-l.items
-	l.lastPos = item.Position
 	return item
 
 }
