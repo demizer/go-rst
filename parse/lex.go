@@ -65,15 +65,15 @@ type item struct {
 
 // The lexer struct tracks the state of the lexer
 type lexer struct {
-	name     string  // The name of the current lexer
-	input    string // The input text
-	state    stateFn // The current state of the lexer
-	pos      Pos // Position in input
-	start    Pos // The start of the current token
-	width    Pos // The width of the current position
+	name     string    // The name of the current lexer
+	input    string    // The input text
+	state    stateFn   // The current state of the lexer
+	pos      Pos       // Position in input
+	start    Pos       // The start of the current token
+	width    Pos       // The width of the current position
 	items    chan item // The channel items are emitted to
-	lastItem *item // The last item emitted to the channel
-	line     int // Used to count the number of line encountered in the input
+	lastItem *item     // The last item emitted to the channel
+	line     int       // Used to count the number of line encountered in the input
 }
 
 // lex is the entry point of the lexer
@@ -101,7 +101,7 @@ func (l *lexer) emit(t itemElement) {
 		l.pos += 1
 	}
 	log.Debugf("#### %s: %q start: %d pos: %d\n", t, l.input[l.start:l.pos], l.start, l.pos)
-	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start+1, Line: l.line,
+	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start + 1, Line: l.line,
 		Value: l.input[l.start:l.pos]}
 	l.items <- nItem
 	l.lastItem = &nItem

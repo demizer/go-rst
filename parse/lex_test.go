@@ -7,8 +7,8 @@ package parse
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
 	"os"
@@ -175,34 +175,34 @@ func equal(t *testing.T, items []item, testName string) []error {
 		t.Fatal("JSON error: ", err)
 	}
 	if len(items) != len(eItems) {
-		t.Fatalf("Collected items is not the same length as eItems!\n" +
-	                 "\nGot items (%d): -------------------------------\n\n%s\n" +
-	                 "Expect items (%d): ------------------------------\n\n%s\n" +
-	                 "-------------------------------------------------\n",
-			 len(items), spd.Sdump(items), len(eItems), spd.Sdump(eItems))
+		t.Fatalf("Collected items is not the same length as eItems!\n"+
+			"\nGot items (%d): -------------------------------\n\n%s\n"+
+			"Expect items (%d): ------------------------------\n\n%s\n"+
+			"-------------------------------------------------\n",
+			len(items), spd.Sdump(items), len(eItems), spd.Sdump(eItems))
 	}
 	for i, item := range items {
 		if item.ElementType != eItems[i].ElementType {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n" +
-				 "Got ElementType:\t\t%s\nExpect ElementType:\t%s\n\n",
-				 i, item.ElementName, item.Line, item.Value, item.ElementType,
-				 eItems[i].ElementType)
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n"+
+				"Got ElementType:\t\t%s\nExpect ElementType:\t%s\n\n",
+				i, item.ElementName, item.Line, item.Value, item.ElementType,
+				eItems[i].ElementType)
 		}
 		if item.Line != eItems[i].Line {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nValue:\t%q\n\n" +
-			         "Got Line Number:\t%d\nExpect Line Number:\t%d\n\n",
-				 i, item.ElementName, item.Value, item.Line, eItems[i].Line)
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nValue:\t%q\n\n"+
+				"Got Line Number:\t%d\nExpect Line Number:\t%d\n\n",
+				i, item.ElementName, item.Value, item.Line, eItems[i].Line)
 		}
 		if item.Position != eItems[i].Position {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n" +
-				 "Got Position:\t\t%d\nExpect Position:\t%d\n\n",
-				 i, item.ElementName, item.Line, item.Value, item.Position,
-				 eItems[i].Position)
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n"+
+				"Got Position:\t\t%d\nExpect Position:\t%d\n\n",
+				i, item.ElementName, item.Line, item.Value, item.Position,
+				eItems[i].Position)
 		}
 		if item.Value != eItems[i].Value {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\n\n" +
-			         "Got Value:\n\t%q\nExpect Value:\n\t%q\n\n",
-				 i, item.ElementName, item.Value, eItems[i].Value)
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\n\n"+
+				"Got Value:\n\t%q\nExpect Value:\n\t%q\n\n",
+				i, item.ElementName, item.Value, eItems[i].Value)
 		}
 	}
 	return nil
