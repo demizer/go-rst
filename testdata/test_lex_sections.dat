@@ -40,27 +40,8 @@ Paragraph.
         "value": ""
     }
 ]
-#expect
-[
-    {
-        "element-name": "itemSectionTitle",
-        "position": 0,
-        "line": 1,
-        "value": "Title"
-    },
-    {
-        "element-name": "itemSectionAdornment",
-        "position": 0,
-        "line": 1,
-        "value": "====="
-    },
-    {
-        "element-name": "itemParagraph",
-        "position": 0,
-        "line": 1,
-        "value": "Paragraph (no blank line)."
-    }
-]
+#parse-expect
+
 #name
 SectionTitleParaNoBlankline
 #description
@@ -70,7 +51,6 @@ Title
 =====
 Paragraph (no blank line).
 #items
-#expect
 [
     {
         "element-name": "itemSectionTitle",
@@ -91,6 +71,8 @@ Paragraph (no blank line).
         "value": "Paragraph (no blank line)."
     }
 ]
+#parse-expect
+
 #name
 SectionParaHeadPara
 #description
@@ -103,7 +85,6 @@ Title
 
 Paragraph.
 #items
-#expect
 [
     {
         "element-name": "itemParagraph",
@@ -130,6 +111,8 @@ Paragraph.
         "value": "Paragraph."
     }
 ]
+#parse-expect
+
 #name
 SectionUnexpectedTitles
 #description
@@ -196,7 +179,7 @@ Test unexpected section titles.
         "value": "Paragraph."
     }
 ]
-#expect
+#parse-expect
 [
     {
         "element-name": "itemParagraph",
