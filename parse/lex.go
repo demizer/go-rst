@@ -121,22 +121,10 @@ func (l *lexer) current() rune {
 	return r
 }
 
-func (l *lexer) previous() rune {
-	l.backup()
-	r := l.current()
-	l.next()
-	return r
-}
-
 func (l *lexer) peek() rune {
 	r := l.next()
 	l.backup()
 	return r
-}
-
-func (l *lexer) skip() {
-	l.start += 1
-        l.next()
 }
 
 func (l *lexer) advance(to rune) {
