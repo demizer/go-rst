@@ -17,7 +17,7 @@ var (
 
 var spd = spew.ConfigState{Indent: "\t"}
 
-// func init() { SetDebug() }
+var lexSectionTests LexTests
 
 // collect gathers the emitted items into a slice.
 func collect(t *LexTest) (items []item) {
@@ -34,13 +34,13 @@ func collect(t *LexTest) (items []item) {
 
 func lexSectionTest(t *testing.T, testName string) []item {
 	var err error
-	if Tests == nil {
-		Tests, err = ParseTestData(t, "../testdata/test_lex_sections.dat")
+	if lexSectionTests == nil {
+		lexSectionTests, err = ParseTestData("../testdata/test_lex_sections.dat")
 		if err != nil {
-			t.FailNow()
+			t.Fatal(err)
 		}
 	}
-	test := Tests.SearchByName(testName)
+	test := lexSectionTests.SearchByName(testName)
 	if test != nil {
 		log.Debugf("Test Name: \t%s\n", test.name)
 		log.Debugf("Description: \t%s\n", test.description)
@@ -74,7 +74,7 @@ func JsonToItems(input []byte) ([]item, error) {
 // Returns error in case of error during json unmarshalling, or mismatch between items and the
 // expected output.
 func equal(t *testing.T, items []item, testName string) []error {
-	test := Tests.SearchByName(testName)
+	test := lexSectionTests.SearchByName(testName)
 	eItems, err := JsonToItems([]byte(test.items))
 	if err != nil {
 		t.Fatal("JSON error: ", err)
