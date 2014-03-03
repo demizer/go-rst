@@ -16,7 +16,7 @@ import (
 	"testing"
 )
 
-type lexTest struct {
+type LexTest struct {
 	name           string
 	description    string
 	data           string
@@ -25,9 +25,9 @@ type lexTest struct {
 	collectedItems []item
 }
 
-type lexTests []lexTest
+type LexTests []LexTest
 
-func (l lexTests) SearchByName(name string) *lexTest {
+func (l LexTests) SearchByName(name string) *LexTest {
 	for _, test := range l {
 		if test.name == name {
 			return &test
@@ -36,7 +36,7 @@ func (l lexTests) SearchByName(name string) *lexTest {
 	return nil
 }
 
-var tests lexTests
+var tests LexTests
 
 var (
 	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
@@ -57,15 +57,15 @@ func init() {
 		log.LlineNumber)
 }
 
-func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
+func ParseTestData(t *testing.T, filepath string) ([]LexTest, error) {
 	testData, err := os.Open(filepath)
 	defer testData.Close()
 	if err != nil {
 		return nil, err
 	}
 
-	var lexTests []lexTest
-	var curTest = new(lexTest)
+	var LexTests []LexTest
+	var curTest = new(LexTest)
 	var buffer bytes.Buffer
 
 	scanner := bufio.NewScanner(testData)
@@ -79,9 +79,9 @@ func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
 				// Apend the last section to the array and
 				// reset
 				curTest.expect = buffer.String()
-				lexTests = append(lexTests, *curTest)
+				LexTests = append(LexTests, *curTest)
 			}
-			curTest = new(lexTest)
+			curTest = new(LexTest)
 			buffer.Reset()
 		case "#description":
 			curTest.name = strings.TrimRight(buffer.String(), "\n")
@@ -108,14 +108,14 @@ func parseTestData(t *testing.T, filepath string) ([]lexTest, error) {
 	if buffer.Len() > 0 {
 		// Apend the last section to the array and
 		curTest.expect = buffer.String()
-		lexTests = append(lexTests, *curTest)
+		LexTests = append(LexTests, *curTest)
 	}
 
-	return lexTests, nil
+	return LexTests, nil
 }
 
 // collect gathers the emitted items into a slice.
-func collect(t *lexTest) (items []item) {
+func collect(t *LexTest) (items []item) {
 	l := lex(t.name, t.data)
 	for {
 		item := l.nextItem()
@@ -130,7 +130,7 @@ func collect(t *lexTest) (items []item) {
 func lexSectionTest(t *testing.T, testName string) []item {
 	var err error
 	if tests == nil {
-		tests, err = parseTestData(t, "../testdata/test_lex_sections.dat")
+		tests, err = ParseTestData(t, "../testdata/test_lex_sections.dat")
 		if err != nil {
 			t.FailNow()
 		}
@@ -148,7 +148,7 @@ func lexSectionTest(t *testing.T, testName string) []item {
 
 // Unmarshals input into []items, the json input from test data does not include ElementType, so
 // this is filled in manually. Returns error if there is a json parsing error.
-func jsonToItems(input []byte) ([]item, error) {
+func JsonToItems(input []byte) ([]item, error) {
 	var exp []item
 	err := json.Unmarshal(input, &exp)
 	if err != nil {
@@ -170,7 +170,7 @@ func jsonToItems(input []byte) ([]item, error) {
 // expected output.
 func equal(t *testing.T, items []item, testName string) []error {
 	test := tests.SearchByName(testName)
-	eItems, err := jsonToItems([]byte(test.items))
+	eItems, err := JsonToItems([]byte(test.items))
 	if err != nil {
 		t.Fatal("JSON error: ", err)
 	}
