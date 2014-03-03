@@ -1,8 +1,11 @@
+// go-rst - A reStructuredText parser for Go
+// 2014 (c) The go-rst Authors
+// MIT Licensed. See LICENSE for details.
+
 package parse
 
 import (
 	"github.com/demizer/go-elog"
-	"testing"
 	"bufio"
 	"os"
 	"bytes"
@@ -11,17 +14,21 @@ import (
 	"fmt"
 )
 
+func init() { SetDebug() }
+
+// LexTest is the structure that contains parsed test data from the *.dat files in the testdata
+// directory.
 type LexTest struct {
 	name           string
 	description    string
-	data           string
-	items          string
-	expect         string
-	collectedItems []item
+	data           string  // The input data to be parsed
+	items          string  // The expected lex items output in json
+	expect         string  // The expected parsed output in json
 }
 
 type LexTests []LexTest
 
+// Search l by name for a specific test.
 func (l LexTests) SearchByName(name string) *LexTest {
 	for _, test := range l {
 		if test.name == name {
@@ -31,9 +38,11 @@ func (l LexTests) SearchByName(name string) *LexTest {
 	return nil
 }
 
-var Tests LexTests
-
-func ParseTestData(t *testing.T, filepath string) ([]LexTest, error) {
+// ParseTestData parses testdata contained it dat files in the testdata directory. The testdata was
+// contained to these files because it became to large to be included legibly inside the *_test.go
+// files. ParseTestData is a simple parser for the testdata files and stores the result of the parse
+// into the first return variable.
+func ParseTestData(filepath string) ([]LexTest, error) {
 	testData, err := os.Open(filepath)
 	defer testData.Close()
 	if err != nil {
@@ -78,7 +87,7 @@ func ParseTestData(t *testing.T, filepath string) ([]LexTest, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		t.Error(err)
+		return nil, err
 	}
 
 	if buffer.Len() > 0 {
@@ -94,8 +103,10 @@ func ParseTestData(t *testing.T, filepath string) ([]LexTest, error) {
 // passed to the test binary and also sets the template for logging output.
 func SetDebug() {
 	var debug bool
+
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
+
 	if debug {
 		log.SetLevel(log.LEVEL_DEBUG)
 	}
