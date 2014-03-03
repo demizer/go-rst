@@ -5,38 +5,11 @@
 package parse
 
 import (
-	"bufio"
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
-	"os"
-	"strings"
 	"testing"
 )
-
-type LexTest struct {
-	name           string
-	description    string
-	data           string
-	items          string
-	expect         string
-	collectedItems []item
-}
-
-type LexTests []LexTest
-
-func (l LexTests) SearchByName(name string) *LexTest {
-	for _, test := range l {
-		if test.name == name {
-			return &test
-		}
-	}
-	return nil
-}
-
-var tests LexTests
 
 var (
 	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
@@ -44,75 +17,7 @@ var (
 
 var spd = spew.ConfigState{Indent: "\t"}
 
-func init() {
-	// log.SetLevel(log.LEVEL_DEBUG)
-	log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
-		"{{if .Prefix}}{{.Prefix}} {{end}}" +
-		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
-		"{{if .FileName}}{{.FileName}}: {{end}}" +
-		"{{if .FunctionName}}{{.FunctionName}}{{end}}" +
-		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
-		"{{if .Text}}{{.Text}}{{end}}")
-	log.SetFlags(log.Lansi | log.LnoPrefix | log.LfunctionName |
-		log.LlineNumber)
-}
-
-func ParseTestData(t *testing.T, filepath string) ([]LexTest, error) {
-	testData, err := os.Open(filepath)
-	defer testData.Close()
-	if err != nil {
-		return nil, err
-	}
-
-	var LexTests []LexTest
-	var curTest = new(LexTest)
-	var buffer bytes.Buffer
-
-	scanner := bufio.NewScanner(testData)
-
-	for scanner.Scan() {
-		switch scanner.Text() {
-		case "#name":
-			// buffer = bytes.NewBuffer(buffer.Bytes())
-			// name starts a new section
-			if buffer.Len() > 0 {
-				// Apend the last section to the array and
-				// reset
-				curTest.expect = buffer.String()
-				LexTests = append(LexTests, *curTest)
-			}
-			curTest = new(LexTest)
-			buffer.Reset()
-		case "#description":
-			curTest.name = strings.TrimRight(buffer.String(), "\n")
-			buffer.Reset()
-		case "#data":
-			curTest.description = strings.TrimRight(buffer.String(), "\n")
-			buffer.Reset()
-		case "#items":
-			curTest.data = strings.TrimRight(buffer.String(), "\n")
-			buffer.Reset()
-		case "#parse-expect":
-			curTest.items = buffer.String()
-			buffer.Reset()
-		default:
-			// Collect the text in between sections
-			buffer.WriteString(fmt.Sprintln(scanner.Text()))
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		t.Error(err)
-	}
-
-	if buffer.Len() > 0 {
-		// Apend the last section to the array and
-		curTest.expect = buffer.String()
-		LexTests = append(LexTests, *curTest)
-	}
-
-	return LexTests, nil
-}
+// func init() { SetDebug() }
 
 // collect gathers the emitted items into a slice.
 func collect(t *LexTest) (items []item) {
@@ -129,13 +34,13 @@ func collect(t *LexTest) (items []item) {
 
 func lexSectionTest(t *testing.T, testName string) []item {
 	var err error
-	if tests == nil {
-		tests, err = ParseTestData(t, "../testdata/test_lex_sections.dat")
+	if Tests == nil {
+		Tests, err = ParseTestData(t, "../testdata/test_lex_sections.dat")
 		if err != nil {
 			t.FailNow()
 		}
 	}
-	test := tests.SearchByName(testName)
+	test := Tests.SearchByName(testName)
 	if test != nil {
 		log.Debugf("Test Name: \t%s\n", test.name)
 		log.Debugf("Description: \t%s\n", test.description)
@@ -169,7 +74,7 @@ func JsonToItems(input []byte) ([]item, error) {
 // Returns error in case of error during json unmarshalling, or mismatch between items and the
 // expected output.
 func equal(t *testing.T, items []item, testName string) []error {
-	test := tests.SearchByName(testName)
+	test := Tests.SearchByName(testName)
 	eItems, err := JsonToItems([]byte(test.items))
 	if err != nil {
 		t.Fatal("JSON error: ", err)
