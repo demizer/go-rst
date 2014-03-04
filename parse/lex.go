@@ -9,6 +9,7 @@ import (
 	"github.com/demizer/go-elog"
 	"unicode"
 	"unicode/utf8"
+	"strings"
 )
 
 // itemElement are the types that are emitted by the lexer.
@@ -73,7 +74,7 @@ type lexer struct {
 	width    Pos       // The width of the current position
 	items    chan item // The channel items are emitted to
 	lastItem *item     // The last item emitted to the channel
-	line     int       // Used to count the number of line encountered in the input
+	lastPos  Pos
 }
 
 // lex is the entry point of the lexer
@@ -81,7 +82,6 @@ func lex(name, input string) *lexer {
 	l := &lexer{
 		name:  name,
 		input: input,
-		line:  1,
 		items: make(chan item),
 	}
 	go l.run()
@@ -100,9 +100,10 @@ func (l *lexer) emit(t itemElement) {
 	if l.start == l.pos && int(l.pos) < len(l.input) {
 		l.pos += 1
 	}
-	log.Debugf("#### %s: %q start: %d pos: %d\n", t, l.input[l.start:l.pos], l.start, l.pos)
-	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start + 1, Line: l.line,
-		Value: l.input[l.start:l.pos]}
+	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
+		l.input[l.start:l.pos], l.start, l.pos, l.lineNumber())
+	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start + 1, Line:
+		l.lineNumber(), Value: l.input[l.start:l.pos]}
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.pos
@@ -153,8 +154,13 @@ func (l *lexer) next() rune {
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() item {
 	item := <-l.items
+	l.lastPos = item.Position
 	return item
 
+}
+
+func (l *lexer) lineNumber() int {
+	return 1 + strings.Count(l.input[:l.pos - 1], "\n")
 }
 
 // isSpace reports whether r is a space character.
@@ -258,7 +264,6 @@ func lexStart(l *lexer) stateFn {
 			if isEndOfLine(r) {
 				l.emit(itemBlankLine)
 				l.start += 1
-				l.line += 1
 			} else if isSpace(r) {
 				return lexSpace
 			} else if isSection(l) {
@@ -272,7 +277,6 @@ func lexStart(l *lexer) stateFn {
 			} else if l.start == l.pos {
 				l.emit(itemBlankLine)
 			}
-			l.line += 1
 
 		}
 		if l.next() == eof {
@@ -321,7 +325,6 @@ func lexSection(l *lexer) stateFn {
 		return lexTitle
 	case isEndOfLine(r):
 		l.start += 1
-		l.line += 1
 	}
 	log.Debugln("Exit")
 	return lexStart
@@ -337,7 +340,6 @@ func lexTitle(l *lexer) stateFn {
 			l.emit(itemTitle)
 			l.start += 1
 			l.pos += 1
-			l.line += 1
 			break
 		}
 	}
@@ -356,7 +358,6 @@ func lexSectionAdornment(l *lexer) stateFn {
 			l.emit(itemSectionAdornment)
 			l.start += 1
 			l.pos += 1
-			l.line += 1
 			break
 		}
 	}
