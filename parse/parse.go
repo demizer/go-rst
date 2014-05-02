@@ -4,6 +4,11 @@
 
 package parse
 
+import (
+	"github.com/demizer/go-elog"
+	// "os"
+)
+
 type Tree struct {
 	Name      string
 	text      string
@@ -63,19 +68,31 @@ func (t *Tree) stopParse() {
 }
 
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
+	log.Debugln("Start")
 	t.startParse(lex(t.Name, text))
 	t.text = text
 	t.parse(treeSet)
+	log.Debugln("End")
 	return t, nil
 }
 
 func (t *Tree) parse(tree *Tree) (next Node) {
+	log.Debugln("Start")
 	t.Root = newList(t.peek().Position)
 	for t.peek().ElementType != itemEOF {
-		//
+		switch token := t.next(); token.ElementType {
+		case itemBlankLine:
+			log.Debugln("Found itemBlankLine")
+		case itemSectionAdornment:
+			log.Debugln("Found itemSectionAdornment")
+		case itemTitle:
+			log.Debugln("Found itemTitle")
+		case itemParagraph:
+			log.Debugln("Found itemParagraph")
+		}
 	}
+	log.Debugln("End")
 	return nil
-
 }
 
 // peek returns but does not consume the next token.

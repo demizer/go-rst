@@ -79,20 +79,24 @@ type lexer struct {
 
 // lex is the entry point of the lexer
 func lex(name, input string) *lexer {
+	log.Debugln("Start")
 	l := &lexer{
 		name:  name,
 		input: input,
 		items: make(chan item),
 	}
 	go l.run()
+	log.Debugln("End")
 	return l
 }
 
 // run is the engine of the lexing process.
 func (l *lexer) run() {
+	log.Debugln("Start")
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
+	log.Debugln("End")
 }
 
 // emit passes an item back to the client.
