@@ -77,7 +77,7 @@ func ParseTestData(filepath string) ([]LexTest, error) {
 		case "#items":
 			curTest.data = strings.TrimRight(buffer.String(), "\n")
 			buffer.Reset()
-		case "#parse-expect":
+		case "#parse-tree":
 			curTest.items = buffer.String()
 			buffer.Reset()
 		default:
