@@ -45,6 +45,38 @@ Paragraph.
         "length": 1
     }
 ]
+#parse-tree
+[
+    {
+        "type": "nodeSection1",
+        "value": "Title",
+        "position": 1,
+        "line": 1,
+        "length": 56,
+        "adornment": {
+            "value": "=====",
+            "position": "7",
+            "line": 2,
+            "length": 5
+        },
+        "items": [
+            {
+                "type": "nodeBlankline",
+                "value": "\n",
+                "position": 13,
+                "line": 3,
+                "length": 1
+            },
+            {
+                "type": "nodeParagraph",
+                "value": "Paragraph.",
+                "position": 14,
+                "line": 4,
+                "length": 10
+            }
+        ]
+    }
+]
 
 
 
