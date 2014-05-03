@@ -433,3 +433,249 @@ Test unexpected section titles.
         ]
     }
 ]
+
+
+
+
+#name
+SectionLevelTest1
+#description
+Test title 4 section level return.
+#data
+Test return to existing, higher-level section (Title 4).
+
+Title 1
+=======
+Paragraph 1.
+
+Title 2
+-------
+Paragraph 2.
+
+Title 3
+```````
+Paragraph 3.
+
+Title 4
+-------
+Paragraph 4.
+#items
+[
+    {
+        "element-name": "itemParagraph",
+        "value": "Test return to existing, higher-level section (Title 4).",
+        "position": 1,
+        "line": 1,
+        "length": 56
+    },
+    {
+        "element-name": "itemBlankLine",
+        "value": "\n",
+        "position": 58,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "element-name": "itemTitle",
+        "value": "Title 1",
+        "position": 59,
+        "line": 3,
+        "length": 7
+    },
+    {
+        "element-name": "itemSectionAdornment",
+        "value": "=======",
+        "position": 67,
+        "line": 4,
+        "length": 7
+    },
+    {
+        "element-name": "itemParagraph",
+        "value": "Paragraph 1.",
+        "position": 75,
+        "line": 5,
+        "length": 12
+    },
+    {
+        "element-name": "itemBlankLine",
+        "value": "\n",
+        "position": 88,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "element-name": "itemTitle",
+        "value": "Title 2",
+        "position": 89,
+        "line": 7,
+        "length": 7
+    },
+    {
+        "element-name": "itemSectionAdornment",
+        "value": "-------",
+        "position": 97,
+        "line": 8,
+        "length": 7
+    },
+    {
+        "element-name": "itemParagraph",
+        "value": "Paragraph 2.",
+        "position": 105,
+        "line": 9,
+        "length": 12
+    },
+    {
+        "element-name": "itemBlankLine",
+        "value": "\n",
+        "position": 118,
+        "line": 10,
+        "length": 1
+    },
+    {
+        "element-name": "itemTitle",
+        "value": "Title 3",
+        "position": 119,
+        "line": 11,
+        "length": 7
+    },
+    {
+        "element-name": "itemSectionAdornment",
+        "value": "```````",
+        "position": 127,
+        "line": 12,
+        "length": 7
+    },
+    {
+        "element-name": "itemParagraph",
+        "value": "Paragraph 3.",
+        "position": 135,
+        "line": 13,
+        "length": 12
+    },
+    {
+        "element-name": "itemBlankLine",
+        "value": "\n",
+        "position": 148,
+        "line": 14,
+        "length": 1
+    },
+    {
+        "element-name": "itemTitle",
+        "value": "Title 4",
+        "position": 149,
+        "line": 15,
+        "length": 7
+    },
+    {
+        "element-name": "itemSectionAdornment",
+        "value": "-------",
+        "position": 157,
+        "line": 16,
+        "length": 7
+    },
+    {
+        "element-name": "itemParagraph",
+        "value": "Paragraph 4.",
+        "position": 165,
+        "line": 17,
+        "length": 12
+    }
+]
+#parse-tree
+[
+    {
+        "type": "nodeParagraph",
+        "value": "Test return to existing, higher-level section (Title 4).",
+        "position": 1,
+        "line": 1,
+        "length": 56
+    },
+    {
+        "type": "nodeSection1",
+        "value": "Title 1",
+        "position": 59,
+        "line": 3,
+        "length": 7,
+        "adornment": {
+                "value": "=======",
+                "position": 67,
+                "line": 4,
+                "length": 7
+        },
+        "items": [
+            {
+                "type": "nodeParagraph",
+                "value": "Paragraph 1.",
+                "position": 75,
+                "line": 5,
+                "length": 12
+            },
+            {
+                "type": "nodeSection2",
+                "value": "Title 2",
+                "position": 89,
+                "line": 7,
+                "length": 7,
+                "adornment": {
+                        "value": "-------",
+                        "position": 97,
+                        "line": 8,
+                        "length": 7
+                },
+                "items": [
+                    {
+                        "type": "nodeParagraph",
+                        "value": "Paragraph 2.",
+                        "position": 105,
+                        "line": 9,
+                        "length": 12
+                    },
+                    {
+                        "type": "nodeSection3",
+                        "value": "Title 3",
+                        "position": 119,
+                        "line": 11,
+                        "length": 7,
+                        "adornment": {
+                                "value": "```````",
+                                "position": 127,
+                                "line": 12,
+                                "length": 7
+                        },
+                        "items": [
+                            {
+                                "type": "nodeParagraph",
+                                "value": "Paragraph 3.",
+                                "position": 135,
+                                "line": 13,
+                                "length": 12
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "nodeSection2",
+                "value": "Title 4",
+                "position": 149,
+                "line": 15,
+                "length": 7,
+                "adornment": {
+                        "value": "-------",
+                        "position": 157,
+                        "line": 16,
+                        "length": 7
+                },
+                "items": [
+                    {
+                        "type": "nodeParagraph",
+                        "value": "Paragraph 2.",
+                        "position": 165,
+                        "line": 17,
+                        "length": 12
+                    }
+                ]
+            }
+        ]
+    }
+]
