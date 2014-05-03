@@ -11,36 +11,43 @@ Paragraph.
 [
     {
         "element-name": "itemTitle",
+        "value": "Title",
         "position": 1,
         "line": 1,
-        "value": "Title"
+        "length": 5
     },
     {
         "element-name": "itemSectionAdornment",
+        "value": "=====",
         "position": 7,
         "line": 2,
-        "value": "====="
+        "length": 5
     },
     {
         "element-name": "itemBlankLine",
+        "value": "\n",
         "position": 13,
         "line": 3,
-        "value": "\n"
+        "length": 1
     },
     {
         "element-name": "itemParagraph",
+        "value": "Paragraph.",
         "position": 14,
         "line": 4,
-        "value": "Paragraph."
+        "length": 10
     },
     {
         "element-name": "itemEOF",
+        "value": "",
         "position": 24,
         "line": 4,
-        "value": ""
+        "length": 1
     }
 ]
-#parse-expect
+
+
+
 
 #name
 SectionTitleParaNoBlankline
@@ -77,7 +84,10 @@ Paragraph (no blank line).
         "value": ""
     }
 ]
-#parse-expect
+#parse-tree
+
+
+
 
 #name
 SectionParaHeadPara
@@ -94,48 +104,58 @@ Paragraph.
 [
     {
         "element-name": "itemParagraph",
+        "value": "Paragraph.",
         "position": 1,
         "line": 1,
-        "value": "Paragraph."
+        "length": 10
     },
     {
         "element-name": "itemBlankLine",
+        "value": "\n",
         "position": 12,
         "line": 2,
-        "value": "\n"
+        "length": 1
     },
     {
         "element-name": "itemTitle",
+        "value": "Title",
         "position": 13,
         "line": 3,
-        "value": "Title"
+        "length": 5
     },
     {
         "element-name": "itemSectionAdornment",
+        "value": "=====",
         "position": 19,
         "line": 4,
-        "value": "====="
+        "length": 5
     },
     {
         "element-name": "itemBlankLine",
+        "value": "\n",
         "position": 25,
         "line": 5,
-        "value": "\n"
+        "length": 1
     },
     {
         "element-name": "itemParagraph",
+        "value": "Paragraph.",
         "position": 26,
         "line": 6,
-        "value": "Paragraph."
+        "length": 10
     },
     {
         "element-name": "itemEOF",
+        "value": "",
         "position": 36,
         "line": 6,
-        "value": ""
+        "length": 0
     }
 ]
-#parse-expect
+#parse-tree
+
+
+
 
 #name
 SectionUnexpectedTitles
@@ -156,114 +176,132 @@ Test unexpected section titles.
 [
     {
         "element-name": "itemParagraph",
+        "value": "Test unexpected section titles.",
         "position": 1,
         "line": 1,
-        "value": "Test unexpected section titles."
+        "length": 31
     },
     {
         "element-name": "itemBlankLine",
+        "value": "\n",
         "position": 33,
         "line": 2,
-        "value": "\n"
+        "length": 1
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 34,
         "line": 3,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemTitle",
+        "value": "Title",
         "position": 38,
         "line": 3,
-        "value": "Title"
+        "length": 5
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 44,
         "line": 4,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemSectionAdornment",
+        "value": "=====",
         "position": 48,
         "line": 4,
-        "value": "====="
+        "length": 5
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 54,
         "line": 5,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemParagraph",
+        "value": "Paragraph.",
         "position": 58,
         "line": 5,
-        "value": "Paragraph."
+        "length": 10
     },
     {
         "element-name": "itemBlankLine",
+        "value": "\n",
         "position": 69,
         "line": 6,
-        "value": "\n"
+        "length": 1
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 70,
         "line": 7,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemSectionAdornment",
+        "value": "-----",
         "position": 74,
         "line": 7,
-        "value": "-----"
+        "length": 5
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 80,
         "line": 8,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemTitle",
+        "value": "Title",
         "position": 84,
         "line": 8,
-        "value": "Title"
+        "length": 5
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 90,
         "line": 9,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemSectionAdornment",
+        "value": "-----",
         "position": 94,
         "line": 9,
-        "value": "-----"
+        "length": 5
     },
     {
         "element-name": "itemSpace",
+        "value": "    ",
         "position": 100,
         "line": 10,
-        "value": "    "
+        "length": 4
     },
     {
         "element-name": "itemParagraph",
+        "value": "Paragraph.",
         "position": 104,
         "line": 10,
-        "value": "Paragraph."
+        "length": 10
     },
     {
         "element-name": "itemEOF",
+        "value": "",
         "position": 114,
         "line": 10,
-        "value": ""
+        "length": 0
     }
 ]
-#parse-expect
+#parse-tree
 [
     {
         "element-name": "itemParagraph",
