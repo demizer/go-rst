@@ -61,6 +61,7 @@ type item struct {
 	ElementType itemElement `json: "-"`
 	Position    Pos         `json: "position"`
 	Line        int         `json: "line"`
+	Length	    int		`json: "length"`
 	Value       interface{} `json: "value"`
 }
 
