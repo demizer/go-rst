@@ -23,7 +23,7 @@ type LexTest struct {
 	description    string
 	data           string  // The input data to be parsed
 	items          string  // The expected lex items output in json
-	expect         string  // The expected parsed output in json
+	expectTree         string  // The expected parsed output in json
 }
 
 type LexTests []LexTest
@@ -63,7 +63,7 @@ func ParseTestData(filepath string) ([]LexTest, error) {
 			if buffer.Len() > 0 {
 				// Apend the last section to the array and
 				// reset
-				curTest.expect = buffer.String()
+				curTest.expectTree = buffer.String()
 				LexTests = append(LexTests, *curTest)
 			}
 			curTest = new(LexTest)
@@ -92,7 +92,7 @@ func ParseTestData(filepath string) ([]LexTest, error) {
 
 	if buffer.Len() > 0 {
 		// Apend the last section to the array and
-		curTest.expect = buffer.String()
+		curTest.expectTree = buffer.String()
 		LexTests = append(LexTests, *curTest)
 	}
 
