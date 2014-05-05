@@ -354,7 +354,7 @@ Test unexpected section titles.
                     "level": "SEVERE",
                     "line": 4,
                     "source": "test data",
-                    "items": [
+                    "nodes": [
                         {
                             "element-name": "itemParagraph",
                             "position": 0,
@@ -384,7 +384,7 @@ Test unexpected section titles.
                     "level": "SEVERE",
                     "line": 7,
                     "source": "test data",
-                    "items": [
+                    "nodes": [
                         {
                             "element-name": "itemParagraph",
                             "position": 0,
@@ -408,7 +408,7 @@ Test unexpected section titles.
                     "level": "SEVERE",
                     "line": 9,
                     "source": "test data",
-                    "items": [
+                    "nodes": [
                         {
                             "element-name": "itemParagraph",
                             "position": 0,
@@ -602,7 +602,7 @@ Paragraph 4.
                 "line": 4,
                 "length": 7
         },
-        "items": [
+        "nodes": [
             {
                 "type": "nodeParagraph",
                 "value": "Paragraph 1.",
@@ -622,7 +622,7 @@ Paragraph 4.
                         "line": 8,
                         "length": 7
                 },
-                "items": [
+                "nodes": [
                     {
                         "type": "nodeParagraph",
                         "value": "Paragraph 2.",
@@ -642,7 +642,7 @@ Paragraph 4.
                                 "line": 12,
                                 "length": 7
                         },
-                        "items": [
+                        "nodes": [
                             {
                                 "type": "nodeParagraph",
                                 "value": "Paragraph 3.",
@@ -666,7 +666,7 @@ Paragraph 4.
                         "line": 16,
                         "length": 7
                 },
-                "items": [
+                "nodes": [
                     {
                         "type": "nodeParagraph",
                         "value": "Paragraph 2.",
