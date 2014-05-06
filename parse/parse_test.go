@@ -6,7 +6,6 @@
 
 package parse
 
-func init() { SetDebug() }
 import (
 	"github.com/demizer/go-elog"
 	"testing"
