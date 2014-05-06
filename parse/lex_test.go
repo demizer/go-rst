@@ -15,7 +15,7 @@ var (
 	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
 )
 
-var spd = spew.ConfigState{Indent: "\t"}
+var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
 var lexSectionTests LexTests
 
