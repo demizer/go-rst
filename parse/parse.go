@@ -5,18 +5,9 @@
 package parse
 
 import (
+	"fmt"
 	"github.com/demizer/go-elog"
-	// "os"
 )
-
-type Tree struct {
-	Name      string
-	text      string
-	Root      *ListNode
-	lex       *lexer
-	peekCount int
-	token     [3]item // three-token lookahead for parser.
-}
 
 type systemMessageLevel int
 
@@ -43,6 +34,46 @@ type systemMessage struct {
 	items  []item
 }
 
+type sectionLevel struct {
+	char rune // The adornment character used to describe the section
+	overline bool // The section contains an overline
+	length int // The length of the adornment lines
+}
+
+type sectionLevels []sectionLevel
+
+func (s *sectionLevels) String() string {
+	var out string
+	for lvl, sec := range *s {
+		out += fmt.Sprintf("level: %d, rune: %q, overline: %t, length: %d\n",
+			lvl+1, sec.char, sec.overline, sec.length)
+	}
+	return out
+}
+
+func (s *sectionLevels) Add(adornChar rune, overline bool, length int) int {
+	lvl := s.Find(adornChar)
+	if lvl > 0 {
+		return lvl
+	}
+	*s = append(*s, sectionLevel{char: adornChar, overline: overline, length: length})
+	return len(*s)
+}
+
+// Returns -1 if not found
+func (s *sectionLevels) Find(adornChar rune) int {
+	for lvl, sec := range *s {
+		if sec.char == adornChar {
+			return lvl+1
+		}
+	}
+	return -1
+}
+
+func (s *sectionLevels) Level() int {
+	return len(*s)
+}
+
 func Parse(name, text string) (t *Tree, err error) {
 	t = New(name)
 	t.text = text
@@ -51,9 +82,18 @@ func Parse(name, text string) (t *Tree, err error) {
 }
 
 func New(name string) *Tree {
-	return &Tree{
-		Name: name,
-	}
+	return &Tree{Name: name, sectionLevels: new(sectionLevels)}
+}
+
+type Tree struct {
+	Name      string
+	text      string
+	Root      *ListNode
+	lex       *lexer
+	peekCount int
+	token     [3]item // three-token look-ahead for parser.
+	sectionLevel int // The current section level of parsing
+	sectionLevels *sectionLevels // Encountered section levels
 }
 
 // startParse initializes the parser, using the lexer.
