@@ -15,14 +15,6 @@ type Node interface {
 	Position() Pos
 }
 
-// Pos represents a byte position in the original input text from which
-// this template was parsed.
-type Pos int
-
-func (p Pos) Position() Pos {
-	return p
-}
-
 // NodeType identifies the type of a parse tree node.
 type NodeType int
 
@@ -31,6 +23,12 @@ const (
 	NodeParagraph
 	NodeList
 )
+
+type Pos int
+
+func (p Pos) Position() Pos {
+	return p
+}
 
 // ListNode holds a sequence of nodes.
 type ListNode struct {
