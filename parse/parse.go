@@ -25,7 +25,9 @@ var systemMessageLevels = [...]string{
 	"SEVERE",
 }
 
-func (s systemMessageLevel) String() string { return systemMessageLevels[s] }
+func (s systemMessageLevel) String() string {
+	return systemMessageLevels[s]
+}
 
 type systemMessage struct {
 	level  systemMessageLevel
