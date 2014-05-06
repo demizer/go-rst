@@ -108,7 +108,7 @@ func (l *lexer) emit(t itemElement) {
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.pos], l.start, l.pos, l.lineNumber())
 	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start + 1, Line:
-		l.lineNumber(), Value: l.input[l.start:l.pos]}
+		l.lineNumber(), Value: l.input[l.start:l.pos], Length: len(l.input[l.start:l.pos])}
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.pos
