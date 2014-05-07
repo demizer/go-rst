@@ -37,9 +37,9 @@ type systemMessage struct {
 }
 
 type sectionLevel struct {
-	char rune // The adornment character used to describe the section
+	char     rune // The adornment character used to describe the section
 	overline bool // The section contains an overline
-	length int // The length of the adornment lines
+	length   int  // The length of the adornment lines
 }
 
 type sectionLevels []sectionLevel
@@ -66,7 +66,7 @@ func (s *sectionLevels) Add(adornChar rune, overline bool, length int) int {
 func (s *sectionLevels) Find(adornChar rune) int {
 	for lvl, sec := range *s {
 		if sec.char == adornChar {
-			return lvl+1
+			return lvl + 1
 		}
 	}
 	return -1
@@ -88,13 +88,14 @@ func New(name string) *Tree {
 }
 
 type Tree struct {
-	Name      string
-	text      string
-	Root      *ListNode
-	lex       *lexer
-	peekCount int
-	token     [3]item // three-token look-ahead for parser.
-	sectionLevel int // The current section level of parsing
+	Name          string
+	Root          *NodeList // The root node list
+	text          string
+	branch        *NodeList // The current branch to add nodes to
+	lex           *lexer
+	peekCount     int
+	token         [3]item        // three-token look-ahead for parser.
+	sectionLevel  int            // The current section level of parsing
 	sectionLevels *sectionLevels // Encountered section levels
 }
 

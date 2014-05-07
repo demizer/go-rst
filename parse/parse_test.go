@@ -7,10 +7,10 @@
 package parse
 
 import (
-	"github.com/demizer/go-elog"
-	"testing"
 	"encoding/json"
+	"github.com/demizer/go-elog"
 	"os"
+	"testing"
 	// "fmt"
 )
 

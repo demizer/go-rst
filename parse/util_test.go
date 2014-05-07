@@ -5,13 +5,13 @@
 package parse
 
 import (
-	"github.com/demizer/go-elog"
 	"bufio"
-	"os"
 	"bytes"
-	"strings"
 	"flag"
 	"fmt"
+	"github.com/demizer/go-elog"
+	"os"
+	"strings"
 )
 
 func init() { SetDebug() }
@@ -19,11 +19,11 @@ func init() { SetDebug() }
 // LexTest is the structure that contains parsed test data from the *.dat files in the testdata
 // directory.
 type LexTest struct {
-	name           string
-	description    string
-	data           string  // The input data to be parsed
-	items          string  // The expected lex items output in json
-	expectTree         string  // The expected parsed output in json
+	name        string
+	description string
+	data        string // The input data to be parsed
+	items       string // The expected lex items output in json
+	expectTree  string // The expected parsed output in json
 }
 
 type LexTests []LexTest
@@ -122,4 +122,3 @@ func SetDebug() {
 	log.SetFlags(log.Lansi | log.LnoPrefix | log.LfunctionName |
 		log.LlineNumber)
 }
-

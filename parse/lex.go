@@ -7,9 +7,9 @@ package parse
 import (
 	"fmt"
 	"github.com/demizer/go-elog"
+	"strings"
 	"unicode"
 	"unicode/utf8"
-	"strings"
 )
 
 // itemElement are the types that are emitted by the lexer.
@@ -57,11 +57,11 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	ElementName string      `json:"element-name"`
+	ElementName string      `json: "element-name"`
 	ElementType itemElement `json: "-"`
 	Position    Pos         `json: "position"`
 	Line        int         `json: "line"`
-	Length	    int		`json: "length"`
+	Length      int         `json: "length"`
 	Value       interface{} `json: "value"`
 }
 
@@ -107,8 +107,14 @@ func (l *lexer) emit(t itemElement) {
 	}
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.pos], l.start, l.pos, l.lineNumber())
-	nItem := item{ElementType: t, ElementName: fmt.Sprint(t), Position: l.start + 1, Line:
-		l.lineNumber(), Value: l.input[l.start:l.pos], Length: len(l.input[l.start:l.pos])}
+	nItem := item{
+		ElementType: t,
+		ElementName: fmt.Sprint(t),
+		Position:    l.start + 1,
+		Line:        l.lineNumber(),
+		Value:       l.input[l.start:l.pos],
+		Length:      len(l.input[l.start:l.pos]),
+	}
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.pos
@@ -165,7 +171,7 @@ func (l *lexer) nextItem() item {
 }
 
 func (l *lexer) lineNumber() int {
-	return 1 + strings.Count(l.input[:l.pos - 1], "\n")
+	return 1 + strings.Count(l.input[:l.pos-1], "\n")
 }
 
 // isSpace reports whether r is a space character.
