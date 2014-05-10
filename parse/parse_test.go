@@ -80,3 +80,23 @@ func TestSectionLevelsLevel(t *testing.T) {
 		t.Errorf("Level() returned incorrect level!\nExpect:\n\n\t%d\nGot:\n\n\t%d\n", 3, lvl)
 	}
 }
+
+func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
+	if lexParseTests == nil {
+		lexParseTests, err = ParseTestData("../testdata/test_lex_sections.dat")
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	test := lexParseTests.SearchByName(testName)
+	if test != nil {
+		log.Debugf("Test Name: \t%s\n", test.name)
+		log.Debugf("Description: \t%s\n", test.description)
+		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+		tree, err = Parse(test.name, test.data)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	return
+}
