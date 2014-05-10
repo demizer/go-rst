@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	tEOF = item{ElementType: itemEOF, Position: 0, Value: ""}
+	tEOF = item{ElementType: itemEOF, StartPosition: 0, Value: ""}
 )
 
 var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
@@ -98,7 +98,7 @@ func equal(t *testing.T, items []item, testName string) []error {
 				"Got Line Number:\t%d\nExpect Line Number:\t%d\n\n",
 				i, item.ElementName, item.Value, item.Line, eItems[i].Line)
 		}
-		if item.Position != eItems[i].Position {
+		if item.StartPosition != eItems[i].StartPosition {
 			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n"+
 				"Got Position:\t\t%d\nExpect Position:\t%d\n\n",
 				i, item.ElementName, item.Line, item.Value, item.Position,

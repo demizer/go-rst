@@ -17,6 +17,11 @@ type Line int
 
 func (l Line) LineNumber() Line { return l }
 
+// The begining location of an item in the input.
+type StartPosition int
+
+func (s StartPosition) Position() StartPosition { return s }
+
 // itemElement are the types that are emitted by the lexer.
 type itemElement int
 
