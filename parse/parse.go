@@ -153,6 +153,15 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 	return nil
 }
 
+func (t *Tree) backup() {
+	t.peekCount++
+}
+
+// peekBack returns the last item sent from the lexer.
+func (t *Tree) peekBack() item {
+	return *t.lex.lastItem
+}
+
 // peek returns but does not consume the next token.
 func (t *Tree) peek() item {
 	if t.peekCount > 0 {
@@ -162,6 +171,15 @@ func (t *Tree) peek() item {
 	t.peekCount = 1
 	t.token[0] = t.lex.nextItem()
 	return t.token[0]
+}
+
+func (t *Tree) next() item {
+	if t.peekCount > 0 {
+		t.peekCount--
+	} else {
+		t.token[0] = t.lex.nextItem()
+	}
+	return t.token[t.peekCount]
 }
 
 func (t *Tree) section(i item) Node {
