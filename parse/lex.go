@@ -12,6 +12,11 @@ import (
 	"unicode/utf8"
 )
 
+// The line number of an item in the input string
+type Line int
+
+func (l Line) LineNumber() Line { return l }
+
 // itemElement are the types that are emitted by the lexer.
 type itemElement int
 

@@ -24,10 +24,7 @@ const (
 	NodeList
 )
 
-type Pos int
 
-func (p Pos) Position() Pos {
-	return p
 }
 
 // ListNode holds a sequence of nodes.
