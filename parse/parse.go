@@ -99,6 +99,16 @@ type Tree struct {
 	sectionLevels *sectionLevels // Encountered section levels
 }
 
+func (t *Tree) errorf(format string, args ...interface{}) {
+	t.Document = nil
+	format = fmt.Sprintf("go-rst: %s:%d: %s", t.Name, t.lex.lineNumber(), format)
+	panic(fmt.Errorf(format, args...))
+}
+
+func (t *Tree) error(err error) {
+	t.errorf("%s", err)
+}
+
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
 	t.Document = nil
