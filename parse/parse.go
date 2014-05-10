@@ -89,7 +89,7 @@ func New(name string) *Tree {
 
 type Tree struct {
 	Name          string
-	Root          *NodeList // The root node list
+	Document      *NodeList // The root node list
 	text          string
 	branch        *NodeList // The current branch to add nodes to
 	lex           *lexer
@@ -101,7 +101,7 @@ type Tree struct {
 
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
-	t.Root = nil
+	t.Document = nil
 	t.lex = lex
 }
 
@@ -121,7 +121,7 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
 
 func (t *Tree) parse(tree *Tree) (next Node) {
 	log.Debugln("Start")
-	t.Root = newList(t.peek().Position)
+	t.Document = newList()
 	for t.peek().ElementType != itemEOF {
 		switch token := t.next(); token.ElementType {
 		case itemBlankLine:
@@ -132,6 +132,12 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 			log.Debugln("Found itemTitle")
 		case itemParagraph:
 			log.Debugln("Found itemParagraph")
+		}
+
+		if len([]Node(*t.Document)) == 0 {
+			t.Document.append(n)
+		} else {
+			t.branch.append(n)
 		}
 	}
 	log.Debugln("End")
