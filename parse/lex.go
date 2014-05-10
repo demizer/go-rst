@@ -67,25 +67,25 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	ElementName string      `json:"element-name"`
-	ElementType itemElement `json:"-"`
-	Length      int         `json:"length"`
-	Value       interface{} `json:"value"`
-	StartPosition           `json:"position"`
-	Line			`json:"line"`
+	ElementName   string      `json:"element-name"`
+	ElementType   itemElement `json:"-"`
+	Length        int         `json:"length"`
+	Value         interface{} `json:"value"`
+	StartPosition `json:"position"`
+	Line          `json:"line"`
 }
 
 // The lexer struct tracks the state of the lexer
 type lexer struct {
-	name     string    // The name of the current lexer
-	input    string    // The input text
-	state    stateFn   // The current state of the lexer
-	index    int       // Position in input
-	start    int       // The start of the current token
-	width    int       // The width of the current position
-	items    chan item // The channel items are emitted to
-	lastItem *item     // The last item emitted to the channel
-	lastItemPosition  StartPosition
+	name             string    // The name of the current lexer
+	input            string    // The input text
+	state            stateFn   // The current state of the lexer
+	index            int       // Position in input
+	start            int       // The start of the current token
+	width            int       // The width of the current position
+	items            chan item // The channel items are emitted to
+	lastItem         *item     // The last item emitted to the channel
+	lastItemPosition StartPosition
 }
 
 // lex is the entry point of the lexer
@@ -118,12 +118,12 @@ func (l *lexer) emit(t itemElement) {
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	nItem := item{
-		ElementType: t,
-		ElementName: fmt.Sprint(t),
-		StartPosition:    StartPosition(l.start + 1),
-		Line:	     Line(l.lineNumber()),
-		Value:       l.input[l.start:l.index],
-		Length:      len(l.input[l.start:l.index]),
+		ElementType:   t,
+		ElementName:   fmt.Sprint(t),
+		StartPosition: StartPosition(l.start + 1),
+		Line:          Line(l.lineNumber()),
+		Value:         l.input[l.start:l.index],
+		Length:        len(l.input[l.start:l.index]),
 	}
 	l.items <- nItem
 	l.lastItem = &nItem
