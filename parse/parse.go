@@ -133,15 +133,14 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 	log.Debugln("Start")
 	t.Document = newList()
 	for t.peek().ElementType != itemEOF {
+		var n Node
 		switch token := t.next(); token.ElementType {
+		case itemTitle: // Section includes overline/underline
+			n = t.section(token)
 		case itemBlankLine:
-			log.Debugln("Found itemBlankLine")
-		case itemSectionAdornment:
-			log.Debugln("Found itemSectionAdornment")
-		case itemTitle:
-			log.Debugln("Found itemTitle")
+			n = newBlankLine(token)
 		case itemParagraph:
-			log.Debugln("Found itemParagraph")
+			n = newParagraph(token)
 		}
 
 		if len([]Node(*t.Document)) == 0 {
@@ -163,4 +162,48 @@ func (t *Tree) peek() item {
 	t.peekCount = 1
 	t.token[0] = t.lex.nextItem()
 	return t.token[0]
+}
+
+func (t *Tree) section(i item) Node {
+	log.Debugln("Start")
+	var overAdorn, title, underAdorn item
+	var overline bool
+
+	if t.peekBack().ElementType == itemSectionAdornment {
+		overline = true
+		overAdorn = t.peekBack()
+	}
+	title = i
+	underAdorn = t.next() // Grab the section underline
+
+	// Check adornment for proper syntax
+	if title.Length != underAdorn.Length {
+		t.errorf("Section under line  not equal to title length!")
+	} else if overline && title.Length != overAdorn.Length {
+		t.errorf("Section over line not equal to title length!")
+	} else if overline && overAdorn.Value != underAdorn.Value {
+		t.errorf("Section title over line does not match section title under line.")
+	}
+
+	// Check section levels to make sure the order of sections seen has not been violated
+	if level := t.sectionLevels.Find(rune(underAdorn.Value.(string)[0])); level > 0 {
+		if t.sectionLevel == t.sectionLevels.Level() {
+			t.sectionLevel++
+		} else {
+			// The current section level of the parser does not match the previously
+			// found section level. This means the user has used incorrect section
+			// syntax.
+			t.errorf("Incorrect section adornment \"%q\" for section level %d",
+				underAdorn.Value.(string)[0], t.sectionLevel)
+		}
+	} else {
+		t.sectionLevel++
+	}
+
+	t.sectionLevels.Add(rune(underAdorn.Value.(string)[0]), overline, len(underAdorn.Value.(string)))
+
+	ret := newSection(title, t.sectionLevel, overAdorn, underAdorn)
+	t.branch = &ret.Nodes
+	log.Debugln("End")
+	return ret
 }
