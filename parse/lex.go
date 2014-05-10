@@ -67,12 +67,12 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	ElementName string      `json: "element-name"`
-	ElementType itemElement `json: "-"`
-	Position    Pos         `json: "position"`
-	Line        int         `json: "line"`
-	Length      int         `json: "length"`
-	Value       interface{} `json: "value"`
+	ElementName string      `json:"element-name"`
+	ElementType itemElement `json:"-"`
+	Length      int         `json:"length"`
+	Value       interface{} `json:"value"`
+	StartPosition           `json:"position"`
+	Line			`json:"line"`
 }
 
 // The lexer struct tracks the state of the lexer
@@ -80,12 +80,12 @@ type lexer struct {
 	name     string    // The name of the current lexer
 	input    string    // The input text
 	state    stateFn   // The current state of the lexer
-	pos      Pos       // Position in input
-	start    Pos       // The start of the current token
-	width    Pos       // The width of the current position
+	index    int       // Position in input
+	start    int       // The start of the current token
+	width    int       // The width of the current position
 	items    chan item // The channel items are emitted to
 	lastItem *item     // The last item emitted to the channel
-	lastPos  Pos
+	lastItemPosition  StartPosition
 }
 
 // lex is the entry point of the lexer
@@ -112,33 +112,33 @@ func (l *lexer) run() {
 
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
-	if l.start == l.pos && int(l.pos) < len(l.input) {
-		l.pos += 1
+	if l.start == l.index && int(l.index) < len(l.input) {
+		l.index += 1
 	}
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
-		l.input[l.start:l.pos], l.start, l.pos, l.lineNumber())
+		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	nItem := item{
 		ElementType: t,
 		ElementName: fmt.Sprint(t),
-		Position:    l.start + 1,
-		Line:        l.lineNumber(),
-		Value:       l.input[l.start:l.pos],
-		Length:      len(l.input[l.start:l.pos]),
+		StartPosition:    StartPosition(l.start + 1),
+		Line:	     Line(l.lineNumber()),
+		Value:       l.input[l.start:l.index],
+		Length:      len(l.input[l.start:l.index]),
 	}
 	l.items <- nItem
 	l.lastItem = &nItem
-	l.start = l.pos
+	l.start = l.index
 }
 
 // backup backs up the lexer by one position using the width of the last rune retrieved from the
 // input.
 func (l *lexer) backup() {
-	l.pos -= l.width
+	l.index -= l.width
 }
 
 // current returns the rune at the current position in the input.
 func (l *lexer) current() rune {
-	r, _ := utf8.DecodeRuneInString(l.input[l.pos:])
+	r, _ := utf8.DecodeRuneInString(l.input[l.index:])
 	return r
 }
 
@@ -160,28 +160,28 @@ func (l *lexer) advance(to rune) {
 
 // next advances the position of the lexer by one rune and returns that rune.
 func (l *lexer) next() rune {
-	if int(l.pos) >= len(l.input) {
+	if int(l.index) >= len(l.input) {
 		log.Debugln("Reached eof!")
 		l.width = 0
 		return eof
 	}
-	r, w := utf8.DecodeRuneInString(l.input[l.pos:])
-	l.width = Pos(w)
-	l.pos += l.width
-	log.Debugf("cur: %q start: %d pos: %d\n", r, l.start, l.pos)
+	r, w := utf8.DecodeRuneInString(l.input[l.index:])
+	l.width = w
+	l.index += l.width
+	log.Debugf("cur: %q start: %d pos: %d\n", r, l.start, l.index)
 	return r
 }
 
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() item {
 	item := <-l.items
-	l.lastPos = item.Position
+	l.lastItemPosition = item.StartPosition
 	return item
 
 }
 
 func (l *lexer) lineNumber() int {
-	return 1 + strings.Count(l.input[:l.pos-1], "\n")
+	return 1 + strings.Count(l.input[:l.index-1], "\n")
 }
 
 // isSpace reports whether r is a space character.
@@ -206,10 +206,10 @@ func isSection(l *lexer) bool {
 	var newLineNum int
 	var runePositions []rune
 	var matchCount int
-	cPos := l.pos
+	cPos := l.index
 
 	exit := func(value bool) bool {
-		l.pos = cPos
+		l.index = cPos
 		log.Debugln("Returning", value)
 		return value
 	}
@@ -243,7 +243,7 @@ func isSection(l *lexer) bool {
 		}
 
 		if isSectionAdornment(l.current()) {
-			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.pos)
+			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.index)
 			if lastAdornment != 0 && l.current() != lastAdornment {
 				log.Debugf("Adornment mismatch, last: %s current: %s\n",
 					string(lastAdornment), string(l.current()))
@@ -278,7 +278,7 @@ func isSectionAdornment(r rune) bool {
 func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		var tokenLength = l.pos - l.start
+		var tokenLength = l.index - l.start
 		switch r := l.current(); {
 		case tokenLength == 1:
 			log.Debugln("tokenLength == 1; Start of new token")
@@ -292,10 +292,10 @@ func lexStart(l *lexer) stateFn {
 			}
 		case isEndOfLine(r):
 			log.Debugln("isEndOfLine == true")
-			if l.pos > l.start {
+			if l.index > l.start {
 				l.emit(itemParagraph)
 				l.start += 1 // Skip the new line
-			} else if l.start == l.pos {
+			} else if l.start == l.index {
 				l.emit(itemBlankLine)
 			}
 
@@ -306,7 +306,7 @@ func lexStart(l *lexer) stateFn {
 	}
 
 	// Correctly reached eof.
-	if l.pos > l.start {
+	if l.index > l.start {
 		l.emit(itemParagraph)
 	}
 
@@ -321,7 +321,7 @@ func lexSpace(l *lexer) stateFn {
 	for isSpace(l.current()) {
 		l.next()
 	}
-	if l.start < l.pos {
+	if l.start < l.index {
 		l.emit(itemSpace)
 		l.next()
 	}
@@ -360,7 +360,7 @@ func lexTitle(l *lexer) stateFn {
 		if l.peek() == '\n' {
 			l.emit(itemTitle)
 			l.start += 1
-			l.pos += 1
+			l.index += 1
 			break
 		}
 	}
@@ -378,7 +378,7 @@ func lexSectionAdornment(l *lexer) stateFn {
 		if l.peek() == '\n' {
 			l.emit(itemSectionAdornment)
 			l.start += 1
-			l.pos += 1
+			l.index += 1
 			break
 		}
 	}
