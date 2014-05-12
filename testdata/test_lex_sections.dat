@@ -46,37 +46,39 @@ Paragraph.
     }
 ]
 #parse-tree
-{
-    "node-type": "NodeSection",
-    "text": "Title",
-    "level": 1,
-    "line": 1,
-    "length": 5,
-    "start-position": 1,
-    "overline": null,
-    "underline": {
-        "node-type": "NodeAdornment",
-        "rune": "=====",
-        "line": 2,
-        "length": 5,
-        "start-position": 7
-    },
-    "node-list": [
-        {
-            "node-type": "NodeBlankLine",
-            "line": 3,
-            "start-position": 13
-        },
-        {
-            "node-type": "NodeParagraph",
-            "text": "Paragraph.",
-            "line": 4,
-            "length": 10,
-            "start-position": 14
-        }
-    ]
-}
+[
 
+    {
+        "nodeType": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "line": 1,
+        "length": 5,
+        "startPosition": 1,
+        "overline": null,
+        "underline": {
+            "nodeType": "NodeAdornment",
+            "rune": "=====",
+            "line": 2,
+            "length": 5,
+            "startPosition": 7
+        },
+        "nodeList": [
+            {
+                "nodeType": "NodeBlankLine",
+                "line": 3,
+                "startPosition": 13
+            },
+            {
+                "nodeType": "NodeParagraph",
+                "text": "Paragraph.",
+                "line": 4,
+                "length": 10,
+                "startPosition": 14
+            }
+        ]
+    }
+]
 
 
 #name
