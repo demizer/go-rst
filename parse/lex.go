@@ -181,7 +181,7 @@ func (l *lexer) nextItem() item {
 }
 
 func (l *lexer) lineNumber() int {
-	return 1 + strings.Count(l.input[:l.index-1], "\n")
+	return strings.Count(l.input[:l.index-1], "\n") + 1
 }
 
 // isSpace reports whether r is a space character.

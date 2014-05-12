@@ -75,9 +75,9 @@ func newSection(item item, level int, overAdorn item, underAdorn item) *SectionN
 	}
 
 	if overAdorn.Value != nil {
-		oRune := rune(overAdorn.Value.(string)[0])
+		Rune := rune(overAdorn.Value.(string)[0])
 		n.OverLine = &AdornmentNode{
-			Char:          oRune,
+			Rune:          Rune,
 			Type:          NodeAdornment,
 			StartPosition: overAdorn.StartPosition,
 			Line:          overAdorn.Line,
@@ -85,9 +85,9 @@ func newSection(item item, level int, overAdorn item, underAdorn item) *SectionN
 		}
 	}
 
-	uRune := rune(underAdorn.Value.(string)[0])
+	Rune := rune(underAdorn.Value.(string)[0])
 	n.UnderLine = &AdornmentNode{
-		Char:          uRune,
+		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underAdorn.StartPosition,
 		Line:          underAdorn.Line,
