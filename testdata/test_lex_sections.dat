@@ -58,21 +58,21 @@ Paragraph.
         "node-type": "NodeAdornment",
         "rune": "=====",
         "line": 2,
-        "length": 5
-        "start-position": "7",
+        "length": 5,
+        "start-position": 7
     },
     "node-list": [
         {
             "node-type": "NodeBlankLine",
             "line": 3,
-            "start-position": 13,
+            "start-position": 13
         },
         {
             "node-type": "NodeParagraph",
             "text": "Paragraph.",
             "line": 4,
-            "length": 10
-            "start-position": 14,
+            "length": 10,
+            "start-position": 14
         }
     ]
 }
