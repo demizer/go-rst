@@ -51,15 +51,15 @@ func (l *NodeList) append(n Node) {
 }
 
 type SectionNode struct {
-	Text      string
-	Level     int
-	Length    int
-	OverLine  *AdornmentNode
-	UnderLine *AdornmentNode
-	Nodes     NodeList
-	StartPosition
-	Line
-	Type NodeType
+	Type          NodeType `json:"node-type"`
+	Text          string   `json:"text"`
+	Level         int      `json:"level"`
+	Length        int      `json:"length"`
+	StartPosition `json:"start-position"`
+	Line          `json:"line"`
+	OverLine      *AdornmentNode `json:"overline"`
+	UnderLine     *AdornmentNode `json:"underline"`
+	Nodes         NodeList       `json:"node-list"`
 }
 
 func (s *SectionNode) NodeType() NodeType {
