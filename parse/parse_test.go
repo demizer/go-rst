@@ -102,28 +102,24 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 	return
 }
 
-func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) {
-	test := lexParseTests.SearchByName(testName)
-	var nodeList []interface{}
-	jErr := json.Unmarshal([]byte(test.expectTree), &nodeList)
-	if jErr != nil {
-		return append(err, jErr)
-	}
-	for num, node := range *nodes {
-		nVal := reflect.ValueOf(node).Elem()
-		nType := nVal.Type()
-		for i := 0; i < nVal.NumField(); i++ {
-			structName := nType.Name()
-			fieldName := nType.Field(i).Name
-			eName := strings.ToLower(string(fieldName[0])) + fieldName[1:]
-			gVal := nVal.Field(i)
-			eVal := nodeList[num].(map[string]interface{})[eName]
+// compareNodes is a recursive function that compares the resulting nodes (pNodes) from the parser
+// with the expected output from the testdata (eNodes).
+func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
+	for pNum, pNode := range *pNodes {
+		pVal := reflect.ValueOf(pNode).Elem()
+		pType := pVal.Type()
+		for i := 0; i < pVal.NumField(); i++ {
+			pStructName := pType.Name()
+			pFieldName := pType.Field(i).Name
+			eName := strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
+			gVal := pVal.Field(i)
+			eVal := eNodes[pNum].(map[string]interface{})[eName]
 			eType := reflect.TypeOf(eVal)
 
 			// SectionNode.OverLine and SectionNode.UnderLine can be null
 			if eVal == nil && eName != "overLine" && eName != "underLine" {
-				err = append(err, fmt.Errorf("\"%s\" property does not exist in "+
-					"%s.expectTree!\n", fieldName, testName))
+				errors = append(errors, fmt.Errorf("\"%s\" property does not exist "+
+				"in %s.expectTree!\n", pFieldName, testName))
 				continue
 			}
 
@@ -139,8 +135,8 @@ func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) 
 				if gVal.String() != eVal || gVal.Kind() != reflect.String ||
 					eType.Kind() != reflect.String {
 					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
-						"Expect Type: %s.%s = %#v (%s)\n", structName,
-						fieldName, gVal.String(), gVal.Type(), testName, eName,
+						"Expect Type: %s.%s = %#v (%s)\n", pStructName,
+						pFieldName, gVal.String(), gVal.Type(), testName, eName,
 						eVal, eType.Kind())
 					break
 				}
@@ -148,7 +144,7 @@ func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) 
 			case reflect.Int:
 				// Check for the "Type" field name, this requires a conversion from
 				// string to int.
-				if fieldName == "Type" {
+				if pFieldName == "Type" {
 					gNodeType := NodeTypeFromString(eVal.(string))
 					if gVal.Int() == int64(gNodeType) {
 						match = true
@@ -156,7 +152,7 @@ func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) 
 					} else {
 						cErr = fmt.Errorf(
 							"Got: %s.%s = %#v,\n\tExpect: %s.%s = %#v\n",
-							structName, fieldName, val, testName, eName,
+							pStructName, pFieldName, val, testName, eName,
 							eVal)
 						break
 					}
@@ -167,8 +163,8 @@ func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) 
 				if eType.Kind() != reflect.Float64 || gVal.Kind() != reflect.Int ||
 					eType.Kind() != reflect.Float64 {
 					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
-						"Expect Type: %s.%s = %f (%s)\n", structName,
-						fieldName, gVal.Int(), gVal.Type(), testName, eName,
+						"Expect Type: %s.%s = %f (%s)\n", pStructName,
+						pFieldName, gVal.Int(), gVal.Type(), testName, eName,
 						eVal, eType.Kind())
 					break
 				}
@@ -178,15 +174,15 @@ func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) 
 				// A pointer in the struct is most likely another struct such as
 				// an AdornmentNode.
 				cErr = fmt.Errorf("reflect.Ptr for %s.%s not implemented yet!",
-					structName, fieldName)
+					pStructName, pFieldName)
 			case reflect.Slice:
 				// A silce in the struct is probably a NodeList.
 				cErr = fmt.Errorf("reflect.Slice for %s.%s not implemented yet!",
-					structName, fieldName)
+					pStructName, pFieldName)
 			}
 
 			if match == false {
-				err = append(err, cErr)
+				errors = append(errors, cErr)
 			}
 		}
 	}
@@ -199,7 +195,13 @@ func TestParseSectionTitlePara(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	errors := compareNodes(tree.Nodes, testName)
+	test := lexParseTests.SearchByName(testName)
+	var nodeList []interface{}
+	err = json.Unmarshal([]byte(test.expectTree), &nodeList)
+	if err != nil {
+		t.Error(err)
+	}
+	errors := compareNodes(tree.Nodes, nodeList, testName)
 	if errors != nil {
 		for _, err := range errors {
 			t.Error(err)
