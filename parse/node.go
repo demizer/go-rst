@@ -60,15 +60,15 @@ func (l *NodeList) append(n Node) {
 }
 
 type SectionNode struct {
-	Type          NodeType `json:"nodeType"`
+	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Level         int      `json:"level"`
 	Length        int      `json:"length"`
 	StartPosition `json:"startPosition"`
 	Line          `json:"line"`
-	OverLine      *AdornmentNode `json:"overline"`
-	UnderLine     *AdornmentNode `json:"underline"`
-	Nodes         NodeList       `json:"nodeList"`
+	OverLine      *AdornmentNode `json:"overLine"`
+	UnderLine     *AdornmentNode `json:"underLine"`
+	NodeList      NodeList       `json:"nodeList"`
 }
 
 func (s *SectionNode) NodeType() NodeType {
@@ -108,7 +108,7 @@ func newSection(item item, level int, overAdorn item, underAdorn item) *SectionN
 }
 
 type AdornmentNode struct {
-	Type          NodeType `json:"nodeType"`
+	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune"`
 	Length        int      `json:"length"`
 	Line          `json:"line"`
@@ -138,7 +138,7 @@ func (b BlankLineNode) NodeType() NodeType {
 }
 
 type ParagraphNode struct {
-	Type          NodeType `json:"nodeType"`
+	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
 	Line          `json:"line"`

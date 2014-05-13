@@ -10,35 +10,35 @@ Paragraph.
 #items
 [
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title",
         "position": 1,
         "line": 1,
         "length": 5
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "=====",
         "position": 7,
         "line": 2,
         "length": 5
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 13,
         "line": 3,
         "length": 1
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph.",
         "position": 14,
         "line": 4,
         "length": 10
     },
     {
-        "element-name": "itemEOF",
+        "elementName": "itemEOF",
         "value": "",
         "position": 24,
         "line": 4,
@@ -49,15 +49,15 @@ Paragraph.
 [
 
     {
-        "nodeType": "NodeSection",
+        "type": "NodeSection",
         "text": "Title",
         "level": 1,
         "line": 1,
         "length": 5,
         "startPosition": 1,
-        "overline": null,
-        "underline": {
-            "nodeType": "NodeAdornment",
+        "overLine": null,
+        "underLine": {
+            "type": "NodeAdornment",
             "rune": "=====",
             "line": 2,
             "length": 5,
@@ -65,12 +65,12 @@ Paragraph.
         },
         "nodeList": [
             {
-                "nodeType": "NodeBlankLine",
+                "type": "NodeBlankLine",
                 "line": 3,
                 "startPosition": 13
             },
             {
-                "nodeType": "NodeParagraph",
+                "type": "NodeParagraph",
                 "text": "Paragraph.",
                 "line": 4,
                 "length": 10,

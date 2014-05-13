@@ -221,7 +221,7 @@ func (t *Tree) section(i item) Node {
 	t.sectionLevels.Add(rune(underAdorn.Value.(string)[0]), overline, len(underAdorn.Value.(string)))
 
 	ret := newSection(title, t.sectionLevel, overAdorn, underAdorn)
-	t.branch = &ret.Nodes
+	t.branch = &ret.NodeList
 	log.Debugln("End")
 	return ret
 }
