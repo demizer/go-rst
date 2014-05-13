@@ -8,10 +8,11 @@ package parse
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/demizer/go-elog"
-	"os"
+	"reflect"
+	"strings"
 	"testing"
-	// "fmt"
 )
 
 var lexParseTests LexTests
@@ -99,4 +100,109 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 		}
 	}
 	return
+}
+
+func compareNodes(t *testing.T, nodes *NodeList, testName string) (err []error) {
+	test := lexParseTests.SearchByName(testName)
+	var nodeList []interface{}
+	jErr := json.Unmarshal([]byte(test.expectTree), &nodeList)
+	if jErr != nil {
+		return append(err, jErr)
+	}
+	for num, node := range *nodes {
+		nVal := reflect.ValueOf(node).Elem()
+		nType := nVal.Type()
+		for i := 0; i < nVal.NumField(); i++ {
+			structName := nType.Name()
+			fieldName := nType.Field(i).Name
+			eName := strings.ToLower(string(fieldName[0])) + fieldName[1:]
+			gVal := nVal.Field(i)
+			eVal := nodeList[num].(map[string]interface{})[eName]
+			eType := reflect.TypeOf(eVal)
+
+			// SectionNode.OverLine and SectionNode.UnderLine can be null
+			if eVal == nil && eName != "overLine" && eName != "underLine" {
+				err = append(err, fmt.Errorf("\"%s\" property does not exist in "+
+					"%s.expectTree!\n", fieldName, testName))
+				continue
+			}
+
+			var val interface{}
+			var cErr error
+
+			match := false
+
+			// log.Println(gVal.Kind())
+
+			switch gVal.Kind() {
+			case reflect.String:
+				if gVal.String() != eVal || gVal.Kind() != reflect.String ||
+					eType.Kind() != reflect.String {
+					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
+						"Expect Type: %s.%s = %#v (%s)\n", structName,
+						fieldName, gVal.String(), gVal.Type(), testName, eName,
+						eVal, eType.Kind())
+					break
+				}
+				match = true
+			case reflect.Int:
+				// Check for the "Type" field name, this requires a conversion from
+				// string to int.
+				if fieldName == "Type" {
+					gNodeType := NodeTypeFromString(eVal.(string))
+					if gVal.Int() == int64(gNodeType) {
+						match = true
+						break
+					} else {
+						cErr = fmt.Errorf(
+							"Got: %s.%s = %#v,\n\tExpect: %s.%s = %#v\n",
+							structName, fieldName, val, testName, eName,
+							eVal)
+						break
+					}
+				}
+				// Check for matching types betwen the parsed value and expected
+				// value.
+				val = gVal.Int()
+				if eType.Kind() != reflect.Float64 || gVal.Kind() != reflect.Int ||
+					eType.Kind() != reflect.Float64 {
+					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
+						"Expect Type: %s.%s = %f (%s)\n", structName,
+						fieldName, gVal.Int(), gVal.Type(), testName, eName,
+						eVal, eType.Kind())
+					break
+				}
+				// Finally, check the actual values
+				match = int(val.(int64)) == int(eVal.(float64))
+			case reflect.Ptr:
+				// A pointer in the struct is most likely another struct such as
+				// an AdornmentNode.
+				cErr = fmt.Errorf("reflect.Ptr for %s.%s not implemented yet!",
+					structName, fieldName)
+			case reflect.Slice:
+				// A silce in the struct is probably a NodeList.
+				cErr = fmt.Errorf("reflect.Slice for %s.%s not implemented yet!",
+					structName, fieldName)
+			}
+
+			if match == false {
+				err = append(err, cErr)
+			}
+		}
+	}
+	return
+}
+
+func TestParseSectionTitlePara(t *testing.T) {
+	testName := "SectionTitlePara"
+	tree, err := parseTest(t, testName)
+	if err != nil {
+		t.Error(err)
+	}
+	errors := compareNodes(t, tree.Document, testName)
+	if errors != nil {
+		for _, err := range errors {
+			t.Error(err)
+		}
+	}
 }
