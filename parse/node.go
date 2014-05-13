@@ -29,6 +29,15 @@ func (n NodeType) String() string {
 	return nodeTypes[n]
 }
 
+func NodeTypeFromString(str string) NodeType {
+	for num, val := range nodeTypes {
+		if val == str {
+			return NodeType(num)
+		}
+	}
+	return -1
+}
+
 func (n NodeType) MarshalText() ([]byte, error) {
 	return []byte(n.String()), nil
 }
