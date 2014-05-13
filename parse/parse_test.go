@@ -108,11 +108,11 @@ func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (erro
 	for pNum, pNode := range *pNodes {
 		pVal := reflect.ValueOf(pNode).Elem()
 		pType := pVal.Type()
+		// Loop through the fields of the Node struct
 		for i := 0; i < pVal.NumField(); i++ {
 			pStructName := pType.Name()
 			pFieldName := pType.Field(i).Name
 			eName := strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
-			gVal := pVal.Field(i)
 			eVal := eNodes[pNum].(map[string]interface{})[eName]
 			eType := reflect.TypeOf(eVal)
 
@@ -123,12 +123,10 @@ func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (erro
 				continue
 			}
 
-			var val interface{}
+			// var val interface{}
 			var cErr error
-
+			gVal := pVal.Field(i)
 			match := false
-
-			// log.Println(gVal.Kind())
 
 			switch gVal.Kind() {
 			case reflect.String:
@@ -136,8 +134,8 @@ func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (erro
 					eType.Kind() != reflect.String {
 					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
 						"Expect Type: %s.%s = %#v (%s)\n", pStructName,
-						pFieldName, gVal.String(), gVal.Type(), testName, eName,
-						eVal, eType.Kind())
+						pFieldName, gVal.String(), gVal.Type(), testName,
+						eName, eVal, eType.Kind())
 					break
 				}
 				match = true
@@ -152,14 +150,13 @@ func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (erro
 					} else {
 						cErr = fmt.Errorf(
 							"Got: %s.%s = %#v,\n\tExpect: %s.%s = %#v\n",
-							pStructName, pFieldName, val, testName, eName,
-							eVal)
+							pStructName, pFieldName, gVal.Int(),
+							testName, eName, eVal)
 						break
 					}
 				}
 				// Check for matching types betwen the parsed value and expected
 				// value.
-				val = gVal.Int()
 				if eType.Kind() != reflect.Float64 || gVal.Kind() != reflect.Int ||
 					eType.Kind() != reflect.Float64 {
 					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
@@ -169,7 +166,7 @@ func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (erro
 					break
 				}
 				// Finally, check the actual values
-				match = int(val.(int64)) == int(eVal.(float64))
+				match = gVal.Int() == int64(eVal.(float64))
 			case reflect.Ptr:
 				// A pointer in the struct is most likely another struct such as
 				// an AdornmentNode.
