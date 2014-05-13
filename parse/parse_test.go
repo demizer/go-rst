@@ -199,7 +199,7 @@ func TestParseSectionTitlePara(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	errors := compareNodes(t, tree.Document, testName)
+	errors := compareNodes(tree.Nodes, testName)
 	if errors != nil {
 		for _, err := range errors {
 			t.Error(err)
