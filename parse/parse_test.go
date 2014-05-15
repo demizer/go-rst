@@ -102,9 +102,9 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 	return
 }
 
-// compareNodes is a recursive function that compares the resulting nodes (pNodes) from the parser
-// with the expected output from the testdata (eNodes).
-func compareNodes(pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
+// checkParseNodes is a recursive function that compares the resulting nodes (pNodes) from the
+// parser with the expected output from the testdata (eNodes).
+func checkParseNodes(pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
 	for pNum, pNode := range *pNodes {
 		pVal := reflect.ValueOf(pNode).Elem()
 		pType := pVal.Type()
@@ -198,7 +198,7 @@ func TestParseSectionTitlePara(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	errors := compareNodes(tree.Nodes, nodeList, testName)
+	errors := checkParseNodes(tree.Nodes, nodeList, testName)
 	if errors != nil {
 		for _, err := range errors {
 			t.Error(err)
