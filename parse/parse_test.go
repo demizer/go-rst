@@ -102,84 +102,155 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 	return
 }
 
+func checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}, testName string) (errors []error) {
+	var pNodeName string
+	var pFieldName, eFieldName string
+	var pFieldVal, eFieldVal interface{}
+	var pFieldType, eFieldType reflect.Type
+
+	gError := func() {
+		temp := "Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n"
+		errors = append(errors, fmt.Errorf(temp, pNodeName, pFieldName, pFieldVal,
+			pFieldType, testName, eFieldName, eFieldVal, eFieldType))
+	}
+
+	pAdornVal := reflect.ValueOf(pAdorn).Elem()
+
+	for i := 0; i < pAdornVal.NumField(); i++ {
+
+		// Actual parsed metadata
+		pNodeName = pAdornVal.Type().Name()
+		pFieldName = pAdornVal.Type().Field(i).Name
+		pFieldVal = pAdornVal.Field(i).Interface()
+		pFieldType = pAdornVal.Type().Field(i).Type
+
+		// Expected parser metadata
+		eFieldName = strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
+		eFieldVal = expect.(map[string]interface{})[eFieldName]
+		eFieldType = reflect.TypeOf(eFieldVal)
+
+		if eFieldVal == nil {
+			errors = append(errors,
+				fmt.Errorf("\"%s\" does not contain field \"%s\".\n", pAdornVal,
+					eFieldName))
+			continue
+		}
+
+		switch pFieldName {
+		case "Type":
+			if pFieldVal.(NodeType).String() != eFieldVal {
+				gError()
+			}
+		case "Rune":
+			if string(pFieldVal.(rune)) != eFieldVal {
+				gError()
+			}
+		case "Length":
+			if float64(pFieldVal.(int)) != eFieldVal {
+				gError()
+			}
+		case "Line":
+			if float64(pFieldVal.(Line)) != eFieldVal {
+				gError()
+			}
+		case "StartPosition":
+			if float64(pFieldVal.(StartPosition)) != eFieldVal {
+				gError()
+			}
+		default:
+			if pFieldVal != eFieldVal {
+				gError()
+			}
+		}
+
+	}
+	return
+}
+
+func checkSectionNode(pSectionNode *SectionNode, expect interface{}, testName string) (errors []error) {
+	var pNodeName string
+	var pFieldName, eFieldName string
+	var pFieldVal, eFieldVal interface{}
+	var pFieldType, eFieldType reflect.Type
+
+	gError := func() {
+		temp := "Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n"
+		errors = append(errors, fmt.Errorf(temp, pNodeName, pFieldName, pFieldVal,
+			pFieldType, testName, eFieldName, eFieldVal, eFieldType))
+	}
+
+	pSectionNodeVal := reflect.ValueOf(pSectionNode).Elem()
+
+	for i := 0; i < pSectionNodeVal.NumField(); i++ {
+
+		// Actual parser metadata
+		pNodeName = pSectionNodeVal.Type().Name()
+		pFieldName = pSectionNodeVal.Type().Field(i).Name
+		pFieldVal = pSectionNodeVal.Field(i).Interface()
+		pFieldType = pSectionNodeVal.Type().Field(i).Type
+
+		// Expected parser metadata
+		eFieldName = strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
+		eFieldVal = expect.(map[string]interface{})[eFieldName]
+		eFieldType = reflect.TypeOf(eFieldVal)
+
+		// SectionNode.OverLine can be null, if not then we have a missing property
+		if eFieldVal == nil && eFieldName == "overLine" {
+			continue
+		} else if eFieldVal == nil {
+			errors = append(errors,
+				fmt.Errorf("\"%s\" property does not exist in %s.expectTree!\n",
+					pFieldName, testName))
+			continue
+		}
+
+		switch pFieldName {
+		case "Type":
+			if pFieldVal.(NodeType).String() != eFieldVal {
+				gError()
+			}
+		case "Level", "Length":
+			if float64(pFieldVal.(int)) != eFieldVal {
+				gError()
+			}
+		case "Line":
+			if float64(pFieldVal.(Line)) != eFieldVal {
+				gError()
+			}
+		case "StartPosition":
+			if float64(pFieldVal.(StartPosition)) != eFieldVal {
+				gError()
+			}
+		case "OverLine", "UnderLine":
+			errs := checkAdornmentNode(pFieldVal.(*AdornmentNode), eFieldVal, testName)
+			if errs != nil {
+				errors = append(errors, errs...)
+			}
+		case "NodeList":
+			errors = append(errors, fmt.Errorf("%s.%s not implemented yet!", pNodeName,
+				pFieldName))
+		default:
+			if pFieldVal != eFieldVal {
+				gError()
+			}
+		}
+
+	}
+
+	return
+}
+
 // checkParseNodes is a recursive function that compares the resulting nodes (pNodes) from the
 // parser with the expected output from the testdata (eNodes).
 func checkParseNodes(pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
+	// spd.Dump(pNodes)
+	// os.Exit(1)
 	for pNum, pNode := range *pNodes {
-		pVal := reflect.ValueOf(pNode).Elem()
-		pType := pVal.Type()
-		// Loop through the fields of the Node struct
-		for i := 0; i < pVal.NumField(); i++ {
-			pStructName := pType.Name()
-			pFieldName := pType.Field(i).Name
-			eName := strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
-			eVal := eNodes[pNum].(map[string]interface{})[eName]
-			eType := reflect.TypeOf(eVal)
-
-			// SectionNode.OverLine and SectionNode.UnderLine can be null
-			if eVal == nil && eName != "overLine" && eName != "underLine" {
-				errors = append(errors, fmt.Errorf("\"%s\" property does not exist "+
-				"in %s.expectTree!\n", pFieldName, testName))
-				continue
-			}
-
-			// var val interface{}
-			var cErr error
-			gVal := pVal.Field(i)
-			match := false
-
-			switch gVal.Kind() {
-			case reflect.String:
-				if gVal.String() != eVal || gVal.Kind() != reflect.String ||
-					eType.Kind() != reflect.String {
-					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
-						"Expect Type: %s.%s = %#v (%s)\n", pStructName,
-						pFieldName, gVal.String(), gVal.Type(), testName,
-						eName, eVal, eType.Kind())
-					break
-				}
-				match = true
-			case reflect.Int:
-				// Check for the "Type" field name, this requires a conversion from
-				// string to int.
-				if pFieldName == "Type" {
-					gNodeType := NodeTypeFromString(eVal.(string))
-					if gVal.Int() == int64(gNodeType) {
-						match = true
-						break
-					} else {
-						cErr = fmt.Errorf(
-							"Got: %s.%s = %#v,\n\tExpect: %s.%s = %#v\n",
-							pStructName, pFieldName, gVal.Int(),
-							testName, eName, eVal)
-						break
-					}
-				}
-				// Check for matching types betwen the parsed value and expected
-				// value.
-				if eType.Kind() != reflect.Float64 || gVal.Kind() != reflect.Int ||
-					eType.Kind() != reflect.Float64 {
-					cErr = fmt.Errorf("Got Type: %s.%s = %#v (%s),\n\t"+
-						"Expect Type: %s.%s = %f (%s)\n", pStructName,
-						pFieldName, gVal.Int(), gVal.Type(), testName, eName,
-						eVal, eType.Kind())
-					break
-				}
-				// Finally, check the actual values
-				match = gVal.Int() == int64(eVal.(float64))
-			case reflect.Ptr:
-				// A pointer in the struct is most likely another struct such as
-				// an AdornmentNode.
-				cErr = fmt.Errorf("reflect.Ptr for %s.%s not implemented yet!",
-					pStructName, pFieldName)
-			case reflect.Slice:
-				// A silce in the struct is probably a NodeList.
-				cErr = fmt.Errorf("reflect.Slice for %s.%s not implemented yet!",
-					pStructName, pFieldName)
-			}
-
-			if match == false {
-				errors = append(errors, cErr)
+		switch node := pNode.(type) {
+		case *SectionNode:
+			errs := checkSectionNode(node, eNodes[pNum], testName)
+			if errs != nil {
+				errors = append(errors, errs...)
 			}
 		}
 	}
