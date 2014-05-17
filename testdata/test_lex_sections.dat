@@ -58,7 +58,7 @@ Paragraph.
         "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
-            "rune": "=====",
+            "rune": "=",
             "line": 2,
             "length": 5,
             "startPosition": 7
