@@ -8,7 +8,6 @@ package parse
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/demizer/go-elog"
 	"reflect"
 	"strings"
@@ -102,156 +101,146 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 	return
 }
 
-func checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}, testName string) (errors []error) {
-	var pNodeName string
-	var pFieldName, eFieldName string
-	var pFieldVal, eFieldVal interface{}
-	var pFieldType, eFieldType reflect.Type
+type checkNode struct {
+	t          *testing.T
+	testName   string
+	pNodeName  string
+	pFieldName string
+	pFieldVal  interface{}
+	pFieldType reflect.Type
+	eFieldName string
+	eFieldVal  interface{}
+	eFieldType reflect.Type
+}
 
-	gError := func() {
-		temp := "Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n"
-		errors = append(errors, fmt.Errorf(temp, pNodeName, pFieldName, pFieldVal,
-			pFieldType, testName, eFieldName, eFieldVal, eFieldType))
+func (c *checkNode) error(args ...interface{}) {
+	c.t.Error(args...)
+}
+
+func (c *checkNode) errorf(format string, args ...interface{}) {
+	c.t.Errorf(format, args...)
+}
+
+func (c *checkNode) dError() {
+	if c.pFieldName == "Rune" {
+		c.t.Errorf("Got: %s.%s = %#v (%#v) (%s),\n\tExpect: %s.%s = %#v (%s)\n", c.pNodeName,
+			c.pFieldName, c.pFieldVal, string(c.pFieldVal.(int32)), c.pFieldType,
+			c.testName, c.eFieldName, c.eFieldVal, c.eFieldType)
+		return
 	}
+	c.t.Errorf("Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n", c.pNodeName,
+		c.pFieldName, c.pFieldVal, c.pFieldType, c.testName, c.eFieldName, c.eFieldVal,
+		c.eFieldType)
+}
 
-	pAdornVal := reflect.ValueOf(pAdorn).Elem()
+func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int) {
+	// Actual parsed metadata
+	c.pNodeName = pVal.Type().Name()
+	c.pFieldName = pVal.Type().Field(field).Name
+	c.pFieldVal = pVal.Field(field).Interface()
+	c.pFieldType = pVal.Type().Field(field).Type
+	// Expected parser metadata
+	c.eFieldName = strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:]
+	c.eFieldVal = eVal.(map[string]interface{})[c.eFieldName]
+	c.eFieldType = reflect.TypeOf(c.eFieldVal)
+}
 
-	for i := 0; i < pAdornVal.NumField(); i++ {
+func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
+	expect interface{}, testName string) (errors []error) {
 
-		// Actual parsed metadata
-		pNodeName = pAdornVal.Type().Name()
-		pFieldName = pAdornVal.Type().Field(i).Name
-		pFieldVal = pAdornVal.Field(i).Interface()
-		pFieldType = pAdornVal.Type().Field(i).Type
+	pSectionNodeVal := reflect.ValueOf(pSectionNode).Elem()
+	for i := 0; i < pSectionNodeVal.NumField(); i++ {
 
-		// Expected parser metadata
-		eFieldName = strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
-		eFieldVal = expect.(map[string]interface{})[eFieldName]
-		eFieldType = reflect.TypeOf(eFieldVal)
+		c.updateState(pSectionNodeVal, expect, i)
 
-		if eFieldVal == nil {
-			errors = append(errors,
-				fmt.Errorf("\"%s\" does not contain field \"%s\".\n", pAdornVal,
-					eFieldName))
+		// SectionNode.OverLine can be null, if not then we have a missing property
+		if c.eFieldVal == nil && c.eFieldName == "overLine" {
 			continue
+		} else if c.eFieldVal == nil {
+			c.errorf("\"%s\" property does not exist in %s.expectTree!\n", c.pFieldName,
+				testName)
 		}
 
-		switch pFieldName {
+		switch c.pFieldName {
 		case "Type":
-			if pFieldVal.(NodeType).String() != eFieldVal {
-				gError()
+			if c.pFieldVal.(NodeType).String() != c.eFieldVal {
+				c.dError()
 			}
-		case "Rune":
-			if string(pFieldVal.(rune)) != eFieldVal {
-				gError()
-			}
-		case "Length":
-			if float64(pFieldVal.(int)) != eFieldVal {
-				gError()
+		case "Level", "Length":
+			if float64(c.pFieldVal.(int)) != c.eFieldVal {
+				c.dError()
 			}
 		case "Line":
-			if float64(pFieldVal.(Line)) != eFieldVal {
-				gError()
+			if float64(c.pFieldVal.(Line)) != c.eFieldVal {
+				c.dError()
 			}
 		case "StartPosition":
-			if float64(pFieldVal.(StartPosition)) != eFieldVal {
-				gError()
+			if float64(c.pFieldVal.(StartPosition)) != c.eFieldVal {
+				c.dError()
 			}
+		case "OverLine", "UnderLine":
+			c.checkAdornmentNode(c.pFieldVal.(*AdornmentNode), c.eFieldVal, c.testName)
+		case "NodeList":
+			c.error("NodeList not implemented!")
 		default:
-			if pFieldVal != eFieldVal {
-				gError()
+			if c.pFieldVal != c.eFieldVal {
+				c.dError()
 			}
 		}
-
 	}
 	return
 }
 
-func checkSectionNode(pSectionNode *SectionNode, expect interface{}, testName string) (errors []error) {
-	var pNodeName string
-	var pFieldName, eFieldName string
-	var pFieldVal, eFieldVal interface{}
-	var pFieldType, eFieldType reflect.Type
+func (c *checkNode) checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}, testName string) {
+	pAdornVal := reflect.ValueOf(pAdorn).Elem()
+	for i := 0; i < pAdornVal.NumField(); i++ {
 
-	gError := func() {
-		temp := "Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n"
-		errors = append(errors, fmt.Errorf(temp, pNodeName, pFieldName, pFieldVal,
-			pFieldType, testName, eFieldName, eFieldVal, eFieldType))
-	}
+		c.updateState(pAdornVal, expect, i)
 
-	pSectionNodeVal := reflect.ValueOf(pSectionNode).Elem()
-
-	for i := 0; i < pSectionNodeVal.NumField(); i++ {
-
-		// Actual parser metadata
-		pNodeName = pSectionNodeVal.Type().Name()
-		pFieldName = pSectionNodeVal.Type().Field(i).Name
-		pFieldVal = pSectionNodeVal.Field(i).Interface()
-		pFieldType = pSectionNodeVal.Type().Field(i).Type
-
-		// Expected parser metadata
-		eFieldName = strings.ToLower(string(pFieldName[0])) + pFieldName[1:]
-		eFieldVal = expect.(map[string]interface{})[eFieldName]
-		eFieldType = reflect.TypeOf(eFieldVal)
-
-		// SectionNode.OverLine can be null, if not then we have a missing property
-		if eFieldVal == nil && eFieldName == "overLine" {
-			continue
-		} else if eFieldVal == nil {
-			errors = append(errors,
-				fmt.Errorf("\"%s\" property does not exist in %s.expectTree!\n",
-					pFieldName, testName))
+		if c.eFieldVal == nil {
+			c.error("\"%s\" does not contain field \"%s\".\n", pAdornVal, c.eFieldName)
 			continue
 		}
 
-		switch pFieldName {
+		switch c.pFieldName {
 		case "Type":
-			if pFieldVal.(NodeType).String() != eFieldVal {
-				gError()
+			if c.pFieldVal.(NodeType).String() != c.eFieldVal {
+				c.dError()
 			}
-		case "Level", "Length":
-			if float64(pFieldVal.(int)) != eFieldVal {
-				gError()
+		case "Rune":
+			if string(c.pFieldVal.(rune)) != c.eFieldVal {
+				c.dError()
+			}
+		case "Length":
+			if float64(c.pFieldVal.(int)) != c.eFieldVal {
+				c.dError()
 			}
 		case "Line":
-			if float64(pFieldVal.(Line)) != eFieldVal {
-				gError()
+			if float64(c.pFieldVal.(Line)) != c.eFieldVal {
+				c.dError()
 			}
 		case "StartPosition":
-			if float64(pFieldVal.(StartPosition)) != eFieldVal {
-				gError()
+			if float64(c.pFieldVal.(StartPosition)) != c.eFieldVal {
+				c.dError()
 			}
-		case "OverLine", "UnderLine":
-			errs := checkAdornmentNode(pFieldVal.(*AdornmentNode), eFieldVal, testName)
-			if errs != nil {
-				errors = append(errors, errs...)
-			}
-		case "NodeList":
-			errors = append(errors, fmt.Errorf("%s.%s not implemented yet!", pNodeName,
-				pFieldName))
 		default:
-			if pFieldVal != eFieldVal {
-				gError()
+			if c.pFieldVal != c.eFieldVal {
+				c.dError()
 			}
 		}
 
 	}
-
 	return
 }
 
 // checkParseNodes is a recursive function that compares the resulting nodes (pNodes) from the
 // parser with the expected output from the testdata (eNodes).
-func checkParseNodes(pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
-	// spd.Dump(pNodes)
-	// os.Exit(1)
+func checkParseNodes(t *testing.T, pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
+	state := &checkNode{t: t, testName: testName}
 	for pNum, pNode := range *pNodes {
 		switch node := pNode.(type) {
 		case *SectionNode:
-			errs := checkSectionNode(node, eNodes[pNum], testName)
-			if errs != nil {
-				errors = append(errors, errs...)
-			}
+			state.checkSectionNode(node, eNodes[pNum], testName)
 		}
 	}
 	return
@@ -269,7 +258,7 @@ func TestParseSectionTitlePara(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	errors := checkParseNodes(tree.Nodes, nodeList, testName)
+	errors := checkParseNodes(t, tree.Nodes, nodeList, testName)
 	if errors != nil {
 		for _, err := range errors {
 			t.Error(err)
