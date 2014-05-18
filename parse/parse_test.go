@@ -194,6 +194,10 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 			c.error("Overline/Underline not implemented!")
 		case "NodeList":
 			c.error("NodeList not implemented!")
+		case "Rune":
+			if string(c.pFieldVal.(rune)) != c.eFieldVal {
+				c.dError()
+			}
 		default:
 			if c.pFieldVal != c.eFieldVal {
 				c.dError()
