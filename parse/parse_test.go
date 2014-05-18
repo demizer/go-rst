@@ -134,17 +134,27 @@ func (c *checkNode) dError() {
 		c.eFieldName, c.eFieldVal, c.eFieldType)
 }
 
-func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int) {
+func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int) bool {
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
 	c.pFieldName = pVal.Type().Field(field).Name
 	c.pFieldVal = pVal.Field(field).Interface()
 	c.pFieldType = pVal.Type().Field(field).Type
 	c.id = pVal.FieldByName("Id").Interface().(int)
+
 	// Expected parser metadata
 	c.eFieldName = strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:]
 	c.eFieldVal = eVal.(map[string]interface{})[c.eFieldName]
 	c.eFieldType = reflect.TypeOf(c.eFieldVal)
+
+	if c.eFieldVal == nil && c.eFieldName != "overLine" {
+		// c.errorf("%q does not contain field %q.\n", c.eFieldName,
+			// strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:])
+		c.dError()
+		return false
+	}
+
+	return true
 }
 
 func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
