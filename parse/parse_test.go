@@ -190,10 +190,14 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 				c.dError()
 			}
 		case "OverLine", "UnderLine":
-			// c.checkAdornmentNode(c.pFieldVal.(*AdornmentNode), c.eFieldVal, c.testName)
-			c.error("Overline/Underline not implemented!")
+			c.checkFields(c.pFieldVal.(Node), c.eFieldVal)
 		case "NodeList":
-			c.error("NodeList not implemented!")
+			for num, node := range c.pFieldVal.(NodeList) {
+				// A little hackery to make our recursion easy
+				eFieldVal := c.eFieldVal
+				c.checkFields(node.(Node), eFieldVal.([]interface{})[num])
+				c.eFieldVal = eFieldVal
+			}
 		case "Rune":
 			if string(c.pFieldVal.(rune)) != c.eFieldVal {
 				c.dError()
