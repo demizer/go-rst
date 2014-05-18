@@ -95,25 +95,25 @@ Paragraph (no blank line).
 #items
 [
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "position": 1,
         "line": 1,
         "value": "Title"
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "position": 7,
         "line": 2,
         "value": "====="
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "position": 13,
         "line": 3,
         "value": "Paragraph (no blank line)."
     },
     {
-        "element-name": "itemEOF",
+        "elementName": "itemEOF",
         "position": 39,
         "line": 3,
         "value": ""
@@ -138,49 +138,49 @@ Paragraph.
 #items
 [
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph.",
         "position": 1,
         "line": 1,
         "length": 10
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 12,
         "line": 2,
         "length": 1
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title",
         "position": 13,
         "line": 3,
         "length": 5
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "=====",
         "position": 19,
         "line": 4,
         "length": 5
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 25,
         "line": 5,
         "length": 1
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph.",
         "position": 26,
         "line": 6,
         "length": 10
     },
     {
-        "element-name": "itemEOF",
+        "elementName": "itemEOF",
         "value": "",
         "position": 36,
         "line": 6,
@@ -210,126 +210,126 @@ Test unexpected section titles.
 #items
 [
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Test unexpected section titles.",
         "position": 1,
         "line": 1,
         "length": 31
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 33,
         "line": 2,
         "length": 1
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 34,
         "line": 3,
         "length": 4
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title",
         "position": 38,
         "line": 3,
         "length": 5
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 44,
         "line": 4,
         "length": 4
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "=====",
         "position": 48,
         "line": 4,
         "length": 5
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 54,
         "line": 5,
         "length": 4
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph.",
         "position": 58,
         "line": 5,
         "length": 10
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 69,
         "line": 6,
         "length": 1
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 70,
         "line": 7,
         "length": 4
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "-----",
         "position": 74,
         "line": 7,
         "length": 5
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 80,
         "line": 8,
         "length": 4
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title",
         "position": 84,
         "line": 8,
         "length": 5
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 90,
         "line": 9,
         "length": 4
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "-----",
         "position": 94,
         "line": 9,
         "length": 5
     },
     {
-        "element-name": "itemSpace",
+        "elementName": "itemSpace",
         "value": "    ",
         "position": 100,
         "line": 10,
         "length": 4
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph.",
         "position": 104,
         "line": 10,
         "length": 10
     },
     {
-        "element-name": "itemEOF",
+        "elementName": "itemEOF",
         "value": "",
         "position": 114,
         "line": 10,
@@ -339,18 +339,18 @@ Test unexpected section titles.
 #parse-tree
 [
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "position": 1,
         "line": 1,
         "value": "Test unexpected section titles."
     },
     {
-        "element-name": "itemBlockQuote",
+        "elementName": "itemBlockQuote",
         "position": 0,
         "line": 1,
         "value": [
             {
-                "element-name": "itemSystemMessage",
+                "elementName": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -359,13 +359,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "nodes": [
                         {
-                            "element-name": "itemParagraph",
+                            "elementName": "itemParagraph",
                             "position": 0,
                             "line": 1,
                             "value": "Unexpected section title."
                         },
                         {
-                            "element-name": "itemLiteralBlock",
+                            "elementName": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
                             "value": "Title\n====="
@@ -374,13 +374,13 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-name": "itemParagraph",
+                "elementName": "itemParagraph",
                 "position": 0,
                 "line": 1,
                 "value": "Paragraph."
             },
             {
-                "element-name": "itemSystemMessage",
+                "elementName": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -389,13 +389,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "nodes": [
                         {
-                            "element-name": "itemParagraph",
+                            "elementName": "itemParagraph",
                             "position": 0,
                             "line": 1,
                             "value": "Unexpected section title or transition."
                         },
                         {
-                            "element-name": "itemLiteralBlock",
+                            "elementName": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
                             "value": "-----"
@@ -404,7 +404,7 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-name": "itemSystemMessage",
+                "elementName": "itemSystemMessage",
                 "position": 0,
                 "line": 1,
                 "value": {
@@ -413,13 +413,13 @@ Test unexpected section titles.
                     "source": "test data",
                     "nodes": [
                         {
-                            "element-name": "itemParagraph",
+                            "elementName": "itemParagraph",
                             "position": 0,
                             "line": 1,
                             "value": "Unexpected section title."
                         },
                         {
-                            "element-name": "itemLiteralBlock",
+                            "elementName": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
                             "value": "Title\n-----"
@@ -428,7 +428,7 @@ Test unexpected section titles.
                 }
             },
             {
-                "element-name": "itemParagraph",
+                "elementName": "itemParagraph",
                 "position": 0,
                 "line": 1,
                 "value": "Paragraph."
@@ -465,119 +465,119 @@ Paragraph 4.
 #items
 [
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Test return to existing, higher-level section (Title 4).",
         "position": 1,
         "line": 1,
         "length": 56
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 58,
         "line": 2,
         "length": 1
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title 1",
         "position": 59,
         "line": 3,
         "length": 7
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "=======",
         "position": 67,
         "line": 4,
         "length": 7
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph 1.",
         "position": 75,
         "line": 5,
         "length": 12
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 88,
         "line": 6,
         "length": 1
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title 2",
         "position": 89,
         "line": 7,
         "length": 7
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "-------",
         "position": 97,
         "line": 8,
         "length": 7
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph 2.",
         "position": 105,
         "line": 9,
         "length": 12
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 118,
         "line": 10,
         "length": 1
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title 3",
         "position": 119,
         "line": 11,
         "length": 7
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "```````",
         "position": 127,
         "line": 12,
         "length": 7
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph 3.",
         "position": 135,
         "line": 13,
         "length": 12
     },
     {
-        "element-name": "itemBlankLine",
+        "elementName": "itemBlankLine",
         "value": "\n",
         "position": 148,
         "line": 14,
         "length": 1
     },
     {
-        "element-name": "itemTitle",
+        "elementName": "itemTitle",
         "value": "Title 4",
         "position": 149,
         "line": 15,
         "length": 7
     },
     {
-        "element-name": "itemSectionAdornment",
+        "elementName": "itemSectionAdornment",
         "value": "-------",
         "position": 157,
         "line": 16,
         "length": 7
     },
     {
-        "element-name": "itemParagraph",
+        "elementName": "itemParagraph",
         "value": "Paragraph 4.",
         "position": 165,
         "line": 17,

@@ -67,7 +67,7 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	ElementName   string      `json:"element-name"`
+	ElementName   string      `json:"elementName"`
 	ElementType   itemElement `json:"-"`
 	Length        int         `json:"length"`
 	Value         interface{} `json:"value"`

@@ -88,24 +88,24 @@ func equal(t *testing.T, items []item, testName string) []error {
 	}
 	for i, item := range items {
 		if item.ElementType != eItems[i].ElementType {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n"+
-				"Got ElementType:\t\t%s\nExpect ElementType:\t%s\n\n",
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nLine:\t%d\nValue:\t%q\n\n"+
+				"Got ElementType:\t%s\nExpect ElementType:\t%s\n\n",
 				i, item.ElementName, item.Line, item.Value, item.ElementType,
 				eItems[i].ElementType)
 		}
 		if item.Line != eItems[i].Line {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nValue:\t%q\n\n"+
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nValue:\t%q\n\n"+
 				"Got Line Number:\t%d\nExpect Line Number:\t%d\n\n",
 				i, item.ElementName, item.Value, item.Line, eItems[i].Line)
 		}
 		if item.StartPosition != eItems[i].StartPosition {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\nLine:\t%d\nValue:\t%q\n\n"+
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nLine:\t%d\nValue:\t%q\n\n"+
 				"Got Position:\t\t%d\nExpect Position:\t%d\n\n",
 				i, item.ElementName, item.Line, item.Value, item.Position,
 				eItems[i].Position)
 		}
 		if item.Value != eItems[i].Value {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%s\n\n"+
+			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\n\n"+
 				"Got Value:\n\t%q\nExpect Value:\n\t%q\n\n",
 				i, item.ElementName, item.Value, eItems[i].Value)
 		}
