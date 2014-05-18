@@ -97,6 +97,7 @@ type Tree struct {
 	token         [3]item        // three-token look-ahead for parser.
 	sectionLevel  int            // The current section level of parsing
 	sectionLevels *sectionLevels // Encountered section levels
+	id            int            // The unique id of the node in the tree
 }
 
 func (t *Tree) errorf(format string, args ...interface{}) {
@@ -132,15 +133,16 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
 func (t *Tree) parse(tree *Tree) (next Node) {
 	log.Debugln("Start")
 	t.Nodes = newList()
+
 	for t.peek().ElementType != itemEOF {
 		var n Node
 		switch token := t.next(); token.ElementType {
 		case itemTitle: // Section includes overline/underline
-			n = t.section(token)
+			n = t.section(token )
 		case itemBlankLine:
-			n = newBlankLine(token)
+			n = newBlankLine(token, t.id)
 		case itemParagraph:
-			n = newParagraph(token)
+			n = newParagraph(token, t.id)
 		}
 
 		if len([]Node(*t.Nodes)) == 0 {
@@ -149,6 +151,7 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 			t.branch.append(n)
 		}
 	}
+
 	log.Debugln("End")
 	return nil
 }
@@ -191,6 +194,7 @@ func (t *Tree) section(i item) Node {
 		overline = true
 		overAdorn = t.peekBack()
 	}
+
 	title = i
 	underAdorn = t.next() // Grab the section underline
 
@@ -219,9 +223,9 @@ func (t *Tree) section(i item) Node {
 	}
 
 	t.sectionLevels.Add(rune(underAdorn.Value.(string)[0]), overline, len(underAdorn.Value.(string)))
-
-	ret := newSection(title, t.sectionLevel, overAdorn, underAdorn)
+	ret := newSection(title, &t.id, t.sectionLevel, overAdorn, underAdorn)
 	t.branch = &ret.NodeList
+
 	log.Debugln("End")
 	return ret
 }

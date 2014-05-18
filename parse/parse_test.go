@@ -111,6 +111,7 @@ type checkNode struct {
 	eFieldName string
 	eFieldVal  interface{}
 	eFieldType reflect.Type
+	id	   int
 }
 
 func (c *checkNode) error(args ...interface{}) {
@@ -123,14 +124,14 @@ func (c *checkNode) errorf(format string, args ...interface{}) {
 
 func (c *checkNode) dError() {
 	if c.pFieldName == "Rune" {
-		c.t.Errorf("Got: %s.%s = %#v (%#v) (%s),\n\tExpect: %s.%s = %#v (%s)\n", c.pNodeName,
-			c.pFieldName, c.pFieldVal, string(c.pFieldVal.(int32)), c.pFieldType,
-			c.testName, c.eFieldName, c.eFieldVal, c.eFieldType)
+		c.t.Errorf("Got: %s.%s = %#v (%#v) (%s) (Id: %d),\n\tExpect: %s.%s = %#v (%s)\n",
+			c.pNodeName, c.pFieldName, c.pFieldVal, string(c.pFieldVal.(int32)),
+			c.pFieldType, c.id, c.testName, c.eFieldName, c.eFieldVal, c.eFieldType)
 		return
 	}
-	c.t.Errorf("Got: %s.%s = %#v (%s),\n\tExpect: %s.%s = %#v (%s)\n", c.pNodeName,
-		c.pFieldName, c.pFieldVal, c.pFieldType, c.testName, c.eFieldName, c.eFieldVal,
-		c.eFieldType)
+	c.t.Errorf("Got: %s.%s = %#v (%s) (Id: %d),\n\tExpect: %s.%s = %#v (%s)\n",
+		c.pNodeName, c.pFieldName, c.pFieldVal, c.pFieldType, c.id, c.testName,
+		c.eFieldName, c.eFieldVal, c.eFieldType)
 }
 
 func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int) {
@@ -139,6 +140,7 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	c.pFieldName = pVal.Type().Field(field).Name
 	c.pFieldVal = pVal.Field(field).Interface()
 	c.pFieldType = pVal.Type().Field(field).Type
+	c.id = pVal.FieldByName("Id").Interface().(int)
 	// Expected parser metadata
 	c.eFieldName = strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:]
 	c.eFieldVal = eVal.(map[string]interface{})[c.eFieldName]
@@ -166,7 +168,7 @@ func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
 			if c.pFieldVal.(NodeType).String() != c.eFieldVal {
 				c.dError()
 			}
-		case "Level", "Length":
+		case "Id", "Level", "Length":
 			if float64(c.pFieldVal.(int)) != c.eFieldVal {
 				c.dError()
 			}
@@ -211,7 +213,7 @@ func (c *checkNode) checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}
 			if string(c.pFieldVal.(rune)) != c.eFieldVal {
 				c.dError()
 			}
-		case "Length":
+		case "Id", "Length":
 			if float64(c.pFieldVal.(int)) != c.eFieldVal {
 				c.dError()
 			}
