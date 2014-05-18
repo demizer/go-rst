@@ -147,7 +147,16 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	c.eFieldVal = eVal.(map[string]interface{})[c.eFieldName]
 	c.eFieldType = reflect.TypeOf(c.eFieldVal)
 
-	if c.eFieldVal == nil && c.eFieldName != "overLine" {
+	pField := pVal.Field(field)
+	if pField.Kind() == reflect.Ptr && pField.IsNil() {
+		// Overline adornment nodes can be null
+		if c.pFieldName == "OverLine" {
+			return false
+		} else {
+			c.dError()
+			return false
+		}
+	} else if c.pFieldVal == nil {
 		c.dError()
 		return false
 	}
