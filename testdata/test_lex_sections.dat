@@ -48,7 +48,7 @@ Paragraph.
 #parse-tree
 [
     {
-        "id": 0,
+        "id": 1,
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
@@ -57,7 +57,7 @@ Paragraph.
         "startPosition": 1,
         "overLine": null,
         "underLine": {
-            "id": 1,
+            "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
@@ -66,13 +66,13 @@ Paragraph.
         },
         "nodeList": [
             {
-                "id": 2,
+                "id": 3,
                 "type": "NodeBlankLine",
                 "line": 3,
                 "startPosition": 13
             },
             {
-                "id": 3,
+                "id": 4,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
                 "line": 4,

@@ -138,11 +138,11 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 		var n Node
 		switch token := t.next(); token.ElementType {
 		case itemTitle: // Section includes overline/underline
-			n = t.section(token )
+			n = t.section(token)
 		case itemBlankLine:
-			n = newBlankLine(token, t.id)
+			n = newBlankLine(token, &t.id)
 		case itemParagraph:
-			n = newParagraph(token, t.id)
+			n = newParagraph(token, &t.id)
 		}
 
 		if len([]Node(*t.Nodes)) == 0 {

@@ -68,9 +68,9 @@ func (s *SectionNode) NodeType() NodeType {
 }
 
 func newSection(item item, id *int, level int, overAdorn item, underAdorn item) *SectionNode {
-	newId := *id
+	*id++
 	n := &SectionNode{Text: item.Value.(string),
-		Id:	       newId,
+		Id:            *id,
 		Type:          NodeSection,
 		Level:         level,
 		StartPosition: item.StartPosition,
@@ -79,10 +79,10 @@ func newSection(item item, id *int, level int, overAdorn item, underAdorn item) 
 	}
 
 	if overAdorn.Value != nil {
-		newId++
+		*id++
 		Rune := rune(overAdorn.Value.(string)[0])
 		n.OverLine = &AdornmentNode{
-			Id:	       newId,
+			Id:            *id,
 			Type:          NodeAdornment,
 			Rune:          Rune,
 			StartPosition: overAdorn.StartPosition,
@@ -91,10 +91,10 @@ func newSection(item item, id *int, level int, overAdorn item, underAdorn item) 
 		}
 	}
 
-	newId++
+	*id++
 	Rune := rune(underAdorn.Value.(string)[0])
 	n.UnderLine = &AdornmentNode{
-		Id:	       newId,
+		Id:            *id,
 		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underAdorn.StartPosition,
@@ -102,12 +102,11 @@ func newSection(item item, id *int, level int, overAdorn item, underAdorn item) 
 		Length:        underAdorn.Length,
 	}
 
-	*id = newId
 	return n
 }
 
 type AdornmentNode struct {
-	Id	      int      `json:"id"`
+	Id            int      `json:"id"`
 	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune"`
 	Length        int      `json:"length"`
@@ -119,9 +118,10 @@ func (a AdornmentNode) NodeType() NodeType {
 	return a.Type
 }
 
-func newBlankLine(i item, id int) *BlankLineNode {
+func newBlankLine(i item, id *int) *BlankLineNode {
+	*id++
 	return &BlankLineNode{
-		Id:	       id,
+		Id:            *id,
 		Type:          NodeBlankLine,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
@@ -129,7 +129,7 @@ func newBlankLine(i item, id int) *BlankLineNode {
 }
 
 type BlankLineNode struct {
-	Id	      int      `json:"id"`
+	Id            int      `json:"id"`
 	Type          NodeType `json:"nodetype"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
@@ -140,7 +140,7 @@ func (b BlankLineNode) NodeType() NodeType {
 }
 
 type ParagraphNode struct {
-	Id	      int      `json:"id"`
+	Id            int      `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -148,9 +148,10 @@ type ParagraphNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newParagraph(i item, id int) *ParagraphNode {
+func newParagraph(i item, id *int) *ParagraphNode {
+	*id++
 	return &ParagraphNode{
-		Id:	       id,
+		Id:            *id,
 		Type:          NodeParagraph,
 		Text:          i.Value.(string),
 		Length:        i.Length,
