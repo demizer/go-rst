@@ -148,8 +148,6 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	c.eFieldType = reflect.TypeOf(c.eFieldVal)
 
 	if c.eFieldVal == nil && c.eFieldName != "overLine" {
-		// c.errorf("%q does not contain field %q.\n", c.eFieldName,
-			// strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:])
 		c.dError()
 		return false
 	}
@@ -157,20 +155,12 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	return true
 }
 
-func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
-	expect interface{}, testName string) (errors []error) {
+func (c *checkNode) checkFields(pNode Node, expect interface{}) {
+	pVal := reflect.ValueOf(pNode).Elem()
+	for i := 0; i < pVal.NumField(); i++ {
 
-	pSectionNodeVal := reflect.ValueOf(pSectionNode).Elem()
-	for i := 0; i < pSectionNodeVal.NumField(); i++ {
-
-		c.updateState(pSectionNodeVal, expect, i)
-
-		// SectionNode.OverLine can be null, if not then we have a missing property
-		if c.eFieldVal == nil && c.eFieldName == "overLine" {
+		if c.updateState(pVal, expect, i) == false {
 			continue
-		} else if c.eFieldVal == nil {
-			c.errorf("\"%s\" property does not exist in %s.expectTree!\n", c.pFieldName,
-				testName)
 		}
 
 		switch c.pFieldName {
@@ -191,7 +181,8 @@ func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
 				c.dError()
 			}
 		case "OverLine", "UnderLine":
-			c.checkAdornmentNode(c.pFieldVal.(*AdornmentNode), c.eFieldVal, c.testName)
+			// c.checkAdornmentNode(c.pFieldVal.(*AdornmentNode), c.eFieldVal, c.testName)
+			c.error("Overline/Underline not implemented!")
 		case "NodeList":
 			c.error("NodeList not implemented!")
 		default:
@@ -200,49 +191,7 @@ func (c *checkNode) checkSectionNode(pSectionNode *SectionNode,
 			}
 		}
 	}
-	return
-}
 
-func (c *checkNode) checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}, testName string) {
-	pAdornVal := reflect.ValueOf(pAdorn).Elem()
-	for i := 0; i < pAdornVal.NumField(); i++ {
-
-		c.updateState(pAdornVal, expect, i)
-
-		if c.eFieldVal == nil {
-			c.error("\"%s\" does not contain field \"%s\".\n", pAdornVal, c.eFieldName)
-			continue
-		}
-
-		switch c.pFieldName {
-		case "Type":
-			if c.pFieldVal.(NodeType).String() != c.eFieldVal {
-				c.dError()
-			}
-		case "Rune":
-			if string(c.pFieldVal.(rune)) != c.eFieldVal {
-				c.dError()
-			}
-		case "Id", "Length":
-			if float64(c.pFieldVal.(int)) != c.eFieldVal {
-				c.dError()
-			}
-		case "Line":
-			if float64(c.pFieldVal.(Line)) != c.eFieldVal {
-				c.dError()
-			}
-		case "StartPosition":
-			if float64(c.pFieldVal.(StartPosition)) != c.eFieldVal {
-				c.dError()
-			}
-		default:
-			if c.pFieldVal != c.eFieldVal {
-				c.dError()
-			}
-		}
-
-	}
-	return
 }
 
 // checkParseNodes is a recursive function that compares the resulting nodes (pNodes) from the
@@ -250,10 +199,7 @@ func (c *checkNode) checkAdornmentNode(pAdorn *AdornmentNode, expect interface{}
 func checkParseNodes(t *testing.T, pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
 	state := &checkNode{t: t, testName: testName}
 	for pNum, pNode := range *pNodes {
-		switch node := pNode.(type) {
-		case *SectionNode:
-			state.checkSectionNode(node, eNodes[pNum], testName)
-		}
+		state.checkFields(pNode, eNodes[pNum])
 	}
 	return
 }
