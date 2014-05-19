@@ -113,6 +113,7 @@ func (t *Tree) error(err error) {
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
 	t.Nodes = nil
+	t.branch = nil
 	t.lex = lex
 }
 
@@ -133,6 +134,7 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
 func (t *Tree) parse(tree *Tree) (next Node) {
 	log.Debugln("Start")
 	t.Nodes = newList()
+	t.branch = newList()
 
 	for t.peek().Type != itemEOF {
 		var n Node
