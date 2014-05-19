@@ -53,6 +53,15 @@ var elements = [...]string{
 // String implements the Stringer interface for printing itemElement types.
 func (t itemElement) String() string { return elements[t] }
 
+func (t *itemElement) UnmarshalJSON(data []byte) error {
+	for num, elm := range elements {
+		if elm == string(data[1:len(data)-1]) {
+			*t = itemElement(num)
+		}
+	}
+	return nil
+}
+
 // Valid section adornment runes
 var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*',
 	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',

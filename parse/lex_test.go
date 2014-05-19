@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
+	"reflect"
 	"testing"
 )
 
@@ -42,8 +43,8 @@ func lexSectionTest(t *testing.T, testName string) []item {
 	}
 	test := lexSectionTests.SearchByName(testName)
 	if test != nil {
-		log.Debugf("Test Name: \t%s\n", test.name)
-		log.Debugf("Description: \t%s\n", test.description)
+		log.Debugf("Test Name: %s\n", test.name)
+		log.Debugf("Description: %s\n", test.description)
 		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 		items := collect(test)
 		return items
@@ -54,86 +55,73 @@ func lexSectionTest(t *testing.T, testName string) []item {
 // Test equality between items and expected items from unmarshalled json data, field by field.
 // Returns error in case of error during json unmarshalling, or mismatch between items and the
 // expected output.
-func equal(t *testing.T, items []item, testName string) []error {
+func equal(t *testing.T, items []item, testName string) {
 	test := lexSectionTests.SearchByName(testName)
-	eItems, err := JsonToItems([]byte(test.items))
+	var exp []item
+	err := json.Unmarshal([]byte(test.items), &exp)
 	if err != nil {
 		t.Fatal("JSON error: ", err)
 	}
-	if len(items) != len(eItems) {
-		t.Fatalf("Collected items is not the same length as eItems!\n"+
-			"\nGot items (%d): -------------------------------\n\n%s\n"+
-			"Expect items (%d): ------------------------------\n\n%s\n"+
-			"-------------------------------------------------\n",
-			len(items), spd.Sdump(items), len(eItems), spd.Sdump(eItems))
+
+	var id int
+	var found bool
+	var pFieldName, eFieldName string
+	var pFieldType, eFieldType reflect.Type
+	var pFieldVal, eFieldVal reflect.Value
+	var pFieldValStruct reflect.StructField
+
+	dError := func() {
+		t.Errorf("Got: %s = %#v (%T) (Id: %d)\n\tExpect: %s = %#v (%T)\n", pFieldName,
+			pFieldVal.Interface(), pFieldType.Name(), id, eFieldName,
+			eFieldVal.Interface(), eFieldType.Name())
 	}
-	for i, item := range items {
-		if item.ElementType != eItems[i].ElementType {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nLine:\t%d\nValue:\t%q\n\n"+
-				"Got ElementType:\t%s\nExpect ElementType:\t%s\n\n",
-				i, item.ElementName, item.Line, item.Value, item.ElementType,
-				eItems[i].ElementType)
-		}
-		if item.Line != eItems[i].Line {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nValue:\t%q\n\n"+
-				"Got Line Number:\t%d\nExpect Line Number:\t%d\n\n",
-				i, item.ElementName, item.Value, item.Line, eItems[i].Line)
-		}
-		if item.StartPosition != eItems[i].StartPosition {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\nLine:\t%d\nValue:\t%q\n\n"+
-				"Got Position:\t\t%d\nExpect Position:\t%d\n\n",
-				i, item.ElementName, item.Line, item.Value, item.Position,
-				eItems[i].Position)
-		}
-		if item.Value != eItems[i].Value {
-			t.Errorf("\n\nItem:\t%d\nElement Name:\t%q\n\n"+
-				"Got Value:\n\t%q\nExpect Value:\n\t%q\n\n",
-				i, item.ElementName, item.Value, eItems[i].Value)
+
+	for eNum, eItem := range exp {
+		eVal := reflect.ValueOf(eItem)
+		pVal := reflect.ValueOf(items[eNum])
+		id = pVal.FieldByName("Id").Interface().(int)
+		for x := 0; x < eVal.NumField(); x++ {
+			eFieldVal = eVal.Field(x)
+			eFieldType = eFieldVal.Type()
+			eFieldName = eVal.Type().Field(x).Name
+			pFieldVal = pVal.FieldByName(eFieldName)
+			pFieldType = pFieldVal.Type()
+			pFieldValStruct, found = pVal.Type().FieldByName(eFieldName)
+			pFieldName = pFieldValStruct.Name
+			if !found {
+				t.Errorf("Parsed item (Id: %d) does not contain field %q\n", id, eFieldName)
+				continue
+			}
+			if pFieldVal.Interface() != eFieldVal.Interface() {
+				// log.Debugln(eFieldType.Name())
+				dError()
+			}
 		}
 	}
-	return nil
+
+	return
 }
 
 func TestSectionTitlePara(t *testing.T) {
 	testName := "SectionTitlePara"
 	items := lexSectionTest(t, testName)
-	errors := equal(t, items, testName)
-	if errors != nil {
-		for err := range errors {
-			t.Error(err)
-		}
-	}
+	equal(t, items, testName)
 }
 
 func TestSectionTitleParaNoBlankline(t *testing.T) {
 	testName := "SectionTitleParaNoBlankline"
 	items := lexSectionTest(t, testName)
-	errors := equal(t, items, testName)
-	if errors != nil {
-		for err := range errors {
-			t.Error(err)
-		}
-	}
+	equal(t, items, testName)
 }
 
 func TestSectionParaHeadPara(t *testing.T) {
 	testName := "SectionParaHeadPara"
 	items := lexSectionTest(t, testName)
-	errors := equal(t, items, testName)
-	if errors != nil {
-		for err := range errors {
-			t.Error(err)
-		}
-	}
+	equal(t, items, testName)
 }
 
 func TestSectionUnexpectedTitles(t *testing.T) {
 	testName := "SectionUnexpectedTitles"
 	items := lexSectionTest(t, testName)
-	errors := equal(t, items, testName)
-	if errors != nil {
-		for err := range errors {
-			t.Error(err)
-		}
-	}
+	equal(t, items, testName)
 }
