@@ -107,7 +107,7 @@ func (t *Tree) errorf(format string, args ...interface{}) {
 }
 
 func (t *Tree) error(err error) {
-	t.errorf("%s", err)
+	t.errorf("%s\n", err)
 }
 
 // startParse initializes the parser, using the lexer.
