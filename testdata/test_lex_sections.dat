@@ -299,283 +299,6 @@ Paragraph.
 
 
 #name
-SectionUnexpectedTitles
-#description
-Test unexpected section titles.
-#data
-Test unexpected section titles.
-
-    Title
-    =====
-    Paragraph.
-
-    -----
-    Title
-    -----
-    Paragraph.
-#items
-[
-    {
-        "id": 1,
-        "type": "itemParagraph",
-        "text": "Test unexpected section titles.",
-        "startPosition": 1,
-        "line": 1,
-        "length": 31
-    },
-    {
-        "id": 2,
-        "type": "itemBlankLine",
-        "text": "\n",
-        "startPosition": 33,
-        "line": 2,
-        "length": 1
-    },
-    {
-        "id": 3,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 34,
-        "line": 3,
-        "length": 4
-    },
-    {
-        "id": 4,
-        "type": "itemTitle",
-        "text": "Title",
-        "startPosition": 38,
-        "line": 3,
-        "length": 5
-    },
-    {
-        "id": 5,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 44,
-        "line": 4,
-        "length": 4
-    },
-    {
-        "id": 6,
-        "type": "itemSectionAdornment",
-        "text": "=====",
-        "startPosition": 48,
-        "line": 4,
-        "length": 5
-    },
-    {
-        "id": 7,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 54,
-        "line": 5,
-        "length": 4
-    },
-    {
-        "id": 8,
-        "type": "itemParagraph",
-        "text": "Paragraph.",
-        "startPosition": 58,
-        "line": 5,
-        "length": 10
-    },
-    {
-        "id": 9,
-        "type": "itemBlankLine",
-        "text": "\n",
-        "startPosition": 69,
-        "line": 6,
-        "length": 1
-    },
-    {
-        "id": 10,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 70,
-        "line": 7,
-        "length": 4
-    },
-    {
-        "id": 11,
-        "type": "itemSectionAdornment",
-        "text": "-----",
-        "startPosition": 74,
-        "line": 7,
-        "length": 5
-    },
-    {
-        "id": 12,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 80,
-        "line": 8,
-        "length": 4
-    },
-    {
-        "id": 13,
-        "type": "itemTitle",
-        "text": "Title",
-        "startPosition": 84,
-        "line": 8,
-        "length": 5
-    },
-    {
-        "id": 14,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 90,
-        "line": 9,
-        "length": 4
-    },
-    {
-        "id": 15,
-        "type": "itemSectionAdornment",
-        "text": "-----",
-        "startPosition": 94,
-        "line": 9,
-        "length": 5
-    },
-    {
-        "id": 16,
-        "type": "itemSpace",
-        "text": "    ",
-        "startPosition": 100,
-        "line": 10,
-        "length": 4
-    },
-    {
-        "id": 17,
-        "type": "itemParagraph",
-        "text": "Paragraph.",
-        "startPosition": 104,
-        "line": 10,
-        "length": 10
-    },
-    {
-        "id": 18,
-        "type": "itemEOF",
-        "text": "",
-        "startPosition": 114,
-        "line": 10,
-        "length": 0
-    }
-]
-#parse-tree
-[
-    {
-        "id": 1,
-        "type": "NodeParagraph",
-        "text": "Test unexpected section titles.",
-        "startPosition": 1,
-        "line": 1,
-        "length": 31
-    },
-    {
-        "id": 2,
-        "type": "NodeBlockQuote",
-        "startPosition": 0,
-        "line": 1,
-        "length": 0,
-        "nodeList": [
-            {
-                "id": 3,
-                "type": "NodeSystemMessage",
-                "level": "SEVERE",
-                "startPosition": 0,
-                "line": 4,
-                "nodeList": [
-                    {
-                        "id": 5,
-                        "type": "NodeParagraph",
-                        "text": "Unexpected section title.",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 25
-                    },
-                    {
-                        "id": 6,
-                        "type": "NodeLiteralBlock",
-                        "text": "Title\n=====",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 12
-                    }
-                ]
-            },
-            {
-                "id": 7,
-                "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "startPosition": 0,
-                "line": 1,
-                "length": 10
-            },
-            {
-                "id": 8,
-                "type": "NodeSystemMessage",
-                "level": "SEVERE",
-                "startPosition": 0,
-                "line": 7,
-                "nodeList": [
-                    {
-                        "id": 9,
-                        "type": "NodeParagraph",
-                        "text": "Unexpected section title or transition.",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 39
-                    },
-                    {
-                        "id": 10,
-                        "type": "NodeLiteralBlock",
-                        "text": "-----",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 5
-                    }
-                ]
-            },
-            {
-                "id": 11,
-                "type": "NodeSystemMessage",
-                "level": "SEVERE",
-                "startPosition": 0,
-                "line": 9,
-                "nodeList": [
-                    {
-                        "id": 12,
-                        "type": "NodeParagraph",
-                        "text": "Unexpected section title.",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 25
-                    },
-                    {
-                        "id": 13,
-                        "type": "NodeLiteralBlock",
-                        "text": "Title\n-----",
-                        "startPosition": 0,
-                        "line": 1,
-                        "length": 12
-                    }
-                ]
-            },
-            {
-                "id": 14,
-                "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "startPosition": 0,
-                "line": 1,
-                "length": 10
-            }
-        ]
-    }
-]
-
-
-
-
-#name
 SectionLevelTest1
 #description
 Test title 4 section level return.
@@ -855,6 +578,283 @@ Paragraph 4.
                         "length": 12
                     }
                 ]
+            }
+        ]
+    }
+]
+
+
+
+
+#name
+SectionUnexpectedTitles
+#description
+Test unexpected section titles.
+#data
+Test unexpected section titles.
+
+    Title
+    =====
+    Paragraph.
+
+    -----
+    Title
+    -----
+    Paragraph.
+#items
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Test unexpected section titles.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 31
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 33,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 34,
+        "line": 3,
+        "length": 4
+    },
+    {
+        "id": 4,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 38,
+        "line": 3,
+        "length": 5
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 44,
+        "line": 4,
+        "length": 4
+    },
+    {
+        "id": 6,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 48,
+        "line": 4,
+        "length": 5
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 54,
+        "line": 5,
+        "length": 4
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 58,
+        "line": 5,
+        "length": 10
+    },
+    {
+        "id": 9,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 69,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 70,
+        "line": 7,
+        "length": 4
+    },
+    {
+        "id": 11,
+        "type": "itemSectionAdornment",
+        "text": "-----",
+        "startPosition": 74,
+        "line": 7,
+        "length": 5
+    },
+    {
+        "id": 12,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 80,
+        "line": 8,
+        "length": 4
+    },
+    {
+        "id": 13,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 84,
+        "line": 8,
+        "length": 5
+    },
+    {
+        "id": 14,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 90,
+        "line": 9,
+        "length": 4
+    },
+    {
+        "id": 15,
+        "type": "itemSectionAdornment",
+        "text": "-----",
+        "startPosition": 94,
+        "line": 9,
+        "length": 5
+    },
+    {
+        "id": 16,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 100,
+        "line": 10,
+        "length": 4
+    },
+    {
+        "id": 17,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 104,
+        "line": 10,
+        "length": 10
+    },
+    {
+        "id": 18,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 114,
+        "line": 10,
+        "length": 0
+    }
+]
+#parse-tree
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Test unexpected section titles.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 31
+    },
+    {
+        "id": 2,
+        "type": "NodeBlockQuote",
+        "startPosition": 0,
+        "line": 1,
+        "length": 0,
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeSystemMessage",
+                "level": "SEVERE",
+                "startPosition": 0,
+                "line": 4,
+                "nodeList": [
+                    {
+                        "id": 5,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title.",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 25
+                    },
+                    {
+                        "id": 6,
+                        "type": "NodeLiteralBlock",
+                        "text": "Title\n=====",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 12
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 0,
+                "line": 1,
+                "length": 10
+            },
+            {
+                "id": 8,
+                "type": "NodeSystemMessage",
+                "level": "SEVERE",
+                "startPosition": 0,
+                "line": 7,
+                "nodeList": [
+                    {
+                        "id": 9,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title or transition.",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 39
+                    },
+                    {
+                        "id": 10,
+                        "type": "NodeLiteralBlock",
+                        "text": "-----",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 5
+                    }
+                ]
+            },
+            {
+                "id": 11,
+                "type": "NodeSystemMessage",
+                "level": "SEVERE",
+                "startPosition": 0,
+                "line": 9,
+                "nodeList": [
+                    {
+                        "id": 12,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title.",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 25
+                    },
+                    {
+                        "id": 13,
+                        "type": "NodeLiteralBlock",
+                        "text": "Title\n-----",
+                        "startPosition": 0,
+                        "line": 1,
+                        "length": 12
+                    }
+                ]
+            },
+            {
+                "id": 14,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 0,
+                "line": 1,
+                "length": 10
             }
         ]
     }
