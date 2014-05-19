@@ -90,8 +90,8 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 	}
 	test := lexParseTests.SearchByName(testName)
 	if test != nil {
-		log.Debugf("Test Name: \t%s\n", test.name)
-		log.Debugf("Description: \t%s\n", test.description)
+		log.Debugf("Test Name: %s\n", test.name)
+		log.Debugf("Description: %s\n", test.description)
 		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 		tree, err = Parse(test.name, test.data)
 		if err != nil {
