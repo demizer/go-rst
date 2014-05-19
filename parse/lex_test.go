@@ -48,6 +48,8 @@ func lexSectionTest(t *testing.T, testName string) []item {
 		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 		items := collect(test)
 		return items
+	} else {
+		t.Fatalf("%s could not be found.\n", testName)
 	}
 	return nil
 }
