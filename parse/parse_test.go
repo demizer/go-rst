@@ -102,7 +102,7 @@ func parseTest(t *testing.T, testName string) (tree *Tree) {
 			}
 		}
 	} else {
-		t.Fatal("#items not found for", testName)
+		t.Fatalf("%q not found!", testName)
 	}
 	return
 }
