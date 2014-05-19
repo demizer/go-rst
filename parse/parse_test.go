@@ -252,14 +252,15 @@ func TestParseSectionParaHeadPara(t *testing.T) {
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
+func TestParseSectionLevelTest1(t *testing.T) {
+	testName := "SectionLevelTest1"
+	tree := parseTest(t, testName)
+	checkParseNodes(t, tree.Nodes, testName)
+}
+
 func TestParseSectionUnexpectedTitles(t *testing.T) {
 	testName := "SectionUnexpectedTitles"
 	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
-func TestParseSectionLevelTest1(t *testing.T) {
-	testName := "SectionLevelTest1"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
-}
