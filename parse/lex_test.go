@@ -112,7 +112,7 @@ func TestLexSectionTitlePara(t *testing.T) {
 }
 
 func TestLexSectionTitleParaNoBlankline(t *testing.T) {
-	testName := "SectionTitleParaNoBlankline"
+	testName := "SectionTitleParaNoBlankLine"
 	items := lexSectionTest(t, testName)
 	equal(t, items, testName)
 }
