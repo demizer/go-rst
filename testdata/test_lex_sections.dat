@@ -89,8 +89,10 @@ Paragraph.
 ]
 
 
+
+
 #name
-SectionTitleParaNoBlankline
+SectionTitleParaNoBlankLine
 #description
 Test section header no blank line.
 #data
