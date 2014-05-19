@@ -67,6 +67,7 @@ type stateFn func(*lexer) stateFn
 // Struct for tokens emitted by the scanning process
 type item struct {
 	Type          itemElement `json:"type"`
+	Id            int         `json:"id"`
 	Length        int         `json:"length"`
 	Value         interface{} `json:"value"`
 	StartPosition `json:"position"`
@@ -84,6 +85,7 @@ type lexer struct {
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
+	id		 int	   // Unique id for each item emitted
 }
 
 // lex is the entry point of the lexer
@@ -115,8 +117,10 @@ func (l *lexer) emit(t itemElement) {
 	}
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
+	l.id++
 	nItem := item{
 		Type:          t,
+		Id:	       l.id,
 		StartPosition: StartPosition(l.start + 1),
 		Line:          Line(l.lineNumber()),
 		Value:         l.input[l.start:l.index],

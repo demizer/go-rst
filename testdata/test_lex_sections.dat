@@ -96,24 +96,28 @@ Paragraph (no blank line).
 [
     {
         "type": "itemTitle",
+        "id": 1,
         "position": 1,
         "line": 1,
         "value": "Title"
     },
     {
         "type": "itemSectionAdornment",
+        "id": 2,
         "position": 7,
         "line": 2,
         "value": "====="
     },
     {
         "type": "itemParagraph",
+        "id": 3,
         "position": 13,
         "line": 3,
         "value": "Paragraph (no blank line)."
     },
     {
         "type": "itemEOF",
+        "id": 4,
         "position": 39,
         "line": 3,
         "value": ""
