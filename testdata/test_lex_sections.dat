@@ -57,8 +57,8 @@ Paragraph.
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
-        "startPosition": 1,
         "line": 1,
+        "startPosition": 1,
         "length": 5,
         "overLine": null,
         "underLine": {
@@ -66,8 +66,8 @@ Paragraph.
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 5,
-            "startPosition": 7
+            "startPosition": 7,
+            "length": 5
         },
         "nodeList": [
             {
