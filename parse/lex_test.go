@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	tEOF = item{ElementType: itemEOF, StartPosition: 0, Value: ""}
+	tEOF = item{Type: itemEOF, StartPosition: 0, Value: ""}
 )
 
 var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
@@ -25,7 +25,7 @@ func collect(t *LexTest) (items []item) {
 	for {
 		item := l.nextItem()
 		items = append(items, item)
-		if item.ElementType == itemEOF || item.ElementType == itemError {
+		if item.Type == itemEOF || item.Type == itemError {
 			break
 		}
 	}
@@ -49,25 +49,6 @@ func lexSectionTest(t *testing.T, testName string) []item {
 		return items
 	}
 	return nil
-}
-
-// Unmarshals input into []items, the json input from test data does not include ElementType, so
-// this is filled in manually. Returns error if there is a json parsing error.
-func JsonToItems(input []byte) ([]item, error) {
-	var exp []item
-	err := json.Unmarshal(input, &exp)
-	if err != nil {
-		return nil, err
-	}
-	// Set the correct ElementType (int), this is not included in the json from the test data.
-	for i, item := range exp {
-		for j, elm := range elements {
-			if item.ElementName == elm {
-				exp[i].ElementType = itemElement(j)
-			}
-		}
-	}
-	return exp, nil
 }
 
 // Test equality between items and expected items from unmarshalled json data, field by field.

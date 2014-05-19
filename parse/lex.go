@@ -5,7 +5,6 @@
 package parse
 
 import (
-	"fmt"
 	"github.com/demizer/go-elog"
 	"strings"
 	"unicode"
@@ -67,8 +66,7 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	ElementName   string      `json:"elementName"`
-	ElementType   itemElement `json:"-"`
+	Type          itemElement `json:"type"`
 	Length        int         `json:"length"`
 	Value         interface{} `json:"value"`
 	StartPosition `json:"position"`
@@ -118,8 +116,7 @@ func (l *lexer) emit(t itemElement) {
 	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	nItem := item{
-		ElementType:   t,
-		ElementName:   fmt.Sprint(t),
+		Type:          t,
 		StartPosition: StartPosition(l.start + 1),
 		Line:          Line(l.lineNumber()),
 		Value:         l.input[l.start:l.index],
@@ -336,7 +333,7 @@ func lexSection(l *lexer) stateFn {
 	// The order of the case statement matter here
 	switch r := l.next(); {
 	case isSectionAdornment(r):
-		if l.lastItem.ElementType != itemTitle {
+		if l.lastItem.Type != itemTitle {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)

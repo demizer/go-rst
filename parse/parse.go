@@ -134,9 +134,9 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 	log.Debugln("Start")
 	t.Nodes = newList()
 
-	for t.peek().ElementType != itemEOF {
+	for t.peek().Type != itemEOF {
 		var n Node
-		switch token := t.next(); token.ElementType {
+		switch token := t.next(); token.Type {
 		case itemTitle: // Section includes overline/underline
 			n = t.section(token)
 		case itemBlankLine:
@@ -190,7 +190,7 @@ func (t *Tree) section(i item) Node {
 	var overAdorn, title, underAdorn item
 	var overline bool
 
-	if t.peekBack().ElementType == itemSectionAdornment {
+	if t.peekBack().Type == itemSectionAdornment {
 		overline = true
 		overAdorn = t.peekBack()
 	}
