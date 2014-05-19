@@ -233,3 +233,39 @@ func TestParseSectionTitlePara(t *testing.T) {
 	}
 	checkParseNodes(t, tree.Nodes, testName)
 }
+
+func TestParseSectionTitleParaNoBlankLine(t *testing.T) {
+	testName := "SectionTitleParaNoBlankLine"
+	tree, err := parseTest(t, testName)
+	if err != nil {
+		t.Error(err)
+	}
+	checkParseNodes(t, tree.Nodes, testName)
+}
+
+func TestParseSectionParaHeadPara(t *testing.T) {
+	testName := "SectionParaHeadPara"
+	tree, err := parseTest(t, testName)
+	if err != nil {
+		t.Error(err)
+	}
+	checkParseNodes(t, tree.Nodes, testName)
+}
+
+func TestParseSectionUnexpectedTitles(t *testing.T) {
+	testName := "SectionUnexpectedTitles"
+	tree, err := parseTest(t, testName)
+	if err != nil {
+		t.Error(err)
+	}
+	checkParseNodes(t, tree.Nodes, testName)
+}
+
+func TestParseSectionLevelTest1(t *testing.T) {
+	testName := "SectionLevelTest1"
+	tree, err := parseTest(t, testName)
+	if err != nil {
+		t.Error(err)
+	}
+	checkParseNodes(t, tree.Nodes, testName)
+}
