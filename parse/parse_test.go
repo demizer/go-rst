@@ -215,6 +215,9 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 
 func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
 	test := lexParseTests.SearchByName(testName)
+	if len(strings.Trim(test.expectTree, "\n")) == 0 {
+		t.Fatal("#parse-tree not found for", testName)
+	}
 	var nodeList []interface{}
 	err := json.Unmarshal([]byte(test.expectTree), &nodeList)
 	if err != nil {
