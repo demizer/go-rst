@@ -211,12 +211,16 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 
 }
 
-// checkParseNodes is a recursive function that compares the resulting nodes (pNodes) from the
-// parser with the expected output from the testdata (eNodes).
-func checkParseNodes(t *testing.T, pNodes *NodeList, eNodes []interface{}, testName string) (errors []error) {
+func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
+	test := lexParseTests.SearchByName(testName)
+	var nodeList []interface{}
+	err := json.Unmarshal([]byte(test.expectTree), &nodeList)
+	if err != nil {
+		t.Fatal(err)
+	}
 	state := &checkNode{t: t, testName: testName}
 	for pNum, pNode := range *pNodes {
-		state.checkFields(pNode, eNodes[pNum])
+		state.checkFields(pNode, nodeList[pNum])
 	}
 	return
 }
@@ -227,16 +231,5 @@ func TestParseSectionTitlePara(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	test := lexParseTests.SearchByName(testName)
-	var nodeList []interface{}
-	err = json.Unmarshal([]byte(test.expectTree), &nodeList)
-	if err != nil {
-		t.Error(err)
-	}
-	errors := checkParseNodes(t, tree.Nodes, nodeList, testName)
-	if errors != nil {
-		for _, err := range errors {
-			t.Error(err)
-		}
-	}
+	checkParseNodes(t, tree.Nodes, testName)
 }
