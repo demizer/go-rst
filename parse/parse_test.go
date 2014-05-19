@@ -97,7 +97,9 @@ func parseTest(t *testing.T, testName string) (tree *Tree) {
 		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 		tree, errs = Parse(test.name, test.data)
 		if errs != nil {
-			t.Fatal(errs)
+			for _, err := range errs {
+				t.Error(err)
+			}
 		}
 	} else {
 		t.Fatal("#items not found for", testName)
