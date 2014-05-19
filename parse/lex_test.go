@@ -89,7 +89,8 @@ func equal(t *testing.T, items []item, testName string) {
 			pFieldValStruct, found = pVal.Type().FieldByName(eFieldName)
 			pFieldName = pFieldValStruct.Name
 			if !found {
-				t.Errorf("Parsed item (Id: %d) does not contain field %q\n", id, eFieldName)
+				t.Errorf("Parsed item (Id: %d) does not contain field %q\n", id,
+					eFieldName)
 				continue
 			}
 			if pFieldVal.Interface() != eFieldVal.Interface() {

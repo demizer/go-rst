@@ -11,36 +11,36 @@ Paragraph.
 [
     {
         "type": "itemTitle",
-        "position": 1,
         "text": "Title",
+        "startPosition": 1,
         "line": 1,
         "length": 5
     },
     {
         "type": "itemSectionAdornment",
-        "position": 7,
         "text": "=====",
+        "startPosition": 7,
         "line": 2,
         "length": 5
     },
     {
         "type": "itemBlankLine",
-        "position": 13,
         "text": "\n",
+        "startPosition": 13,
         "line": 3,
         "length": 1
     },
     {
         "type": "itemParagraph",
-        "position": 14,
         "text": "Paragraph.",
+        "startPosition": 14,
         "line": 4,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "position": 24,
         "text": "",
+        "startPosition": 24,
         "line": 4,
         "length": 1
     }
@@ -97,29 +97,29 @@ Paragraph (no blank line).
     {
         "type": "itemTitle",
         "id": 1,
-        "position": 1,
         "text": "Title",
+        "startPosition": 1,
         "line": 1,
     },
     {
         "type": "itemSectionAdornment",
         "id": 2,
-        "position": 7,
         "text": "=====",
+        "startPosition": 7,
         "line": 2,
     },
     {
         "type": "itemParagraph",
         "id": 3,
-        "position": 13,
         "text": "Paragraph (no blank line).",
+        "startPosition": 13,
         "line": 3,
     },
     {
         "type": "itemEOF",
         "id": 4,
-        "position": 39,
         "text": "",
+        "startPosition": 39,
         "line": 3,
     }
 ]
@@ -143,50 +143,50 @@ Paragraph.
 [
     {
         "type": "itemParagraph",
-        "position": 1,
         "text": "Paragraph.",
+        "startPosition": 1,
         "line": 1,
         "length": 10
     },
     {
         "type": "itemBlankLine",
-        "position": 12,
         "text": "\n",
+        "startPosition": 12,
         "line": 2,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "position": 13,
         "text": "Title",
+        "startPosition": 13,
         "line": 3,
         "length": 5
     },
     {
         "type": "itemSectionAdornment",
-        "position": 19,
         "text": "=====",
+        "startPosition": 19,
         "line": 4,
         "length": 5
     },
     {
         "type": "itemBlankLine",
-        "position": 25,
         "text": "\n",
+        "startPosition": 25,
         "line": 5,
         "length": 1
     },
     {
         "type": "itemParagraph",
-        "position": 26,
         "text": "Paragraph.",
+        "startPosition": 26,
         "line": 6,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "position": 36,
         "text": "",
+        "startPosition": 36,
         "line": 6,
         "length": 0
     }
@@ -215,127 +215,127 @@ Test unexpected section titles.
 [
     {
         "type": "itemParagraph",
-        "position": 1,
         "text": "Test unexpected section titles.",
+        "startPosition": 1,
         "line": 1,
         "length": 31
     },
     {
         "type": "itemBlankLine",
-        "position": 33,
         "text": "\n",
+        "startPosition": 33,
         "line": 2,
         "length": 1
     },
     {
         "type": "itemSpace",
-        "position": 34,
         "text": "    ",
+        "startPosition": 34,
         "line": 3,
         "length": 4
     },
     {
         "type": "itemTitle",
-        "position": 38,
         "text": "Title",
+        "startPosition": 38,
         "line": 3,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "position": 44,
         "text": "    ",
+        "startPosition": 44,
         "line": 4,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "position": 48,
         "text": "=====",
+        "startPosition": 48,
         "line": 4,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "position": 54,
         "text": "    ",
+        "startPosition": 54,
         "line": 5,
         "length": 4
     },
     {
         "type": "itemParagraph",
-        "position": 58,
         "text": "Paragraph.",
+        "startPosition": 58,
         "line": 5,
         "length": 10
     },
     {
         "type": "itemBlankLine",
-        "position": 69,
         "text": "\n",
+        "startPosition": 69,
         "line": 6,
         "length": 1
     },
     {
         "type": "itemSpace",
-        "position": 70,
         "text": "    ",
+        "startPosition": 70,
         "line": 7,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "position": 74,
         "text": "-----",
+        "startPosition": 74,
         "line": 7,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "position": 80,
         "text": "    ",
+        "startPosition": 80,
         "line": 8,
         "length": 4
     },
     {
         "type": "itemTitle",
-        "position": 84,
         "text": "Title",
+        "startPosition": 84,
         "line": 8,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "position": 90,
         "text": "    ",
+        "startPosition": 90,
         "line": 9,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "position": 94,
         "text": "-----",
+        "startPosition": 94,
         "line": 9,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "position": 100,
         "text": "    ",
+        "startPosition": 100,
         "line": 10,
         "length": 4
     },
     {
         "type": "itemParagraph",
-        "position": 104,
         "text": "Paragraph.",
+        "startPosition": 104,
         "line": 10,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "position": 114,
         "text": "",
+        "startPosition": 114,
         "line": 10,
         "length": 0
     }
@@ -344,18 +344,18 @@ Test unexpected section titles.
 [
     {
         "type": "itemParagraph",
-        "position": 1,
         "text": "Test unexpected section titles.",
+        "startPosition": 1,
         "line": 1,
     },
     {
         "type": "itemBlockQuote",
-        "position": 0,
+        "startPosition": 0,
         "line": 1,
         "value": [
             {
                 "type": "itemSystemMessage",
-                "position": 0,
+                "startPosition": 0,
                 "line": 1,
                 "value": {
                     "level": "SEVERE",
@@ -364,13 +364,13 @@ Test unexpected section titles.
                     "nodes": [
                         {
                             "type": "itemParagraph",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "Unexpected section title."
                         },
                         {
                             "type": "itemLiteralBlock",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "Title\n====="
                         }
@@ -379,13 +379,13 @@ Test unexpected section titles.
             },
             {
                 "type": "itemParagraph",
-                "position": 0,
+                "startPosition": 0,
                 "line": 1,
                 "text": "Paragraph."
             },
             {
                 "type": "itemSystemMessage",
-                "position": 0,
+                "startPosition": 0,
                 "line": 1,
                 "value": {
                     "level": "SEVERE",
@@ -394,13 +394,13 @@ Test unexpected section titles.
                     "nodes": [
                         {
                             "type": "itemParagraph",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "Unexpected section title or transition."
                         },
                         {
                             "type": "itemLiteralBlock",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "-----"
                         }
@@ -409,7 +409,7 @@ Test unexpected section titles.
             },
             {
                 "type": "itemSystemMessage",
-                "position": 0,
+                "startPosition": 0,
                 "line": 1,
                 "value": {
                     "level": "SEVERE",
@@ -418,13 +418,13 @@ Test unexpected section titles.
                     "nodes": [
                         {
                             "type": "itemParagraph",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "Unexpected section title."
                         },
                         {
                             "type": "itemLiteralBlock",
-                            "position": 0,
+                            "startPosition": 0,
                             "line": 1,
                             "text": "Title\n-----"
                         }
@@ -433,7 +433,7 @@ Test unexpected section titles.
             },
             {
                 "type": "itemParagraph",
-                "position": 0,
+                "startPosition": 0,
                 "line": 1,
                 "text": "Paragraph."
             }
@@ -470,120 +470,120 @@ Paragraph 4.
 [
     {
         "type": "itemParagraph",
-        "position": 1,
         "text": "Test return to existing, higher-level section (Title 4).",
+        "startPosition": 1,
         "line": 1,
         "length": 56
     },
     {
         "type": "itemBlankLine",
-        "position": 58,
         "text": "\n",
+        "startPosition": 58,
         "line": 2,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "position": 59,
         "text": "Title 1",
+        "startPosition": 59,
         "line": 3,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "position": 67,
         "text": "=======",
+        "startPosition": 67,
         "line": 4,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "position": 75,
         "text": "Paragraph 1.",
+        "startPosition": 75,
         "line": 5,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "position": 88,
         "text": "\n",
+        "startPosition": 88,
         "line": 6,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "position": 89,
         "text": "Title 2",
+        "startPosition": 89,
         "line": 7,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "position": 97,
         "text": "-------",
+        "startPosition": 97,
         "line": 8,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "position": 105,
         "text": "Paragraph 2.",
+        "startPosition": 105,
         "line": 9,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "position": 118,
         "text": "\n",
+        "startPosition": 118,
         "line": 10,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "position": 119,
         "text": "Title 3",
+        "startPosition": 119,
         "line": 11,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "position": 127,
         "text": "```````",
+        "startPosition": 127,
         "line": 12,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "position": 135,
         "text": "Paragraph 3.",
+        "startPosition": 135,
         "line": 13,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "position": 148,
         "text": "\n",
+        "startPosition": 148,
         "line": 14,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "position": 149,
         "text": "Title 4",
+        "startPosition": 149,
         "line": 15,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "position": 157,
         "text": "-------",
+        "startPosition": 157,
         "line": 16,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "position": 165,
         "text": "Paragraph 4.",
+        "startPosition": 165,
         "line": 17,
         "length": 12
     }
@@ -592,68 +592,68 @@ Paragraph 4.
 [
     {
         "type": "nodeParagraph",
-        "position": 1,
         "text": "Test return to existing, higher-level section (Title 4).",
+        "startPosition": 1,
         "line": 1,
         "length": 56
     },
     {
         "type": "nodeSection1",
-        "position": 59,
         "text": "Title 1",
         "line": 3,
+        "startPosition": 59,
         "length": 7,
         "adornment": {
-                "position": 67,
                 "text": "=======",
+                "startPosition": 67,
                 "line": 4,
                 "length": 7
         },
         "nodes": [
             {
                 "type": "nodeParagraph",
-                "position": 75,
                 "text": "Paragraph 1.",
+                "startPosition": 75,
                 "line": 5,
                 "length": 12
             },
             {
                 "type": "nodeSection2",
-                "position": 89,
                 "text": "Title 2",
+                "startPosition": 89,
                 "line": 7,
                 "length": 7,
                 "adornment": {
-                        "position": 97,
                         "text": "-------",
+                        "startPosition": 97,
                         "line": 8,
                         "length": 7
                 },
                 "nodes": [
                     {
                         "type": "nodeParagraph",
-                        "position": 105,
                         "text": "Paragraph 2.",
+                        "startPosition": 105,
                         "line": 9,
                         "length": 12
                     },
                     {
                         "type": "nodeSection3",
-                        "position": 119,
                         "text": "Title 3",
+                        "startPosition": 119,
                         "line": 11,
                         "length": 7,
                         "adornment": {
-                                "position": 127,
                                 "text": "```````",
+                                "startPosition": 127,
                                 "line": 12,
                                 "length": 7
                         },
                         "nodes": [
                             {
                                 "type": "nodeParagraph",
-                                "position": 135,
                                 "text": "Paragraph 3.",
+                                "startPosition": 135,
                                 "line": 13,
                                 "length": 12
                             }
@@ -663,21 +663,21 @@ Paragraph 4.
             },
             {
                 "type": "nodeSection2",
-                "position": 149,
                 "text": "Title 4",
+                "startPosition": 149,
                 "line": 15,
                 "length": 7,
                 "adornment": {
-                        "position": 157,
                         "text": "-------",
+                        "startPosition": 157,
                         "line": 16,
                         "length": 7
                 },
                 "nodes": [
                     {
                         "type": "nodeParagraph",
-                        "position": 165,
                         "text": "Paragraph 2.",
+                        "startPosition": 165,
                         "line": 17,
                         "length": 12
                     }

@@ -78,9 +78,9 @@ type item struct {
 	Type          itemElement `json:"type"`
 	Id            int         `json:"id"`
 	Length        int         `json:"length"`
-	StartPosition `json:"position"`
 	Text          interface{} `json:"text"`
 	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
 }
 
 // The lexer struct tracks the state of the lexer
@@ -94,7 +94,7 @@ type lexer struct {
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
-	id		 int	   // Unique id for each item emitted
+	id               int // Unique id for each item emitted
 }
 
 // lex is the entry point of the lexer
@@ -130,9 +130,9 @@ func (l *lexer) emit(t itemElement) {
 	nItem := item{
 		Type:          t,
 		Id:	       l.id,
-		StartPosition: StartPosition(l.start + 1),
 		Text:          l.input[l.start:l.index],
 		Line:          Line(l.lineNumber()),
+		StartPosition: StartPosition(l.start + 1),
 		Length:        len(l.input[l.start:l.index]),
 	}
 	l.items <- nItem
