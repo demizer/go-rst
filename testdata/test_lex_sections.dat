@@ -135,6 +135,36 @@ Paragraph (no blank line).
     }
 ]
 #parse-tree
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "startPosition": 1,
+        "line": 1,
+        "length": 5,
+        "overLine": null,
+        "underLine": {
+            "id": 2,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "line": 2,
+            "startPosition": 7,
+            "length": 5
+        },
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeParagraph",
+                "text": "Paragraph (no blank line).",
+                "line": 3,
+                "startPosition": 13,
+                "length": 26
+            }
+        ]
+    }
+]
 
 
 
