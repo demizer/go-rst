@@ -98,7 +98,7 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 			t.Fatal(err)
 		}
 	} else {
-		t.Fatal("Missing #items for", testName)
+		t.Fatal("#items not found for", testName)
 	}
 	return
 }
