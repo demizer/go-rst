@@ -57,32 +57,32 @@ Paragraph.
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
-        "line": 1,
         "startPosition": 1,
+        "line": 1,
         "length": 5,
         "overLine": null,
         "underLine": {
             "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 2,
             "startPosition": 7,
+            "line": 2,
             "length": 5
         },
         "nodeList": [
             {
                 "id": 3,
                 "type": "NodeBlankLine",
-                "line": 3,
-                "startPosition": 13
+                "startPosition": 13,
+                "line": 3
             },
             {
                 "id": 4,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
+                "startPosition": 14,
                 "line": 4,
-                "length": 10,
-                "startPosition": 14
+                "length": 10
             }
         ]
     }
@@ -149,8 +149,8 @@ Paragraph (no blank line).
             "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 2,
             "startPosition": 7,
+            "line": 2,
             "length": 5
         },
         "nodeList": [
@@ -158,8 +158,8 @@ Paragraph (no blank line).
                 "id": 3,
                 "type": "NodeParagraph",
                 "text": "Paragraph (no blank line).",
-                "line": 3,
                 "startPosition": 13,
+                "line": 3,
                 "length": 26
             }
         ]
