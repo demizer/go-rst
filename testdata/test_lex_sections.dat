@@ -240,6 +240,60 @@ Paragraph.
     }
 ]
 #parse-tree
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Paragraph.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 2,
+        "type": "NodeBlankLine",
+        "text": "\n",
+        "startPosition": 12,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "startPosition": 13,
+        "line": 3,
+        "length": 5,
+        "overLine": null,
+        "underLine": {
+            "id": 4,
+            "type": "itemSectionAdornment",
+            "rune": "=",
+            "startPosition": 19,
+            "line": 4,
+            "length": 5
+        },
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "itemBlankLine",
+                "text": "\n",
+                "startPosition": 25,
+                "line": 5,
+                "length": 1
+            },
+            {
+                "id": 6,
+                "type": "itemParagraph",
+                "text": "Paragraph.",
+                "startPosition": 26,
+                "line": 6,
+                "length": 10
+            }
+        ]
+    }
+]
 
 
 
