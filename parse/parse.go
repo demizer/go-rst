@@ -147,6 +147,9 @@ func (t *Tree) parse(tree *Tree) {
 			n = newBlankLine(token, &t.id)
 		case itemParagraph:
 			n = newParagraph(token, &t.id)
+		default:
+			t.errorf("%q Not implemented!", token.Type)
+			continue
 		}
 
 		if len([]Node(*t.Nodes)) == 0 {
