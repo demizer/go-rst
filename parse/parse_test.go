@@ -81,7 +81,9 @@ func TestSectionLevelsLevel(t *testing.T) {
 	}
 }
 
-func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
+func parseTest(t *testing.T, testName string) (tree *Tree) {
+	var err error
+	var errs []error
 	if lexParseTests == nil {
 		lexParseTests, err = ParseTestData("../testdata/test_lex_sections.dat")
 		if err != nil {
@@ -93,9 +95,9 @@ func parseTest(t *testing.T, testName string) (tree *Tree, err error) {
 		log.Debugf("Test Name: %s\n", test.name)
 		log.Debugf("Description: %s\n", test.description)
 		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
-		tree, err = Parse(test.name, test.data)
-		if err != nil {
-			t.Fatal(err)
+		tree, errs = Parse(test.name, test.data)
+		if errs != nil {
+			t.Fatal(errs)
 		}
 	} else {
 		t.Fatal("#items not found for", testName)
@@ -232,45 +234,30 @@ func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
 
 func TestParseSectionTitlePara(t *testing.T) {
 	testName := "SectionTitlePara"
-	tree, err := parseTest(t, testName)
-	if err != nil {
-		t.Error(err)
-	}
+	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
 func TestParseSectionTitleParaNoBlankLine(t *testing.T) {
 	testName := "SectionTitleParaNoBlankLine"
-	tree, err := parseTest(t, testName)
-	if err != nil {
-		t.Error(err)
-	}
+	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
 func TestParseSectionParaHeadPara(t *testing.T) {
 	testName := "SectionParaHeadPara"
-	tree, err := parseTest(t, testName)
-	if err != nil {
-		t.Error(err)
-	}
+	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
 func TestParseSectionUnexpectedTitles(t *testing.T) {
 	testName := "SectionUnexpectedTitles"
-	tree, err := parseTest(t, testName)
-	if err != nil {
-		t.Error(err)
-	}
+	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }
 
 func TestParseSectionLevelTest1(t *testing.T) {
 	testName := "SectionLevelTest1"
-	tree, err := parseTest(t, testName)
-	if err != nil {
-		t.Error(err)
-	}
+	tree := parseTest(t, testName)
 	checkParseNodes(t, tree.Nodes, testName)
 }

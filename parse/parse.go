@@ -76,10 +76,11 @@ func (s *sectionLevels) Level() int {
 	return len(*s)
 }
 
-func Parse(name, text string) (t *Tree, err error) {
+// Parse is the entry point for the reStructuredText parser.
+func Parse(name, text string) (t *Tree, errors []error) {
 	t = New(name)
 	t.text = text
-	_, err = t.Parse(text, t)
+	_, errors = t.Parse(text, t)
 	return
 }
 
@@ -90,6 +91,7 @@ func New(name string) *Tree {
 type Tree struct {
 	Name          string
 	Nodes         *NodeList // The root node list
+	Errors        []error
 	text          string
 	branch        *NodeList // The current branch to add nodes to
 	lex           *lexer
@@ -103,7 +105,7 @@ type Tree struct {
 func (t *Tree) errorf(format string, args ...interface{}) {
 	t.Nodes = nil
 	format = fmt.Sprintf("go-rst: %s:%d: %s", t.Name, t.lex.lineNumber(), format)
-	panic(fmt.Errorf(format, args...))
+	t.Errors = append(t.Errors, fmt.Errorf(format, args...))
 }
 
 func (t *Tree) error(err error) {
@@ -122,16 +124,16 @@ func (t *Tree) stopParse() {
 	t.lex = nil
 }
 
-func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, err error) {
+func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, errors []error) {
 	log.Debugln("Start")
 	t.startParse(lex(t.Name, text))
 	t.text = text
 	t.parse(treeSet)
 	log.Debugln("End")
-	return t, nil
+	return t, t.Errors
 }
 
-func (t *Tree) parse(tree *Tree) (next Node) {
+func (t *Tree) parse(tree *Tree) {
 	log.Debugln("Start")
 	t.Nodes = newList()
 	t.branch = newList()
@@ -155,7 +157,6 @@ func (t *Tree) parse(tree *Tree) (next Node) {
 	}
 
 	log.Debugln("End")
-	return nil
 }
 
 func (t *Tree) backup() {
