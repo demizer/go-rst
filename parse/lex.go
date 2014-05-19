@@ -78,8 +78,8 @@ type item struct {
 	Type          itemElement `json:"type"`
 	Id            int         `json:"id"`
 	Length        int         `json:"length"`
-	Value         interface{} `json:"value"`
 	StartPosition `json:"position"`
+	Text          interface{} `json:"text"`
 	Line          `json:"line"`
 }
 
@@ -131,8 +131,8 @@ func (l *lexer) emit(t itemElement) {
 		Type:          t,
 		Id:	       l.id,
 		StartPosition: StartPosition(l.start + 1),
+		Text:          l.input[l.start:l.index],
 		Line:          Line(l.lineNumber()),
-		Value:         l.input[l.start:l.index],
 		Length:        len(l.input[l.start:l.index]),
 	}
 	l.items <- nItem

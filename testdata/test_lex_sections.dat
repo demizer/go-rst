@@ -11,36 +11,36 @@ Paragraph.
 [
     {
         "type": "itemTitle",
-        "value": "Title",
         "position": 1,
+        "text": "Title",
         "line": 1,
         "length": 5
     },
     {
         "type": "itemSectionAdornment",
-        "value": "=====",
         "position": 7,
+        "text": "=====",
         "line": 2,
         "length": 5
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 13,
+        "text": "\n",
         "line": 3,
         "length": 1
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph.",
         "position": 14,
+        "text": "Paragraph.",
         "line": 4,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "value": "",
         "position": 24,
+        "text": "",
         "line": 4,
         "length": 1
     }
@@ -98,29 +98,29 @@ Paragraph (no blank line).
         "type": "itemTitle",
         "id": 1,
         "position": 1,
+        "text": "Title",
         "line": 1,
-        "value": "Title"
     },
     {
         "type": "itemSectionAdornment",
         "id": 2,
         "position": 7,
+        "text": "=====",
         "line": 2,
-        "value": "====="
     },
     {
         "type": "itemParagraph",
         "id": 3,
         "position": 13,
+        "text": "Paragraph (no blank line).",
         "line": 3,
-        "value": "Paragraph (no blank line)."
     },
     {
         "type": "itemEOF",
         "id": 4,
         "position": 39,
+        "text": "",
         "line": 3,
-        "value": ""
     }
 ]
 #parse-tree
@@ -143,50 +143,50 @@ Paragraph.
 [
     {
         "type": "itemParagraph",
-        "value": "Paragraph.",
         "position": 1,
+        "text": "Paragraph.",
         "line": 1,
         "length": 10
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 12,
+        "text": "\n",
         "line": 2,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "value": "Title",
         "position": 13,
+        "text": "Title",
         "line": 3,
         "length": 5
     },
     {
         "type": "itemSectionAdornment",
-        "value": "=====",
         "position": 19,
+        "text": "=====",
         "line": 4,
         "length": 5
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 25,
+        "text": "\n",
         "line": 5,
         "length": 1
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph.",
         "position": 26,
+        "text": "Paragraph.",
         "line": 6,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "value": "",
         "position": 36,
+        "text": "",
         "line": 6,
         "length": 0
     }
@@ -215,127 +215,127 @@ Test unexpected section titles.
 [
     {
         "type": "itemParagraph",
-        "value": "Test unexpected section titles.",
         "position": 1,
+        "text": "Test unexpected section titles.",
         "line": 1,
         "length": 31
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 33,
+        "text": "\n",
         "line": 2,
         "length": 1
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 34,
+        "text": "    ",
         "line": 3,
         "length": 4
     },
     {
         "type": "itemTitle",
-        "value": "Title",
         "position": 38,
+        "text": "Title",
         "line": 3,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 44,
+        "text": "    ",
         "line": 4,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "value": "=====",
         "position": 48,
+        "text": "=====",
         "line": 4,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 54,
+        "text": "    ",
         "line": 5,
         "length": 4
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph.",
         "position": 58,
+        "text": "Paragraph.",
         "line": 5,
         "length": 10
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 69,
+        "text": "\n",
         "line": 6,
         "length": 1
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 70,
+        "text": "    ",
         "line": 7,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "value": "-----",
         "position": 74,
+        "text": "-----",
         "line": 7,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 80,
+        "text": "    ",
         "line": 8,
         "length": 4
     },
     {
         "type": "itemTitle",
-        "value": "Title",
         "position": 84,
+        "text": "Title",
         "line": 8,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 90,
+        "text": "    ",
         "line": 9,
         "length": 4
     },
     {
         "type": "itemSectionAdornment",
-        "value": "-----",
         "position": 94,
+        "text": "-----",
         "line": 9,
         "length": 5
     },
     {
         "type": "itemSpace",
-        "value": "    ",
         "position": 100,
+        "text": "    ",
         "line": 10,
         "length": 4
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph.",
         "position": 104,
+        "text": "Paragraph.",
         "line": 10,
         "length": 10
     },
     {
         "type": "itemEOF",
-        "value": "",
         "position": 114,
+        "text": "",
         "line": 10,
         "length": 0
     }
@@ -345,8 +345,8 @@ Test unexpected section titles.
     {
         "type": "itemParagraph",
         "position": 1,
+        "text": "Test unexpected section titles.",
         "line": 1,
-        "value": "Test unexpected section titles."
     },
     {
         "type": "itemBlockQuote",
@@ -366,13 +366,13 @@ Test unexpected section titles.
                             "type": "itemParagraph",
                             "position": 0,
                             "line": 1,
-                            "value": "Unexpected section title."
+                            "text": "Unexpected section title."
                         },
                         {
                             "type": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
-                            "value": "Title\n====="
+                            "text": "Title\n====="
                         }
                     ]
                 }
@@ -381,7 +381,7 @@ Test unexpected section titles.
                 "type": "itemParagraph",
                 "position": 0,
                 "line": 1,
-                "value": "Paragraph."
+                "text": "Paragraph."
             },
             {
                 "type": "itemSystemMessage",
@@ -396,13 +396,13 @@ Test unexpected section titles.
                             "type": "itemParagraph",
                             "position": 0,
                             "line": 1,
-                            "value": "Unexpected section title or transition."
+                            "text": "Unexpected section title or transition."
                         },
                         {
                             "type": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
-                            "value": "-----"
+                            "text": "-----"
                         }
                     ]
                 }
@@ -420,13 +420,13 @@ Test unexpected section titles.
                             "type": "itemParagraph",
                             "position": 0,
                             "line": 1,
-                            "value": "Unexpected section title."
+                            "text": "Unexpected section title."
                         },
                         {
                             "type": "itemLiteralBlock",
                             "position": 0,
                             "line": 1,
-                            "value": "Title\n-----"
+                            "text": "Title\n-----"
                         }
                     ]
                 }
@@ -435,7 +435,7 @@ Test unexpected section titles.
                 "type": "itemParagraph",
                 "position": 0,
                 "line": 1,
-                "value": "Paragraph."
+                "text": "Paragraph."
             }
         ]
     }
@@ -470,120 +470,120 @@ Paragraph 4.
 [
     {
         "type": "itemParagraph",
-        "value": "Test return to existing, higher-level section (Title 4).",
         "position": 1,
+        "text": "Test return to existing, higher-level section (Title 4).",
         "line": 1,
         "length": 56
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 58,
+        "text": "\n",
         "line": 2,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "value": "Title 1",
         "position": 59,
+        "text": "Title 1",
         "line": 3,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "value": "=======",
         "position": 67,
+        "text": "=======",
         "line": 4,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph 1.",
         "position": 75,
+        "text": "Paragraph 1.",
         "line": 5,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 88,
+        "text": "\n",
         "line": 6,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "value": "Title 2",
         "position": 89,
+        "text": "Title 2",
         "line": 7,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "value": "-------",
         "position": 97,
+        "text": "-------",
         "line": 8,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph 2.",
         "position": 105,
+        "text": "Paragraph 2.",
         "line": 9,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 118,
+        "text": "\n",
         "line": 10,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "value": "Title 3",
         "position": 119,
+        "text": "Title 3",
         "line": 11,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "value": "```````",
         "position": 127,
+        "text": "```````",
         "line": 12,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph 3.",
         "position": 135,
+        "text": "Paragraph 3.",
         "line": 13,
         "length": 12
     },
     {
         "type": "itemBlankLine",
-        "value": "\n",
         "position": 148,
+        "text": "\n",
         "line": 14,
         "length": 1
     },
     {
         "type": "itemTitle",
-        "value": "Title 4",
         "position": 149,
+        "text": "Title 4",
         "line": 15,
         "length": 7
     },
     {
         "type": "itemSectionAdornment",
-        "value": "-------",
         "position": 157,
+        "text": "-------",
         "line": 16,
         "length": 7
     },
     {
         "type": "itemParagraph",
-        "value": "Paragraph 4.",
         "position": 165,
+        "text": "Paragraph 4.",
         "line": 17,
         "length": 12
     }
@@ -592,68 +592,68 @@ Paragraph 4.
 [
     {
         "type": "nodeParagraph",
-        "value": "Test return to existing, higher-level section (Title 4).",
         "position": 1,
+        "text": "Test return to existing, higher-level section (Title 4).",
         "line": 1,
         "length": 56
     },
     {
         "type": "nodeSection1",
-        "value": "Title 1",
         "position": 59,
+        "text": "Title 1",
         "line": 3,
         "length": 7,
         "adornment": {
-                "value": "=======",
                 "position": 67,
+                "text": "=======",
                 "line": 4,
                 "length": 7
         },
         "nodes": [
             {
                 "type": "nodeParagraph",
-                "value": "Paragraph 1.",
                 "position": 75,
+                "text": "Paragraph 1.",
                 "line": 5,
                 "length": 12
             },
             {
                 "type": "nodeSection2",
-                "value": "Title 2",
                 "position": 89,
+                "text": "Title 2",
                 "line": 7,
                 "length": 7,
                 "adornment": {
-                        "value": "-------",
                         "position": 97,
+                        "text": "-------",
                         "line": 8,
                         "length": 7
                 },
                 "nodes": [
                     {
                         "type": "nodeParagraph",
-                        "value": "Paragraph 2.",
                         "position": 105,
+                        "text": "Paragraph 2.",
                         "line": 9,
                         "length": 12
                     },
                     {
                         "type": "nodeSection3",
-                        "value": "Title 3",
                         "position": 119,
+                        "text": "Title 3",
                         "line": 11,
                         "length": 7,
                         "adornment": {
-                                "value": "```````",
                                 "position": 127,
+                                "text": "```````",
                                 "line": 12,
                                 "length": 7
                         },
                         "nodes": [
                             {
                                 "type": "nodeParagraph",
-                                "value": "Paragraph 3.",
                                 "position": 135,
+                                "text": "Paragraph 3.",
                                 "line": 13,
                                 "length": 12
                             }
@@ -663,21 +663,21 @@ Paragraph 4.
             },
             {
                 "type": "nodeSection2",
-                "value": "Title 4",
                 "position": 149,
+                "text": "Title 4",
                 "line": 15,
                 "length": 7,
                 "adornment": {
-                        "value": "-------",
                         "position": 157,
+                        "text": "-------",
                         "line": 16,
                         "length": 7
                 },
                 "nodes": [
                     {
                         "type": "nodeParagraph",
-                        "value": "Paragraph 2.",
                         "position": 165,
+                        "text": "Paragraph 2.",
                         "line": 17,
                         "length": 12
                     }

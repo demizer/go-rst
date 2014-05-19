@@ -203,12 +203,12 @@ func (t *Tree) section(i item) Node {
 		t.errorf("Section under line  not equal to title length!")
 	} else if overline && title.Length != overAdorn.Length {
 		t.errorf("Section over line not equal to title length!")
-	} else if overline && overAdorn.Value != underAdorn.Value {
+	} else if overline && overAdorn.Text != underAdorn.Text {
 		t.errorf("Section title over line does not match section title under line.")
 	}
 
 	// Check section levels to make sure the order of sections seen has not been violated
-	if level := t.sectionLevels.Find(rune(underAdorn.Value.(string)[0])); level > 0 {
+	if level := t.sectionLevels.Find(rune(underAdorn.Text.(string)[0])); level > 0 {
 		if t.sectionLevel == t.sectionLevels.Level() {
 			t.sectionLevel++
 		} else {
@@ -216,13 +216,13 @@ func (t *Tree) section(i item) Node {
 			// found section level. This means the user has used incorrect section
 			// syntax.
 			t.errorf("Incorrect section adornment \"%q\" for section level %d",
-				underAdorn.Value.(string)[0], t.sectionLevel)
+				underAdorn.Text.(string)[0], t.sectionLevel)
 		}
 	} else {
 		t.sectionLevel++
 	}
 
-	t.sectionLevels.Add(rune(underAdorn.Value.(string)[0]), overline, len(underAdorn.Value.(string)))
+	t.sectionLevels.Add(rune(underAdorn.Text.(string)[0]), overline, len(underAdorn.Text.(string)))
 	ret := newSection(title, &t.id, t.sectionLevel, overAdorn, underAdorn)
 	t.branch = &ret.NodeList
 

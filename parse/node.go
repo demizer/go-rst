@@ -69,18 +69,19 @@ func (s *SectionNode) NodeType() NodeType {
 
 func newSection(item item, id *int, level int, overAdorn item, underAdorn item) *SectionNode {
 	*id++
-	n := &SectionNode{Text: item.Value.(string),
+	n := &SectionNode{
 		Id:            *id,
 		Type:          NodeSection,
+		Text:          item.Text.(string),
 		Level:         level,
 		StartPosition: item.StartPosition,
 		Length:        item.Length,
 		Line:          1,
 	}
 
-	if overAdorn.Value != nil {
+	if overAdorn.Text != nil {
 		*id++
-		Rune := rune(overAdorn.Value.(string)[0])
+		Rune := rune(overAdorn.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
 			Id:            *id,
 			Type:          NodeAdornment,
@@ -92,7 +93,7 @@ func newSection(item item, id *int, level int, overAdorn item, underAdorn item) 
 	}
 
 	*id++
-	Rune := rune(underAdorn.Value.(string)[0])
+	Rune := rune(underAdorn.Text.(string)[0])
 	n.UnderLine = &AdornmentNode{
 		Id:            *id,
 		Rune:          Rune,
@@ -153,7 +154,7 @@ func newParagraph(i item, id *int) *ParagraphNode {
 	return &ParagraphNode{
 		Id:            *id,
 		Type:          NodeParagraph,
-		Text:          i.Value.(string),
+		Text:          i.Text.(string),
 		Length:        i.Length,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
