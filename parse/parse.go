@@ -103,7 +103,7 @@ type Tree struct {
 }
 
 func (t *Tree) errorf(format string, args ...interface{}) {
-	format = fmt.Sprintf("go-rst: %s:%d: %s", t.Name, t.lex.lineNumber(), format)
+	format = fmt.Sprintf("go-rst: %s:%d: %s\n", t.Name, t.lex.lineNumber(), format)
 	t.Errors = append(t.Errors, fmt.Errorf(format, args...))
 }
 
