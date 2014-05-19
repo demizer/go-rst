@@ -103,7 +103,6 @@ type Tree struct {
 }
 
 func (t *Tree) errorf(format string, args ...interface{}) {
-	t.Nodes = nil
 	format = fmt.Sprintf("go-rst: %s:%d: %s", t.Name, t.lex.lineNumber(), format)
 	t.Errors = append(t.Errors, fmt.Errorf(format, args...))
 }
@@ -135,6 +134,7 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, errors []error) {
 
 func (t *Tree) parse(tree *Tree) {
 	log.Debugln("Start")
+
 	t.Nodes = newList()
 	t.branch = newList()
 
