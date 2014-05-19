@@ -132,11 +132,11 @@ func (c *checkNode) dError() {
 	if c.pFieldName == "Rune" {
 		c.t.Errorf("Got: %s.%s = %#v (%v) (%v) (Id: %d),\n\tExpect: %s.%s = %#v (%v)\n",
 			c.pNodeName, c.pFieldName, c.pFieldVal, string(c.pFieldVal.(int32)),
-			c.pFieldType, c.id, c.testName, c.eFieldName, c.eFieldVal, c.eFieldType)
+			c.pFieldType, c.id, "#parse-tree", c.eFieldName, c.eFieldVal, c.eFieldType)
 		return
 	}
 	c.t.Errorf("Got: %s.%s = %#v (%v) (Id: %d),\n\tExpect: %s.%s = %#v (%v)\n",
-		c.pNodeName, c.pFieldName, c.pFieldVal, c.pFieldType, c.id, c.testName,
+		c.pNodeName, c.pFieldName, c.pFieldVal, c.pFieldType, c.id, "#parse-tree",
 		c.eFieldName, c.eFieldVal, c.eFieldType)
 }
 
