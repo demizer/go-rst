@@ -102,25 +102,25 @@ func equal(t *testing.T, items []item, testName string) {
 	return
 }
 
-func TestSectionTitlePara(t *testing.T) {
+func TestLexSectionTitlePara(t *testing.T) {
 	testName := "SectionTitlePara"
 	items := lexSectionTest(t, testName)
 	equal(t, items, testName)
 }
 
-func TestSectionTitleParaNoBlankline(t *testing.T) {
+func TestLexSectionTitleParaNoBlankline(t *testing.T) {
 	testName := "SectionTitleParaNoBlankline"
 	items := lexSectionTest(t, testName)
 	equal(t, items, testName)
 }
 
-func TestSectionParaHeadPara(t *testing.T) {
+func TestLexSectionParaHeadPara(t *testing.T) {
 	testName := "SectionParaHeadPara"
 	items := lexSectionTest(t, testName)
 	equal(t, items, testName)
 }
 
-func TestSectionUnexpectedTitles(t *testing.T) {
+func TestLexSectionUnexpectedTitles(t *testing.T) {
 	testName := "SectionUnexpectedTitles"
 	items := lexSectionTest(t, testName)
 	equal(t, items, testName)
