@@ -5,7 +5,6 @@
 package parse
 
 import (
-	"encoding/json"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
 	"reflect"
@@ -59,11 +58,6 @@ func lexSectionTest(t *testing.T, testName string) []item {
 // expected output.
 func equal(t *testing.T, items []item, testName string) {
 	test := lexSectionTests.SearchByName(testName)
-	var exp []item
-	err := json.Unmarshal([]byte(test.items), &exp)
-	if err != nil {
-		t.Fatal("JSON error: ", err)
-	}
 
 	var id int
 	var found bool

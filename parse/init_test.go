@@ -12,6 +12,7 @@ import (
 	"github.com/demizer/go-elog"
 	"os"
 	"strings"
+	"encoding/json"
 )
 
 func init() { SetDebug() }
@@ -24,6 +25,26 @@ type LexTest struct {
 	data        string // The input data to be parsed
 	items       string // The expected lex items output in json
 	expectTree  string // The expected parsed output in json
+}
+
+// expectJson returns the expected parse_tree values from the tests as unmarshaled JSON. A panic
+// occurs if there is an error unmarshaling the JSON data.
+func (l LexTest) expectJson() (nodeList []interface{}) {
+	err := json.Unmarshal([]byte(l.expectTree), &nodeList)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
+// expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is
+// an error decoding the JSON data.
+func (l LexTest) expectItems() (lexItems []item) {
+	err := json.Unmarshal([]byte(l.items), &lexItems)
+	if err != nil {
+		panic(fmt.Errorf("JSON error: ", err))
+	}
+	return
 }
 
 type LexTests []LexTest

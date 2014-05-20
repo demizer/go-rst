@@ -7,7 +7,6 @@
 package parse
 
 import (
-	"encoding/json"
 	"github.com/demizer/go-elog"
 	"reflect"
 	"strings"
@@ -221,11 +220,6 @@ func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
 	test := lexParseTests.SearchByName(testName)
 	if len(strings.Trim(test.expectTree, "\n")) == 0 {
 		t.Fatal("#parse-tree not found for", testName)
-	}
-	var nodeList []interface{}
-	err := json.Unmarshal([]byte(test.expectTree), &nodeList)
-	if err != nil {
-		t.Fatal(err)
 	}
 	state := &checkNode{t: t, testName: testName}
 	for pNum, pNode := range *pNodes {
