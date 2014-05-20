@@ -11,7 +11,6 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-	"os"
 )
 
 type checkNode struct {
@@ -45,10 +44,6 @@ func (c *checkNode) dError() {
 	c.t.Errorf("Got: %s.%s = %#v (%v) (Id: %d),\n\tExpect: %s.%s = %#v (%v)\n",
 		c.pNodeName, c.pFieldName, c.pFieldVal, c.pFieldType, c.id, "#parse-tree",
 		c.eFieldName, c.eFieldVal, c.eFieldType)
-}
-
-func poop() {
-	os.Exit(1)
 }
 
 func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value) bool {
