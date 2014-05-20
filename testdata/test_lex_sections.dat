@@ -268,7 +268,7 @@ Paragraph.
         "overLine": null,
         "underLine": {
             "id": 4,
-            "type": "itemSectionAdornment",
+            "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 19,
             "line": 4,
@@ -277,7 +277,7 @@ Paragraph.
         "nodeList": [
             {
                 "id": 5,
-                "type": "itemBlankLine",
+                "type": "NodeBlankLine",
                 "text": "\n",
                 "startPosition": 25,
                 "line": 5,
@@ -285,7 +285,7 @@ Paragraph.
             },
             {
                 "id": 6,
-                "type": "itemParagraph",
+                "type": "NodeParagraph",
                 "text": "Paragraph.",
                 "startPosition": 26,
                 "line": 6,
