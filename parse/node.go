@@ -119,16 +119,6 @@ func (a AdornmentNode) NodeType() NodeType {
 	return a.Type
 }
 
-func newBlankLine(i item, id *int) *BlankLineNode {
-	*id++
-	return &BlankLineNode{
-		Id:            *id,
-		Type:          NodeBlankLine,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
-}
-
 type BlankLineNode struct {
 	Id            int      `json:"id"`
 	Type          NodeType `json:"nodetype"`
@@ -138,6 +128,16 @@ type BlankLineNode struct {
 
 func (b BlankLineNode) NodeType() NodeType {
 	return b.Type
+}
+
+func newBlankLine(i item, id *int) *BlankLineNode {
+	*id++
+	return &BlankLineNode{
+		Id:            *id,
+		Type:          NodeBlankLine,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
 }
 
 type ParagraphNode struct {
