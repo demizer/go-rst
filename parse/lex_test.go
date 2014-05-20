@@ -33,14 +33,7 @@ func collect(t *LexTest) (items []item) {
 }
 
 func lexSectionTest(t *testing.T, testName string) []item {
-	var err error
-	if lexSectionTests == nil {
-		lexSectionTests, err = ParseTestData("../testdata/test_lex_sections.dat")
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-	test := lexSectionTests.SearchByName(testName)
+	test := lexTests.testByName(testName)
 	if test != nil {
 		log.Debugf("Test Name: %s\n", test.name)
 		log.Debugf("Description: %s\n", test.description)
@@ -57,7 +50,8 @@ func lexSectionTest(t *testing.T, testName string) []item {
 // Returns error in case of error during json unmarshalling, or mismatch between items and the
 // expected output.
 func equal(t *testing.T, items []item, testName string) {
-	test := lexSectionTests.SearchByName(testName)
+	test := lexTests.testByName(testName)
+	exp := test.expectItems()
 
 	var id int
 	var found bool

@@ -49,8 +49,7 @@ func (l LexTest) expectItems() (lexItems []item) {
 
 type LexTests []LexTest
 
-// Search l by name for a specific test.
-func (l LexTests) SearchByName(name string) *LexTest {
+func (l LexTests) testByName(name string) *LexTest {
 	for _, test := range l {
 		if test.name == name {
 			return &test
