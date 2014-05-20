@@ -76,7 +76,7 @@ func newSection(item item, id *int, level int, overAdorn item, underAdorn item) 
 		Level:         level,
 		StartPosition: item.StartPosition,
 		Length:        item.Length,
-		Line:          1,
+		Line:          item.Line,
 	}
 
 	if overAdorn.Text != nil {
