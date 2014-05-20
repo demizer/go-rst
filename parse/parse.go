@@ -93,7 +93,6 @@ type Tree struct {
 	Nodes         *NodeList // The root node list
 	Errors        []error
 	text          string
-	branch        *NodeList // The current branch to add nodes to
 	lex           *lexer
 	peekCount     int
 	token         [3]item        // three-token look-ahead for parser.
@@ -114,7 +113,6 @@ func (t *Tree) error(err error) {
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
 	t.Nodes = nil
-	t.branch = nil
 	t.lex = lex
 }
 
@@ -136,7 +134,6 @@ func (t *Tree) parse(tree *Tree) {
 	log.Debugln("Start")
 
 	t.Nodes = newList()
-	t.branch = newList()
 
 	for t.peek().Type != itemEOF {
 		var n Node
@@ -230,7 +227,6 @@ func (t *Tree) section(i item) Node {
 
 	t.sectionLevels.Add(rune(underAdorn.Text.(string)[0]), overline, len(underAdorn.Text.(string)))
 	ret := newSection(title, &t.id, t.sectionLevel, overAdorn, underAdorn)
-	t.branch = &ret.NodeList
 
 	log.Debugln("End")
 	return ret
