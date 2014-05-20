@@ -155,7 +155,7 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	return true
 }
 
-func (c *checkNode) checkFields(pNode Node, expect interface{}) {
+func (c *checkNode) checkFields(expect interface{}, pNode Node) {
 	pVal := reflect.ValueOf(pNode).Elem()
 	for i := 0; i < pVal.NumField(); i++ {
 
@@ -181,12 +181,12 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 				c.dError()
 			}
 		case "OverLine", "UnderLine":
-			c.checkFields(c.pFieldVal.(Node), c.eFieldVal)
+			c.checkFields( c.eFieldVal, c.pFieldVal.(Node))
 		case "NodeList":
 			for num, node := range c.pFieldVal.(NodeList) {
 				// A little hackery to make our recursion easy
 				eFieldVal := c.eFieldVal
-				c.checkFields(node.(Node), eFieldVal.([]interface{})[num])
+				c.checkFields(eFieldVal.([]interface{})[num], node.(Node))
 				c.eFieldVal = eFieldVal
 			}
 		case "Rune":
@@ -202,42 +202,54 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 
 }
 
-func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
-	test := lexParseTests.SearchByName(testName)
+func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testName string) {
 	state := &checkNode{t: t, testName: testName}
-	for pNum, pNode := range *pNodes {
-		state.checkFields(pNode, nodeList[pNum])
+	if len(eTree) != len(pNodes) {
+		t.Fatal("len(eTree) != len(pNodes)")
+	}
+	for eNum, eNode := range eTree {
+		state.checkFields(eNode, pNodes[eNum])
 	}
 	return
 }
 
 func TestParseSectionTitlePara(t *testing.T) {
 	testName := "SectionTitlePara"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
+	test := lexTests.testByName(testName)
+	pTree := parseTest(t, test)
+	eNodes := test.expectJson()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
 
 func TestParseSectionTitleParaNoBlankLine(t *testing.T) {
 	testName := "SectionTitleParaNoBlankLine"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
+	test := lexTests.testByName(testName)
+	pTree := parseTest(t, test)
+	eNodes := test.expectJson()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
 
 func TestParseSectionParaHeadPara(t *testing.T) {
 	testName := "SectionParaHeadPara"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
+	test := lexTests.testByName(testName)
+	pTree := parseTest(t, test)
+	eNodes := test.expectJson()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
 
 func TestParseSectionLevelTest1(t *testing.T) {
 	testName := "SectionLevelTest1"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
+	test := lexTests.testByName(testName)
+	pTree := parseTest(t, test)
+	// spd.Dump(pTree)
+	eNodes := test.expectJson()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
 
 func TestParseSectionUnexpectedTitles(t *testing.T) {
 	testName := "SectionUnexpectedTitles"
-	tree := parseTest(t, testName)
-	checkParseNodes(t, tree.Nodes, testName)
+	test := lexTests.testByName(testName)
+	pTree := parseTest(t, test)
+	eNodes := test.expectJson()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
-
