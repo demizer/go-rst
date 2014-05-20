@@ -51,9 +51,6 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 	c.eFieldName = eKey
 	c.eFieldVal = eVal
 	c.eFieldType = reflect.TypeOf(c.eFieldVal)
-	if eKey == "id" {
-		c.id = int(eVal.(float64))
-	}
 
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
@@ -73,6 +70,7 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 }
 
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
+	c.id = int(eNodes.(map[string]interface{})["id"].(float64))
 	for eKey, eVal := range eNodes.(map[string]interface{}) {
 		pVal := reflect.Indirect(reflect.ValueOf(pNode))
 		if c.updateState(eKey, eVal, pVal) == false {
@@ -233,7 +231,6 @@ func TestParseSectionLevelTest1(t *testing.T) {
 	testName := "SectionLevelTest1"
 	test := lexTests.testByName(testName)
 	pTree := parseTest(t, test)
-	// spd.Dump(pTree)
 	eNodes := test.expectJson()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
 }
