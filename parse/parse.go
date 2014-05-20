@@ -7,6 +7,7 @@ package parse
 import (
 	"fmt"
 	"github.com/demizer/go-elog"
+	"reflect"
 )
 
 type systemMessageLevel int
@@ -135,6 +136,8 @@ func (t *Tree) parse(tree *Tree) {
 
 	t.Nodes = newList()
 
+	nodeBranch := t.Nodes
+
 	for t.peek().Type != itemEOF {
 		var n Node
 		token := t.next()
@@ -154,10 +157,10 @@ func (t *Tree) parse(tree *Tree) {
 			continue
 		}
 
-		if len([]Node(*t.Nodes)) == 0 {
-			t.Nodes.append(n)
-		} else {
-			t.branch.append(n)
+		nodeBranch.append(n)
+		if n.NodeType() == NodeSection {
+			nodeBranch =
+			reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
 		}
 	}
 
