@@ -122,6 +122,8 @@ func (a AdornmentNode) NodeType() NodeType {
 type BlankLineNode struct {
 	Id            int      `json:"id"`
 	Type          NodeType `json:"nodetype"`
+	Text	      string `json:"text"`
+	Length        int      `json:"length"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 }
@@ -135,6 +137,8 @@ func newBlankLine(i item, id *int) *BlankLineNode {
 	return &BlankLineNode{
 		Id:            *id,
 		Type:          NodeBlankLine,
+		Text:	       i.Text.(string),
+		Length:	       i.Length,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
