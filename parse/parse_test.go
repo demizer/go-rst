@@ -11,6 +11,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"os"
 )
 
 type checkNode struct {
@@ -46,29 +47,29 @@ func (c *checkNode) dError() {
 		c.eFieldName, c.eFieldVal, c.eFieldType)
 }
 
-func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int) bool {
+func poop() {
+	os.Exit(1)
+}
+
+func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value) bool {
+	// Expected parser metadata
+	c.eFieldName = eKey
+	c.eFieldVal = eVal
+	c.eFieldType = reflect.TypeOf(c.eFieldVal)
+	if eKey == "id" {
+		c.id = int(eVal.(float64))
+	}
+
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
-	c.pFieldName = pVal.Type().Field(field).Name
-	c.pFieldVal = pVal.Field(field).Interface()
-	c.pFieldType = pVal.Type().Field(field).Type
-	c.id = pVal.FieldByName("Id").Interface().(int)
+	c.pFieldName = strings.ToUpper(string(c.eFieldName[0])) + c.eFieldName[1:]
+	c.pFieldVal = pVal.FieldByName(c.pFieldName).Interface()
+	c.pFieldType = pVal.FieldByName(c.pFieldName).Type()
 
-	// Expected parser metadata
-	c.eFieldName = strings.ToLower(string(c.pFieldName[0])) + c.pFieldName[1:]
-	c.eFieldVal = eVal.(map[string]interface{})[c.eFieldName]
-	c.eFieldType = reflect.TypeOf(c.eFieldVal)
-
-	pField := pVal.Field(field)
-	if pField.Kind() == reflect.Ptr && pField.IsNil() {
-		// Overline adornment nodes can be null
-		if c.pFieldName == "OverLine" {
-			return false
-		} else {
-			c.dError()
-			return false
-		}
-	} else if c.pFieldVal == nil {
+	// Overline adornment nodes can be null
+	if c.eFieldName == "overLine" && c.eFieldVal == nil {
+		return false
+	} else if c.eFieldVal == nil {
 		c.dError()
 		return false
 	}
@@ -76,46 +77,45 @@ func (c *checkNode) updateState(pVal reflect.Value, eVal interface{}, field int)
 	return true
 }
 
-func (c *checkNode) checkFields(expect interface{}, pNode Node) {
-	pVal := reflect.ValueOf(pNode).Elem()
-	for i := 0; i < pVal.NumField(); i++ {
-
-		if c.updateState(pVal, expect, i) == false {
+func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
+	for eKey, eVal := range eNodes.(map[string]interface{}) {
+		pVal := reflect.Indirect(reflect.ValueOf(pNode))
+		if c.updateState(eKey, eVal, pVal) == false {
 			continue
 		}
-
-		switch c.pFieldName {
-		case "Type":
-			if c.pFieldVal.(NodeType).String() != c.eFieldVal {
+		switch c.eFieldName {
+		case "type":
+			if c.eFieldVal != c.pFieldVal.(NodeType).String() {
 				c.dError()
 			}
-		case "Id", "Level", "Length":
-			if float64(c.pFieldVal.(int)) != c.eFieldVal {
+		case "id", "level", "length":
+			if c.eFieldVal != float64(c.pFieldVal.(int)) {
 				c.dError()
 			}
-		case "Line":
-			if float64(c.pFieldVal.(Line)) != c.eFieldVal {
+		case "line":
+			if c.eFieldVal != float64(c.pFieldVal.(Line)) {
 				c.dError()
 			}
-		case "StartPosition":
-			if float64(c.pFieldVal.(StartPosition)) != c.eFieldVal {
+		case "startPosition":
+			if c.eFieldVal != float64(c.pFieldVal.(StartPosition)) {
 				c.dError()
 			}
-		case "OverLine", "UnderLine":
+		case "overLine", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
-		case "NodeList":
-			for num, node := range c.pFieldVal.(NodeList) {
-				// A little hackery to make our recursion easy
-				eFieldVal := c.eFieldVal
-				c.checkFields(eFieldVal.([]interface{})[num], node.(Node))
-				c.eFieldVal = eFieldVal
+		case "nodeList":
+			for num, node := range c.eFieldVal.([]interface{}) {
+				// Store and reset the parser value, otherwise a panic will occur on
+				// the next iteration
+				pFieldVal := c.pFieldVal
+				c.checkFields(node, c.pFieldVal.(NodeList)[num])
+				c.pFieldVal = pFieldVal
 			}
-		case "Rune":
-			if string(c.pFieldVal.(rune)) != c.eFieldVal {
+		case "rune":
+			if c.eFieldVal != string(c.pFieldVal.(rune)) {
 				c.dError()
 			}
 		default:
-			if c.pFieldVal != c.eFieldVal {
+			if c.eFieldVal != c.pFieldVal {
 				c.dError()
 			}
 		}
@@ -125,9 +125,6 @@ func (c *checkNode) checkFields(expect interface{}, pNode Node) {
 
 func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testName string) {
 	state := &checkNode{t: t, testName: testName}
-	if len(eTree) != len(pNodes) {
-		t.Fatal("len(eTree) != len(pNodes)")
-	}
 	for eNum, eNode := range eTree {
 		state.checkFields(eNode, pNodes[eNum])
 	}
@@ -213,7 +210,7 @@ func parseTest(t *testing.T, lexTest *LexTest) (tree *Tree) {
 	return
 }
 
-func TestParseSectionTitlePara(t *testing.T) {
+func TestParseSectionTitleParagraph(t *testing.T) {
 	testName := "SectionTitlePara"
 	test := lexTests.testByName(testName)
 	pTree := parseTest(t, test)
