@@ -13,8 +13,6 @@ import (
 	"testing"
 )
 
-var lexParseTests LexTests
-
 func TestSectionLevelsAdd(t *testing.T) {
 	var p sectionLevels
 	lvl := p.Add('=', true, 5)
@@ -80,28 +78,16 @@ func TestSectionLevelsLevel(t *testing.T) {
 	}
 }
 
-func parseTest(t *testing.T, testName string) (tree *Tree) {
-	var err error
+func parseTest(t *testing.T, lexTest *LexTest) (tree *Tree) {
 	var errs []error
-	if lexParseTests == nil {
-		lexParseTests, err = ParseTestData("../testdata/test_lex_sections.dat")
-		if err != nil {
-			t.Fatal(err)
+	log.Debugf("Test Name: %s\n", lexTest.name)
+	log.Debugf("Description: %s\n", lexTest.description)
+	log.Debugf("Test Input:\n-----------\n%s\n----------\n", lexTest.data)
+	tree, errs = Parse(lexTest.name, lexTest.data)
+	if errs != nil {
+		for _, err := range errs {
+			t.Error(err)
 		}
-	}
-	test := lexParseTests.SearchByName(testName)
-	if test != nil {
-		log.Debugf("Test Name: %s\n", test.name)
-		log.Debugf("Description: %s\n", test.description)
-		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
-		tree, errs = Parse(test.name, test.data)
-		if errs != nil {
-			for _, err := range errs {
-				t.Error(err)
-			}
-		}
-	} else {
-		t.Fatalf("%q not found!", testName)
 	}
 	return
 }
@@ -218,9 +204,6 @@ func (c *checkNode) checkFields(pNode Node, expect interface{}) {
 
 func checkParseNodes(t *testing.T, pNodes *NodeList, testName string) {
 	test := lexParseTests.SearchByName(testName)
-	if len(strings.Trim(test.expectTree, "\n")) == 0 {
-		t.Fatal("#parse-tree not found for", testName)
-	}
 	state := &checkNode{t: t, testName: testName}
 	for pNum, pNode := range *pNodes {
 		state.checkFields(pNode, nodeList[pNum])

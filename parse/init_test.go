@@ -15,8 +15,6 @@ import (
 	"encoding/json"
 )
 
-func init() { SetDebug() }
-
 // LexTest is the structure that contains parsed test data from the *.dat files in the testdata
 // directory.
 type LexTest struct {
@@ -56,6 +54,23 @@ func (l LexTests) testByName(name string) *LexTest {
 		}
 	}
 	return nil
+}
+
+var lexTests LexTests
+
+func init() {
+	err := ParseTestData("../testdata/test_lex_sections.dat")
+	if err != nil {
+		panic(err)
+	}
+	for _, test := range lexTests {
+		if len(strings.Trim(test.items, "\n")) == 0 {
+			panic(fmt.Errorf("#items not found for", test.name))
+		} else if len(strings.Trim(test.expectTree, "\n")) == 0 {
+			panic(fmt.Errorf("#parse-tree not found for", test.name))
+		}
+	}
+	SetDebug()
 }
 
 // ParseTestData parses testdata contained it dat files in the testdata directory. The testdata was

@@ -17,8 +17,6 @@ var (
 
 var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
-var lexSectionTests LexTests
-
 // collect gathers the emitted items into a slice.
 func collect(t *LexTest) (items []item) {
 	l := lex(t.name, t.data)
