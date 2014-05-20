@@ -124,7 +124,7 @@ func (l *lexer) emit(t itemElement) {
 	if l.start == l.index && int(l.index) < len(l.input) {
 		l.index += 1
 	}
-	log.Debugf("#### %s: %q start: %d pos: %d line: %d\n", t,
+	log.Infof("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	l.id++
 	nItem := item{
