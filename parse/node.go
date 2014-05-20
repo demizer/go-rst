@@ -67,16 +67,16 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(item item, id *int, level int, overAdorn item, underAdorn item) *SectionNode {
+func newSection(i item, id *int, level int, overAdorn item, underAdorn item) *SectionNode {
 	*id++
 	n := &SectionNode{
 		Id:            *id,
 		Type:          NodeSection,
-		Text:          item.Text.(string),
+		Text:          i.Text.(string),
 		Level:         level,
-		StartPosition: item.StartPosition,
-		Length:        item.Length,
-		Line:          item.Line,
+		StartPosition: i.StartPosition,
+		Length:        i.Length,
+		Line:          i.Line,
 	}
 
 	if overAdorn.Text != nil {
