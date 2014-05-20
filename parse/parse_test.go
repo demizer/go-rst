@@ -11,6 +11,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"fmt"
 )
 
 type checkNode struct {
@@ -55,6 +56,9 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
 	c.pFieldName = strings.ToUpper(string(c.eFieldName[0])) + c.eFieldName[1:]
+	if !pVal.FieldByName(c.pFieldName).IsValid() {
+		panic(fmt.Errorf("Missing field: %s.%s\n", c.pNodeName, c.pFieldName))
+	}
 	c.pFieldVal = pVal.FieldByName(c.pFieldName).Interface()
 	c.pFieldType = pVal.FieldByName(c.pFieldName).Type()
 
