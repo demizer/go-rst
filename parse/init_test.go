@@ -63,14 +63,13 @@ func (l LexTests) SearchByName(name string) *LexTest {
 // contained to these files because it became to large to be included legibly inside the *_test.go
 // files. ParseTestData is a simple parser for the testdata files and stores the result of the parse
 // into the first return variable.
-func ParseTestData(filepath string) ([]LexTest, error) {
+func ParseTestData(filepath string) error {
 	testData, err := os.Open(filepath)
 	defer testData.Close()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var LexTests []LexTest
 	var curTest = new(LexTest)
 	var buffer bytes.Buffer
 
@@ -79,13 +78,12 @@ func ParseTestData(filepath string) ([]LexTest, error) {
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "#name":
-			// buffer = bytes.NewBuffer(buffer.Bytes())
 			// name starts a new section
 			if buffer.Len() > 0 {
 				// Apend the last section to the array and
 				// reset
 				curTest.expectTree = buffer.String()
-				LexTests = append(LexTests, *curTest)
+				lexTests = append(lexTests, *curTest)
 			}
 			curTest = new(LexTest)
 			buffer.Reset()
@@ -108,16 +106,16 @@ func ParseTestData(filepath string) ([]LexTest, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, err
+		return err
 	}
 
 	if buffer.Len() > 0 {
 		// Apend the last section to the array and
 		curTest.expectTree = buffer.String()
-		LexTests = append(LexTests, *curTest)
+		lexTests = append(lexTests, *curTest)
 	}
 
-	return LexTests, nil
+	return nil
 }
 
 // SetDebug is typically called from the init() function in a test file. SetDebug parses debug flags
