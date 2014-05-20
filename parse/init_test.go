@@ -7,12 +7,12 @@ package parse
 import (
 	"bufio"
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/demizer/go-elog"
 	"os"
 	"strings"
-	"encoding/json"
 )
 
 // LexTest is the structure that contains parsed test data from the *.dat files in the testdata

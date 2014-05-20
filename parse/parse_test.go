@@ -181,7 +181,7 @@ func (c *checkNode) checkFields(expect interface{}, pNode Node) {
 				c.dError()
 			}
 		case "OverLine", "UnderLine":
-			c.checkFields( c.eFieldVal, c.pFieldVal.(Node))
+			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "NodeList":
 			for num, node := range c.pFieldVal.(NodeList) {
 				// A little hackery to make our recursion easy
