@@ -91,12 +91,14 @@ func Parse(name, text string) (t *Tree, errors []error) {
 }
 
 func New(name string) *Tree {
-	return &Tree{Name: name, sectionLevels: new(sectionLevels)}
+	return &Tree{Name: name, Nodes: newList(), nodeTarget: newList(), sectionLevels:
+		new(sectionLevels)}
 }
 
 type Tree struct {
 	Name          string
 	Nodes         *NodeList // The root node list
+	nodeTarget    *NodeList // Used by the parser to add nodes to a target NodeList
 	Errors        []error
 	text          string
 	lex           *lexer
@@ -118,12 +120,13 @@ func (t *Tree) error(err error) {
 
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
-	t.Nodes = nil
 	t.lex = lex
 }
 
 // stopParse terminates parsing.
 func (t *Tree) stopParse() {
+	t.Nodes = nil
+	t.nodeTarget = nil
 	t.lex = nil
 }
 
@@ -139,14 +142,13 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, errors []error) {
 func (t *Tree) parse(tree *Tree) {
 	log.Debugln("Start")
 
-	t.Nodes = newList()
-
-	nodeBranch := t.Nodes
+	t.nodeTarget = t.Nodes
 
 	for t.peek().Type != itemEOF {
 		var n Node
 		token := t.next()
 		log.Debugf("Got token: %#+v\n", token)
+
 		switch token.Type {
 		case itemTitle: // Section includes overline/underline
 			n = t.section(token)
@@ -162,9 +164,9 @@ func (t *Tree) parse(tree *Tree) {
 			continue
 		}
 
-		nodeBranch.append(n)
+		t.nodeTarget.append(n)
 		if n.NodeType() == NodeSection {
-			nodeBranch =
+			t.nodeTarget =
 			reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
 		}
 	}
