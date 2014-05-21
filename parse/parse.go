@@ -224,24 +224,16 @@ func (t *Tree) section(i item) Node {
 		t.errorf("Section title over line does not match section title under line.")
 	}
 
-	// Check section levels to make sure the order of sections seen has not been violated
-	if level := t.sectionLevels.Find(rune(underAdorn.Text.(string)[0])); level > 0 {
-		if t.sectionLevel == t.sectionLevels.Level() {
-			t.sectionLevel++
-		} else {
-			// The current section level of the parser does not match the previously
-			// found section level. This means the user has used incorrect section
-			// syntax.
-			t.errorf("Incorrect section adornment \"%q\" for section level %d",
-				underAdorn.Text.(string)[0], t.sectionLevel)
-		}
-	} else {
-		t.sectionLevel++
+	sec := newSection(title, &t.id, overAdorn, underAdorn)
+	exists, eSec := t.sectionLevels.Add(sec)
+	if exists && eSec != nil {
+		t.errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",
+			sec.Text, string(sec.UnderLine.Rune))
+	} else if !exists && eSec != nil {
+		// There is a matching level in sectionLevels
+		t.nodeTarget = &(*t.sectionLevels)[sec.Level - 2].NodeList
 	}
 
-	t.sectionLevels.Add(rune(underAdorn.Text.(string)[0]), overline, len(underAdorn.Text.(string)))
-	ret := newSection(title, &t.id, t.sectionLevel, overAdorn, underAdorn)
-
 	log.Debugln("End")
-	return ret
+	return sec
 }
