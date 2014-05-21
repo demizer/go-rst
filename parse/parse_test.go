@@ -128,19 +128,40 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testName 
 	return
 }
 
+var testSectionLevel = [...]SectionNode{
+	SectionNode{
+		OverLine: &AdornmentNode{Rune: '='},
+		UnderLine: &AdornmentNode{Rune: '='},
+		Level: 1,
+		Length: 5,
+	},
+	SectionNode{
+		OverLine: &AdornmentNode{Rune: '-'},
+		UnderLine: &AdornmentNode{Rune: '-'},
+		Level: 2,
+		Length: 8,
+	},
+	SectionNode{
+		UnderLine: &AdornmentNode{Rune: '~'},
+		Level: 3,
+		Length: 6,
+	},
+}
+
 func TestSectionLevelsAdd(t *testing.T) {
-	var p sectionLevels
-	lvl := p.Add('=', true, 5)
-	if lvl != 1 {
-		t.Errorf("Improper level on first add, Got level: %d, expected: %d", lvl, 1)
+	x := new(sectionLevels)
+	v := &testSectionLevel[0]
+	x.Add(v)
+	if v.Level != 1 {
+		t.Errorf("Improper level on first add, Got level: %d, expected: %d", v.Level, 1)
 	}
 }
 
 func TestSectionLevelsString(t *testing.T) {
 	var p sectionLevels
-	p.Add('=', true, 5)
-	p.Add('-', true, 8)
-	p.Add('~', false, 6)
+	p.Add(&testSectionLevel[0])
+	p.Add(&testSectionLevel[1])
+	p.Add(&testSectionLevel[2])
 	out := p.String()
 	expect := "level: 1, rune: '=', overline: true, length: 5\nlevel: 2, rune: '-', " +
 		"overline: true, length: 8\nlevel: 3, rune: '~', overline: false, length: 6\n"
@@ -151,23 +172,24 @@ func TestSectionLevelsString(t *testing.T) {
 
 func TestSectionLevelsFind(t *testing.T) {
 	var p sectionLevels
-	p.Add('=', true, 5)
-	p.Add('-', true, 8)
-	p.Add('~', false, 6)
-	lvl := p.Find('-')
-	if lvl == -1 {
-		t.Errorf("Level not found!\nExpect:\n\n\t%d\nGot:\n\n\t%t\n", 2, lvl)
+	p.Add(&testSectionLevel[0])
+	p.Add(&testSectionLevel[1])
+	p.Add(&testSectionLevel[2])
+	sec := p.FindByRune('-')
+	if sec.Level == -1 {
+		t.Errorf("Expect:\t%d\nGot:\t%t\n", 2, sec.Level)
 	}
-	if lvl != 2 {
-		t.Errorf("Level not correct!\nExpect:\n\n\t%d\nGot:\n\n\t%d\n", 2, lvl)
+	if sec.Level != 2 {
+		t.Errorf("Expect:\t%d\nGot:\t%d\n", 2, sec.Level)
 	}
 }
 
 func TestSectionLevelsFindNoResult(t *testing.T) {
 	var p sectionLevels
-	lvl := p.Find('-')
-	if lvl > 0 {
-		t.Errorf("Should not find any levels!\nExpect:\n\n\t%d\nGot:\n\n\t%d\n", -1, lvl)
+	p.Add(&testSectionLevel[0])
+	sec := p.FindByRune('-')
+	if sec != nil {
+		t.Error("Expect no return value!")
 	}
 }
 
@@ -184,9 +206,9 @@ func TestSectionLevelsLevelEmpty(t *testing.T) {
 
 func TestSectionLevelsLevel(t *testing.T) {
 	var p sectionLevels
-	p.Add('=', true, 5)
-	p.Add('-', true, 8)
-	p.Add('~', false, 6)
+	p.Add(&testSectionLevel[0])
+	p.Add(&testSectionLevel[1])
+	p.Add(&testSectionLevel[2])
 	lvl := p.Level()
 	if lvl != 3 {
 		t.Errorf("Level() returned incorrect level!\nExpect:\n\n\t%d\nGot:\n\n\t%d\n", 3, lvl)
