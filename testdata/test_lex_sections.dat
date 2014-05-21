@@ -471,6 +471,14 @@ Paragraph 4.
     },
     {
         "id": 2,
+        "type": "NodeBlankLine",
+        "text": "\n",
+        "startPosition": 58,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
         "type": "NodeSection",
         "text": "Title 1",
         "level": 1,
@@ -479,7 +487,7 @@ Paragraph 4.
         "length": 7,
         "overLine": null,
         "underLine": {
-                "id": 3,
+                "id": 4,
                 "type": "NodeAdornment",
                 "rune": "=",
                 "startPosition": 67,
@@ -488,7 +496,7 @@ Paragraph 4.
         },
         "nodeList": [
             {
-                "id": 4,
+                "id": 5,
                 "type": "NodeParagraph",
                 "text": "Paragraph 1.",
                 "startPosition": 75,
@@ -496,7 +504,15 @@ Paragraph 4.
                 "length": 12
             },
             {
-                "id": 5,
+                "id": 6,
+                "type": "NodeBlankLine",
+                "text": "\n",
+                "startPosition": 88,
+                "line": 6,
+                "length": 1
+            },
+            {
+                "id": 7,
                 "type": "NodeSection",
                 "text": "Title 2",
                 "level": 2,
@@ -505,7 +521,7 @@ Paragraph 4.
                 "length": 7,
                 "overLine": null,
                 "underLine": {
-                        "id": 6,
+                        "id": 8,
                         "type": "NodeAdornment",
                         "rune": "-",
                         "startPosition": 97,
@@ -514,7 +530,7 @@ Paragraph 4.
                 },
                 "nodeList": [
                     {
-                        "id": 7,
+                        "id": 9,
                         "type": "NodeParagraph",
                         "text": "Paragraph 2.",
                         "startPosition": 105,
@@ -522,7 +538,15 @@ Paragraph 4.
                         "length": 12
                     },
                     {
-                        "id": 8,
+                        "id": 10,
+                        "type": "NodeBlankLine",
+                        "text": "\n",
+                        "startPosition": 118,
+                        "line": 10,
+                        "length": 1
+                    },
+                    {
+                        "id": 11,
                         "type": "NodeSection",
                         "text": "Title 3",
                         "level": 3,
@@ -531,7 +555,7 @@ Paragraph 4.
                         "length": 7,
                         "overLine": null,
                         "underLine": {
-                                "id": 9,
+                                "id": 12,
                                 "type": "NodeAdornment",
                                 "rune": "`",
                                 "startPosition": 127,
@@ -540,19 +564,27 @@ Paragraph 4.
                         },
                         "nodeList": [
                             {
-                                "id": 10,
+                                "id": 13,
                                 "type": "NodeParagraph",
                                 "text": "Paragraph 3.",
                                 "startPosition": 135,
                                 "line": 13,
                                 "length": 12
+                            },
+                            {
+                                "id": 14,
+                                "type": "NodeBlankLine",
+                                "text": "\n",
+                                "startPosition": 148,
+                                "line": 14,
+                                "length": 1
                             }
                         ]
                     }
                 ]
             },
             {
-                "id": 11,
+                "id": 15,
                 "type": "NodeSection",
                 "text": "Title 4",
                 "level": 2,
@@ -561,7 +593,7 @@ Paragraph 4.
                 "length": 7,
                 "overLine": null,
                 "underLine": {
-                        "id": 12,
+                        "id": 16,
                         "type": "NodeAdornment",
                         "rune": "-",
                         "startPosition": 157,
@@ -570,9 +602,9 @@ Paragraph 4.
                 },
                 "nodeList": [
                     {
-                        "id": 13,
+                        "id": 17,
                         "type": "NodeParagraph",
-                        "text": "Paragraph 2.",
+                        "text": "Paragraph 4.",
                         "startPosition": 165,
                         "line": 17,
                         "length": 12
