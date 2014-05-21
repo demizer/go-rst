@@ -104,7 +104,6 @@ type Tree struct {
 	lex           *lexer
 	peekCount     int
 	token         [3]item        // three-token look-ahead for parser.
-	sectionLevel  int            // The current section level of parsing
 	sectionLevels *sectionLevels // Encountered section levels
 	id            int            // The unique id of the node in the tree
 }
