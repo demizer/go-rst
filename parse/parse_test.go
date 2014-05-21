@@ -166,7 +166,7 @@ func TestSectionLevelsString(t *testing.T) {
 	expect := "level: 1, rune: '=', overline: true, length: 5\nlevel: 2, rune: '-', " +
 		"overline: true, length: 8\nlevel: 3, rune: '~', overline: false, length: 6\n"
 	if out != expect {
-		t.Errorf("String output mismatch!\nExpect:\n\n\t%q,\nGot:\n\n\t%q\n", expect, out)
+		t.Errorf("Expect:\t%q,\nGot:\t%q\n", expect, out)
 	}
 }
 
