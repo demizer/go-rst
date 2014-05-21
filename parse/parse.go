@@ -48,23 +48,34 @@ func (s *sectionLevels) String() string {
 	return out
 }
 
-func (s *sectionLevels) Add(adornChar rune, overline bool, length int) int {
-	lvl := s.Find(adornChar)
-	if lvl > 0 {
-		return lvl
-	}
-	*s = append(*s, sectionLevel{char: adornChar, overline: overline, length: length})
-	return len(*s)
-}
-
-// Returns -1 if not found
-func (s *sectionLevels) Find(adornChar rune) int {
-	for lvl, sec := range *s {
-		if sec.char == adornChar {
-			return lvl + 1
+// Returns nil if not found
+func (s *sectionLevels) FindByRune(adornChar rune) *SectionNode {
+	for _, sec := range *s {
+		if sec.UnderLine.Rune == adornChar {
+			return sec
 		}
 	}
-	return -1
+	return nil
+}
+
+// If exists == true, a section node with the same text and underline has been found in
+// sectionLevels, sec is the matching SectionNode. If exists == false, then the sec return value is
+// the similarly leveled SectionNode. If exists == false and sec == nil, then the SectionNode added
+// to sectionLevels is a new Node.
+func (s *sectionLevels) Add(section *SectionNode) (exists bool, sec *SectionNode) {
+	sec = s.FindByRune(section.UnderLine.Rune)
+	if sec != nil {
+		if sec.Text == section.Text {
+			return true, sec
+		} else if sec.Text != section.Text {
+			section.Level = sec.Level
+		}
+	} else {
+		section.Level = len(*s) + 1
+	}
+	exists = false
+	*s = append(*s, section)
+	return
 }
 
 func (s *sectionLevels) Level() int {
