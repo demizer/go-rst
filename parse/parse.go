@@ -41,9 +41,9 @@ type sectionLevels []*SectionNode
 
 func (s *sectionLevels) String() string {
 	var out string
-	for lvl, sec := range *s {
+	for _, sec := range *s {
 		out += fmt.Sprintf("level: %d, rune: %q, overline: %t, length: %d\n",
-			lvl+1, sec.char, sec.overline, sec.length)
+			sec.Level, sec.UnderLine.Rune, sec.OverLine != nil, sec.Length)
 	}
 	return out
 }
