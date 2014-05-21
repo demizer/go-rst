@@ -37,13 +37,7 @@ type systemMessage struct {
 	items  []item
 }
 
-type sectionLevel struct {
-	char     rune // The adornment character used to describe the section
-	overline bool // The section contains an overline
-	length   int  // The length of the adornment lines
-}
-
-type sectionLevels []sectionLevel
+type sectionLevels []*SectionNode
 
 func (s *sectionLevels) String() string {
 	var out string
