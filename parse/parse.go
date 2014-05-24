@@ -95,17 +95,20 @@ func New(name string) *Tree {
 		new(sectionLevels)}
 }
 
+var tokenPos = 2
+
 type Tree struct {
-	Name          string
-	Nodes         *NodeList // The root node list
-	nodeTarget    *NodeList // Used by the parser to add nodes to a target NodeList
-	Errors        []error
-	text          string
-	lex           *lexer
-	peekCount     int
-	token         [3]item        // three-token look-ahead for parser.
-	sectionLevels *sectionLevels // Encountered section levels
-	id            int            // The unique id of the node in the tree
+	Name             string
+	Nodes            *NodeList // The root node list
+	nodeTarget       *NodeList // Used by the parser to add nodes to a target NodeList
+	Errors           []error
+	text             string
+	lex              *lexer
+	tokenBackupCount int
+	tokenPeekCount   int
+	token            [5]*item
+	sectionLevels    *sectionLevels // Encountered section levels
+	id               int            // The unique id of the node in the tree
 }
 
 func (t *Tree) errorf(format string, args ...interface{}) {
@@ -143,7 +146,7 @@ func (t *Tree) parse(tree *Tree) {
 
 	t.nodeTarget = t.Nodes
 
-	for t.peek().Type != itemEOF {
+	for t.peek(1).Type != itemEOF {
 		var n Node
 		token := t.next()
 		log.Debugf("Got token: %#+v\n", token)
@@ -173,43 +176,80 @@ func (t *Tree) parse(tree *Tree) {
 	log.Debugln("End")
 }
 
-func (t *Tree) backup() {
-	t.peekCount++
-}
-
-// peekBack returns the last item sent from the lexer.
-func (t *Tree) peekBack() item {
-	return *t.lex.lastItem
-}
-
-// peek returns but does not consume the next token.
-func (t *Tree) peek() item {
-	if t.peekCount > 0 {
-		return t.token[t.peekCount-1]
-
+func (t *Tree) backup() *item {
+	t.tokenBackupCount++
+	if t.tokenBackupCount > 2 {
+		panic("t.backup() can only be used twice consecutively.")
 	}
-	t.peekCount = 1
-	t.token[0] = t.lex.nextItem()
-	return t.token[0]
+	for i := 4; i == 1; i-- {
+		t.token[i] = t.token[i-1]
+	}
+	t.token[t.tokenBackupCount-1] = nil
+	return t.token[tokenPos-t.tokenBackupCount]
 }
 
-func (t *Tree) next() item {
-	if t.peekCount > 0 {
-		t.peekCount--
+func (t *Tree) peekBack(pos int) *item {
+	if pos > 2 {
+		panic("Cannot peek back more than two positions!")
+	}
+	return t.token[tokenPos-pos]
+}
+
+func (t *Tree) peek(pos int) *item {
+	if pos > 2 {
+		panic("It is only possible to peek ahead two positions!")
+	}
+	for i := pos; i <= pos; i++ {
+		log.Debugln(i)
+		t.tokenPeekCount++
+		if t.token[tokenPos+t.tokenPeekCount] == nil {
+			t.token[tokenPos+t.tokenPeekCount] = t.lex.nextItem()
+		}
+	}
+	return t.token[tokenPos+t.tokenPeekCount]
+}
+
+func (t *Tree) next() *item {
+	// shifts the pointers left in t.token, pos is the amount to shift
+	shift := func(pos int) {
+		for i := pos; i > 0; i-- {
+			if t.tokenPeekCount > 0 {
+				if t.token[tokenPos+t.tokenPeekCount+1] != nil {
+					panic("t.token[t.tokenPeekCount] should be nil!")
+				}
+				t.token[tokenPos+t.tokenPeekCount+1] = t.lex.nextItem()
+				t.tokenPeekCount--
+			}
+			for x := 0; x < 4; x++ {
+				t.token[x] = t.token[x+1]
+				t.token[x+1] = nil
+			}
+		}
+	}
+	if t.tokenPeekCount > 0 {
+		shift(t.tokenPeekCount)
 	} else {
-		t.token[0] = t.lex.nextItem()
+		shift(1)
 	}
-	return t.token[t.peekCount]
+	t.tokenBackupCount, t.tokenPeekCount = 0, 0
+	return t.token[tokenPos]
 }
 
-func (t *Tree) section(i item) Node {
+func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
-	var overAdorn, title, underAdorn item
+	var overAdorn, title, underAdorn *item
 	var overline bool
 
-	if t.peekBack().Type == itemSectionAdornment {
-		overline = true
-		overAdorn = t.peekBack()
+	peekBack := t.peekBack(1)
+	if peekBack != nil {
+		switch peekBack.Type {
+		case itemSectionAdornment:
+			overline = true
+			overAdorn = peekBack
+		case itemSpace:
+			// TODO: Handle indented titles here!
+			log.Debugln("FOUND ITEMSPACE BEFORE TITLE")
+		}
 	}
 
 	title = i

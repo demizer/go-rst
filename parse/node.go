@@ -67,7 +67,7 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(i item, id *int, overAdorn item, underAdorn item) *SectionNode {
+func newSection(i *item, id *int, overAdorn *item, underAdorn *item) *SectionNode {
 	*id++
 	n := &SectionNode{
 		Id:            *id,
@@ -78,7 +78,7 @@ func newSection(i item, id *int, overAdorn item, underAdorn item) *SectionNode {
 		Line:          i.Line,
 	}
 
-	if overAdorn.Text != nil {
+	if overAdorn != nil && overAdorn.Text != nil {
 		*id++
 		Rune := rune(overAdorn.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
@@ -131,13 +131,13 @@ func (b BlankLineNode) NodeType() NodeType {
 	return b.Type
 }
 
-func newBlankLine(i item, id *int) *BlankLineNode {
+func newBlankLine(i *item, id *int) *BlankLineNode {
 	*id++
 	return &BlankLineNode{
 		Id:            *id,
 		Type:          NodeBlankLine,
-		Text:	       i.Text.(string),
-		Length:	       i.Length,
+		Text:          i.Text.(string),
+		Length:        i.Length,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
@@ -152,7 +152,7 @@ type ParagraphNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newParagraph(i item, id *int) *ParagraphNode {
+func newParagraph(i *item, id *int) *ParagraphNode {
 	*id++
 	return &ParagraphNode{
 		Id:            *id,

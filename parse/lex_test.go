@@ -22,7 +22,7 @@ func collect(t *LexTest) (items []item) {
 	l := lex(t.name, t.data)
 	for {
 		item := l.nextItem()
-		items = append(items, item)
+		items = append(items, *item)
 		if item.Type == itemEOF || item.Type == itemError {
 			break
 		}
