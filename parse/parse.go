@@ -183,13 +183,16 @@ func (t *Tree) parse(tree *Tree) {
 
 func (t *Tree) backup() *item {
 	t.tokenBackupCount++
+	// log.Debugln("t.tokenBackupCount:", t.tokenPeekCount)
 	if t.tokenBackupCount > 2 {
 		panic("t.backup() can only be used twice consecutively.")
 	}
-	for i := 4; i == 1; i-- {
+	for i := 4; i > 0; i-- {
 		t.token[i] = t.token[i-1]
+		t.token[i-1] = nil
 	}
-	t.token[t.tokenBackupCount-1] = nil
+	// log.Debugf("\n##### backup() aftermath #####\n\n")
+	// spd.Dump(t.token)
 	return t.token[tokenPos-t.tokenBackupCount]
 }
 
