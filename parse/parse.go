@@ -163,6 +163,9 @@ func (t *Tree) parse(tree *Tree) {
 			n = newParagraph(token, &t.id)
 		case itemSpace:
 			n = newSpace(token, &t.id)
+		case itemSectionAdornment:
+			// Section adornments should be consumed with itemTitle
+			panic("Parser should not find itemSectionAdornment!")
 		default:
 			t.errorf("%q Not implemented!", token.Type)
 			continue
