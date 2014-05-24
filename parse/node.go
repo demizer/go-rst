@@ -121,7 +121,7 @@ func (a AdornmentNode) NodeType() NodeType {
 type BlankLineNode struct {
 	Id            int      `json:"id"`
 	Type          NodeType `json:"nodetype"`
-	Text	      string `json:"text"`
+	Text          string   `json:"text"`
 	Length        int      `json:"length"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`

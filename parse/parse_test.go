@@ -7,11 +7,11 @@
 package parse
 
 import (
+	"fmt"
 	"github.com/demizer/go-elog"
 	"reflect"
 	"strings"
 	"testing"
-	"fmt"
 )
 
 type checkNode struct {
@@ -130,21 +130,21 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testName 
 
 var testSectionLevel = [...]SectionNode{
 	SectionNode{
-		OverLine: &AdornmentNode{Rune: '='},
+		OverLine:  &AdornmentNode{Rune: '='},
 		UnderLine: &AdornmentNode{Rune: '='},
-		Level: 1,
-		Length: 5,
+		Level:     1,
+		Length:    5,
 	},
 	SectionNode{
-		OverLine: &AdornmentNode{Rune: '-'},
+		OverLine:  &AdornmentNode{Rune: '-'},
 		UnderLine: &AdornmentNode{Rune: '-'},
-		Level: 2,
-		Length: 8,
+		Level:     2,
+		Length:    8,
 	},
 	SectionNode{
 		UnderLine: &AdornmentNode{Rune: '~'},
-		Level: 3,
-		Length: 6,
+		Level:     3,
+		Length:    6,
 	},
 }
 

@@ -95,8 +95,7 @@ func Parse(name, text string) (t *Tree, errors []error) {
 }
 
 func New(name string) *Tree {
-	return &Tree{Name: name, Nodes: newList(), nodeTarget: newList(), sectionLevels:
-		new(sectionLevels)}
+	return &Tree{Name: name, Nodes: newList(), nodeTarget: newList(), sectionLevels: new(sectionLevels)}
 }
 
 var tokenPos = 2
@@ -173,7 +172,7 @@ func (t *Tree) parse(tree *Tree) {
 		t.nodeTarget.append(n)
 		if n.NodeType() == NodeSection {
 			t.nodeTarget =
-			reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
+				reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
 		}
 	}
 
