@@ -189,6 +189,6 @@ func newSpace(i *item, id *int) *SpaceNode {
 	}
 }
 
-func (p SpaceNode) NodeType() NodeType {
-	return p.Type
+func (s SpaceNode) NodeType() NodeType {
+	return s.Type
 }
