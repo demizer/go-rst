@@ -7,8 +7,12 @@ package parse
 import (
 	"fmt"
 	"github.com/demizer/go-elog"
+	"github.com/demizer/go-spew/spew"
+	"os"
 	"reflect"
 )
+
+var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
 type systemMessageLevel int
 

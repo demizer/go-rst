@@ -6,7 +6,6 @@ package parse
 
 import (
 	"github.com/demizer/go-elog"
-	"github.com/demizer/go-spew/spew"
 	"reflect"
 	"testing"
 )
@@ -14,8 +13,6 @@ import (
 var (
 	tEOF = item{Type: itemEOF, StartPosition: 0, Text: ""}
 )
-
-var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
 // collect gathers the emitted items into a slice.
 func collect(t *LexTest) (items []item) {
