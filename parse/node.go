@@ -167,3 +167,28 @@ func newParagraph(i *item, id *int) *ParagraphNode {
 func (p ParagraphNode) NodeType() NodeType {
 	return p.Type
 }
+
+type SpaceNode struct {
+	Id            int      `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newSpace(i *item, id *int) *SpaceNode {
+	*id++
+	return &SpaceNode{
+		Id:            *id,
+		Type:          NodeParagraph,
+		Text:          i.Text.(string),
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+func (p SpaceNode) NodeType() NodeType {
+	return p.Type
+}

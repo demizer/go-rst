@@ -164,6 +164,9 @@ func (t *Tree) parse(tree *Tree) {
 		case itemParagraph:
 			n = newParagraph(token, &t.id)
 			log.Infof("New Node: %#+v\n", n)
+		case itemSpace:
+			n = newSpace(token, &t.id)
+			log.Infof("New Node: %#+v\n", n)
 		default:
 			t.errorf("%q Not implemented!", token.Type)
 			continue
