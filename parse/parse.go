@@ -152,21 +152,17 @@ func (t *Tree) parse(tree *Tree) {
 	for t.peek(1).Type != itemEOF {
 		var n Node
 		token := t.next()
-		log.Debugf("Got token: %#+v\n", token)
+		log.Infof("Got token: %#+v\n", token)
 
 		switch token.Type {
 		case itemTitle: // Section includes overline/underline
 			n = t.section(token)
-			log.Infof("New Node: %#+v\n", n)
 		case itemBlankLine:
 			n = newBlankLine(token, &t.id)
-			log.Infof("New Node: %#+v\n", n)
 		case itemParagraph:
 			n = newParagraph(token, &t.id)
-			log.Infof("New Node: %#+v\n", n)
 		case itemSpace:
 			n = newSpace(token, &t.id)
-			log.Infof("New Node: %#+v\n", n)
 		default:
 			t.errorf("%q Not implemented!", token.Type)
 			continue
