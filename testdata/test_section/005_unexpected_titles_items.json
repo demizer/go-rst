@@ -1,0 +1,146 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Test unexpected section titles.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 31
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 33,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 34,
+        "line": 3,
+        "length": 4
+    },
+    {
+        "id": 4,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 38,
+        "line": 3,
+        "length": 5
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 44,
+        "line": 4,
+        "length": 4
+    },
+    {
+        "id": 6,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 48,
+        "line": 4,
+        "length": 5
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 54,
+        "line": 5,
+        "length": 4
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 58,
+        "line": 5,
+        "length": 10
+    },
+    {
+        "id": 9,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 69,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 70,
+        "line": 7,
+        "length": 4
+    },
+    {
+        "id": 11,
+        "type": "itemSectionAdornment",
+        "text": "-----",
+        "startPosition": 74,
+        "line": 7,
+        "length": 5
+    },
+    {
+        "id": 12,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 80,
+        "line": 8,
+        "length": 4
+    },
+    {
+        "id": 13,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 84,
+        "line": 8,
+        "length": 5
+    },
+    {
+        "id": 14,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 90,
+        "line": 9,
+        "length": 4
+    },
+    {
+        "id": 15,
+        "type": "itemSectionAdornment",
+        "text": "-----",
+        "startPosition": 94,
+        "line": 9,
+        "length": 5
+    },
+    {
+        "id": 16,
+        "type": "itemSpace",
+        "text": "    ",
+        "startPosition": 100,
+        "line": 10,
+        "length": 4
+    },
+    {
+        "id": 17,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 104,
+        "line": 10,
+        "length": 10
+    },
+    {
+        "id": 18,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 114,
+        "line": 10,
+        "length": 0
+    }
+]

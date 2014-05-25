@@ -1,0 +1,107 @@
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Test unexpected section titles.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 31
+    },
+    {
+        "id": 2,
+        "type": "NodeBlockQuote",
+        "level": 1,
+        "startPosition": 0,
+        "line": 3,
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeSystemMessage",
+                "severity": "SEVERE",
+                "line": 4,
+                "nodeList": [
+                    {
+                        "id": 4,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title.",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 25
+                    },
+                    {
+                        "id": 5,
+                        "type": "NodeLiteralBlock",
+                        "text": "Title\n=====",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 12
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 58,
+                "line": 5,
+                "length": 10
+            },
+            {
+                "id": 7,
+                "type": "NodeSystemMessage",
+                "severity": "SEVERE",
+                "line": 7,
+                "nodeList": [
+                    {
+                        "id": 8,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title or transition.",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 39
+                    },
+                    {
+                        "id": 9,
+                        "type": "NodeLiteralBlock",
+                        "text": "-----",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 5
+                    }
+                ]
+            },
+            {
+                "id": 10,
+                "type": "NodeSystemMessage",
+                "severity": "SEVERE",
+                "line": 9,
+                "nodeList": [
+                    {
+                        "id": 11,
+                        "type": "NodeParagraph",
+                        "text": "Unexpected section title.",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 25
+                    },
+                    {
+                        "id": 12,
+                        "type": "NodeLiteralBlock",
+                        "text": "Title\n-----",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 12
+                    }
+                ]
+            },
+            {
+                "id": 13,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 104,
+                "line": 10,
+                "length": 10
+            }
+        ]
+    }
+]

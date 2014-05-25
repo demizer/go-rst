@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Test return to existing, higher-level section (Title 4).",
+        "startPosition": 1,
+        "line": 1,
+        "length": 56
+    },
+    {
+        "id": 2,
+        "type": "NodeSection",
+        "text": "Title 1",
+        "level": 1,
+        "startPosition": 59,
+        "line": 3,
+        "length": 7,
+        "overLine": null,
+        "underLine": {
+                "id": 3,
+                "type": "NodeAdornment",
+                "rune": "=",
+                "startPosition": 67,
+                "line": 4,
+                "length": 7
+        },
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeParagraph",
+                "text": "Paragraph 1.",
+                "startPosition": 75,
+                "line": 5,
+                "length": 12
+            },
+            {
+                "id": 5,
+                "type": "NodeSection",
+                "text": "Title 2",
+                "level": 2,
+                "startPosition": 89,
+                "line": 7,
+                "length": 7,
+                "overLine": null,
+                "underLine": {
+                        "id": 6,
+                        "type": "NodeAdornment",
+                        "rune": "-",
+                        "startPosition": 97,
+                        "line": 8,
+                        "length": 7
+                },
+                "nodeList": [
+                    {
+                        "id": 7,
+                        "type": "NodeParagraph",
+                        "text": "Paragraph 2.",
+                        "startPosition": 105,
+                        "line": 9,
+                        "length": 12
+                    },
+                    {
+                        "id": 8,
+                        "type": "NodeSection",
+                        "text": "Title 3",
+                        "level": 3,
+                        "startPosition": 119,
+                        "line": 11,
+                        "length": 7,
+                        "overLine": null,
+                        "underLine": {
+                                "id": 9,
+                                "type": "NodeAdornment",
+                                "rune": "`",
+                                "startPosition": 127,
+                                "line": 12,
+                                "length": 7
+                        },
+                        "nodeList": [
+                            {
+                                "id": 10,
+                                "type": "NodeParagraph",
+                                "text": "Paragraph 3.",
+                                "startPosition": 135,
+                                "line": 13,
+                                "length": 12
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 11,
+                "type": "NodeSection",
+                "text": "Title 4",
+                "level": 2,
+                "startPosition": 149,
+                "line": 15,
+                "length": 7,
+                "overLine": null,
+                "underLine": {
+                        "id": 12,
+                        "type": "NodeAdornment",
+                        "rune": "-",
+                        "startPosition": 157,
+                        "line": 16,
+                        "length": 7
+                },
+                "nodeList": [
+                    {
+                        "id": 13,
+                        "type": "NodeParagraph",
+                        "text": "Paragraph 4.",
+                        "startPosition": 165,
+                        "line": 17,
+                        "length": 12
+                    }
+                ]
+            }
+        ]
+    }
+]

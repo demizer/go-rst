@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Paragraph.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 2,
+        "type": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "startPosition": 13,
+        "line": 3,
+        "length": 5,
+        "overLine": null,
+        "underLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 19,
+            "line": 4,
+            "length": 5
+        },
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 26,
+                "line": 6,
+                "length": 10
+            }
+        ]
+    }
+]

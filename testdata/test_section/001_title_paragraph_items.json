@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 1,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 2,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 7,
+        "line": 2,
+        "length": 5
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 13,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 14,
+        "line": 4,
+        "length": 10
+    },
+    {
+        "id": 5,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 24,
+        "line": 4,
+        "length": 0
+    }
+]
