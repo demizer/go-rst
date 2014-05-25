@@ -198,9 +198,9 @@ type LiteralBlockNode struct {
 func newLiteralBlock(i *item) *LiteralBlockNode {
 	return &LiteralBlockNode{
 		Id:            i.Id,
-		Text:	       i.Text.(string),
-		Length:	       i.Length,
 		Type:          NodeLiteralBlock,
+		Text:          i.Text.(string),
+		Length:        i.Length,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
 	}

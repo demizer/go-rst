@@ -330,7 +330,7 @@ func (t *Tree) section(i *item) Node {
 			sec.Text, string(sec.UnderLine.Rune))
 	} else if !exists && eSec != nil {
 		// There is a matching level in sectionLevels
-		t.nodeTarget = &(*t.sectionLevels)[sec.Level - 2].NodeList
+		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
 	}
 
 	log.Debugln("End")
