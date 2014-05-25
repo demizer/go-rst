@@ -137,30 +137,6 @@ func (p ParagraphNode) NodeType() NodeType {
 	return p.Type
 }
 
-type SpaceNode struct {
-	Id            int      `json:"id"`
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
-}
-
-func newSpace(i *item) *SpaceNode {
-	return &SpaceNode{
-		Id:            i.Id,
-		Type:          NodeParagraph,
-		Text:          i.Text.(string),
-		Length:        i.Length,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
-}
-
-func (s SpaceNode) NodeType() NodeType {
-	return s.Type
-}
-
 type BlockQuoteNode struct {
 	Id            int      `json:"id"`
 	Type          NodeType `json:"type"`

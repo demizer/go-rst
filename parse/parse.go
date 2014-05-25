@@ -160,7 +160,6 @@ func (t *Tree) parse(tree *Tree) {
 		case itemParagraph:
 			n = newParagraph(token)
 		case itemSpace:
-			n = newSpace(token)
 		case itemSectionAdornment:
 			// Section adornments should be consumed with itemTitle
 			panic("Parser should not find itemSectionAdornment!")
