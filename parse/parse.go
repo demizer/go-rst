@@ -146,7 +146,7 @@ type Tree struct {
 	lex              *lexer
 	tokenBackupCount int
 	tokenPeekCount   int
-	token            [5]*item
+	token            [7]*item
 	sectionLevels    *sectionLevels // Encountered section levels
 	id               int            // The unique id of the node in the tree
 	indentWidth      int
@@ -235,7 +235,7 @@ func (t *Tree) backup() *item {
 	if t.tokenBackupCount > 2 {
 		panic("t.backup() can only be used twice consecutively.")
 	}
-	for i := 4; i > 0; i-- {
+	for i := len(t.token) - 1; i > 0; i-- {
 		t.token[i] = t.token[i-1]
 		t.token[i-1] = nil
 	}
