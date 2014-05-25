@@ -158,11 +158,11 @@ func (t *Tree) parse(tree *Tree) {
 		case itemTitle: // Section includes overline/underline
 			n = t.section(token)
 		case itemBlankLine:
-			n = newBlankLine(token, &t.id)
+			n = newBlankLine(token)
 		case itemParagraph:
-			n = newParagraph(token, &t.id)
+			n = newParagraph(token)
 		case itemSpace:
-			n = newSpace(token, &t.id)
+			n = newSpace(token)
 		case itemSectionAdornment:
 			// Section adornments should be consumed with itemTitle
 			panic("Parser should not find itemSectionAdornment!")
@@ -271,7 +271,7 @@ func (t *Tree) section(i *item) Node {
 		t.errorf("Section title over line does not match section title under line.")
 	}
 
-	sec := newSection(title, &t.id, overAdorn, underAdorn)
+	sec := newSection(title, overAdorn, underAdorn)
 	exists, eSec := t.sectionLevels.Add(sec)
 	if exists && eSec != nil {
 		t.errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",

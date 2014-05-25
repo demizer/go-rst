@@ -67,22 +67,20 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(i *item, id *int, overAdorn *item, underAdorn *item) *SectionNode {
-	*id++
+func newSection(title *item, overAdorn *item, underAdorn *item) *SectionNode {
 	n := &SectionNode{
-		Id:            *id,
+		Id:            title.Id,
 		Type:          NodeSection,
-		Text:          i.Text.(string),
-		StartPosition: i.StartPosition,
-		Length:        i.Length,
-		Line:          i.Line,
+		Text:          title.Text.(string),
+		StartPosition: title.StartPosition,
+		Length:        title.Length,
+		Line:          title.Line,
 	}
 
 	if overAdorn != nil && overAdorn.Text != nil {
-		*id++
 		Rune := rune(overAdorn.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
-			Id:            *id,
+			Id:            title.Id,
 			Type:          NodeAdornment,
 			Rune:          Rune,
 			StartPosition: overAdorn.StartPosition,
@@ -91,10 +89,9 @@ func newSection(i *item, id *int, overAdorn *item, underAdorn *item) *SectionNod
 		}
 	}
 
-	*id++
 	Rune := rune(underAdorn.Text.(string)[0])
 	n.UnderLine = &AdornmentNode{
-		Id:            *id,
+		Id:            title.Id,
 		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underAdorn.StartPosition,
@@ -131,10 +128,9 @@ func (b BlankLineNode) NodeType() NodeType {
 	return b.Type
 }
 
-func newBlankLine(i *item, id *int) *BlankLineNode {
-	*id++
+func newBlankLine(i *item) *BlankLineNode {
 	return &BlankLineNode{
-		Id:            *id,
+		Id:            i.Id,
 		Type:          NodeBlankLine,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -152,10 +148,9 @@ type ParagraphNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newParagraph(i *item, id *int) *ParagraphNode {
-	*id++
+func newParagraph(i *item) *ParagraphNode {
 	return &ParagraphNode{
-		Id:            *id,
+		Id:            i.Id,
 		Type:          NodeParagraph,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -177,10 +172,9 @@ type SpaceNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newSpace(i *item, id *int) *SpaceNode {
-	*id++
+func newSpace(i *item) *SpaceNode {
 	return &SpaceNode{
-		Id:            *id,
+		Id:            i.Id,
 		Type:          NodeParagraph,
 		Text:          i.Text.(string),
 		Length:        i.Length,
