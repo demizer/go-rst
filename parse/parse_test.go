@@ -85,7 +85,11 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != c.pFieldVal.(NodeType).String() {
 				c.dError()
 			}
-		case "id", "level", "length":
+		case "id":
+			if c.eFieldVal != float64(c.pFieldVal.(Id)) {
+				c.dError()
+			}
+		case "level", "length":
 			if c.eFieldVal != float64(c.pFieldVal.(int)) {
 				c.dError()
 			}

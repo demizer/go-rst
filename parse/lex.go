@@ -11,6 +11,10 @@ import (
 	"unicode/utf8"
 )
 
+type Id int
+
+func (i Id) IdNumber() Id { return i }
+
 // The line number of an item in the input string
 type Line int
 
@@ -75,7 +79,7 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	Id            int         `json:"id"`
+	Id            `json:"id"`
 	Type          itemElement `json:"type"`
 	Text          interface{} `json:"text"`
 	Line          `json:"line"`
@@ -128,7 +132,7 @@ func (l *lexer) emit(t itemElement) {
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	l.id++
 	nItem := item{
-		Id:            l.id,
+		Id:            Id(l.id),
 		Type:          t,
 		Text:          l.input[l.start:l.index],
 		Line:          Line(l.lineNumber()),

@@ -64,7 +64,7 @@ func equal(t *testing.T, items []item, testName string) {
 	for eNum, eItem := range exp {
 		eVal := reflect.ValueOf(eItem)
 		pVal := reflect.ValueOf(items[eNum])
-		id = pVal.FieldByName("Id").Interface().(int)
+		id = int(pVal.FieldByName("Id").Interface().(Id))
 		for x := 0; x < eVal.NumField(); x++ {
 			eFieldVal = eVal.Field(x)
 			eFieldType = eFieldVal.Type()

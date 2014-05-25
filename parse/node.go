@@ -38,6 +38,7 @@ func (n NodeType) MarshalText() ([]byte, error) {
 }
 
 type Node interface {
+	IdNumber() Id
 	LineNumber() Line
 	NodeType() NodeType
 }
@@ -54,7 +55,7 @@ func (l *NodeList) append(n Node) {
 }
 
 type SectionNode struct {
-	Id            int      `json:"id"`
+	Id            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Level         int      `json:"level"`
@@ -106,7 +107,7 @@ func newSection(title *item, overAdorn *item, underAdorn *item) *SectionNode {
 }
 
 type AdornmentNode struct {
-	Id            int      `json:"id"`
+	Id            `json:"id"`
 	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune"`
 	Length        int      `json:"length"`
@@ -119,7 +120,7 @@ func (a AdornmentNode) NodeType() NodeType {
 }
 
 type ParagraphNode struct {
-	Id            int      `json:"id"`
+	Id            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -143,7 +144,7 @@ func (p ParagraphNode) NodeType() NodeType {
 }
 
 type BlockQuoteNode struct {
-	Id            int      `json:"id"`
+	Id            `json:"id"`
 	Type          NodeType `json:"type"`
 	Level         int      `json:"level"`
 	Line          `json:"line"`
@@ -166,7 +167,7 @@ func (b BlockQuoteNode) NodeType() NodeType {
 }
 
 type SystemMessageNode struct {
-	Id       int                `json:"id"`
+	Id       `json:"id"`
 	Type     NodeType           `json:"type"`
 	Severity systemMessageLevel `json:"severity"`
 	Line     `json:"line"`
@@ -187,7 +188,7 @@ func (s SystemMessageNode) NodeType() NodeType {
 }
 
 type LiteralBlockNode struct {
-	Id            int      `json:"id"`
+	Id            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`

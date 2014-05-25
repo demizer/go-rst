@@ -192,7 +192,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n Node
 		token := t.next()
 		t.id++
-		token.Id = t.id
+		token.Id = Id(t.id)
 		log.Infof("Got token: %#+v\n", token)
 
 		switch token.Type {
@@ -339,14 +339,14 @@ func (t *Tree) errorReporter(err parserError) Node {
 	var lbTextLen int
 
 	s := newSystemMessage(&item{
-		Id:   t.id - 1,
+		Id:   Id(t.id - 1),
 		Type: itemSystemMessage,
 		Line: t.token[tokenZero].Line,
 	},
 		err.Level())
 
 	msg := newParagraph(&item{
-		Id:     t.id,
+		Id:     Id(t.id),
 		Text:   err.Message(),
 		Length: len(err.Message()),
 	})
@@ -363,7 +363,7 @@ func (t *Tree) errorReporter(err parserError) Node {
 	}
 
 	lb := newLiteralBlock(&item{
-		Id:     t.id + 1,
+		Id:     Id(t.id + 1),
 		Type:   itemLiteralBlock,
 		Text:   lbText,
 		Length: lbTextLen, // Add one to account for the backslash
