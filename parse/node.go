@@ -11,12 +11,18 @@ const (
 	NodeSection NodeType = iota
 	NodeParagraph
 	NodeAdornment
+	NodeBlockQuote
+	NodeSystemMessage
+	NodeLiteralBlock
 )
 
 var nodeTypes = [...]string{
 	"NodeSection",
 	"NodeParagraph",
 	"NodeAdornment",
+	"NodeBlockQuote",
+	"NodeSystemMessage",
+	"NodeLiteralBlock",
 }
 
 func (n NodeType) Type() NodeType {
@@ -147,7 +153,7 @@ type BlockQuoteNode struct {
 func newBlockQuote(i *item) *BlockQuoteNode {
 	return &BlockQuoteNode{
 		Id:            i.Id,
-		Type:          NodeParagraph,
+		Type:          NodeBlockQuote,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
@@ -168,9 +174,9 @@ type SystemMessageNode struct {
 func newSystemMessage(i *item, level systemMessageLevel) *SystemMessageNode {
 	return &SystemMessageNode{
 		Id:            i.Id,
-		Type:          NodeParagraph,
 		Level:	       level,
 		Line:          i.Line,
+		Type:     NodeSystemMessage,
 	}
 }
 
@@ -190,9 +196,9 @@ type LiteralBlockNode struct {
 func newLiteralBlock(i *item) *LiteralBlockNode {
 	return &LiteralBlockNode{
 		Id:            i.Id,
-		Type:          NodeParagraph,
 		Text:	       i.Text.(string),
 		Length:	       i.Length,
+		Type:          NodeLiteralBlock,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
 	}
