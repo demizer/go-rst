@@ -208,7 +208,7 @@ func (t *Tree) peek(pos int) *item {
 	if pos > 2 {
 		panic("It is only possible to peek ahead two positions!")
 	}
-	for i := pos; i <= pos; i++ {
+	for i := 0; i < pos; i++ {
 		t.tokenPeekCount++
 		if t.token[tokenPos+t.tokenPeekCount] == nil {
 			t.token[tokenPos+t.tokenPeekCount] = t.lex.nextItem()
