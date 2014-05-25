@@ -112,6 +112,7 @@ type Tree struct {
 	token            [5]*item
 	sectionLevels    *sectionLevels // Encountered section levels
 	id               int            // The unique id of the node in the tree
+	indentLevel      int
 }
 
 func (t *Tree) errorf(format string, args ...interface{}) {

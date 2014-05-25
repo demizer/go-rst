@@ -740,6 +740,7 @@ Test unexpected section titles.
         "id": 2,
         "type": "NodeBlockQuote",
         "line": null,
+        "level": 1,
         "nodeList": [
             {
                 "id": 3,

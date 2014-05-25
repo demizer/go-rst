@@ -145,15 +145,17 @@ func (p ParagraphNode) NodeType() NodeType {
 type BlockQuoteNode struct {
 	Id            int      `json:"id"`
 	Type          NodeType `json:"type"`
+	Level         int      `json:"level"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	NodeList      NodeList `json:"nodeList"`
 }
 
-func newBlockQuote(i *item) *BlockQuoteNode {
+func newBlockQuote(i *item, indentLevel int) *BlockQuoteNode {
 	return &BlockQuoteNode{
 		Id:            i.Id,
 		Type:          NodeBlockQuote,
+		Level:         indentLevel,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
