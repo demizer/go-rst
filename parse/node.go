@@ -230,3 +230,27 @@ func newSystemMessage(i *item, level systemMessageLevel) *SystemMessageNode {
 func (s SystemMessageNode) NodeType() NodeType {
 	return s.Type
 }
+
+type LiteralBlockNode struct {
+	Id            int      `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	StartPosition `json:"startPosition"`
+	Line          `json:"line"`
+}
+
+func newLiteralBlock(i *item) *LiteralBlockNode {
+	return &LiteralBlockNode{
+		Id:            i.Id,
+		Type:          NodeParagraph,
+		Text:	       i.Text.(string),
+		Length:	       i.Length,
+		StartPosition: i.StartPosition,
+		Line:          i.Line,
+	}
+}
+
+func (l LiteralBlockNode) NodeType() NodeType {
+	return l.Type
+}
