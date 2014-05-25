@@ -20,10 +20,10 @@
             {
                 "id": 3,
                 "type": "NodeParagraph",
-                "text": "Paragraph (no blank line).",
+                "text": "Test section header no blank line.",
                 "startPosition": 13,
                 "line": 3,
-                "length": 26
+                "length": 34
             }
         ]
     }

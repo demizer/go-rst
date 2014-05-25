@@ -2,16 +2,16 @@
     {
         "id": 1,
         "type": "itemParagraph",
-        "text": "Paragraph.",
+        "text": "Test paragraph section header and paragraph.",
         "startPosition": 1,
         "line": 1,
-        "length": 10
+        "length": 44
     },
     {
         "id": 2,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 12,
+        "startPosition": 46,
         "line": 2,
         "length": 1
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemTitle",
         "text": "Title",
-        "startPosition": 13,
+        "startPosition": 47,
         "line": 3,
         "length": 5
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemSectionAdornment",
         "text": "=====",
-        "startPosition": 19,
+        "startPosition": 53,
         "line": 4,
         "length": 5
     },
@@ -35,7 +35,7 @@
         "id": 5,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 25,
+        "startPosition": 59,
         "line": 5,
         "length": 1
     },
@@ -43,7 +43,7 @@
         "id": 6,
         "type": "itemParagraph",
         "text": "Paragraph.",
-        "startPosition": 26,
+        "startPosition": 60,
         "line": 6,
         "length": 10
     },
@@ -51,7 +51,7 @@
         "id": 7,
         "type": "itemEOF",
         "text": "",
-        "startPosition": 36,
+        "startPosition": 71,
         "line": 6,
         "length": 0
     }

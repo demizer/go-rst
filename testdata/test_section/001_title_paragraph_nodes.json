@@ -20,10 +20,10 @@
             {
                 "id": 3,
                 "type": "NodeParagraph",
-                "text": "Paragraph.",
+                "text": "Test section header and paragraph.",
                 "startPosition": 14,
                 "line": 4,
-                "length": 10
+                "length": 34
             }
         ]
     }

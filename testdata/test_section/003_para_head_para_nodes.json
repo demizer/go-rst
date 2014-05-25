@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "NodeParagraph",
-        "text": "Paragraph.",
+        "text": "Test paragraph section header and paragraph.",
         "startPosition": 1,
         "line": 1,
-        "length": 10
+        "length": 44
     },
     {
         "id": 2,
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
-        "startPosition": 13,
+        "startPosition": 47,
         "line": 3,
         "length": 5,
         "overLine": null,
@@ -20,7 +20,7 @@
             "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 19,
+            "startPosition": 53,
             "line": 4,
             "length": 5
         },
@@ -29,7 +29,7 @@
                 "id": 4,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
-                "startPosition": 26,
+                "startPosition": 60,
                 "line": 6,
                 "length": 10
             }

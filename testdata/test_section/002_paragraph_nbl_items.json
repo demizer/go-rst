@@ -18,16 +18,16 @@
     {
         "id": 3,
         "type": "itemParagraph",
-        "text": "Paragraph (no blank line).",
+        "text": "Test section header no blank line.",
         "startPosition": 13,
         "line": 3,
-        "length": 26
+        "length": 34
     },
     {
         "id": 4,
         "type": "itemEOF",
         "text": "",
-        "startPosition": 39,
+        "startPosition": 48,
         "line": 3,
         "length": 0
     }

@@ -26,16 +26,16 @@
     {
         "id": 4,
         "type": "itemParagraph",
-        "text": "Paragraph.",
+        "text": "Test section header and paragraph.",
         "startPosition": 14,
         "line": 4,
-        "length": 10
+        "length": 34
     },
     {
         "id": 5,
         "type": "itemEOF",
         "text": "",
-        "startPosition": 24,
+        "startPosition": 49,
         "line": 4,
         "length": 0
     }
