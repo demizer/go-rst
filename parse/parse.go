@@ -132,7 +132,10 @@ func New(name string) *Tree {
 	}
 }
 
-var tokenPos = 2
+const (
+	tokenPos    = 3
+	indentWidth = 4 // Default indent width
+)
 
 type Tree struct {
 	Name             string
@@ -146,6 +149,7 @@ type Tree struct {
 	token            [5]*item
 	sectionLevels    *sectionLevels // Encountered section levels
 	id               int            // The unique id of the node in the tree
+	indentWidth      int
 	indentLevel      int
 }
 
@@ -198,9 +202,10 @@ func (t *Tree) parse(tree *Tree) {
 		case itemParagraph:
 			n = newParagraph(token)
 		case itemSpace:
-		case itemSectionAdornment:
-			// Section adornments should be consumed with itemTitle
-			panic("Parser should not find itemSectionAdornment!")
+			n = t.indent(token)
+			if n == nil {
+				continue
+			}
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			t.id--
@@ -380,4 +385,17 @@ func (t *Tree) errorReporter(err parserError) Node {
 	// spd.Dump(nb)
 
 	return s
+}
+
+func (t *Tree) indent(i *item) Node {
+	level := i.Length / t.indentWidth
+	if t.peekBack(1).Type == itemBlankLine {
+		if t.indentLevel == level {
+			// Append to the current blockquote NodeList
+			return nil
+		}
+		t.indentLevel = level
+		return newBlockQuote(&item{Id: i.Id, Type: itemBlockquote, Line: i.Line}, level)
+	}
+	return nil
 }
