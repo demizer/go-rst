@@ -14,9 +14,11 @@ var (
 	tEOF = item{Type: itemEOF, StartPosition: 0, Text: ""}
 )
 
-// collect gathers the emitted items into a slice.
-func collect(t *LexTest) (items []item) {
-	l := lex(t.name, t.data)
+func lexTest(t *testing.T, test *Test) []item {
+	log.Debugf("Test Path: %s\n", test.path)
+	log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+	var items []item
+	l := lex(test.path, test.data)
 	for {
 		item := l.nextItem()
 		items = append(items, *item)
@@ -24,30 +26,13 @@ func collect(t *LexTest) (items []item) {
 			break
 		}
 	}
-	return
-}
-
-func lexSectionTest(t *testing.T, testName string) []item {
-	test := lexTests.testByName(testName)
-	if test != nil {
-		log.Debugf("Test Name: %s\n", test.name)
-		log.Debugf("Description: %s\n", test.description)
-		log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
-		items := collect(test)
-		return items
-	} else {
-		t.Fatalf("%s could not be found.\n", testName)
-	}
-	return nil
+	return items
 }
 
 // Test equality between items and expected items from unmarshalled json data, field by field.
 // Returns error in case of error during json unmarshalling, or mismatch between items and the
 // expected output.
-func equal(t *testing.T, items []item, testName string) {
-	test := lexTests.testByName(testName)
-	exp := test.expectItems()
-
+func equal(t *testing.T, items []item, expectItems []item) {
 	var id int
 	var found bool
 	var pFieldName, eFieldName string
@@ -61,7 +46,7 @@ func equal(t *testing.T, items []item, testName string) {
 			eFieldVal.Interface(), eFieldType.Name())
 	}
 
-	for eNum, eItem := range exp {
+	for eNum, eItem := range expectItems {
 		eVal := reflect.ValueOf(eItem)
 		pVal := reflect.ValueOf(items[eNum])
 		id = int(pVal.FieldByName("Id").Interface().(Id))
@@ -89,25 +74,36 @@ func equal(t *testing.T, items []item, testName string) {
 }
 
 func TestLexSectionTitlePara(t *testing.T) {
-	testName := "SectionTitlePara"
-	items := lexSectionTest(t, testName)
-	equal(t, items, testName)
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionTitleParaNoBlankline(t *testing.T) {
-	testName := "SectionTitleParaNoBlankLine"
-	items := lexSectionTest(t, testName)
-	equal(t, items, testName)
+	testPath := "test_section/002_paragraph_nbl"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionParaHeadPara(t *testing.T) {
-	testName := "SectionParaHeadPara"
-	items := lexSectionTest(t, testName)
-	equal(t, items, testName)
+	testPath := "test_section/003_para_head_para"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSectionLevelTest(t *testing.T) {
+	testPath := "test_section/004_section_level_test"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionUnexpectedTitles(t *testing.T) {
-	testName := "SectionUnexpectedTitles"
-	items := lexSectionTest(t, testName)
-	equal(t, items, testName)
+	testPath := "test_section/005_unexpected_titles"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
 }

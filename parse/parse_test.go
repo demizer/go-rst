@@ -7,16 +7,94 @@
 package parse
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/demizer/go-elog"
+	"io/ioutil"
 	"reflect"
 	"strings"
 	"testing"
 )
 
+func init() { SetDebug() }
+
+// SetDebug is typically called from the init() function in a test file. SetDebug parses debug flags
+// passed to the test binary and also sets the template for logging output.
+func SetDebug() {
+	var debug bool
+
+	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
+	flag.Parse()
+
+	if debug {
+		log.SetLevel(log.LEVEL_DEBUG)
+	}
+
+	log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
+		"{{if .Prefix}}{{.Prefix}} {{end}}" +
+		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
+		"{{if .FileName}}{{.FileName}}: {{end}}" +
+		"{{if .FunctionName}}{{.FunctionName}}{{end}}" +
+		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
+		"{{if .Text}}{{.Text}}{{end}}")
+
+	log.SetFlags(log.Lansi | log.LnoPrefix | log.LfunctionName |
+		log.LlineNumber)
+}
+
+// Contains a single test with data loaded from test files in the testdata directory
+type Test struct {
+	path     string // The path including directory and basename
+	data     string // The input data to be parsed
+	itemData string // The expected lex items output in json
+	nodeData string // The expected parse nodes in json
+}
+
+// expectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic
+// occurs if there is an error unmarshaling the JSON data.
+func (l Test) expectNodes() (nodeList []interface{}) {
+	err := json.Unmarshal([]byte(l.nodeData), &nodeList)
+	if err != nil {
+		panic(fmt.Errorf("JSON error: ", err))
+	}
+	return
+}
+
+// expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is
+// an error decoding the JSON data.
+func (l Test) expectItems() (lexItems []item) {
+	err := json.Unmarshal([]byte(l.itemData), &lexItems)
+	if err != nil {
+		panic(fmt.Errorf("JSON error: ", err))
+	}
+	return
+}
+
+func LoadTest(path string) (test *Test) {
+	inputData, err := ioutil.ReadFile("../testdata/" + path + ".rst")
+	if err != nil {
+		panic(err)
+	}
+	itemData, err := ioutil.ReadFile("../testdata/" + path + "_items.json")
+	if err != nil {
+		panic(err)
+	}
+	nodeData, err := ioutil.ReadFile("../testdata/" + path + "_nodes.json")
+	if err != nil {
+		panic(err)
+	}
+	return &Test{
+		path:     path,
+		data:     string(inputData),
+		itemData: string(itemData),
+		nodeData: string(nodeData),
+	}
+}
+
 type checkNode struct {
 	t          *testing.T
-	testName   string
+	testPath   string
 	pNodeName  string
 	pFieldName string
 	pFieldVal  interface{}
@@ -128,8 +206,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 
 }
 
-func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testName string) {
-	state := &checkNode{t: t, testName: testName}
+func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testPath string) {
+	state := &checkNode{t: t, testPath: testPath}
 	for eNum, eNode := range eTree {
 		state.checkFields(eNode, pNodes[eNum])
 	}
@@ -223,12 +301,11 @@ func TestSectionLevelsLevel(t *testing.T) {
 	}
 }
 
-func parseTest(t *testing.T, lexTest *LexTest) (tree *Tree) {
+func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	var errs []error
-	log.Debugf("Test Name: %s\n", lexTest.name)
-	log.Debugf("Description: %s\n", lexTest.description)
-	log.Debugf("Test Input:\n-----------\n%s\n----------\n", lexTest.data)
-	tree, errs = Parse(lexTest.name, lexTest.data)
+	log.Debugf("Test path: %s\n", test.path)
+	log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+	tree, errs = Parse(test.path, test.data)
 	if errs != nil {
 		for _, err := range errs {
 			t.Error(err)
@@ -238,41 +315,41 @@ func parseTest(t *testing.T, lexTest *LexTest) (tree *Tree) {
 }
 
 func TestParseSectionTitleParagraph(t *testing.T) {
-	testName := "SectionTitlePara"
-	test := lexTests.testByName(testName)
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.expectJson()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleParaNoBlankLine(t *testing.T) {
-	testName := "SectionTitleParaNoBlankLine"
-	test := lexTests.testByName(testName)
+	testPath := "test_section/002_paragraph_nbl"
+	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.expectJson()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
 func TestParseSectionParaHeadPara(t *testing.T) {
-	testName := "SectionParaHeadPara"
-	test := lexTests.testByName(testName)
+	testPath := "test_section/003_para_head_para"
+	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.expectJson()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelTest1(t *testing.T) {
-	testName := "SectionLevelTest1"
-	test := lexTests.testByName(testName)
+	testPath := "test_section/004_section_level_test"
+	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.expectJson()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
 func TestParseSectionUnexpectedTitles(t *testing.T) {
-	testName := "SectionUnexpectedTitles"
-	test := lexTests.testByName(testName)
+	testPath := "test_section/005_unexpected_titles"
+	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.expectJson()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testName)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
