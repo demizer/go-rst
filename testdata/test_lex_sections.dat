@@ -739,8 +739,9 @@ Test unexpected section titles.
     {
         "id": 2,
         "type": "NodeBlockQuote",
-        "line": null,
         "level": 1,
+        "startPosition": 0,
+        "line": 3,
         "nodeList": [
             {
                 "id": 3,
@@ -752,16 +753,17 @@ Test unexpected section titles.
                         "id": 4,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
-                        "line": 4,
+                        "startPosition": 0,
+                        "line": 0,
                         "length": 25
                     },
                     {
                         "id": 5,
                         "type": "NodeLiteralBlock",
-                        "text": "    Title\n    =====",
-                        "startPosition": 34,
-                        "line": null,
-                        "length": 20
+                        "text": "Title\n=====",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 12
                     }
                 ]
             },
@@ -776,7 +778,6 @@ Test unexpected section titles.
             {
                 "id": 7,
                 "type": "NodeSystemMessage",
-                "startPosition": 74,
                 "severity": "SEVERE",
                 "line": 7,
                 "nodeList": [
@@ -784,24 +785,23 @@ Test unexpected section titles.
                         "id": 8,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title or transition.",
-                        "startPosition": null,
-                        "line": 7,
+                        "startPosition": 0,
+                        "line": 0,
                         "length": 39
                     },
                     {
                         "id": 9,
                         "type": "NodeLiteralBlock",
-                        "text": "    -----",
-                        "startPosition": 74,
-                        "line": null,
-                        "length": 9
+                        "text": "-----",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 5
                     }
                 ]
             },
             {
                 "id": 10,
                 "type": "NodeSystemMessage",
-                "startPosition": 94,
                 "severity": "SEVERE",
                 "line": 9,
                 "nodeList": [
@@ -809,17 +809,17 @@ Test unexpected section titles.
                         "id": 11,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
-                        "startPosition": null,
-                        "line": 9,
+                        "startPosition": 0,
+                        "line": 0,
                         "length": 25
                     },
                     {
                         "id": 12,
                         "type": "NodeLiteralBlock",
-                        "text": "    Title\n    -----",
-                        "startPosition": 94,
-                        "line": null,
-                        "length": 20
+                        "text": "Title\n-----",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 12
                     }
                 ]
             },
