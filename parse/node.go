@@ -207,3 +207,26 @@ func newBlockQuote(i *item) *BlockQuoteNode {
 func (b BlockQuoteNode) NodeType() NodeType {
 	return b.Type
 }
+
+type SystemMessageNode struct {
+	Id            int      `json:"id"`
+	Type          NodeType `json:"type"`
+	Level         systemMessageLevel `json:"level"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+	NodeList      NodeList `json:"nodeList"`
+}
+
+func newSystemMessage(i *item, level systemMessageLevel) *SystemMessageNode {
+	return &SystemMessageNode{
+		Id:            i.Id,
+		Type:          NodeParagraph,
+		Level:	       level,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+func (s SystemMessageNode) NodeType() NodeType {
+	return s.Type
+}
