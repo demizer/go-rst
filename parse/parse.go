@@ -155,10 +155,8 @@ func (t *Tree) parse(tree *Tree) {
 		log.Infof("Got token: %#+v\n", token)
 
 		switch token.Type {
-		case itemTitle: // Section includes overline/underline
+		case itemSectionAdornment:
 			n = t.section(token)
-		case itemBlankLine:
-			n = newBlankLine(token)
 		case itemParagraph:
 			n = newParagraph(token)
 		case itemSpace:
@@ -166,6 +164,10 @@ func (t *Tree) parse(tree *Tree) {
 		case itemSectionAdornment:
 			// Section adornments should be consumed with itemTitle
 			panic("Parser should not find itemSectionAdornment!")
+		case itemTitle, itemBlankLine:
+			// itemTitle is consumed when evaluating itemSectionAdornment
+			t.id--
+			continue
 		default:
 			t.errorf("%q Not implemented!", token.Type)
 			continue

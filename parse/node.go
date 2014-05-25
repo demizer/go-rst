@@ -10,14 +10,12 @@ type NodeType int
 const (
 	NodeSection NodeType = iota
 	NodeParagraph
-	NodeBlankLine
 	NodeAdornment
 )
 
 var nodeTypes = [...]string{
 	"NodeSection",
 	"NodeParagraph",
-	"NodeBlankLine",
 	"NodeAdornment",
 }
 
@@ -113,30 +111,6 @@ type AdornmentNode struct {
 
 func (a AdornmentNode) NodeType() NodeType {
 	return a.Type
-}
-
-type BlankLineNode struct {
-	Id            int      `json:"id"`
-	Type          NodeType `json:"nodetype"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
-}
-
-func (b BlankLineNode) NodeType() NodeType {
-	return b.Type
-}
-
-func newBlankLine(i *item) *BlankLineNode {
-	return &BlankLineNode{
-		Id:            i.Id,
-		Type:          NodeBlankLine,
-		Text:          i.Text.(string),
-		Length:        i.Length,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
 }
 
 type ParagraphNode struct {
