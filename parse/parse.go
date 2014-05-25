@@ -133,7 +133,7 @@ func New(name string) *Tree {
 }
 
 const (
-	tokenZero    = 3
+	tokenZero   = 3
 	indentWidth = 4 // Default indent width
 )
 
