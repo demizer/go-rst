@@ -166,19 +166,19 @@ func (b BlockQuoteNode) NodeType() NodeType {
 }
 
 type SystemMessageNode struct {
-	Id            int      `json:"id"`
-	Type          NodeType `json:"type"`
-	Level         systemMessageLevel `json:"level"`
-	Line          `json:"line"`
-	NodeList      NodeList `json:"nodeList"`
+	Id       int                `json:"id"`
+	Type     NodeType           `json:"type"`
+	Severity systemMessageLevel `json:"severity"`
+	Line     `json:"line"`
+	NodeList NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, level systemMessageLevel) *SystemMessageNode {
+func newSystemMessage(i *item, severity systemMessageLevel) *SystemMessageNode {
 	return &SystemMessageNode{
-		Id:            i.Id,
-		Level:	       level,
-		Line:          i.Line,
+		Id:       i.Id,
 		Type:     NodeSystemMessage,
+		Severity: severity,
+		Line:     i.Line,
 	}
 }
 

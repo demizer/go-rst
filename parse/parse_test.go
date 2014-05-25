@@ -111,6 +111,10 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != string(c.pFieldVal.(rune)) {
 				c.dError()
 			}
+		case "severity":
+			if c.eFieldVal != c.pFieldVal.(systemMessageLevel).String() {
+				c.dError()
+			}
 		default:
 			if c.eFieldVal != c.pFieldVal {
 				c.dError()

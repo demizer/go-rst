@@ -34,11 +34,40 @@ func (s systemMessageLevel) String() string {
 	return systemMessageLevels[s]
 }
 
-type systemMessage struct {
-	level  systemMessageLevel
-	line   int
-	source string
-	items  []item
+type parserError int
+
+const (
+	errorUnexpectedSectionTitle parserError = iota
+	errorUnexpectedSectionTitleOrTransition
+)
+
+var parserErrors = [...]string{
+	"errorUnexpectedSectionTitle",
+	"errorUnexpectedSectionTitleOrTransition",
+}
+
+func (p parserError) String() string {
+	return parserErrors[p]
+}
+
+func (p parserError) Message() (s string) {
+	switch p {
+	case errorUnexpectedSectionTitle:
+		s = "Unexpected section title."
+	case errorUnexpectedSectionTitleOrTransition:
+		s = "Unexpected section title or transition."
+	}
+	return
+}
+
+func (p parserError) Level() (s systemMessageLevel) {
+	switch p {
+	case errorUnexpectedSectionTitle:
+		s = levelSevere
+	case errorUnexpectedSectionTitleOrTransition:
+		s = levelSevere
+	}
+	return
 }
 
 type sectionLevels []*SectionNode
@@ -251,22 +280,31 @@ func (t *Tree) section(i *item) Node {
 
 	peekBack := t.peekBack(1)
 	if peekBack != nil {
-		switch peekBack.Type {
-		case itemSectionAdornment:
-			overline = true
-			overAdorn = peekBack
-		case itemSpace:
-			// TODO: Handle indented titles here!
-			log.Debugln("FOUND ITEMSPACE BEFORE TITLE")
+		if peekBack.Type == itemSpace {
+			// Looking back past the white space
+			if t.peekBack(2).Type == itemTitle {
+				return t.errorReporter(errorUnexpectedSectionTitle)
+			}
+			return t.errorReporter(errorUnexpectedSectionTitleOrTransition)
+		} else if peekBack.Type == itemTitle {
+			if t.peekBack(2) != nil && t.peekBack(2).Type == itemSectionAdornment {
+				// The overline of the section
+				overline = true
+				overAdorn = peekBack
+			}
 		}
 	}
 
-	title = i
-	underAdorn = t.next() // Grab the section underline
+	title = t.peekBack(1)
+	underAdorn = i
 
+	// TODO: Change these into proper error messages!
 	// Check adornment for proper syntax
-	if title.Length != underAdorn.Length {
-		t.errorf("Section under line  not equal to title length!")
+	if underAdorn.Type == itemSpace {
+		t.backup() // Put the parser back on the title
+		return t.errorReporter(errorUnexpectedSectionTitle)
+	} else if title.Length != underAdorn.Length {
+		t.errorf("Section under line not equal to title length!")
 	} else if overline && title.Length != overAdorn.Length {
 		t.errorf("Section over line not equal to title length!")
 	} else if overline && overAdorn.Text != underAdorn.Text {
@@ -285,4 +323,49 @@ func (t *Tree) section(i *item) Node {
 
 	log.Debugln("End")
 	return sec
+}
+
+func (t *Tree) errorReporter(err parserError) Node {
+	var lbText string
+	var lbTextLen int
+
+	s := newSystemMessage(&item{
+		Id:   t.id - 1,
+		Type: itemSystemMessage,
+		Line: t.token[tokenPos].Line,
+	},
+		err.Level())
+
+	msg := newParagraph(&item{
+		Id:     t.id,
+		Text:   err.Message(),
+		Length: len(err.Message()),
+	})
+
+	switch err {
+	case errorUnexpectedSectionTitle:
+		log.Debugln("FOUND errorUnexpectedSectionTitle")
+		lbText = t.token[1].Text.(string) + "\n" + t.token[3].Text.(string)
+		lbTextLen = len(lbText) + 1
+	case errorUnexpectedSectionTitleOrTransition:
+		log.Debugln("FOUND errorUnexpectedSectionTitleOrTransition")
+		lbText = t.token[tokenPos].Text.(string)
+		lbTextLen = len(lbText)
+	}
+
+	lb := newLiteralBlock(&item{
+		Id:     t.id + 1,
+		Type:   itemLiteralBlock,
+		Text:   lbText,
+		Length: lbTextLen, // Add one to account for the backslash
+	})
+
+	s.NodeList = append(s.NodeList, msg, lb)
+
+	// log.Debugf("\n##### TOKENS #####\n\n")
+	// spd.Dump(t.token)
+	// log.Debugf("\n##### NODE #####\n\n")
+	// spd.Dump(nb)
+
+	return s
 }

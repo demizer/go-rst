@@ -745,7 +745,7 @@ Test unexpected section titles.
             {
                 "id": 3,
                 "type": "NodeSystemMessage",
-                "level": "SEVERE",
+                "severity": "SEVERE",
                 "line": 4,
                 "nodeList": [
                     {
@@ -776,8 +776,8 @@ Test unexpected section titles.
             {
                 "id": 7,
                 "type": "NodeSystemMessage",
-                "level": "SEVERE",
                 "startPosition": 74,
+                "severity": "SEVERE",
                 "line": 7,
                 "nodeList": [
                     {
@@ -801,8 +801,8 @@ Test unexpected section titles.
             {
                 "id": 10,
                 "type": "NodeSystemMessage",
-                "level": "SEVERE",
                 "startPosition": 94,
+                "severity": "SEVERE",
                 "line": 9,
                 "nodeList": [
                     {
