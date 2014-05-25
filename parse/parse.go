@@ -133,7 +133,7 @@ func New(name string) *Tree {
 }
 
 const (
-	tokenPos    = 3
+	tokenZero    = 3
 	indentWidth = 4 // Default indent width
 )
 
@@ -238,24 +238,24 @@ func (t *Tree) backup() *item {
 	}
 	// log.Debugf("\n##### backup() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenPos-t.tokenBackupCount]
+	return t.token[tokenZero-t.tokenBackupCount]
 }
 
 func (t *Tree) peekBack(pos int) *item {
-	return t.token[tokenPos-pos]
+	return t.token[tokenZero-pos]
 }
 
 func (t *Tree) peek(pos int) *item {
 	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount, "Pos:", pos)
 	for i := 0; i < pos; i++ {
 		t.tokenPeekCount++
-		if t.token[tokenPos+t.tokenPeekCount] == nil {
-			t.token[tokenPos+t.tokenPeekCount] = t.lex.nextItem()
+		if t.token[tokenZero+t.tokenPeekCount] == nil {
+			t.token[tokenZero+t.tokenPeekCount] = t.lex.nextItem()
 		}
 	}
 	// log.Debugf("\n##### peek() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenPos+t.tokenPeekCount]
+	return t.token[tokenZero+t.tokenPeekCount]
 }
 
 // skip shifts the pointers left in t.token, pos is the amount to shift
@@ -274,12 +274,12 @@ func (t *Tree) next() *item {
 		t.skip(t.tokenPeekCount)
 	} else {
 		t.skip(1)
-		t.token[tokenPos] = t.lex.nextItem()
+		t.token[tokenZero] = t.lex.nextItem()
 	}
 	t.tokenBackupCount, t.tokenPeekCount = 0, 0
 	// log.Debugf("\n##### next() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenPos]
+	return t.token[tokenZero]
 }
 
 func (t *Tree) section(i *item) Node {
@@ -341,7 +341,7 @@ func (t *Tree) errorReporter(err parserError) Node {
 	s := newSystemMessage(&item{
 		Id:   t.id - 1,
 		Type: itemSystemMessage,
-		Line: t.token[tokenPos].Line,
+		Line: t.token[tokenZero].Line,
 	},
 		err.Level())
 
@@ -358,7 +358,7 @@ func (t *Tree) errorReporter(err parserError) Node {
 		lbTextLen = len(lbText) + 1
 	case errorUnexpectedSectionTitleOrTransition:
 		log.Debugln("FOUND errorUnexpectedSectionTitleOrTransition")
-		lbText = t.token[tokenPos].Text.(string)
+		lbText = t.token[tokenZero].Text.(string)
 		lbTextLen = len(lbText)
 	}
 
