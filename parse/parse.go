@@ -124,7 +124,13 @@ func Parse(name, text string) (t *Tree, errors []error) {
 }
 
 func New(name string) *Tree {
-	return &Tree{Name: name, Nodes: newList(), nodeTarget: newList(), sectionLevels: new(sectionLevels)}
+	return &Tree{
+		Name:          name,
+		Nodes:         newList(),
+		nodeTarget:    newList(),
+		sectionLevels: new(sectionLevels),
+		indentWidth:   indentWidth,
+	}
 }
 
 var tokenPos = 2
