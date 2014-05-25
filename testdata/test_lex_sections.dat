@@ -808,16 +808,16 @@ Test unexpected section titles.
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
                         "startPosition": null,
-                        "line": null,
+                        "line": 4,
                         "length": 25
                     },
                     {
                         "id": 5,
                         "type": "NodeLiteralBlock",
-                        "text": "    Title\n=====",
+                        "text": "    Title\n    =====",
                         "startPosition": 34,
-                        "line": 3,
-                        "length": 16
+                        "line": null,
+                        "length": 20
                     }
                 ]
             },
@@ -841,7 +841,7 @@ Test unexpected section titles.
                         "type": "NodeParagraph",
                         "text": "Unexpected section title or transition.",
                         "startPosition": null,
-                        "line": null,
+                        "line": 7,
                         "length": 39
                     },
                     {
@@ -849,7 +849,7 @@ Test unexpected section titles.
                         "type": "NodeLiteralBlock",
                         "text": "    -----",
                         "startPosition": 74,
-                        "line": 7,
+                        "line": null,
                         "length": 9
                     }
                 ]
@@ -866,16 +866,16 @@ Test unexpected section titles.
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
                         "startPosition": null,
-                        "line": null,
+                        "line": 9,
                         "length": 25
                     },
                     {
                         "id": 12,
                         "type": "NodeLiteralBlock",
-                        "text": "    Title\n-----",
+                        "text": "    Title\n    -----",
                         "startPosition": 94,
-                        "line": 9,
-                        "length": 16
+                        "line": null,
+                        "length": 20
                     }
                 ]
             },
