@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
-	"os"
 	"reflect"
 )
 
@@ -188,11 +187,14 @@ func (t *Tree) parse(tree *Tree) {
 	for t.peek(1).Type != itemEOF {
 		var n Node
 		token := t.next()
+		t.id++
+		token.Id = t.id
 		log.Infof("Got token: %#+v\n", token)
 
 		switch token.Type {
 		case itemSectionAdornment:
 			n = t.section(token)
+			t.id++
 		case itemParagraph:
 			n = newParagraph(token)
 		case itemSpace:
@@ -209,9 +211,13 @@ func (t *Tree) parse(tree *Tree) {
 		}
 
 		t.nodeTarget.append(n)
-		if n.NodeType() == NodeSection {
-			t.nodeTarget =
-				reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
+
+		switch n.NodeType() {
+		case NodeSection, NodeBlockQuote:
+			// Set the loop to append items to the NodeList of the new section
+			t.nodeTarget = reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
+		case NodeSystemMessage:
+			t.id--
 		}
 	}
 
