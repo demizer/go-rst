@@ -34,7 +34,6 @@ func (n NodeType) MarshalText() ([]byte, error) {
 type Node interface {
 	LineNumber() Line
 	NodeType() NodeType
-	Position() StartPosition
 }
 
 type NodeList []Node
@@ -163,7 +162,6 @@ type SystemMessageNode struct {
 	Type          NodeType `json:"type"`
 	Level         systemMessageLevel `json:"level"`
 	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
 	NodeList      NodeList `json:"nodeList"`
 }
 
@@ -173,7 +171,6 @@ func newSystemMessage(i *item, level systemMessageLevel) *SystemMessageNode {
 		Type:          NodeParagraph,
 		Level:	       level,
 		Line:          i.Line,
-		StartPosition: i.StartPosition,
 	}
 }
 

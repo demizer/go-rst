@@ -739,21 +739,18 @@ Test unexpected section titles.
     {
         "id": 2,
         "type": "NodeBlockQuote",
-        "startPosition": null,
         "line": null,
         "nodeList": [
             {
                 "id": 3,
                 "type": "NodeSystemMessage",
                 "level": "SEVERE",
-                "startPosition": 48,
                 "line": 4,
                 "nodeList": [
                     {
                         "id": 4,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
-                        "startPosition": null,
                         "line": 4,
                         "length": 25
                     },
