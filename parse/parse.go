@@ -232,9 +232,6 @@ func (t *Tree) parse(tree *Tree) {
 func (t *Tree) backup() *item {
 	t.tokenBackupCount++
 	// log.Debugln("t.tokenBackupCount:", t.tokenPeekCount)
-	if t.tokenBackupCount > 2 {
-		panic("t.backup() can only be used twice consecutively.")
-	}
 	for i := len(t.token) - 1; i > 0; i-- {
 		t.token[i] = t.token[i-1]
 		t.token[i-1] = nil
@@ -245,17 +242,11 @@ func (t *Tree) backup() *item {
 }
 
 func (t *Tree) peekBack(pos int) *item {
-	if pos > 2 {
-		panic("Cannot peek back more than two positions!")
-	}
 	return t.token[tokenPos-pos]
 }
 
 func (t *Tree) peek(pos int) *item {
-	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount)
-	if pos > 2 {
-		panic("It is only possible to peek ahead two positions!")
-	}
+	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount, "Pos:", pos)
 	for i := 0; i < pos; i++ {
 		t.tokenPeekCount++
 		if t.token[tokenPos+t.tokenPeekCount] == nil {
