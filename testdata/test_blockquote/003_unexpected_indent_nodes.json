@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        Line 1.
+        Line 2.
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <block_quote>
+        <paragraph>
+            Unexpectedly indented.

@@ -1,0 +1,12 @@
+<document source="test data">
+    <paragraph>
+        Here is a paragraph.
+    <block_quote>
+        <block_quote>
+            <paragraph>
+                Indent 8 spaces.
+        <paragraph>
+            Indent 4 spaces.
+    <paragraph>
+        Is this correct? Should it generate a warning?
+        Yes, it is correct, no warning necessary.

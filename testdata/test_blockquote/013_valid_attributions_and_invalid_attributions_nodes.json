@@ -1,0 +1,17 @@
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            -- Not a valid attribution
+        <paragraph>
+            Block quote 1.
+        <attribution>
+            Attribution 1
+    <block_quote>
+        <paragraph>
+            --Invalid attribution
+        <paragraph>
+            Block quote 2.
+        <attribution>
+            Attribution 2

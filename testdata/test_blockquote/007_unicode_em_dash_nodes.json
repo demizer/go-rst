@@ -1,0 +1,15 @@
+<document source="test data">
+    <paragraph>
+        Alternative: true em-dash.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution
+    <paragraph>
+        Alternative: three hyphens.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution

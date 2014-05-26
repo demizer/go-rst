@@ -1,0 +1,30 @@
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            -- Not an attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <paragraph>
+            -- Not an attribution
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <definition_list>
+            <definition_list_item>
+                <term>
+                    -- Not an attribution line one
+                <definition>
+                    <definition_list>
+                        <definition_list_item>
+                            <term>
+                                and line two
+                            <definition>
+                                <paragraph>
+                                    and line three

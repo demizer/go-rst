@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        Line 1.
+        Line 2.
+    <block_quote>
+        <paragraph>
+            Indented 1.
+        <block_quote>
+            <paragraph>
+                Indented 2.

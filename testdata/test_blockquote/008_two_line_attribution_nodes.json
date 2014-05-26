@@ -1,0 +1,19 @@
+<document source="test data">
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution line one
+            and line two
+    <paragraph>
+        Paragraph.
+    <block_quote>
+        <paragraph>
+            Block quote.
+        <attribution>
+            Attribution line one
+            and line two
+    <paragraph>
+        Paragraph.
