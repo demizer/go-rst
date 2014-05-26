@@ -292,9 +292,9 @@ func (t *Tree) section(i *item) Node {
 		if peekBack.Type == itemSpace {
 			// Looking back past the white space
 			if t.peekBack(2).Type == itemTitle {
-				return t.errorReporter(errorUnexpectedSectionTitle)
+				return t.systemMessage(errorUnexpectedSectionTitle)
 			}
-			return t.errorReporter(errorUnexpectedSectionTitleOrTransition)
+			return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
 		} else if peekBack.Type == itemTitle {
 			if t.peekBack(2) != nil && t.peekBack(2).Type == itemSectionAdornment {
 				// The overline of the section
@@ -311,7 +311,7 @@ func (t *Tree) section(i *item) Node {
 	// Check adornment for proper syntax
 	if underAdorn.Type == itemSpace {
 		t.backup() // Put the parser back on the title
-		return t.errorReporter(errorUnexpectedSectionTitle)
+		return t.systemMessage(errorUnexpectedSectionTitle)
 	} else if title.Length != underAdorn.Length {
 		t.errorf("Section under line not equal to title length!")
 	} else if overline && title.Length != overAdorn.Length {
@@ -334,7 +334,7 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) errorReporter(err parserError) Node {
+func (t *Tree) systemMessage(err parserError) Node {
 	var lbText string
 	var lbTextLen int
 
