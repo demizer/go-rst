@@ -33,10 +33,11 @@ func (s systemMessageLevel) String() string {
 	return systemMessageLevels[s]
 }
 
-type parserError int
+type parserMessage int
 
 const (
-	errorUnexpectedSectionTitle parserError = iota
+	warningShortUnderline parserMessage = iota
+	errorUnexpectedSectionTitle
 	errorUnexpectedSectionTitleOrTransition
 )
 
@@ -45,12 +46,14 @@ var parserErrors = [...]string{
 	"errorUnexpectedSectionTitleOrTransition",
 }
 
-func (p parserError) String() string {
+func (p parserMessage) String() string {
 	return parserErrors[p]
 }
 
-func (p parserError) Message() (s string) {
+func (p parserMessage) Message() (s string) {
 	switch p {
+	case warningShortUnderline:
+		s = "Title underline too short."
 	case errorUnexpectedSectionTitle:
 		s = "Unexpected section title."
 	case errorUnexpectedSectionTitleOrTransition:
@@ -59,8 +62,10 @@ func (p parserError) Message() (s string) {
 	return
 }
 
-func (p parserError) Level() (s systemMessageLevel) {
+func (p parserMessage) Level() (s systemMessageLevel) {
 	switch p {
+	case warningShortUnderline:
+		s = levelWarning
 	case errorUnexpectedSectionTitle:
 		s = levelSevere
 	case errorUnexpectedSectionTitleOrTransition:
@@ -329,7 +334,7 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) systemMessage(err parserError) Node {
+func (t *Tree) systemMessage(err parserMessage) Node {
 	var lbText string
 	var lbTextLen int
 
@@ -362,12 +367,6 @@ func (t *Tree) systemMessage(err parserError) Node {
 	}, &t.id)
 
 	s.NodeList = append(s.NodeList, msg, lb)
-
-	// log.Debugf("\n##### TOKENS #####\n\n")
-	// spd.Dump(t.token)
-	// log.Debugf("\n##### NODE #####\n\n")
-	// spd.Dump(nb)
-
 	return s
 }
 
