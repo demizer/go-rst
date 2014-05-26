@@ -42,6 +42,7 @@ const (
 )
 
 var parserErrors = [...]string{
+	"warningShortUnderline",
 	"errorUnexpectedSectionTitle",
 	"errorUnexpectedSectionTitleOrTransition",
 }
@@ -286,6 +287,7 @@ func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
 	var overAdorn, title, underAdorn *item
 	var overline bool
+	var sysMessage Node
 
 	peekBack := t.peekBack(1)
 	if peekBack != nil {
@@ -312,8 +314,6 @@ func (t *Tree) section(i *item) Node {
 	if underAdorn.Type == itemSpace {
 		t.backup() // Put the parser back on the title
 		return t.systemMessage(errorUnexpectedSectionTitle)
-	} else if title.Length != underAdorn.Length {
-		t.errorf("Section under line not equal to title length!")
 	} else if overline && title.Length != overAdorn.Length {
 		t.errorf("Section over line not equal to title length!")
 	} else if overline && overAdorn.Text != underAdorn.Text {
@@ -330,6 +330,13 @@ func (t *Tree) section(i *item) Node {
 		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
 	}
 
+	// System messages have to be applied after the section is created in order to preserve
+	// a consecutive id number.
+	if title.Length != underAdorn.Length {
+		sysMessage = t.systemMessage(warningShortUnderline)
+		sec.NodeList = append(sec.NodeList, sysMessage)
+	}
+
 	log.Debugln("End")
 	return sec
 }
@@ -337,6 +344,7 @@ func (t *Tree) section(i *item) Node {
 func (t *Tree) systemMessage(err parserMessage) Node {
 	var lbText string
 	var lbTextLen int
+	var backToken int
 
 	s := newSystemMessage(&item{
 		Type: itemSystemMessage,
@@ -350,9 +358,13 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 
 	switch err {
-	case errorUnexpectedSectionTitle:
-		log.Debugln("FOUND errorUnexpectedSectionTitle")
-		lbText = t.token[1].Text.(string) + "\n" + t.token[3].Text.(string)
+	case warningShortUnderline, errorUnexpectedSectionTitle:
+		log.Debugln("FOUND", err)
+		backToken = tokenZero - 1
+		if t.peekBack(1).Type == itemSpace {
+			backToken = tokenZero - 2
+		}
+		lbText = t.token[backToken].Text.(string) + "\n" + t.token[tokenZero].Text.(string)
 		lbTextLen = len(lbText) + 1
 	case errorUnexpectedSectionTitleOrTransition:
 		log.Debugln("FOUND errorUnexpectedSectionTitleOrTransition")
