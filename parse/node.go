@@ -71,9 +71,10 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(title *item, overAdorn *item, underAdorn *item) *SectionNode {
+func newSection(title *item, overAdorn *item, underAdorn *item, id *int) *SectionNode {
+	*id++
 	n := &SectionNode{
-		Id:            title.Id,
+		Id:            Id(*id),
 		Type:          NodeSection,
 		Text:          title.Text.(string),
 		StartPosition: title.StartPosition,
@@ -82,9 +83,10 @@ func newSection(title *item, overAdorn *item, underAdorn *item) *SectionNode {
 	}
 
 	if overAdorn != nil && overAdorn.Text != nil {
+		*id++
 		Rune := rune(overAdorn.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
-			Id:            title.Id + 1,
+			Id:            Id(*id),
 			Type:          NodeAdornment,
 			Rune:          Rune,
 			StartPosition: overAdorn.StartPosition,
@@ -93,9 +95,10 @@ func newSection(title *item, overAdorn *item, underAdorn *item) *SectionNode {
 		}
 	}
 
+	*id++
 	Rune := rune(underAdorn.Text.(string)[0])
 	n.UnderLine = &AdornmentNode{
-		Id:            title.Id + 1,
+		Id:            Id(*id),
 		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underAdorn.StartPosition,
@@ -128,9 +131,10 @@ type ParagraphNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newParagraph(i *item) *ParagraphNode {
+func newParagraph(i *item, id *int) *ParagraphNode {
+	*id++
 	return &ParagraphNode{
-		Id:            i.Id,
+		Id:            Id(*id),
 		Type:          NodeParagraph,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -152,9 +156,10 @@ type BlockQuoteNode struct {
 	NodeList      NodeList `json:"nodeList"`
 }
 
-func newBlockQuote(i *item, indentLevel int) *BlockQuoteNode {
+func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
+	*id++
 	return &BlockQuoteNode{
-		Id:            i.Id,
+		Id:            Id(*id),
 		Type:          NodeBlockQuote,
 		Level:         indentLevel,
 		Line:          i.Line,
@@ -174,9 +179,10 @@ type SystemMessageNode struct {
 	NodeList NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, severity systemMessageLevel) *SystemMessageNode {
+func newSystemMessage(i *item, severity systemMessageLevel, id *int) *SystemMessageNode {
+	*id++
 	return &SystemMessageNode{
-		Id:       i.Id,
+		Id:       Id(*id),
 		Type:     NodeSystemMessage,
 		Severity: severity,
 		Line:     i.Line,
@@ -196,9 +202,10 @@ type LiteralBlockNode struct {
 	Line          `json:"line"`
 }
 
-func newLiteralBlock(i *item) *LiteralBlockNode {
+func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
+	*id++
 	return &LiteralBlockNode{
-		Id:            i.Id,
+		Id:            Id(*id),
 		Type:          NodeLiteralBlock,
 		Text:          i.Text.(string),
 		Length:        i.Length,

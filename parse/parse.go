@@ -190,17 +190,15 @@ func (t *Tree) parse(tree *Tree) {
 
 	for t.peek(1).Type != itemEOF {
 		var n Node
+
 		token := t.next()
-		t.id++
-		token.Id = Id(t.id)
 		log.Infof("Got token: %#+v\n", token)
 
 		switch token.Type {
 		case itemSectionAdornment:
 			n = t.section(token)
-			t.id++
 		case itemParagraph:
-			n = newParagraph(token)
+			n = newParagraph(token, &t.id)
 		case itemSpace:
 			n = t.indent(token)
 			if n == nil {
@@ -208,7 +206,6 @@ func (t *Tree) parse(tree *Tree) {
 			}
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
-			t.id--
 			continue
 		default:
 			t.errorf("%q Not implemented!", token.Type)
@@ -221,8 +218,6 @@ func (t *Tree) parse(tree *Tree) {
 		case NodeSection, NodeBlockQuote:
 			// Set the loop to append items to the NodeList of the new section
 			t.nodeTarget = reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
-		case NodeSystemMessage:
-			t.id--
 		}
 	}
 
@@ -320,7 +315,7 @@ func (t *Tree) section(i *item) Node {
 		t.errorf("Section title over line does not match section title under line.")
 	}
 
-	sec := newSection(title, overAdorn, underAdorn)
+	sec := newSection(title, overAdorn, underAdorn, &t.id)
 	exists, eSec := t.sectionLevels.Add(sec)
 	if exists && eSec != nil {
 		t.errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",
@@ -339,17 +334,15 @@ func (t *Tree) systemMessage(err parserError) Node {
 	var lbTextLen int
 
 	s := newSystemMessage(&item{
-		Id:   Id(t.id - 1),
 		Type: itemSystemMessage,
 		Line: t.token[tokenZero].Line,
 	},
-		err.Level())
+		err.Level(), &t.id)
 
 	msg := newParagraph(&item{
-		Id:     Id(t.id),
 		Text:   err.Message(),
 		Length: len(err.Message()),
-	})
+	}, &t.id)
 
 	switch err {
 	case errorUnexpectedSectionTitle:
@@ -363,11 +356,10 @@ func (t *Tree) systemMessage(err parserError) Node {
 	}
 
 	lb := newLiteralBlock(&item{
-		Id:     Id(t.id + 1),
 		Type:   itemLiteralBlock,
 		Text:   lbText,
 		Length: lbTextLen, // Add one to account for the backslash
-	})
+	}, &t.id)
 
 	s.NodeList = append(s.NodeList, msg, lb)
 
@@ -387,7 +379,7 @@ func (t *Tree) indent(i *item) Node {
 			return nil
 		}
 		t.indentLevel = level
-		return newBlockQuote(&item{Id: i.Id, Type: itemBlockquote, Line: i.Line}, level)
+		return newBlockQuote(&item{Type: itemBlockquote, Line: i.Line}, level, &t.id)
 	}
 	return nil
 }
