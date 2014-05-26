@@ -1,0 +1,13 @@
+<document source="test data">
+    <section ids="long-title" names="long\ title">
+        <title>
+            Long    Title
+        <system_message level="2" line="1" source="test data" type="WARNING">
+            <paragraph>
+                Title overline too short.
+            <literal_block xml:space="preserve">
+                =======
+                 Long    Title
+                =======
+        <paragraph>
+            Test long title and space normalization.

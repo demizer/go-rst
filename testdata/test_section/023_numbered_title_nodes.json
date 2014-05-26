@@ -1,0 +1,6 @@
+<document source="test data">
+    <section ids="numbered-title" names="1.\ numbered\ title">
+        <title>
+            1. Numbered Title
+        <paragraph>
+            Paragraph.

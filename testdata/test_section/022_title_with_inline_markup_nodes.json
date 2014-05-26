@@ -1,0 +1,11 @@
+<document source="test data">
+    <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
+        <title>
+            Title containing \n\
+            <emphasis>
+                inline
+             \n\
+            <literal>
+                markup
+        <paragraph>
+            Paragraph.

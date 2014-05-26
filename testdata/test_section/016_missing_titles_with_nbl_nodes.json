@@ -1,0 +1,15 @@
+<document source="test data">
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Invalid section title or transition marker.
+        <literal_block xml:space="preserve">
+            ========================
+            ========================
+    <paragraph>
+        Test missing titles; nothing in-between.
+    <system_message level="3" line="6" source="test data" type="ERROR">
+        <paragraph>
+            Invalid section title or transition marker.
+        <literal_block xml:space="preserve">
+            ========================
+            ========================

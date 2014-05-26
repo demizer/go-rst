@@ -1,0 +1,8 @@
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            Possible incomplete section title.
+            Treating the overline as ordinary text because it's so short.
+    <paragraph>
+        ==
+        ABC

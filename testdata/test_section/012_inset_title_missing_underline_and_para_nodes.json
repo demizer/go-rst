@@ -1,0 +1,9 @@
+<document source="test data">
+    <system_message level="4" line="1" source="test data" type="SEVERE">
+        <paragraph>
+            Missing matching underline for section title overline.
+        <literal_block xml:space="preserve">
+            =======
+             Title
+    <paragraph>
+        Test missing underline, with paragraph.

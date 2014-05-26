@@ -1,0 +1,14 @@
+<document source="test data">
+    <paragraph>
+        Paragraph
+    <block_quote>
+        <system_message level="1" line="3" source="test data" type="INFO">
+            <paragraph>
+                Unexpected possible title overline or transition.
+                Treating it as ordinary text because it's so short.
+        <paragraph>
+            ==
+            ABC
+            ==
+        <paragraph>
+            Over & underline too short.

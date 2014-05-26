@@ -1,0 +1,13 @@
+<document source="test data">
+    <section ids="one" names="one">
+        <title>
+            One
+        <paragraph>
+            The bubble-up parser strategy conflicts with short titles
+            (<= 3 char-long over- & underlines).
+    <section ids="two" names="two">
+        <title>
+            Two
+        <paragraph>
+            The parser currently contains a work-around kludge.
+            Without it, the parser ends up in an infinite loop.

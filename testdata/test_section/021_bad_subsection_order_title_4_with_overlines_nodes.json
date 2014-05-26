@@ -1,0 +1,27 @@
+<document source="test data">
+    <paragraph>
+        Test bad subsection order (Title 4, with overlines).
+    <section ids="title-1" names="title\ 1">
+        <title>
+            Title 1
+        <paragraph>
+            Paragraph 1.
+        <section ids="title-2" names="title\ 2">
+            <title>
+                Title 2
+            <paragraph>
+                Paragraph 2.
+    <section ids="title-3" names="title\ 3">
+        <title>
+            Title 3
+        <paragraph>
+            Paragraph 3.
+        <system_message level="4" line="19" source="test data" type="SEVERE">
+            <paragraph>
+                Title level inconsistent:
+            <literal_block xml:space="preserve">
+                ```````
+                Title 4
+                ```````
+        <paragraph>
+            Paragraph 4.
