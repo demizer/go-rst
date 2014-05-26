@@ -107,3 +107,10 @@ func TestLexSectionUnexpectedTitles(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
+
+func TestLexSectionShortUnderline(t *testing.T) {
+	testPath := "test_section/006_short_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}

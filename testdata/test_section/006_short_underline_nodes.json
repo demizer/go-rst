@@ -1,12 +1,54 @@
-<document source="test data">
-    <section ids="title" names="title">
-        <title>
-            Title
-        <system_message level="2" line="2" source="test data" type="WARNING">
-            <paragraph>
-                Title underline too short.
-            <literal_block xml:space="preserve">
-                Title
-                ====
-        <paragraph>
-            Test short underline.
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "startPosition": 1,
+        "line": 1,
+        "length": 5,
+        "overLine": null,
+        "underLine": {
+            "id": 2,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 7,
+            "line": 2,
+            "length": 4
+        },
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeSystemMessage",
+                "severity": "WARNING",
+                "line": 2,
+                "nodeList": [
+                    {
+                        "id": 4,
+                        "type": "NodeParagraph",
+                        "text": "Title underline too short.",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 26
+                    },
+                    {
+                        "id": 5,
+                        "type": "NodeLiteralBlock",
+                        "text": "Title\n====",
+                        "startPosition": 0,
+                        "line": 0,
+                        "length": 11
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "type": "NodeParagraph",
+                "text": "Test short underline.",
+                "startPosition": 13,
+                "line": 4,
+                "length": 21
+            }
+        ]
+    }
+]

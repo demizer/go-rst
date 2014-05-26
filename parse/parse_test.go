@@ -353,3 +353,11 @@ func TestParseSectionUnexpectedTitles(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
+
+func TestParseSectionShortUnderline(t *testing.T) {
+	testPath := "test_section/006_short_underline"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
