@@ -163,15 +163,6 @@ type Tree struct {
 	indentLevel      int
 }
 
-func (t *Tree) errorf(format string, args ...interface{}) {
-	format = fmt.Sprintf("go-rst: %s:%d: %s\n", t.Name, t.lex.lineNumber(), format)
-	t.Errors = append(t.Errors, fmt.Errorf(format, args...))
-}
-
-func (t *Tree) error(err error) {
-	t.errorf("%s\n", err)
-}
-
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
 	t.lex = lex
@@ -220,8 +211,7 @@ func (t *Tree) parse(tree *Tree) {
 		case itemEOF:
 			goto exit
 		default:
-			t.errorf("%q Not implemented!", token.Type)
-			continue
+			panic(fmt.Errorf("%q Not implemented!", token.Type))
 		}
 
 		t.nodeTarget.append(n)
@@ -382,16 +372,16 @@ func (t *Tree) section(i *item) Node {
 		t.backup() // Put the parser back on the title
 		return t.systemMessage(errorUnexpectedSectionTitle)
 	} else if overline && title.Length != overAdorn.Length {
-		t.errorf("Section over line not equal to title length!")
+		panic("Section over line not equal to title length!")
 	} else if overline && overAdorn.Text != underAdorn.Text {
-		t.errorf("Section title over line does not match section title under line.")
+		panic("Section title over line does not match section title under line.")
 	}
 
 	sec := newSection(title, overAdorn, underAdorn, &t.id)
 	exists, eSec := t.sectionLevels.Add(sec)
 	if exists && eSec != nil {
-		t.errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",
-			sec.Text, string(sec.UnderLine.Rune))
+		panic(fmt.Errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",
+			sec.Text, string(sec.UnderLine.Rune)))
 	} else if !exists && eSec != nil {
 		// There is a matching level in sectionLevels
 		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
