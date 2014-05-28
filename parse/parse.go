@@ -143,7 +143,7 @@ func New(name string) *Tree {
 }
 
 const (
-	tokenZero   = 3
+	zed   = 3
 	indentWidth = 4 // Default indent width
 )
 
@@ -245,11 +245,11 @@ func (t *Tree) backup() *item {
 	}
 	// log.Debugf("\n##### backup() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenZero-t.tokenBackupCount]
+	return t.token[zed-t.tokenBackupCount]
 }
 
 func (t *Tree) peekBack(pos int) *item {
-	return t.token[tokenZero-pos]
+	return t.token[zed-pos]
 }
 
 func (t *Tree) peek(pos int) *item {
@@ -261,18 +261,18 @@ func (t *Tree) peek(pos int) *item {
 	for i := 0; i < pos; i++ {
 		// log.Debugln("i:", i, "peekCount:", t.tokenPeekCount, "pos:", pos)
 		if t.tokenPeekCount > i {
-			nItem = t.token[tokenZero+i]
+			nItem = t.token[zed+i]
 			log.Debugf("Using %#+v\n", nItem)
 			continue
 		}
-		log.Debugln(tokenZero + t.tokenPeekCount + i)
-		if t.token[tokenZero + t.tokenPeekCount + i + 1] == nil {
+		log.Debugln(zed + t.tokenPeekCount + i)
+		if t.token[zed + t.tokenPeekCount + i + 1] == nil {
 			t.tokenPeekCount++
 			// log.Debugln("Getting next item")
-			t.token[tokenZero+t.tokenPeekCount+i] = t.lex.nextItem()
-			nItem = t.token[tokenZero+t.tokenPeekCount+i]
+			t.token[zed+t.tokenPeekCount+i] = t.lex.nextItem()
+			nItem = t.token[zed+t.tokenPeekCount+i]
 		} else {
-			nItem = t.token[tokenZero+t.tokenPeekCount+i]
+			nItem = t.token[zed+t.tokenPeekCount+i]
 		}
 	}
 	// log.Debugf("\n##### peek() aftermath #####\n\n")
@@ -312,12 +312,12 @@ func (t *Tree) next() *item {
 		skip(t.tokenPeekCount)
 	} else {
 		skip(1)
-		t.token[tokenZero] = t.lex.nextItem()
+		t.token[zed] = t.lex.nextItem()
 	}
 	t.tokenBackupCount, t.tokenPeekCount = 0, 0
 	// log.Debugf("\n##### next() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenZero]
+	return t.token[zed]
 }
 
 func (t *Tree) section(i *item) Node {
@@ -336,13 +336,13 @@ func (t *Tree) section(i *item) Node {
 		t.next()
 		loop:
 		for {
-			switch tTok := t.token[tokenZero]; tTok.Type {
+			switch tTok := t.token[zed]; tTok.Type {
 			case itemSpace:
 				t.next()
 			case itemTitle:
 				title = tTok
 				t.next()
-				cur := t.token[tokenZero]
+				cur := t.token[zed]
 				if cur != nil && cur.Type == itemSectionAdornment {
 					continue
 				}
@@ -416,7 +416,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 
 	s := newSystemMessage(&item{
 		Type: itemSystemMessage,
-		Line: t.token[tokenZero].Line,
+		Line: t.token[zed].Line,
 	},
 		err.Level(), &t.id)
 
@@ -429,14 +429,14 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 
 	switch err {
 	case warningShortUnderline, errorUnexpectedSectionTitle:
-		backToken = tokenZero - 1
+		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
-			backToken = tokenZero - 2
+			backToken = zed - 2
 		}
-		lbText = t.token[backToken].Text.(string) + "\n" + t.token[tokenZero].Text.(string)
+		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText) + 1
 	case errorUnexpectedSectionTitleOrTransition:
-		lbText = t.token[tokenZero].Text.(string)
+		lbText = t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
 	}
 
