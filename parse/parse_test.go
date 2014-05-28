@@ -319,7 +319,7 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
-func TestParseSectionTitleParagraph(t *testing.T) {
+func TestParseSection001(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -335,7 +335,7 @@ func TestParseSection002(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSectionParaHeadPara(t *testing.T) {
+func TestParseSection003(t *testing.T) {
 	testPath := "test_section/003_para_head_para"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -343,7 +343,7 @@ func TestParseSectionParaHeadPara(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSectionLevelTest1(t *testing.T) {
+func TestParseSection004(t *testing.T) {
 	testPath := "test_section/004_section_level_test"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -359,7 +359,7 @@ func TestParseSection005(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSectionShortUnderline(t *testing.T) {
+func TestParseSection006(t *testing.T) {
 	testPath := "test_section/006_short_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)

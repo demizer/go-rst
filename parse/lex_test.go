@@ -77,7 +77,7 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	return
 }
 
-func TestLexSectionTitlePara(t *testing.T) {
+func TestLexSection001(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -91,14 +91,14 @@ func TestLexSection002(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSectionParaHeadPara(t *testing.T) {
+func TestLexSection003(t *testing.T) {
 	testPath := "test_section/003_para_head_para"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSectionLevelTest(t *testing.T) {
+func TestLexSection004(t *testing.T) {
 	testPath := "test_section/004_section_level_test"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -112,7 +112,7 @@ func TestLexSection005(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSectionShortUnderline(t *testing.T) {
+func TestLexSection006(t *testing.T) {
 	testPath := "test_section/006_short_underline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
