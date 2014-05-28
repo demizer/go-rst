@@ -143,7 +143,7 @@ func New(name string) *Tree {
 }
 
 const (
-	zed   = 3
+	zed         = 3
 	indentWidth = 4 // Default indent width
 )
 
@@ -155,7 +155,7 @@ type Tree struct {
 	text             string
 	lex              *lexer
 	tokenBackupCount int
-	peekCount   int
+	peekCount        int
 	token            [7]*item
 	sectionLevels    *sectionLevels // Encountered section levels
 	id               int            // The unique id of the node in the tree
@@ -232,7 +232,7 @@ func (t *Tree) parse(tree *Tree) {
 		}
 	}
 
-	exit:
+exit:
 	log.Debugln("End")
 }
 
@@ -266,7 +266,7 @@ func (t *Tree) peek(pos int) *item {
 			continue
 		}
 		log.Debugln(zed + t.peekCount + i)
-		if t.token[zed + t.peekCount + i + 1] == nil {
+		if t.token[zed+t.peekCount+i+1] == nil {
 			t.peekCount++
 			// log.Debugln("Getting next item")
 			t.token[zed+t.peekCount+i] = t.lex.nextItem()
@@ -283,7 +283,7 @@ func (t *Tree) peek(pos int) *item {
 
 func (t *Tree) peekSkip(pos int, iSkip itemElement) *item {
 	var nItem *item
-	outer:
+outer:
 	for i := 1; i <= pos; i++ {
 		for {
 			nItem = t.peek(i)
@@ -334,7 +334,7 @@ func (t *Tree) section(i *item) Node {
 		}
 		overAdorn = i
 		t.next()
-		loop:
+	loop:
 		for {
 			switch tTok := t.token[zed]; tTok.Type {
 			case itemSpace:
@@ -346,8 +346,7 @@ func (t *Tree) section(i *item) Node {
 				if cur != nil && cur.Type == itemSectionAdornment {
 					continue
 				}
-				if pNext := t.peek(1);
-					pNext != nil && pNext.Type != itemSectionAdornment {
+				if pNext := t.peek(1); pNext != nil && pNext.Type != itemSectionAdornment {
 					panic("Missing section underline!")
 				}
 			case itemSectionAdornment:

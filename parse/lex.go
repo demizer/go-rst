@@ -366,7 +366,7 @@ func lexSection(l *lexer) stateFn {
 	// The order of the case statements matter here
 	switch r := l.next(); {
 	case isSectionAdornment(r):
-		if (l.lastItem != nil && l.lastItem.Type != itemTitle) {
+		if l.lastItem != nil && l.lastItem.Type != itemTitle {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
