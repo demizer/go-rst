@@ -202,7 +202,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n Node
 
 		token := t.next()
-		log.Infof("Got token: %#+v\n", token)
+		log.Infof("\nParser got token: %#+v\n\n", token)
 
 		switch token.Type {
 		case itemSectionAdornment:
@@ -217,13 +217,14 @@ func (t *Tree) parse(tree *Tree) {
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
+		case itemEOF:
+			goto exit
 		default:
 			t.errorf("%q Not implemented!", token.Type)
 			continue
 		}
 
 		t.nodeTarget.append(n)
-
 		switch n.NodeType() {
 		case NodeSection, NodeBlockQuote:
 			// Set the loop to append items to the NodeList of the new section
@@ -231,6 +232,7 @@ func (t *Tree) parse(tree *Tree) {
 		}
 	}
 
+	exit:
 	log.Debugln("End")
 }
 
@@ -252,15 +254,31 @@ func (t *Tree) peekBack(pos int) *item {
 
 func (t *Tree) peek(pos int) *item {
 	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount, "Pos:", pos)
+	if pos < 1 {
+		panic("pos cannot be < 1")
+	}
+	var nItem *item
 	for i := 0; i < pos; i++ {
-		t.tokenPeekCount++
-		if t.token[tokenZero+t.tokenPeekCount] == nil {
-			t.token[tokenZero+t.tokenPeekCount] = t.lex.nextItem()
+		// log.Debugln("i:", i, "peekCount:", t.tokenPeekCount, "pos:", pos)
+		if t.tokenPeekCount > i {
+			nItem = t.token[tokenZero+i]
+			log.Debugf("Using %#+v\n", nItem)
+			continue
+		}
+		log.Debugln(tokenZero + t.tokenPeekCount + i)
+		if t.token[tokenZero + t.tokenPeekCount + i + 1] == nil {
+			t.tokenPeekCount++
+			// log.Debugln("Getting next item")
+			t.token[tokenZero+t.tokenPeekCount+i] = t.lex.nextItem()
+			nItem = t.token[tokenZero+t.tokenPeekCount+i]
+		} else {
+			nItem = t.token[tokenZero+t.tokenPeekCount+i]
 		}
 	}
 	// log.Debugf("\n##### peek() aftermath #####\n\n")
 	// spd.Dump(t.token)
-	return t.token[tokenZero+t.tokenPeekCount]
+	// log.Debugf("Returning: %#+v\n", nItem)
+	return nItem
 }
 
 // skip shifts the pointers left in t.token, pos is the amount to shift
