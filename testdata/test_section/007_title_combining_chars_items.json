@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "type": "itemTitle",
+        "text": "à with combining varia",
+        "startPosition": 1,
+        "line": 1,
+        "length": 22
+    },
+    {
+        "id": 2,
+        "type": "itemSectionAdornment",
+        "text": "======================",
+        "startPosition": 25,
+        "line": 2,
+        "length": 22
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 48,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "Do not count combining chars in title column width.",
+        "startPosition": 49,
+        "line": 4,
+        "length": 51
+    },
+    {
+        "id": 5,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 101,
+        "line": 4,
+        "length": 0
+    }
+]

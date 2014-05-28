@@ -101,7 +101,7 @@ func TestLexSectionLevelTest(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSectionUnexpectedTitles(t *testing.T) {
+func TestLexSection005(t *testing.T) {
 	testPath := "test_section/005_unexpected_titles"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)

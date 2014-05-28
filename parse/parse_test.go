@@ -346,7 +346,7 @@ func TestParseSectionLevelTest1(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSectionUnexpectedTitles(t *testing.T) {
+func TestParseSection005(t *testing.T) {
 	testPath := "test_section/005_unexpected_titles"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
