@@ -5,6 +5,7 @@
 package parse
 
 import (
+	"code.google.com/p/go.text/unicode/norm"
 	"fmt"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
@@ -123,6 +124,9 @@ func (s *sectionLevels) Level() int {
 // Parse is the entry point for the reStructuredText parser.
 func Parse(name, text string) (t *Tree, errors []error) {
 	t = New(name)
+	if !norm.NFC.IsNormalString(text) {
+		text = norm.NFC.String(text)
+	}
 	t.text = text
 	_, errors = t.Parse(text, t)
 	return

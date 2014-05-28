@@ -5,6 +5,7 @@
 package parse
 
 import (
+	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
 	"strings"
 	"unicode"
@@ -104,6 +105,9 @@ type lexer struct {
 // lex is the entry point of the lexer
 func lex(name, input string) *lexer {
 	log.Debugln("Start")
+	if !norm.NFC.IsNormalString(input) {
+		input = norm.NFC.String(input)
+	}
 	l := &lexer{
 		name:  name,
 		input: input,
@@ -131,13 +135,14 @@ func (l *lexer) emit(t itemElement) {
 	log.Infof("#### %s: %q start: %d pos: %d line: %d\n", t,
 		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
 	l.id++
+	length := utf8.RuneCountInString(l.input[l.start:l.index])
 	nItem := item{
 		Id:            Id(l.id),
 		Type:          t,
 		Text:          l.input[l.start:l.index],
 		Line:          Line(l.lineNumber()),
 		StartPosition: StartPosition(l.start + 1),
-		Length:        len(l.input[l.start:l.index]),
+		Length:        length,
 	}
 	l.items <- nItem
 	l.lastItem = &nItem
@@ -182,6 +187,9 @@ func (l *lexer) next() rune {
 	r, w := utf8.DecodeRuneInString(l.input[l.index:])
 	l.width = w
 	l.index += l.width
+	if unicode.In(r, unicode.Diacritic) {
+		log.Debugf("DIACRITIC char found: %#U width: %d\n", r, w)
+	}
 	log.Debugf("cur: %q start: %d pos: %d\n", r, l.start, l.index)
 	return r
 }
@@ -240,6 +248,7 @@ func isSection(l *lexer) bool {
 	// Advance to the end of the line
 	l.advance('\n')
 	if l.current() == eof {
+		log.Debugln("Found eof, returning false.")
 		return false
 	}
 
@@ -253,9 +262,10 @@ func isSection(l *lexer) bool {
 				newLineNum += 1
 				log.Debugln("newLineNum:", newLineNum)
 			}
-			l.next()
+			if l.next() == eof {
+				return exit(false)
+			}
 		}
-
 		if isSectionAdornment(l.current()) {
 			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.index)
 			if lastAdornment != 0 && l.current() != lastAdornment {
@@ -267,7 +277,9 @@ func isSection(l *lexer) bool {
 			lastAdornment = l.current()
 			matchCount += 1
 		}
-		l.next()
+		if l.next() == eof {
+			return exit(false)
+		}
 	}
 
 	if len(runePositions) == 0 || matchCount != lookPositions {
@@ -293,18 +305,18 @@ func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
 		var tokenLength = l.index - l.start
-		switch r := l.current(); {
-		case tokenLength == 1:
-			log.Debugln("tokenLength == 1; Start of new token")
-			if isEndOfLine(r) {
-				l.emit(itemBlankLine)
-				l.start += 1
-			} else if isSpace(r) {
+		r := l.current()
+		if tokenLength == l.width && !isEndOfLine(r) {
+			log.Debugln("Start of new token")
+			if isSpace(r) {
 				return lexSpace
 			} else if isSection(l) {
 				return lexSection
+			} else if isEndOfLine(r) {
+				l.emit(itemBlankLine)
+				l.start += 1
 			}
-		case isEndOfLine(r):
+		} else if isEndOfLine(r) {
 			log.Debugln("isEndOfLine == true")
 			if l.index > l.start {
 				l.emit(itemParagraph)
@@ -312,7 +324,6 @@ func lexStart(l *lexer) stateFn {
 			} else if l.start == l.index {
 				l.emit(itemBlankLine)
 			}
-
 		}
 		if l.next() == eof {
 			break
@@ -356,7 +367,7 @@ func lexSection(l *lexer) stateFn {
 		lexSectionAdornment(l)
 	case isSpace(r):
 		return lexSpace
-	case r <= unicode.MaxASCII && unicode.IsPrint(r):
+	case unicode.IsPrint(r):
 		return lexTitle
 	case isEndOfLine(r):
 		l.start += 1

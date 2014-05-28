@@ -7,6 +7,7 @@
 package parse
 
 import (
+	"code.google.com/p/go.text/unicode/norm"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -159,6 +160,10 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			continue
 		}
 		switch c.eFieldName {
+		case "text":
+			if norm.NFC.String(c.eFieldVal.(string)) != c.pFieldVal.(string) {
+				c.dError()
+			}
 		case "type":
 			if c.eFieldVal != c.pFieldVal.(NodeType).String() {
 				c.dError()
@@ -359,5 +364,14 @@ func TestParseSectionShortUnderline(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection007(t *testing.T) {
+	testPath := "test_section/007_title_combining_chars"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	// spd.Dump(pTree.Nodes, eNodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }

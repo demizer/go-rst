@@ -5,6 +5,7 @@
 package parse
 
 import (
+	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
 	"reflect"
 	"testing"
@@ -62,8 +63,12 @@ func equal(t *testing.T, items []item, expectItems []item) {
 				t.Errorf("Parsed item (Id: %d) does not contain field %q\n", id,
 					eFieldName)
 				continue
-			}
-			if pFieldVal.Interface() != eFieldVal.Interface() {
+			} else if eFieldName == "Text" {
+				if pFieldVal.Interface() !=
+					norm.NFC.String(eFieldVal.Interface().(string)) {
+					dError()
+				}
+			} else if pFieldVal.Interface() != eFieldVal.Interface() {
 				// log.Debugln(eFieldType.Name())
 				dError()
 			}
@@ -112,5 +117,13 @@ func TestLexSectionShortUnderline(t *testing.T) {
 	testPath := "test_section/006_short_underline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection007(t *testing.T) {
+	testPath := "test_section/007_title_combining_chars"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	// spd.Dump(items, test.expectItems())
 	equal(t, items, test.expectItems())
 }
