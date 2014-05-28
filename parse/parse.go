@@ -281,22 +281,22 @@ func (t *Tree) peek(pos int) *item {
 	return nItem
 }
 
-// skip shifts the pointers left in t.token, pos is the amount to shift
-func (t *Tree) skip(num int) {
-	for i := num; i > 0; i-- {
-		for x := 0; x < len(t.token)-1; x++ {
-			t.token[x] = t.token[x+1]
-			t.token[x+1] = nil
-		}
-	}
-}
 
 func (t *Tree) next() *item {
 	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount)
+	// skip shifts the pointers left in t.token, pos is the amount to shift
+	skip := func(num int) {
+		for i := num; i > 0; i-- {
+			for x := 0; x < len(t.token)-1; x++ {
+				t.token[x] = t.token[x+1]
+				t.token[x+1] = nil
+			}
+		}
+	}
 	if t.tokenPeekCount > 0 {
-		t.skip(t.tokenPeekCount)
+		skip(t.tokenPeekCount)
 	} else {
-		t.skip(1)
+		skip(1)
 		t.token[tokenZero] = t.lex.nextItem()
 	}
 	t.tokenBackupCount, t.tokenPeekCount = 0, 0
