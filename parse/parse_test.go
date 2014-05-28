@@ -372,6 +372,14 @@ func TestParseSection007(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	// spd.Dump(pTree.Nodes, eNodes)
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection008(t *testing.T) {
+	testPath := "test_section/008_title_overline"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	// spd.Dump(pTree.Nodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }

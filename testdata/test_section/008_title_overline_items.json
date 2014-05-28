@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 1,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 2,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 7,
+        "line": 2,
+        "length": 5
+    },
+    {
+        "id": 3,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 13,
+        "line": 3,
+        "length": 5
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 19,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "Test overline title.",
+        "startPosition": 20,
+        "line": 5,
+        "length": 20
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 41,
+        "line": 5,
+        "length": 0
+    }
+]

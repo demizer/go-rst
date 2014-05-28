@@ -123,6 +123,13 @@ func TestLexSection007(t *testing.T) {
 	testPath := "test_section/007_title_combining_chars"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection008(t *testing.T) {
+	testPath := "test_section/008_title_overline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
 	// spd.Dump(items, test.expectItems())
 	equal(t, items, test.expectItems())
 }

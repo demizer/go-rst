@@ -310,12 +310,13 @@ func lexStart(l *lexer) stateFn {
 	for {
 		var tokenLength = l.index - l.start
 		r := l.current()
-		if tokenLength == l.width && !isEndOfLine(r) {
+		// log.Debugln("tokenLength:", tokenLength, l.width)
+		if tokenLength <= l.width && l.width > 0 && !isEndOfLine(r) {
 			log.Debugln("Start of new token")
-			if isSpace(r) {
-				return lexSpace
-			} else if isSection(l) {
+			if isSection(l) {
 				return lexSection
+			} else if isSpace(r) {
+				return lexSpace
 			} else if isEndOfLine(r) {
 				l.emit(itemBlankLine)
 				l.start += 1
@@ -362,15 +363,13 @@ func lexSpace(l *lexer) stateFn {
 // From here, the lexTitle() and lexSectionAdornment() are called based on the input.
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
-	// The order of the case statement matter here
+	// The order of the case statements matter here
 	switch r := l.next(); {
 	case isSectionAdornment(r):
-		if l.lastItem.Type != itemTitle {
+		if (l.lastItem != nil && l.lastItem.Type != itemTitle) {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
-	case isSpace(r):
-		return lexSpace
 	case unicode.IsPrint(r):
 		return lexTitle
 	case isEndOfLine(r):

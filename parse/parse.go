@@ -326,25 +326,56 @@ func (t *Tree) section(i *item) Node {
 	var overline bool
 	var sysMessage Node
 
-	peekBack := t.peekBack(1)
-	if peekBack != nil {
-		if peekBack.Type == itemSpace {
-			// Looking back past the white space
-			if t.peekBack(2).Type == itemTitle {
-				return t.systemMessage(errorUnexpectedSectionTitle)
-			}
+	peekForward := t.peekSkip(1, itemSpace)
+	if peekForward != nil && peekForward.Type == itemTitle {
+		log.Debugln("FOUND SECTION WITH OVERLINE")
+		if peekBack := t.peekBack(1); peekBack != nil && peekBack.Type == itemSpace {
 			return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
-		} else if peekBack.Type == itemTitle {
-			if t.peekBack(2) != nil && t.peekBack(2).Type == itemSectionAdornment {
-				// The overline of the section
-				overline = true
-				overAdorn = peekBack
+		}
+		overAdorn = i
+		t.next()
+		loop:
+		for {
+			switch tTok := t.token[tokenZero]; tTok.Type {
+			case itemSpace:
+				t.next()
+			case itemTitle:
+				title = tTok
+				t.next()
+				cur := t.token[tokenZero]
+				if cur != nil && cur.Type == itemSectionAdornment {
+					continue
+				}
+				if pNext := t.peek(1);
+					pNext != nil && pNext.Type != itemSectionAdornment {
+					panic("Missing section underline!")
+				}
+			case itemSectionAdornment:
+				underAdorn = tTok
+				break loop
 			}
 		}
+	} else {
+		peekBack := t.peekBack(1)
+		if peekBack != nil {
+			if peekBack.Type == itemSpace {
+				// Looking back past the white space
+				if t.peekBack(2).Type == itemTitle {
+					return t.systemMessage(errorUnexpectedSectionTitle)
+				}
+				return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
+			} else if peekBack.Type == itemTitle {
+				if t.peekBack(2) != nil && t.peekBack(2).Type ==
+					itemSectionAdornment {
+					// The overline of the section
+					overline = true
+					overAdorn = peekBack
+				}
+			}
+		}
+		title = t.peekBack(1)
+		underAdorn = i
 	}
-
-	title = t.peekBack(1)
-	underAdorn = i
 
 	// TODO: Change these into proper error messages!
 	// Check adornment for proper syntax
@@ -394,9 +425,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		Length: len(err.Message()),
 	}, &t.id)
 
+	log.Debugln("FOUND", err)
+
 	switch err {
 	case warningShortUnderline, errorUnexpectedSectionTitle:
-		log.Debugln("FOUND", err)
 		backToken = tokenZero - 1
 		if t.peekBack(1).Type == itemSpace {
 			backToken = tokenZero - 2
@@ -404,7 +436,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[tokenZero].Text.(string)
 		lbTextLen = len(lbText) + 1
 	case errorUnexpectedSectionTitleOrTransition:
-		log.Debugln("FOUND errorUnexpectedSectionTitleOrTransition")
 		lbText = t.token[tokenZero].Text.(string)
 		lbTextLen = len(lbText)
 	}
