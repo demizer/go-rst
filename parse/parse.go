@@ -155,7 +155,7 @@ type Tree struct {
 	text             string
 	lex              *lexer
 	tokenBackupCount int
-	tokenPeekCount   int
+	peekCount   int
 	token            [7]*item
 	sectionLevels    *sectionLevels // Encountered section levels
 	id               int            // The unique id of the node in the tree
@@ -238,7 +238,7 @@ func (t *Tree) parse(tree *Tree) {
 
 func (t *Tree) backup() *item {
 	t.tokenBackupCount++
-	// log.Debugln("t.tokenBackupCount:", t.tokenPeekCount)
+	// log.Debugln("t.tokenBackupCount:", t.peekCount)
 	for i := len(t.token) - 1; i > 0; i-- {
 		t.token[i] = t.token[i-1]
 		t.token[i-1] = nil
@@ -253,26 +253,26 @@ func (t *Tree) peekBack(pos int) *item {
 }
 
 func (t *Tree) peek(pos int) *item {
-	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount, "Pos:", pos)
+	// log.Debugln("t.peekCount:", t.peekCount, "Pos:", pos)
 	if pos < 1 {
 		panic("pos cannot be < 1")
 	}
 	var nItem *item
 	for i := 0; i < pos; i++ {
-		// log.Debugln("i:", i, "peekCount:", t.tokenPeekCount, "pos:", pos)
-		if t.tokenPeekCount > i {
+		// log.Debugln("i:", i, "peekCount:", t.peekCount, "pos:", pos)
+		if t.peekCount > i {
 			nItem = t.token[zed+i]
 			log.Debugf("Using %#+v\n", nItem)
 			continue
 		}
-		log.Debugln(zed + t.tokenPeekCount + i)
-		if t.token[zed + t.tokenPeekCount + i + 1] == nil {
-			t.tokenPeekCount++
+		log.Debugln(zed + t.peekCount + i)
+		if t.token[zed + t.peekCount + i + 1] == nil {
+			t.peekCount++
 			// log.Debugln("Getting next item")
-			t.token[zed+t.tokenPeekCount+i] = t.lex.nextItem()
-			nItem = t.token[zed+t.tokenPeekCount+i]
+			t.token[zed+t.peekCount+i] = t.lex.nextItem()
+			nItem = t.token[zed+t.peekCount+i]
 		} else {
-			nItem = t.token[zed+t.tokenPeekCount+i]
+			nItem = t.token[zed+t.peekCount+i]
 		}
 	}
 	// log.Debugf("\n##### peek() aftermath #####\n\n")
@@ -298,7 +298,7 @@ func (t *Tree) peekSkip(pos int, iSkip itemElement) *item {
 }
 
 func (t *Tree) next() *item {
-	// log.Debugln("t.tokenPeekCount:", t.tokenPeekCount)
+	// log.Debugln("t.peekCount:", t.peekCount)
 	// skip shifts the pointers left in t.token, pos is the amount to shift
 	skip := func(num int) {
 		for i := num; i > 0; i-- {
@@ -308,13 +308,13 @@ func (t *Tree) next() *item {
 			}
 		}
 	}
-	if t.tokenPeekCount > 0 {
-		skip(t.tokenPeekCount)
+	if t.peekCount > 0 {
+		skip(t.peekCount)
 	} else {
 		skip(1)
 		t.token[zed] = t.lex.nextItem()
 	}
-	t.tokenBackupCount, t.tokenPeekCount = 0, 0
+	t.tokenBackupCount, t.peekCount = 0, 0
 	// log.Debugf("\n##### next() aftermath #####\n\n")
 	// spd.Dump(t.token)
 	return t.token[zed]
