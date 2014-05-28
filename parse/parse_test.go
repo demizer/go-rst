@@ -327,7 +327,7 @@ func TestParseSectionTitleParagraph(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSectionTitleParaNoBlankLine(t *testing.T) {
+func TestParseSection002(t *testing.T) {
 	testPath := "test_section/002_paragraph_nbl"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)

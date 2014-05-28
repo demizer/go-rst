@@ -84,7 +84,7 @@ func TestLexSectionTitlePara(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSectionTitleParaNoBlankline(t *testing.T) {
+func TestLexSection002(t *testing.T) {
 	testPath := "test_section/002_paragraph_nbl"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
