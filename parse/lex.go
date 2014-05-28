@@ -206,6 +206,10 @@ func (l *lexer) lineNumber() int {
 	return strings.Count(l.input[:l.index-1], "\n") + 1
 }
 
+func (l *lexer) isStartOfLine() bool {
+	return (l.index - l.start - l.width) == 1
+}
+
 // isSpace reports whether r is a space character.
 func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
@@ -381,6 +385,9 @@ func lexSection(l *lexer) stateFn {
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
+		if isSpace(l.current()) && l.isStartOfLine() {
+			return lexSpace
+		}
 		l.next()
 		if l.peek() == '\n' {
 			l.emit(itemTitle)
