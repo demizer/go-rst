@@ -198,6 +198,8 @@ func (t *Tree) parse(tree *Tree) {
 			if n == nil {
 				continue
 			}
+		case itemEOF:
+			goto exit
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
@@ -211,6 +213,7 @@ func (t *Tree) parse(tree *Tree) {
 		}
 	}
 
+exit:
 	log.Debugln("End")
 }
 
