@@ -14,6 +14,7 @@ const (
 	NodeBlockQuote
 	NodeSystemMessage
 	NodeLiteralBlock
+	NodeIndent
 )
 
 var nodeTypes = [...]string{
@@ -23,6 +24,7 @@ var nodeTypes = [...]string{
 	"NodeBlockQuote",
 	"NodeSystemMessage",
 	"NodeLiteralBlock",
+	"NodeIndent",
 }
 
 func (n NodeType) Type() NodeType {
@@ -64,6 +66,7 @@ type SectionNode struct {
 	Line          `json:"line"`
 	OverLine      *AdornmentNode `json:"overLine"`
 	UnderLine     *AdornmentNode `json:"underLine"`
+	Indent        *IndentNode    `json:"underLine"`
 	NodeList      NodeList       `json:"nodeList"`
 }
 
@@ -71,7 +74,7 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(title *item, overAdorn *item, underAdorn *item, id *int) *SectionNode {
+func newSection(title *item, overSec *item, underSec *item, indent *item, id *int) *SectionNode {
 	*id++
 	n := &SectionNode{
 		Id:            Id(*id),
@@ -82,28 +85,40 @@ func newSection(title *item, overAdorn *item, underAdorn *item, id *int) *Sectio
 		Line:          title.Line,
 	}
 
-	if overAdorn != nil && overAdorn.Text != nil {
+	if indent != nil && indent.Text != nil {
 		*id++
-		Rune := rune(overAdorn.Text.(string)[0])
+		n.Indent = &IndentNode{
+			Id:            Id(*id),
+			Type:          NodeIndent,
+			Text:	       indent.Text.(string),
+			StartPosition: indent.StartPosition,
+			Line:          indent.Line,
+			Length:        indent.Length,
+		}
+	}
+
+	if overSec != nil && overSec.Text != nil {
+		*id++
+		Rune := rune(overSec.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
 			Id:            Id(*id),
 			Type:          NodeAdornment,
 			Rune:          Rune,
-			StartPosition: overAdorn.StartPosition,
-			Line:          overAdorn.Line,
-			Length:        overAdorn.Length,
+			StartPosition: overSec.StartPosition,
+			Line:          overSec.Line,
+			Length:        overSec.Length,
 		}
 	}
 
 	*id++
-	Rune := rune(underAdorn.Text.(string)[0])
+	Rune := rune(underSec.Text.(string)[0])
 	n.UnderLine = &AdornmentNode{
 		Id:            Id(*id),
 		Rune:          Rune,
 		Type:          NodeAdornment,
-		StartPosition: underAdorn.StartPosition,
-		Line:          underAdorn.Line,
-		Length:        underAdorn.Length,
+		StartPosition: underSec.StartPosition,
+		Line:          underSec.Line,
+		Length:        underSec.Length,
 	}
 
 	return n
@@ -216,4 +231,29 @@ func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
 
 func (l LiteralBlockNode) NodeType() NodeType {
 	return l.Type
+}
+
+type IndentNode struct {
+	Id            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	StartPosition `json:"startPosition"`
+	Line          `json:"line"`
+}
+
+func newIndentNode(i *item, id *int) *IndentNode {
+	*id++
+	return &IndentNode{
+		Id:            Id(*id),
+		Type:          NodeIndent,
+		Text:          i.Text.(string),
+		Length:        i.Length,
+		StartPosition: i.StartPosition,
+		Line:          i.Line,
+	}
+}
+
+func (i IndentNode) NodeType() NodeType {
+	return i.Type
 }

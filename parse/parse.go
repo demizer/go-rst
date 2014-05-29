@@ -318,7 +318,7 @@ func (t *Tree) section(i *item) Node {
 		underAdorn = i
 	}
 
-	sec := newSection(title, overAdorn, underAdorn, &t.id)
+	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
 	exists, eSec := t.sectionLevels.Add(sec)
 	if !exists && eSec != nil {
 		// There is a matching level in sectionLevels
