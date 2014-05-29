@@ -201,10 +201,6 @@ func (t *Tree) parse(tree *Tree) {
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
-		case itemEOF:
-			goto exit
-		default:
-			panic(fmt.Errorf("%q Not implemented!", token.Type))
 		}
 
 		t.nodeTarget.append(n)
@@ -215,7 +211,6 @@ func (t *Tree) parse(tree *Tree) {
 		}
 	}
 
-exit:
 	log.Debugln("End")
 }
 
@@ -225,10 +220,7 @@ func (t *Tree) peekBack(pos int) *item {
 
 func (t *Tree) peek(pos int) *item {
 	// log.Debugln("t.peekCount:", t.peekCount, "Pos:", pos)
-	if pos < 1 {
-		panic("pos cannot be < 1")
-	}
-	var nItem *item
+	nItem := t.token[zed]
 	for i := 0; i < pos; i++ {
 		// log.Debugln("i:", i, "peekCount:", t.peekCount, "pos:", pos)
 		if t.peekCount > i {
@@ -241,8 +233,6 @@ func (t *Tree) peek(pos int) *item {
 			t.peekCount++
 			// log.Debugln("Getting next item")
 			t.token[zed+t.peekCount+i] = t.lex.nextItem()
-			nItem = t.token[zed+t.peekCount+i]
-		} else {
 			nItem = t.token[zed+t.peekCount+i]
 		}
 	}
@@ -294,22 +284,16 @@ func (t *Tree) next() *item {
 func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
 	var overAdorn, title, underAdorn *item
-	var overline bool
 	var sysMessage Node
 
 	peekForward := t.peekSkip(1, itemSpace)
 	if peekForward != nil && peekForward.Type == itemTitle {
 		log.Debugln("FOUND SECTION WITH OVERLINE")
-		if peekBack := t.peekBack(1); peekBack != nil && peekBack.Type == itemSpace {
-			return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
-		}
 		overAdorn = i
 		t.next()
 	loop:
 		for {
 			switch tTok := t.token[zed]; tTok.Type {
-			case itemSpace:
-				t.next()
 			case itemTitle:
 				title = tTok
 				t.next()
@@ -317,53 +301,26 @@ func (t *Tree) section(i *item) Node {
 				if cur != nil && cur.Type == itemSectionAdornment {
 					continue
 				}
-				if pNext := t.peek(1); pNext != nil && pNext.Type != itemSectionAdornment {
-					panic("Missing section underline!")
-				}
 			case itemSectionAdornment:
 				underAdorn = tTok
 				break loop
 			}
 		}
 	} else {
-		peekBack := t.peekBack(1)
-		if peekBack != nil {
-			if peekBack.Type == itemSpace {
-				// Looking back past the white space
-				if t.peekBack(2).Type == itemTitle {
-					return t.systemMessage(errorUnexpectedSectionTitle)
-				}
-				return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
-			} else if peekBack.Type == itemTitle {
-				if t.peekBack(2) != nil && t.peekBack(2).Type ==
-					itemSectionAdornment {
-					// The overline of the section
-					overline = true
-					overAdorn = peekBack
-				}
+		if peekBack := t.peekBack(1); peekBack != nil && peekBack.Type == itemSpace {
+			// Looking back past the white space
+			if t.peekBack(2).Type == itemTitle {
+				return t.systemMessage(errorUnexpectedSectionTitle)
 			}
+			return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
 		}
 		title = t.peekBack(1)
 		underAdorn = i
 	}
 
-	// TODO: Change these into proper error messages!
-	// Check adornment for proper syntax
-	if underAdorn.Type == itemSpace {
-		t.backup() // Put the parser back on the title
-		return t.systemMessage(errorUnexpectedSectionTitle)
-	} else if overline && title.Length != overAdorn.Length {
-		panic("Section over line not equal to title length!")
-	} else if overline && overAdorn.Text != underAdorn.Text {
-		panic("Section title over line does not match section title under line.")
-	}
-
 	sec := newSection(title, overAdorn, underAdorn, &t.id)
 	exists, eSec := t.sectionLevels.Add(sec)
-	if exists && eSec != nil {
-		panic(fmt.Errorf("SectionNode using Text \"%s\" and Rune '%s' was previously parsed!",
-			sec.Text, string(sec.UnderLine.Rune)))
-	} else if !exists && eSec != nil {
+	if !exists && eSec != nil {
 		// There is a matching level in sectionLevels
 		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
 	}

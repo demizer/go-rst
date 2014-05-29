@@ -228,7 +228,6 @@ func isEndOfLine(r rune) bool {
 func isSection(l *lexer) bool {
 	log.Debugln("Start")
 	var lookPositions = 2
-	var lastAdornment rune
 	var newLineNum int
 	var runePositions []rune
 	var matchCount int
@@ -251,10 +250,6 @@ func isSection(l *lexer) bool {
 
 	// Advance to the end of the line
 	l.advance('\n')
-	if l.current() == eof {
-		log.Debugln("Found eof, returning false.")
-		return false
-	}
 
 	for j := 0; j < lookPositions; j++ {
 		for isSpace(l.current()) {
@@ -266,19 +261,11 @@ func isSection(l *lexer) bool {
 				newLineNum += 1
 				log.Debugln("newLineNum:", newLineNum)
 			}
-			if l.next() == eof {
-				return exit(false)
-			}
+			l.next()
 		}
 		if isSectionAdornment(l.current()) {
 			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.index)
-			if lastAdornment != 0 && l.current() != lastAdornment {
-				log.Debugf("Adornment mismatch, last: %s current: %s\n",
-					string(lastAdornment), string(l.current()))
-				return exit(false)
-			}
 			runePositions = append(runePositions, l.current())
-			lastAdornment = l.current()
 			matchCount += 1
 		}
 		if l.next() == eof {
@@ -317,9 +304,6 @@ func lexStart(l *lexer) stateFn {
 				return lexSection
 			} else if isSpace(r) {
 				return lexSpace
-			} else if isEndOfLine(r) {
-				l.emit(itemBlankLine)
-				l.start += 1
 			}
 		} else if isEndOfLine(r) {
 			log.Debugln("isEndOfLine == true")
@@ -336,10 +320,6 @@ func lexStart(l *lexer) stateFn {
 	}
 
 	// Correctly reached eof.
-	if l.index > l.start {
-		l.emit(itemParagraph)
-	}
-
 	l.emit(itemEOF)
 	log.Debugln("End")
 	return nil
@@ -372,8 +352,6 @@ func lexSection(l *lexer) stateFn {
 		lexSectionAdornment(l)
 	case unicode.IsPrint(r):
 		return lexTitle
-	case isEndOfLine(r):
-		l.start += 1
 	}
 	log.Debugln("Exit")
 	return lexStart
