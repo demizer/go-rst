@@ -257,23 +257,15 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 }
 
 func (t *Tree) next() *item {
-	// log.Debugln("t.peekCount:", t.peekCount)
-	// skip shifts the pointers left in t.token, pos is the amount to shift
-	skip := func(num int) {
-		for i := num; i > 0; i-- {
-			for x := 0; x < len(t.token)-1; x++ {
-				t.token[x] = t.token[x+1]
-				t.token[x+1] = nil
-			}
-		}
+	// log.Debugf("\n##### next() before #####\n")
+	// spd.Dump(t.token)
+	for x := 0; x < len(t.token)-1; x++ {
+		t.token[x] = t.token[x+1]
+		t.token[x+1] = nil
 	}
-	if t.peekCount > 0 {
-		skip(t.peekCount)
-	} else {
-		skip(1)
+	if t.token[zed] == nil {
 		t.token[zed] = t.lex.nextItem()
 	}
-	t.tokenBackupCount, t.peekCount = 0, 0
 	// log.Debugf("\n##### next() aftermath #####\n\n")
 	// spd.Dump(t.token)
 	return t.token[zed]
