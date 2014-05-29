@@ -141,7 +141,7 @@ func (l *lexer) emit(t itemElement) {
 		Type:          t,
 		Text:          l.input[l.start:l.index],
 		Line:          Line(l.lineNumber()),
-		StartPosition: StartPosition(l.start + 1),
+		StartPosition: StartPosition(l.start + 1), // Positions start at 1 not 0
 		Length:        length,
 	}
 	l.items <- nItem
@@ -208,6 +208,8 @@ func (l *lexer) lineNumber() int {
 	return strings.Count(l.input[:l.index-1], "\n") + 1
 }
 
+// isStartOfLine calculates if the current position of the lexer in the input is the beginning of a
+// new line.
 func (l *lexer) isStartOfLine() bool {
 	return (l.index - l.start - l.width) == 1
 }
@@ -359,8 +361,9 @@ func lexSection(l *lexer) stateFn {
 	return lexStart
 }
 
-// lexTitle consumes input until newline and emits an itemTitle token. Once the token is emitted,
-// control is returned to lexSection().
+// lexTitle consumes input until newline and emits an itemTitle token. If spaces are detected at the
+// start of the line, an itemSpace is emitted. Spaces after the title (and before newline) are
+// ignored. On completion control is returned to lexSection.
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	l.backup(2) // Start from the newline of the previous line
