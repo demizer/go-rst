@@ -151,8 +151,10 @@ func (l *lexer) emit(t itemElement) {
 
 // backup backs up the lexer by one position using the width of the last rune retrieved from the
 // input.
-func (l *lexer) backup() {
-	l.index -= l.width
+func (l *lexer) backup(pos int) {
+	for i := 0; i < pos; i++ {
+		l.index -= l.width
+	}
 }
 
 // current returns the rune at the current position in the input.
@@ -164,7 +166,7 @@ func (l *lexer) current() rune {
 // peek looks ahead in the input by one position and returns the rune.
 func (l *lexer) peek() rune {
 	r := l.next()
-	l.backup()
+	l.backup(1)
 	return r
 }
 
@@ -361,6 +363,7 @@ func lexSection(l *lexer) stateFn {
 // control is returned to lexSection().
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
+	l.backup(2) // Start from the newline of the previous line
 	for {
 		if isSpace(l.current()) && l.isStartOfLine() {
 			return lexSpace
