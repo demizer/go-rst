@@ -40,12 +40,14 @@ const (
 	warningShortUnderline parserMessage = iota
 	errorUnexpectedSectionTitle
 	errorUnexpectedSectionTitleOrTransition
+	severeIncompleteSectionTitle
 )
 
 var parserErrors = [...]string{
 	"warningShortUnderline",
 	"errorUnexpectedSectionTitle",
 	"errorUnexpectedSectionTitleOrTransition",
+	"severeIncompleteSectionTitle",
 }
 
 func (p parserMessage) String() string {
@@ -60,6 +62,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Unexpected section title."
 	case errorUnexpectedSectionTitleOrTransition:
 		s = "Unexpected section title or transition."
+	case severeIncompleteSectionTitle:
+		s = "Incomplete section title."
 	}
 	return
 }
@@ -71,6 +75,8 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	case errorUnexpectedSectionTitle:
 		s = levelSevere
 	case errorUnexpectedSectionTitleOrTransition:
+		s = levelSevere
+	case severeIncompleteSectionTitle:
 		s = levelSevere
 	}
 	return
@@ -338,6 +344,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	log.Debugln("FOUND", err)
 
 	switch err {
+	case severeIncompleteSectionTitle:
+		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
+			t.token[zed].Text.(string)
+		lbTextLen = len(lbText) + 1
 	case warningShortUnderline, errorUnexpectedSectionTitle:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
