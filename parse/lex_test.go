@@ -9,6 +9,8 @@ import (
 	"github.com/demizer/go-elog"
 	"reflect"
 	"testing"
+	"fmt"
+	"strconv"
 )
 
 var (
@@ -37,14 +39,32 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	var id int
 	var found bool
 	var pFieldName, eFieldName string
-	var pFieldType, eFieldType reflect.Type
 	var pFieldVal, eFieldVal reflect.Value
 	var pFieldValStruct reflect.StructField
 
 	dError := func() {
-		t.Errorf("Got: %s = %#v (%T) (Id: %d)\n\tExpect: %s = %#v (%T)\n", pFieldName,
-			pFieldVal.Interface(), pFieldType.Name(), id, eFieldName,
-			eFieldVal.Interface(), eFieldType.Name())
+		var got, exp string
+		switch r := pFieldVal.Interface().(type) {
+		case Id:
+			got = pFieldVal.Interface().(Id).String()
+			exp = eFieldVal.Interface().(Id).String()
+		case itemElement:
+			got = pFieldVal.Interface().(itemElement).String()
+			exp = eFieldVal.Interface().(itemElement).String()
+		case Line:
+			got = pFieldVal.Interface().(Line).String()
+			exp = eFieldVal.Interface().(Line).String()
+		case StartPosition:
+			got = pFieldVal.Interface().(StartPosition).String()
+			exp = eFieldVal.Interface().(StartPosition).String()
+		case int:
+			got = strconv.Itoa(pFieldVal.Interface().(int))
+			exp = strconv.Itoa(eFieldVal.Interface().(int))
+		default:
+			panic(fmt.Errorf("%#v is not implemented!", r))
+		}
+		t.Errorf("\n(Id: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got,
+			eFieldName, exp)
 	}
 
 	for eNum, eItem := range expectItems {
@@ -53,10 +73,8 @@ func equal(t *testing.T, items []item, expectItems []item) {
 		id = int(pVal.FieldByName("Id").Interface().(Id))
 		for x := 0; x < eVal.NumField(); x++ {
 			eFieldVal = eVal.Field(x)
-			eFieldType = eFieldVal.Type()
 			eFieldName = eVal.Type().Field(x).Name
 			pFieldVal = pVal.FieldByName(eFieldName)
-			pFieldType = pFieldVal.Type()
 			pFieldValStruct, found = pVal.Type().FieldByName(eFieldName)
 			pFieldName = pFieldValStruct.Name
 			if !found {

@@ -16,6 +16,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"strconv"
 )
 
 func init() { SetDebug() }
@@ -115,15 +116,33 @@ func (c *checkNode) errorf(format string, args ...interface{}) {
 }
 
 func (c *checkNode) dError() {
-	if c.pFieldName == "Rune" {
-		c.t.Errorf("Got: %s.%s = %#v (%v) (%v) (Id: %d),\n\tExpect: %s.%s = %#v (%v)\n",
-			c.pNodeName, c.pFieldName, c.pFieldVal, string(c.pFieldVal.(int32)),
-			c.pFieldType, c.id, "#parse-tree", c.eFieldName, c.eFieldVal, c.eFieldType)
-		return
+	var got,exp string
+
+	switch c.pFieldVal.(type) {
+	case Id:
+		got = c.pFieldVal.(Id).String()
+		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
+	case NodeType:
+		got = c.pFieldVal.(NodeType).String()
+		exp = c.eFieldVal.(string)
+	case StartPosition:
+		got = c.pFieldVal.(StartPosition).String()
+		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
+	case Line:
+		got = c.pFieldVal.(Line).String()
+		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
+	case string:
+		got = c.pFieldVal.(string)
+		exp = c.eFieldVal.(string)
+	case int:
+		got = strconv.Itoa(c.pFieldVal.(int))
+		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
+	case rune:
+		got = string(c.pFieldVal.(rune))
+		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("Got: %s.%s = %#v (%v) (Id: %d),\n\tExpect: %s.%s = %#v (%v)\n",
-		c.pNodeName, c.pFieldName, c.pFieldVal, c.pFieldType, c.id, "#parse-tree",
-		c.eFieldName, c.eFieldVal, c.eFieldType)
+	c.t.Errorf("(Id: %d) Got:\t%s = %q\n\t\tExpect: %s = %q\n\n", c.id, c.pFieldName, got,
+		c.eFieldName, exp)
 }
 
 func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value) bool {
