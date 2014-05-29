@@ -219,18 +219,6 @@ exit:
 	log.Debugln("End")
 }
 
-func (t *Tree) backup() *item {
-	t.tokenBackupCount++
-	// log.Debugln("t.tokenBackupCount:", t.peekCount)
-	for i := len(t.token) - 1; i > 0; i-- {
-		t.token[i] = t.token[i-1]
-		t.token[i-1] = nil
-	}
-	// log.Debugf("\n##### backup() aftermath #####\n\n")
-	// spd.Dump(t.token)
-	return t.token[zed-t.tokenBackupCount]
-}
-
 func (t *Tree) peekBack(pos int) *item {
 	return t.token[zed-pos]
 }
