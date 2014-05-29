@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "type": "itemSectionAdornment",
+        "text": "=======",
+        "startPosition": 1,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 9,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemTitle",
+        "text": "Title",
+        "startPosition": 10,
+        "line": 2,
+        "length": 5
+    },
+    {
+        "id": 4,
+        "type": "itemSectionAdornment",
+        "text": "=======",
+        "startPosition": 16,
+        "line": 3,
+        "length": 7
+    },
+    {
+        "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 24,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "Test overline title with inset.",
+        "startPosition": 25,
+        "line": 5,
+        "length": 31
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "text": "",
+        "startPosition": 57,
+        "line": 5,
+        "length": 0
+    }
+]

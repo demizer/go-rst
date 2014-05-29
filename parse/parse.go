@@ -273,12 +273,14 @@ func (t *Tree) next() *item {
 
 func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
-	var overAdorn, title, underAdorn *item
-	var sysMessage Node
+	var overAdorn, indent, title, underAdorn *item
 
-	peekForward := t.peekSkip(1, itemSpace)
-	if peekForward != nil && peekForward.Type == itemTitle {
-		log.Debugln("FOUND SECTION WITH OVERLINE")
+	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
+		if t.peekBack(2).Type == itemTitle {
+			return t.systemMessage(errorUnexpectedSectionTitle)
+		}
+		return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
+	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
 		overAdorn = i
 		t.next()
 	loop:
@@ -287,23 +289,15 @@ func (t *Tree) section(i *item) Node {
 			case itemTitle:
 				title = tTok
 				t.next()
-				cur := t.token[zed]
-				if cur != nil && cur.Type == itemSectionAdornment {
-					continue
-				}
+			case itemSpace:
+				indent = tTok
+				t.next()
 			case itemSectionAdornment:
 				underAdorn = tTok
 				break loop
 			}
 		}
 	} else {
-		if peekBack := t.peekBack(1); peekBack != nil && peekBack.Type == itemSpace {
-			// Looking back past the white space
-			if t.peekBack(2).Type == itemTitle {
-				return t.systemMessage(errorUnexpectedSectionTitle)
-			}
-			return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
-		}
 		title = t.peekBack(1)
 		underAdorn = i
 	}
@@ -315,11 +309,10 @@ func (t *Tree) section(i *item) Node {
 		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
 	}
 
-	// System messages have to be applied after the section is created in order to preserve
-	// a consecutive id number.
-	if title.Length != underAdorn.Length {
-		sysMessage = t.systemMessage(warningShortUnderline)
-		sec.NodeList = append(sec.NodeList, sysMessage)
+	if indent == nil {
+		if title.Length != underAdorn.Length {
+			sec.NodeList = append(sec.NodeList, t.systemMessage(warningShortUnderline))
+		}
 	}
 
 	log.Debugln("End")

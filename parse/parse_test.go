@@ -184,7 +184,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != float64(c.pFieldVal.(StartPosition)) {
 				c.dError()
 			}
-		case "overLine", "underLine":
+		case "indent", "overLine", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "nodeList":
 			for num, node := range c.eFieldVal.([]interface{}) {
@@ -377,6 +377,14 @@ func TestParseSection007(t *testing.T) {
 
 func TestParseSection008(t *testing.T) {
 	testPath := "test_section/008_title_overline"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection009(t *testing.T) {
+	testPath := "test_section/009_inset_title_with_overline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()

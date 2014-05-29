@@ -1,6 +1,45 @@
-<document source="test data">
-    <section ids="title" names="title">
-        <title>
-            Title
-        <paragraph>
-            Test overline title with inset.
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "text": "Title",
+        "level": 1,
+        "startPosition": 10,
+        "line": 2,
+        "length": 5,
+        "indent": {
+            "id": 2,
+            "type": "NodeIndent",
+            "text": " ",
+            "startPosition": 9,
+            "line": 2,
+            "length": 1
+        },
+        "overLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 1,
+            "length": 7
+        },
+        "underLine": {
+            "id": 4,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 16,
+            "line": 3,
+            "length": 7
+        },
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "NodeParagraph",
+                "text": "Test overline title with inset.",
+                "startPosition": 25,
+                "line": 5,
+                "length": 31
+            }
+        ]
+    }
+]
