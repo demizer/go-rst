@@ -27,16 +27,12 @@
                         "id": 4,
                         "type": "NodeParagraph",
                         "text": "Title underline too short.",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 26
                     },
                     {
                         "id": 5,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n====",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 11
                     }
                 ]

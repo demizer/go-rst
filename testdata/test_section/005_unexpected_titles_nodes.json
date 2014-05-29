@@ -11,7 +11,6 @@
         "id": 2,
         "type": "NodeBlockQuote",
         "level": 1,
-        "startPosition": 0,
         "line": 3,
         "nodeList": [
             {
@@ -24,16 +23,12 @@
                         "id": 4,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 25
                     },
                     {
                         "id": 5,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n=====",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 12
                     }
                 ]
@@ -56,16 +51,12 @@
                         "id": 8,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title or transition.",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 39
                     },
                     {
                         "id": 9,
                         "type": "NodeLiteralBlock",
                         "text": "-----",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 5
                     }
                 ]
@@ -80,16 +71,12 @@
                         "id": 11,
                         "type": "NodeParagraph",
                         "text": "Unexpected section title.",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 25
                     },
                     {
                         "id": 12,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n-----",
-                        "startPosition": 0,
-                        "line": 0,
                         "length": 12
                     }
                 ]

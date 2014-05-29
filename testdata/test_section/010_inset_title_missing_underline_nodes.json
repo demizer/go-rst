@@ -9,16 +9,12 @@
                 "id": 2,
                 "type": "NodeParagraph",
                 "text": "Incomplete section title.",
-                "startPosition": 0,
-                "line": 0,
                 "length": 25
             },
             {
                 "id": 3,
                 "type": "NodeLiteralBlock",
                 "text": "========================\n Test Missing Underline",
-                "startPosition": 0,
-                "line": 0,
                 "length": 49
             }
         ]
