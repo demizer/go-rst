@@ -10,21 +10,28 @@ import (
 	"strings"
 	"unicode"
 	"unicode/utf8"
+	"strconv"
 )
 
 type Id int
 
 func (i Id) IdNumber() Id { return i }
 
+func (i Id) String() string { return strconv.Itoa(int(i)) }
+
 // The line number of an item in the input string
 type Line int
 
 func (l Line) LineNumber() Line { return l }
 
+func (l Line) String() string { return strconv.Itoa(int(l)) }
+
 // The begining location of an item in the input.
 type StartPosition int
 
 func (s StartPosition) Position() StartPosition { return s }
+
+func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
 
 // itemElement are the types that are emitted by the lexer.
 type itemElement int
