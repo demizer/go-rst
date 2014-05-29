@@ -281,7 +281,10 @@ func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
 	var overAdorn, indent, title, underAdorn *item
 
-	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
+	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemTitle {
+		title = t.peekBack(1)
+		underAdorn = i
+	} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
 		if t.peekBack(2).Type == itemTitle {
 			return t.systemMessage(errorUnexpectedSectionTitle)
 		}
@@ -303,9 +306,10 @@ func (t *Tree) section(i *item) Node {
 				break loop
 			}
 		}
-	} else {
-		title = t.peekBack(1)
-		underAdorn = i
+	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemParagraph {
+		t.next()
+		t.next()
+		return t.systemMessage(severeIncompleteSectionTitle)
 	}
 
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)

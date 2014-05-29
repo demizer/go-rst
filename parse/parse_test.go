@@ -407,6 +407,14 @@ func TestParseSection009(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection010(t *testing.T) {
+	testPath := "test_section/010_inset_title_missing_underline"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
 	// spd.Dump(pTree.Nodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
