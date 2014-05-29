@@ -110,9 +110,7 @@ func (s *sectionLevels) FindByRune(adornChar rune) *SectionNode {
 func (s *sectionLevels) Add(section *SectionNode) (exists bool, sec *SectionNode) {
 	sec = s.FindByRune(section.UnderLine.Rune)
 	if sec != nil {
-		if sec.Text == section.Text {
-			return true, sec
-		} else if sec.Text != section.Text {
+		if sec.Text != section.Text {
 			section.Level = sec.Level
 		}
 	} else {
@@ -204,8 +202,6 @@ func (t *Tree) parse(tree *Tree) {
 			if n == nil {
 				continue
 			}
-		case itemEOF:
-			goto exit
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
@@ -219,7 +215,6 @@ func (t *Tree) parse(tree *Tree) {
 		}
 	}
 
-exit:
 	log.Debugln("End")
 }
 

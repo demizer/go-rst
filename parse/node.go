@@ -242,18 +242,6 @@ type IndentNode struct {
 	Line          `json:"line"`
 }
 
-func newIndentNode(i *item, id *int) *IndentNode {
-	*id++
-	return &IndentNode{
-		Id:            Id(*id),
-		Type:          NodeIndent,
-		Text:          i.Text.(string),
-		Length:        i.Length,
-		StartPosition: i.StartPosition,
-		Line:          i.Line,
-	}
-}
-
 func (i IndentNode) NodeType() NodeType {
 	return i.Type
 }
