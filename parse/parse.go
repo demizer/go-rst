@@ -243,18 +243,15 @@ func (t *Tree) peek(pos int) *item {
 	return nItem
 }
 
-func (t *Tree) peekSkip(pos int, iSkip itemElement) *item {
+func (t *Tree) peekSkip(iSkip itemElement) *item {
 	var nItem *item
-outer:
-	for i := 1; i <= pos; i++ {
-		for {
-			nItem = t.peek(i)
-			if nItem.Type == iSkip {
-				continue
-			} else {
-				break outer
-			}
+	var count int = 1
+	for {
+		nItem = t.peek(count)
+		if nItem.Type != iSkip {
+			 break
 		}
+		count++
 	}
 	return nItem
 }
