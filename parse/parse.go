@@ -168,13 +168,6 @@ func (t *Tree) startParse(lex *lexer) {
 	t.lex = lex
 }
 
-// stopParse terminates parsing.
-func (t *Tree) stopParse() {
-	t.Nodes = nil
-	t.nodeTarget = nil
-	t.lex = nil
-}
-
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, errors []error) {
 	log.Debugln("Start")
 	t.startParse(lex(t.Name, text))
