@@ -42,7 +42,7 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	var pFieldValStruct reflect.StructField
 
 	dError := func() {
-		t.Errorf("Got: %s = %s (%T) (Id: %d)\n\tExpect: %s = %s (%T)\n", pFieldName,
+		t.Errorf("Got: %s = %#v (%T) (Id: %d)\n\tExpect: %s = %#v (%T)\n", pFieldName,
 			pFieldVal.Interface(), pFieldType.Name(), id, eFieldName,
 			eFieldVal.Interface(), eFieldType.Name())
 	}
