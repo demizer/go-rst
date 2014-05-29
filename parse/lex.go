@@ -211,7 +211,7 @@ func (l *lexer) lineNumber() int {
 // isStartOfLine calculates if the current position of the lexer in the input is the beginning of a
 // new line.
 func (l *lexer) isStartOfLine() bool {
-	return (l.index - l.start - l.width) == 1
+	return (l.index - l.start) == 0
 }
 
 // isSpace reports whether r is a space character.
