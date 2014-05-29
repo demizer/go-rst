@@ -219,24 +219,22 @@ func (t *Tree) peekBack(pos int) *item {
 }
 
 func (t *Tree) peek(pos int) *item {
-	// log.Debugln("t.peekCount:", t.peekCount, "Pos:", pos)
+	// log.Debugln("\n", "Pos:", pos)
+	// log.Debugf("##### peek() before #####\n")
+	// spd.Dump(t.token)
 	nItem := t.token[zed]
-	for i := 0; i < pos; i++ {
-		// log.Debugln("i:", i, "peekCount:", t.peekCount, "pos:", pos)
-		if t.peekCount > i {
+	for i := 1; i <= pos; i++ {
+		if t.token[zed+i] != nil {
 			nItem = t.token[zed+i]
 			log.Debugf("Using %#+v\n", nItem)
 			continue
-		}
-		log.Debugln(zed + t.peekCount + i)
-		if t.token[zed+t.peekCount+i+1] == nil {
-			t.peekCount++
-			// log.Debugln("Getting next item")
-			t.token[zed+t.peekCount+i] = t.lex.nextItem()
-			nItem = t.token[zed+t.peekCount+i]
+		} else {
+			log.Debugln("Getting next item")
+			t.token[zed+i] = t.lex.nextItem()
+			nItem = t.token[zed+i]
 		}
 	}
-	// log.Debugf("\n##### peek() aftermath #####\n\n")
+	// log.Debugf("\n##### peek() aftermath #####\n")
 	// spd.Dump(t.token)
 	// log.Debugf("Returning: %#+v\n", nItem)
 	return nItem
