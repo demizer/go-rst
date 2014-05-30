@@ -31,3 +31,10 @@ func TestIndentNodeType(t *testing.T) {
 		t.Error("n.Type != NodeIndent")
 	}
 }
+
+func TestTransitionNodeType(t *testing.T) {
+	n := &TransitionNode{Type: NodeTransition}
+	if n.NodeType() != NodeTransition {
+		t.Error("n.Type != NodeTransition")
+	}
+}
