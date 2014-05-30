@@ -330,10 +330,14 @@ func (t *Tree) section(i *item) Node {
 		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
 	}
 
-	if indent == nil {
-		if title.Length != underAdorn.Length {
-			sec.NodeList = append(sec.NodeList, t.systemMessage(warningShortUnderline))
-		}
+	oLen := title.Length
+	if indent != nil {
+		oLen = indent.Length + title.Length
+	}
+	if overAdorn != nil && oLen > overAdorn.Length {
+		sec.NodeList = append(sec.NodeList, t.systemMessage(warningShortOverline))
+	} else if overAdorn == nil && title.Length != underAdorn.Length {
+		sec.NodeList = append(sec.NodeList, t.systemMessage(warningShortUnderline))
 	}
 
 	log.Debugln("End")
@@ -360,11 +364,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
-	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
-		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
-			t.token[zed].Text.(string)
-		s.Line = t.token[zed-2].Line
-		lbTextLen = len(lbText) + 1
 	case warningShortOverline:
 		backToken = zed - 2
 		if t.peekBack(2).Type == itemSpace {
@@ -384,6 +383,11 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 			backToken = zed - 2
 		}
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
+		lbTextLen = len(lbText) + 1
+	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
+		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
+			t.token[zed].Text.(string)
+		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText) + 1
 	case severeUnexpectedSectionTitleOrTransition:
 		lbText = t.token[zed].Text.(string)

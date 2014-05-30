@@ -1,13 +1,65 @@
-<document source="test data">
-    <section ids="long-title" names="long\ title">
-        <title>
-            Long    Title
-        <system_message level="2" line="1" source="test data" type="WARNING">
-            <paragraph>
-                Title overline too short.
-            <literal_block xml:space="preserve">
-                =======
-                 Long    Title
-                =======
-        <paragraph>
-            Test long title and space normalization.
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "text": "Long    Title",
+        "level": 1,
+        "startPosition": 10,
+        "line": 2,
+        "length": 13,
+        "indent": {
+            "id": 2,
+            "type": "NodeIndent",
+            "text": " ",
+            "startPosition": 9,
+            "line": 2,
+            "length": 1
+        },
+        "overLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 1,
+            "length": 7
+        },
+        "underLine": {
+            "id": 4,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 24,
+            "line": 3,
+            "length": 7
+        },
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "NodeSystemMessage",
+                "severity": "WARNING",
+                "line": 1,
+                "nodeList": [
+                    {
+                        "id": 6,
+                        "type": "NodeParagraph",
+                        "text": "Title overline too short.",
+                        "length": 25
+                    },
+                    {
+                        "id": 7,
+                        "type": "NodeLiteralBlock",
+                        "text": "=======\n Long    Title\n=======",
+                        "length": 32
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "type": "NodeParagraph",
+                "text": "Test long title and space normalization.",
+                "startPosition": 33,
+                "line": 5,
+                "length": 40
+            }
+        ]
+    }
+]
