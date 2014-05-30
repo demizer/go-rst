@@ -177,8 +177,8 @@ func (l *lexer) peek() rune {
 	return r
 }
 
-// advance fast forwards the lexer to the next rune in the input specified by "to".
-func (l *lexer) advance(to rune) {
+// advanceToRune fast forwards the lexer to the next rune in the input specified by "to".
+func (l *lexer) advanceToRune(to rune) {
 	for {
 		if l.next() == eof || to == l.current() {
 			break
@@ -260,7 +260,7 @@ func isSection(l *lexer) bool {
 	}
 
 	// Advance to the end of the line
-	l.advance('\n')
+	l.advanceToRune('\n')
 
 	for j := 0; j < lookPositions; j++ {
 		for isSpace(l.current()) {
