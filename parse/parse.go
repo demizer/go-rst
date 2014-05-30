@@ -38,15 +38,15 @@ type parserMessage int
 
 const (
 	warningShortUnderline parserMessage = iota
-	errorUnexpectedSectionTitle
-	errorUnexpectedSectionTitleOrTransition
+	severeUnexpectedSectionTitle
+	severeUnexpectedSectionTitleOrTransition
 	severeIncompleteSectionTitle
 )
 
 var parserErrors = [...]string{
 	"warningShortUnderline",
-	"errorUnexpectedSectionTitle",
-	"errorUnexpectedSectionTitleOrTransition",
+	"severeUnexpectedSectionTitle",
+	"severeUnexpectedSectionTitleOrTransition",
 	"severeIncompleteSectionTitle",
 }
 
@@ -58,9 +58,9 @@ func (p parserMessage) Message() (s string) {
 	switch p {
 	case warningShortUnderline:
 		s = "Title underline too short."
-	case errorUnexpectedSectionTitle:
+	case severeUnexpectedSectionTitle:
 		s = "Unexpected section title."
-	case errorUnexpectedSectionTitleOrTransition:
+	case severeUnexpectedSectionTitleOrTransition:
 		s = "Unexpected section title or transition."
 	case severeIncompleteSectionTitle:
 		s = "Incomplete section title."
@@ -72,9 +72,9 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	switch p {
 	case warningShortUnderline:
 		s = levelWarning
-	case errorUnexpectedSectionTitle:
+	case severeUnexpectedSectionTitle:
 		s = levelSevere
-	case errorUnexpectedSectionTitleOrTransition:
+	case severeUnexpectedSectionTitleOrTransition:
 		s = levelSevere
 	case severeIncompleteSectionTitle:
 		s = levelSevere
@@ -281,9 +281,9 @@ func (t *Tree) section(i *item) Node {
 		underAdorn = i
 	} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
 		if t.peekBack(2).Type == itemTitle {
-			return t.systemMessage(errorUnexpectedSectionTitle)
+			return t.systemMessage(severeUnexpectedSectionTitle)
 		}
-		return t.systemMessage(errorUnexpectedSectionTitleOrTransition)
+		return t.systemMessage(severeUnexpectedSectionTitleOrTransition)
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
 		overAdorn = i
 		t.next()
@@ -347,14 +347,14 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
 			t.token[zed].Text.(string)
 		lbTextLen = len(lbText) + 1
-	case warningShortUnderline, errorUnexpectedSectionTitle:
+	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
 			backToken = zed - 2
 		}
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText) + 1
-	case errorUnexpectedSectionTitleOrTransition:
+	case severeUnexpectedSectionTitleOrTransition:
 		lbText = t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
 	}
