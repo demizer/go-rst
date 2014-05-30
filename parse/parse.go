@@ -43,6 +43,7 @@ const (
 	severeUnexpectedSectionTitleOrTransition
 	severeIncompleteSectionTitle
 	severeMissingMatchingUnderlineForOverline
+	severeOverlineUnderlineMismatch
 )
 
 var parserErrors = [...]string{
@@ -52,6 +53,7 @@ var parserErrors = [...]string{
 	"severeUnexpectedSectionTitleOrTransition",
 	"severeIncompleteSectionTitle",
 	"severeMissingMatchingUnderlineForOverline",
+	"severeOverlineUnderlineMismatch",
 }
 
 func (p parserMessage) String() string {
@@ -72,6 +74,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Incomplete section title."
 	case severeMissingMatchingUnderlineForOverline:
 		s = "Missing matching underline for section title overline."
+	case severeOverlineUnderlineMismatch:
+		s = "Title overline & underline mismatch."
 	}
 	return
 }
@@ -364,7 +368,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
-	case warningShortOverline:
+	case warningShortOverline, severeOverlineUnderlineMismatch:
 		backToken = zed - 2
 		if t.peekBack(2).Type == itemSpace {
 			backToken = zed - 3
