@@ -6,11 +6,11 @@ package parse
 
 import (
 	"code.google.com/p/go.text/unicode/norm"
+	"fmt"
 	"github.com/demizer/go-elog"
 	"reflect"
-	"testing"
-	"fmt"
 	"strconv"
+	"testing"
 )
 
 var (

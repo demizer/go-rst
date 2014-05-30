@@ -82,9 +82,11 @@ func (p parserMessage) Message() (s string) {
 
 func (p parserMessage) Level() (s systemMessageLevel) {
 	lvl := int(p)
-	switch  {
-	case lvl <= 1: s = levelWarning
-	case lvl >= 2: s = levelSevere
+	switch {
+	case lvl <= 1:
+		s = levelWarning
+	case lvl >= 2:
+		s = levelSevere
 	}
 	return
 }
@@ -257,7 +259,7 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 	for {
 		nItem = t.peek(count)
 		if nItem.Type != iSkip {
-			 break
+			break
 		}
 		count++
 	}
@@ -375,7 +377,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		title = t.token[zed-1].Text.(string)
 		underLine = t.token[zed].Text.(string)
 		newLine = "\n"
-		lbText =  overLine + newLine + indent + title + newLine + underLine
+		lbText = overLine + newLine + indent + title + newLine + underLine
 		s.Line = t.token[backToken].Line
 		lbTextLen = len(lbText) + 2
 	case warningShortUnderline, severeUnexpectedSectionTitle:
@@ -386,7 +388,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText) + 1
 	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
-		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
+		lbText = t.token[zed-2].Text.(string) + "\n" + t.token[zed-1].Text.(string) +
 			t.token[zed].Text.(string)
 		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText) + 1

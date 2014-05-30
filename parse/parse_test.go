@@ -14,9 +14,9 @@ import (
 	"github.com/demizer/go-elog"
 	"io/ioutil"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
-	"strconv"
 )
 
 func init() { SetDebug() }
@@ -114,7 +114,7 @@ func (c *checkNode) errorf(format string, args ...interface{}) {
 }
 
 func (c *checkNode) dError() {
-	var got,exp string
+	var got, exp string
 
 	switch c.pFieldVal.(type) {
 	case Id:

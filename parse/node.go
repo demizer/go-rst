@@ -86,7 +86,7 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 		n.Indent = &IndentNode{
 			Id:            Id(*id),
 			Type:          NodeIndent,
-			Text:	       indent.Text.(string),
+			Text:          indent.Text.(string),
 			StartPosition: indent.StartPosition,
 			Line:          indent.Line,
 			Length:        indent.Length,

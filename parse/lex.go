@@ -7,10 +7,10 @@ package parse
 import (
 	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
+	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
-	"strconv"
 )
 
 type Id int
@@ -442,7 +442,6 @@ func lexTitle(l *lexer) stateFn {
 func lexSectionAdornment(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		//TODO: Add adornment rune check
 		l.next()
 		if l.peek() == '\n' {
 			l.emit(itemSectionAdornment)
