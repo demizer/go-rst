@@ -95,6 +95,42 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	return
 }
 
+func TestId(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].IdNumber() != 1 {
+		t.Error("Id != 1")
+	}
+	if items[0].Id.String() != "1" {
+		t.Error(`String Id != "1"`)
+	}
+}
+
+func TestLine(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].LineNumber() != 1 {
+		t.Error("Line != 1")
+	}
+	if items[0].Line.String() != "1" {
+		t.Error(`String Line != "1"`)
+	}
+}
+
+func TestStartPosition(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].Position() != 1 {
+		t.Error("StartPosition != 1")
+	}
+	if items[0].StartPosition.String() != "1" {
+		t.Error(`String StartPosition != "1"`)
+	}
+}
+
 func TestLexSection001(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)

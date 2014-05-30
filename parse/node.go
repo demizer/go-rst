@@ -35,10 +35,6 @@ func (n NodeType) String() string {
 	return nodeTypes[n]
 }
 
-func (n NodeType) MarshalText() ([]byte, error) {
-	return []byte(n.String()), nil
-}
-
 type Node interface {
 	IdNumber() Id
 	LineNumber() Line
