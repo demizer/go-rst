@@ -1,7 +1,7 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Thu May 29 22:39 2014
+:Modified: Thu May 29 22:47 2014
 
 A reStructuredText parser written in Go.
 
@@ -19,6 +19,16 @@ Here's what's implemented from the spec:
 
 Work is currently underway on translating the docutils tests from psuedo xml
 into JSON.
+
+------------
+Things To Do
+------------
+
+* [ONGOING] Translate docutils tests into JSON
+* Body elements
+* Inline Markup
+* HTML transpiler
+* Document API
 
 ============
 Contributors
