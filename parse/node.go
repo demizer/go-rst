@@ -15,6 +15,7 @@ const (
 	NodeSystemMessage
 	NodeLiteralBlock
 	NodeIndent
+	NodeTransition
 )
 
 var nodeTypes = [...]string{
@@ -25,6 +26,7 @@ var nodeTypes = [...]string{
 	"NodeSystemMessage",
 	"NodeLiteralBlock",
 	"NodeIndent",
+	"NodeTransition",
 }
 
 func (n NodeType) Type() NodeType {
@@ -240,4 +242,29 @@ type IndentNode struct {
 
 func (i IndentNode) NodeType() NodeType {
 	return i.Type
+}
+
+type TransitionNode struct {
+	Id            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	StartPosition `json:"startPosition"`
+	Line          `json:"line"`
+}
+
+func newTransition(i *item, id *int) *TransitionNode {
+	*id++
+	return &TransitionNode{
+		Id:            Id(*id),
+		Type:          NodeTransition,
+		Text:          i.Text.(string),
+		Length:        i.Length,
+		StartPosition: i.StartPosition,
+		Line:          i.Line,
+	}
+}
+
+func (t TransitionNode) NodeType() NodeType {
+	return t.Type
 }

@@ -47,6 +47,7 @@ const (
 	itemSystemMessage
 	itemSpace
 	itemBlankLine
+	itemTransition
 )
 
 var elements = [...]string{
@@ -60,6 +61,7 @@ var elements = [...]string{
 	"itemSystemMessage",
 	"itemSpace",
 	"itemBlankLine",
+	"itemTransition",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -273,6 +275,11 @@ func isSection(l *lexer) bool {
 		return value
 	}
 
+	if isTransition(l) {
+		log.Debugln("Returning (found transition)")
+		return false
+	}
+
 	log.Debugln("Looking ahead", lookPositions, "position(s) for sectionAdornments...")
 
 	// Check two runes to see if they are section adornments, if not, we will check the next
@@ -360,6 +367,8 @@ func lexStart(l *lexer) stateFn {
 			log.Debugln("Start of new token")
 			if isSection(l) {
 				return lexSection
+			} else if isTransition(l) {
+				return lexTransition
 			} else if isSpace(r) {
 				return lexSpace
 			}
@@ -452,4 +461,19 @@ func lexSectionAdornment(l *lexer) stateFn {
 	}
 	log.Debugln("End")
 	return lexSection
+}
+
+func lexTransition(l *lexer) stateFn {
+	log.Debugln("Start")
+	for {
+		l.next()
+		if l.peek() == '\n' {
+			l.emit(itemTransition)
+			l.start += 1
+			l.index += 1
+			break
+		}
+	}
+	log.Debugln("End")
+	return lexStart
 }

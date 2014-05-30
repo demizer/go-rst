@@ -214,6 +214,8 @@ func (t *Tree) parse(tree *Tree) {
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
+		case itemTransition:
+			n = newTransition(token, &t.id)
 		}
 
 		t.nodeTarget.append(n)
