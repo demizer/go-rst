@@ -122,6 +122,18 @@ func TestLine(t *testing.T) {
 	}
 }
 
+func TestPeekNextLine(t *testing.T) {
+	input := "==============\nTitle\n=============="
+	tLex := &lexer{input: input}
+	t1 := tLex.peekNextLine(1)
+	t2 := tLex.peekNextLine(2)
+	if t1 != 'T' {
+		t.Error("peekNextLine(1) != T, Got:", string(t1))
+	} else if t2 != 'i' {
+		t.Error("peekNextLine(1) != T, Got:", string(t2))
+	}
+}
+
 func TestStartPosition(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
