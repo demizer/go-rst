@@ -3,7 +3,7 @@
         "id": 1,
         "type": "NodeSystemMessage",
         "severity": "SEVERE",
-        "line": 2,
+        "line": 1,
         "nodeList": [
             {
                 "id": 2,

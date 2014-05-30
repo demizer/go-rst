@@ -41,6 +41,7 @@ const (
 	severeUnexpectedSectionTitle
 	severeUnexpectedSectionTitleOrTransition
 	severeIncompleteSectionTitle
+	severeMissingMatchingUnderlineForOverline
 )
 
 var parserErrors = [...]string{
@@ -48,6 +49,7 @@ var parserErrors = [...]string{
 	"severeUnexpectedSectionTitle",
 	"severeUnexpectedSectionTitleOrTransition",
 	"severeIncompleteSectionTitle",
+	"severeMissingMatchingUnderlineForOverline",
 }
 
 func (p parserMessage) String() string {
@@ -64,6 +66,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Unexpected section title or transition."
 	case severeIncompleteSectionTitle:
 		s = "Incomplete section title."
+	case severeMissingMatchingUnderlineForOverline:
+		s = "Missing matching underline for section title overline."
 	}
 	return
 }
@@ -77,6 +81,8 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	case severeUnexpectedSectionTitleOrTransition:
 		s = levelSevere
 	case severeIncompleteSectionTitle:
+		s = levelSevere
+	case severeMissingMatchingUnderlineForOverline:
 		s = levelSevere
 	}
 	return
@@ -304,6 +310,9 @@ func (t *Tree) section(i *item) Node {
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemParagraph {
 		t.next()
 		t.next()
+		if p := t.peek(1); p != nil && p.Type == itemBlankLine {
+			return t.systemMessage(severeMissingMatchingUnderlineForOverline)
+		}
 		return t.systemMessage(severeIncompleteSectionTitle)
 	}
 
@@ -343,9 +352,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	log.Debugln("FOUND", err)
 
 	switch err {
-	case severeIncompleteSectionTitle:
+	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
 		lbText = t.token[zed-2].Text.(string) + "\n" +t.token[zed-1].Text.(string)+
 			t.token[zed].Text.(string)
+		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText) + 1
 	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken = zed - 1
