@@ -287,14 +287,17 @@ func (t *Tree) section(i *item) Node {
 	var overAdorn, indent, title, underAdorn *item
 
 	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemTitle {
+		// Section with no overline
 		title = t.peekBack(1)
 		underAdorn = i
 	} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
+		// Indented section (error)
 		if t.peekBack(2).Type == itemTitle {
 			return t.systemMessage(severeUnexpectedSectionTitle)
 		}
 		return t.systemMessage(severeUnexpectedSectionTitleOrTransition)
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
+		// Section with overline
 		overAdorn = i
 		t.next()
 	loop:
