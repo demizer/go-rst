@@ -324,6 +324,30 @@ func isSectionAdornment(r rune) bool {
 	return false
 }
 
+func isTransition(l *lexer) bool {
+	log.Debugln("Start")
+	log.Debugln("l.index =", l.index)
+	if !isSectionAdornment(l.current()) || !isSectionAdornment(l.peek()) {
+		log.Debugln("Transition not found")
+		return false
+	}
+	pBlankLine := l.lastItem != nil && l.lastItem.Type == itemBlankLine
+	nBlankLine := l.peekNextLine(1) == '\n'
+	if l.index == 1 && nBlankLine {
+		log.Debugln("Found transition (followed by newline)")
+		return true
+	} else if pBlankLine && nBlankLine {
+		log.Debugln("Found transition (surrounded by newlines)")
+		return true
+	} else if pBlankLine {
+		log.Debugln("Found transition (opened by newline)")
+		return true
+	}
+	log.Debugln("Transition not found")
+	log.Debugln("End")
+	return false
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are called depending on
 // the input. When this function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
