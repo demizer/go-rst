@@ -81,17 +81,10 @@ func (p parserMessage) Message() (s string) {
 }
 
 func (p parserMessage) Level() (s systemMessageLevel) {
-	switch p {
-	case warningShortOverline, warningShortUnderline:
-		s = levelWarning
-	case severeUnexpectedSectionTitle:
-		s = levelSevere
-	case severeUnexpectedSectionTitleOrTransition:
-		s = levelSevere
-	case severeIncompleteSectionTitle:
-		s = levelSevere
-	case severeMissingMatchingUnderlineForOverline:
-		s = levelSevere
+	lvl := int(p)
+	switch  {
+	case lvl <= 1: s = levelWarning
+	case lvl >= 2: s = levelSevere
 	}
 	return
 }
