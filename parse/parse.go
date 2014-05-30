@@ -320,6 +320,10 @@ func (t *Tree) section(i *item) Node {
 		return t.systemMessage(severeIncompleteSectionTitle)
 	}
 
+	if overAdorn != nil && overAdorn.Text.(string) != underAdorn.Text.(string) {
+		return t.systemMessage(severeOverlineUnderlineMismatch)
+	}
+
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
 	exists, eSec := t.sectionLevels.Add(sec)
 	if !exists && eSec != nil {
