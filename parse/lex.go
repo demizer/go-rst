@@ -156,11 +156,12 @@ func (l *lexer) emit(t itemElement) {
 	l.start = l.index
 }
 
-// backup backs up the lexer by one position using the width of the last rune retrieved from the
-// input.
+// backup backs up the lexer position by a number of rune positions (pos).
 func (l *lexer) backup(pos int) {
 	for i := 0; i < pos; i++ {
-		l.index -= l.width
+		// The input is normalized, hopefully chars are 1 byte wide... If the last char is
+		// EOF, using l.index -= l.width would result in l.index not decremented.
+		l.index -= 1
 	}
 }
 
