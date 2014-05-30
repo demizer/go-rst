@@ -37,7 +37,8 @@ func (s systemMessageLevel) String() string {
 type parserMessage int
 
 const (
-	warningShortUnderline parserMessage = iota
+	warningShortOverline parserMessage = iota
+	warningShortUnderline
 	severeUnexpectedSectionTitle
 	severeUnexpectedSectionTitleOrTransition
 	severeIncompleteSectionTitle
@@ -45,6 +46,7 @@ const (
 )
 
 var parserErrors = [...]string{
+	"warningShortOverline",
 	"warningShortUnderline",
 	"severeUnexpectedSectionTitle",
 	"severeUnexpectedSectionTitleOrTransition",
@@ -58,6 +60,8 @@ func (p parserMessage) String() string {
 
 func (p parserMessage) Message() (s string) {
 	switch p {
+	case warningShortOverline:
+		s = "Title overline too short."
 	case warningShortUnderline:
 		s = "Title underline too short."
 	case severeUnexpectedSectionTitle:
@@ -74,7 +78,7 @@ func (p parserMessage) Message() (s string) {
 
 func (p parserMessage) Level() (s systemMessageLevel) {
 	switch p {
-	case warningShortUnderline:
+	case warningShortOverline, warningShortUnderline:
 		s = levelWarning
 	case severeUnexpectedSectionTitle:
 		s = levelSevere
@@ -350,6 +354,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 
 	log.Debugln("FOUND", err)
+	var overLine, indent, title, underLine, newLine string
 
 	switch err {
 	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
@@ -357,6 +362,19 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 			t.token[zed].Text.(string)
 		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText) + 1
+	case warningShortOverline:
+		backToken = zed - 2
+		if t.peekBack(2).Type == itemSpace {
+			backToken = zed - 3
+			indent = t.token[zed-2].Text.(string)
+		}
+		overLine = t.token[backToken].Text.(string)
+		title = t.token[zed-1].Text.(string)
+		underLine = t.token[zed].Text.(string)
+		newLine = "\n"
+		lbText =  overLine + newLine + indent + title + newLine + underLine
+		s.Line = t.token[backToken].Line
+		lbTextLen = len(lbText) + 2
 	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
