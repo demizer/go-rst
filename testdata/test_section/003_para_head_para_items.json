@@ -50,9 +50,7 @@
     {
         "id": 7,
         "type": "itemEOF",
-        "text": "",
         "startPosition": 71,
-        "line": 6,
-        "length": 0
+        "line": 6
     }
 ]

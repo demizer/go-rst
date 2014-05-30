@@ -34,9 +34,7 @@
     {
         "id": 5,
         "type": "itemEOF",
-        "text": "",
         "startPosition": 49,
-        "line": 4,
-        "length": 0
+        "line": 4
     }
 ]

@@ -42,9 +42,7 @@
     {
         "id": 6,
         "type": "itemEOF",
-        "text": "",
         "startPosition": 41,
-        "line": 5,
-        "length": 0
+        "line": 5
     }
 ]

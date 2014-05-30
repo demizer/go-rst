@@ -134,5 +134,11 @@
         "startPosition": 165,
         "line": 17,
         "length": 12
+    },
+    {
+        "id": 18,
+        "type": "itemEOF",
+        "startPosition": 178,
+        "line": 17
     }
 ]

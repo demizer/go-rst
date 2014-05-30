@@ -82,6 +82,9 @@ func equal(t *testing.T, items []item, expectItems []item) {
 					eFieldName)
 				continue
 			} else if eFieldName == "Text" {
+				if eFieldVal.Interface() == nil {
+					continue
+				}
 				if pFieldVal.Interface() !=
 					norm.NFC.String(eFieldVal.Interface().(string)) {
 					dError()

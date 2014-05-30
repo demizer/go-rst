@@ -26,9 +26,7 @@
     {
         "id": 4,
         "type": "itemEOF",
-        "text": "",
         "startPosition": 50,
-        "line": 2,
-        "length": 0
+        "line": 2
     }
 ]

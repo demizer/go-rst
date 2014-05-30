@@ -138,9 +138,7 @@
     {
         "id": 18,
         "type": "itemEOF",
-        "text": "",
         "startPosition": 115,
-        "line": 10,
-        "length": 0
+        "line": 10
     }
 ]
