@@ -208,6 +208,13 @@ func TestLexSection011(t *testing.T) {
 	testPath := "test_section/011_inset_title_missing_underline_with_blankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection012(t *testing.T) {
+	testPath := "test_section/012_inset_title_missing_underline_and_para"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
 	// spd.Dump(items, test.expectItems())
 	equal(t, items, test.expectItems())
 }

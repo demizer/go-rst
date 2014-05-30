@@ -1,9 +1,30 @@
-<document source="test data">
-    <system_message level="4" line="1" source="test data" type="SEVERE">
-        <paragraph>
-            Missing matching underline for section title overline.
-        <literal_block xml:space="preserve">
-            =======
-             Title
-    <paragraph>
-        Test missing underline, with paragraph.
+[
+    {
+        "id": 1,
+        "type": "NodeSystemMessage",
+        "severity": "SEVERE",
+        "line": 1,
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeParagraph",
+                "text": "Missing matching underline for section title overline.",
+                "length": 54
+            },
+            {
+                "id": 3,
+                "type": "NodeLiteralBlock",
+                "text": "=======\n Title",
+                "length": 15
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "NodeParagraph",
+        "text": "Test missing underline, with paragraph.",
+        "startPosition": 17,
+        "line": 4,
+        "length": 39
+    }
+]

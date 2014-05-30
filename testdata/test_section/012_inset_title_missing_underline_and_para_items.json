@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "type": "itemSectionAdornment",
+        "text": "=======",
+        "startPosition": 1,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 9,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "Title",
+        "startPosition": 10,
+        "line": 2,
+        "length": 5
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 16,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "Test missing underline, with paragraph.",
+        "startPosition": 17,
+        "line": 4,
+        "length": 39
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "startPosition": 57,
+        "line": 4
+    }
+]

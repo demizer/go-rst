@@ -55,9 +55,8 @@ type Test struct {
 
 // expectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic
 // occurs if there is an error unmarshaling the JSON data.
-func (l Test) expectNodes() (nodeList []interface{}) {
-	err := json.Unmarshal([]byte(l.nodeData), &nodeList)
-	if err != nil {
+func (l Test) expectNodes() (nl []interface{}) {
+	if err := json.Unmarshal([]byte(l.nodeData), &nl); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
 	}
 	return
@@ -66,8 +65,7 @@ func (l Test) expectNodes() (nodeList []interface{}) {
 // expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is
 // an error decoding the JSON data.
 func (l Test) expectItems() (lexItems []item) {
-	err := json.Unmarshal([]byte(l.itemData), &lexItems)
-	if err != nil {
+	if err := json.Unmarshal([]byte(l.itemData), &lexItems); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
 	}
 	return
@@ -423,6 +421,14 @@ func TestParseSection011(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	// spd.Dump(pTree.Nodes)
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection012(t *testing.T) {
+	testPath := "test_section/012_inset_title_missing_underline_and_para"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	// spd.Dump(pTree.Nodes, eNodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
