@@ -519,21 +519,23 @@ func TestStartPosition(t *testing.T) {
 
 func TestIsLastLine(t *testing.T) {
 	input := "==============\nTitle\n=============="
-	tLex := &lexer{input: input, index: 23}
-	last := tLex.isLastLine()
-	if !last {
-		t.Error("Expect: isLastLine() == true, Got:", last)
+	lex := newLexer("isLastLine test 1", input)
+	lex.gotoLocation(0, 1)
+	if lex.isLastLine() != false {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+			lex.name, lex.isLastLine(), false)
 	}
-	tLex.index = 17
-	last = tLex.isLastLine()
-	if last {
-		t.Error("Expect: isLastLine() == false, Got:", last)
+	lex = newLexer("isLastLine test 2", input)
+	lex.gotoLocation(0, 2)
+	if lex.isLastLine() != false {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+			lex.name, lex.isLastLine(), false)
 	}
-	tLex.input = ""
-	tLex.index = 0
-	last = tLex.isLastLine()
-	if !last {
-		t.Error("Expect: isLastLine() == false, Got:", last)
+	lex = newLexer("isLastLine test 3", input)
+	lex.gotoLocation(0, 3)
+	if lex.isLastLine() != true {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+		lex.name, lex.isLastLine(), true)
 	}
 }
 

@@ -256,6 +256,8 @@ func (l *lexer) LineNumber() int {
 // new line.
 func (l *lexer) isStartOfLine() bool {
 	return (l.index - l.start) == 0
+func (l *lexer) isLastLine() bool {
+	return len(l.lines) == l.LineNumber()
 }
 
 // isSpace reports whether r is a space character.
