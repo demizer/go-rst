@@ -4,14 +4,14 @@
         "type": "NodeSection",
         "text": "Long    Title",
         "level": 1,
-        "startPosition": 10,
+        "startPosition": 2,
         "line": 2,
         "length": 13,
         "indent": {
             "id": 2,
             "type": "NodeIndent",
             "text": " ",
-            "startPosition": 9,
+            "startPosition": 1,
             "line": 2,
             "length": 1
         },
@@ -27,7 +27,7 @@
             "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 24,
+            "startPosition": 1,
             "line": 3,
             "length": 7
         },
@@ -56,7 +56,7 @@
                 "id": 8,
                 "type": "NodeParagraph",
                 "text": "Test long title and space normalization.",
-                "startPosition": 33,
+                "startPosition": 1,
                 "line": 5,
                 "length": 40
             }

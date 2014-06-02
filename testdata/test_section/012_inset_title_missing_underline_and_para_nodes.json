@@ -23,7 +23,7 @@
         "id": 4,
         "type": "NodeParagraph",
         "text": "Test missing underline, with paragraph.",
-        "startPosition": 17,
+        "startPosition": 1,
         "line": 4,
         "length": 39
     }

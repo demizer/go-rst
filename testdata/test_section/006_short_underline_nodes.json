@@ -12,7 +12,7 @@
             "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 7,
+            "startPosition": 1,
             "line": 2,
             "length": 4
         },
@@ -41,7 +41,7 @@
                 "id": 6,
                 "type": "NodeParagraph",
                 "text": "Test short underline.",
-                "startPosition": 13,
+                "startPosition": 1,
                 "line": 4,
                 "length": 21
             }

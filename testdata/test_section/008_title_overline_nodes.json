@@ -4,7 +4,7 @@
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
-        "startPosition": 7,
+        "startPosition": 1,
         "line": 2,
         "length": 5,
         "overLine": {
@@ -19,7 +19,7 @@
             "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 13,
+            "startPosition": 1,
             "line": 3,
             "length": 5
         },
@@ -28,7 +28,7 @@
                 "id": 4,
                 "type": "NodeParagraph",
                 "text": "Test overline title.",
-                "startPosition": 20,
+                "startPosition": 1,
                 "line": 5,
                 "length": 20
             }

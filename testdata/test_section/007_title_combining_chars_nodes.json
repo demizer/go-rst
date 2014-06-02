@@ -12,7 +12,7 @@
             "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 25,
+            "startPosition": 1,
             "line": 2,
             "length": 22
         },
@@ -21,7 +21,7 @@
                 "id": 3,
                 "type": "NodeParagraph",
                 "text": "Do not count combining chars in title column width.",
-                "startPosition": 49,
+                "startPosition": 1,
                 "line": 4,
                 "length": 51
             }
