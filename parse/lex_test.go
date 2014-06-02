@@ -579,3 +579,87 @@ func TestLexerNext(t *testing.T) {
 		}
 	}
 }
+
+var peekTests = []struct {
+	name      string
+	input     string
+	start     int // Start position begins at 0
+	startLine int // Begins at 1
+	lIndex    int // l* fields do not change after peek() is called
+	lMark     rune
+	lWidth    int
+	lLine     int
+	pMark     rune // p* are the expected return values from peek()
+	pWidth    int
+}{
+	{
+		name:  "Peek start at 0",
+		input: "Title",
+		start: 0, startLine: 1,
+		lIndex: 0, lMark: 'T', lWidth: 1, lLine: 1,
+		pMark: 'i', pWidth: 1,
+	},
+	{
+		name:  "Peek start at 1",
+		input: "Title",
+		start: 1, startLine: 1,
+		lIndex: 1, lMark: 'i', lWidth: 1, lLine: 1,
+		pMark: 't', pWidth: 1,
+	},
+	{
+		name:  "Peek start at diacritic",
+		input: "à Title",
+		start: 0, startLine: 1,
+		lIndex: 0, lMark: '\u00E0', lWidth: 2, lLine: 1,
+		pMark: ' ', pWidth: 1,
+	},
+	{
+		name:  "Peek starting on 2nd line",
+		input: "Title\nà diacritic",
+		start: 0, startLine: 2,
+		lIndex: 0, lMark: '\u00E0', lWidth: 2, lLine: 2,
+		pMark: ' ', pWidth: 1,
+	},
+	{
+		name:  "Peek starting on blank line",
+		input: "Title\n\nà diacritic",
+		start: 0, startLine: 2,
+		lIndex: 0, lMark: utf8.RuneError, lWidth: 0, lLine: 2,
+		pMark: '\u00E0', pWidth: 2,
+	},
+	{
+		name:  "Peek with 3 byte rune",
+		input: "Hello, 世界",
+		start: 7, startLine: 1,
+		lIndex: 7, lMark: '世', lWidth: 3, lLine: 1,
+		pMark: '界', pWidth: 3,
+	},
+}
+
+func TestLexerPeek(t *testing.T) {
+	for _, tt := range peekTests {
+		lex := newLexer(tt.name, tt.input)
+		lex.gotoLocation(tt.start, tt.startLine)
+		r, w := lex.peek()
+		if lex.index != tt.lIndex {
+			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
+				lex.name, lex.index, tt.lIndex)
+		}
+		if lex.width != tt.lWidth {
+			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
+				lex.name, lex.width, tt.lWidth)
+		}
+		if lex.LineNumber() != tt.lLine {
+			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+				lex.name, lex.LineNumber(), tt.lLine)
+		}
+		if r != tt.pMark {
+			t.Errorf("Test: %s\n\t Got: peek().rune  == %q, Expect: %q\n\n",
+				lex.name, r, tt.pMark)
+		}
+		if w != tt.pWidth {
+			t.Errorf("Test: %s\n\t Got: peek().width == %d, Expect: %d\n\n",
+				lex.name, w, tt.pWidth)
+		}
+	}
+}

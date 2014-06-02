@@ -199,10 +199,10 @@ func (l *lexer) backup(pos int) {
 }
 
 // peek looks ahead in the input by one position and returns the rune.
-func (l *lexer) peek() rune {
-	r := l.next()
+func (l *lexer) peek() (r rune, width int) {
+	r, width = l.next()
 	l.backup(1)
-	return r
+	return
 }
 
 // peekNextLine returns rune at pos from the next line of input.
