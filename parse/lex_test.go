@@ -11,6 +11,7 @@ import (
 	"reflect"
 	"strconv"
 	"testing"
+	"unicode/utf8"
 )
 
 var (
@@ -345,6 +346,53 @@ func TestLexerNew(t *testing.T) {
 		if lex.width != tt.nWidth {
 			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
 				lex.name, lex.width, tt.nWidth)
+		}
+	}
+}
+
+var gotoLocationTests = []struct {
+	name      string
+	input     string
+	start     int
+	startLine int
+	lIndex    int
+	lMark     rune
+	lWidth    int
+	lLine     int
+}{
+	{
+		name:  "Goto middle of line",
+		input: "Title",
+		start: 2, startLine: 1,
+		lIndex: 2, lMark: 't', lWidth: 1, lLine: 1,
+	},
+	{
+		name:  "Goto end of line",
+		input: "Title",
+		start: 5, startLine: 1,
+		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+	},
+}
+
+func TestLexerGotoLocation(t *testing.T) {
+	for _, tt := range gotoLocationTests {
+		lex := newLexer(tt.name, tt.input)
+		lex.gotoLocation(tt.start, tt.startLine)
+		if lex.index != tt.lIndex {
+			t.Errorf("Test: %s\n\t Got: lex.index == %d, Expect: %d\n\n",
+				tt.name, lex.index, tt.lIndex)
+		}
+		if lex.mark != tt.lMark {
+			t.Errorf("Test: %s\n\t Got: lex.mark == %#U, Expect: %#U\n\n",
+				tt.name, lex.mark, tt.lMark)
+		}
+		if lex.width != tt.lWidth {
+			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
+				tt.name, lex.width, tt.lWidth)
+		}
+		if lex.LineNumber() != tt.lLine {
+			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
+				tt.name, lex.LineNumber(), tt.lLine)
 		}
 	}
 }

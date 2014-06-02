@@ -247,8 +247,18 @@ func (l *lexer) nextItem() *item {
 
 }
 
-func (l *lexer) lineNumber() int {
-	return strings.Count(l.input[:l.index-1], "\n") + 1
+// gotoLine advances the lexer to a line and index within that line. Line numbers start at 1.
+func (l *lexer) gotoLocation(index, line int) {
+	l.line = line - 1
+	l.index = index
+	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
+	l.width = width
+	l.mark = r
+	return
+}
+
+func (l *lexer) LineNumber() int {
+	return l.line + 1
 }
 
 // isStartOfLine calculates if the current position of the lexer in the input is the beginning of a
