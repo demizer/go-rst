@@ -396,3 +396,96 @@ func TestLexerGotoLocation(t *testing.T) {
 		}
 	}
 }
+
+var backupTests = []struct {
+	name      string
+	input     string
+	start     int
+	startLine int
+	pos       int // Backup by a number of positions
+	lIndex    int
+	lMark     rune
+	lWidth    int
+	lLine     int
+}{
+	{
+		name:  "Backup off input",
+		input: "Title",
+		pos:   1,
+		start: 0, startLine: 1,
+		lIndex: 0, lMark: 'T', lWidth: 1, lLine: 1, // -1 is EOF
+	},
+	{
+		name:  "Normal Backup",
+		input: "Title",
+		pos:   2,
+		start: 3, startLine: 1,
+		lIndex: 1, lMark: 'i', lWidth: 1, lLine: 1,
+	},
+	{
+		name:  "Start after \u00E0",
+		input: "à Title",
+		pos:   1,
+		start: 2, startLine: 1,
+		lIndex: 0, lMark: '\u00E0', lWidth: 2, lLine: 1,
+	},
+	{
+		name:  "Backup to previous line",
+		input: "Title\n=====",
+		pos:   1,
+		start: 0, startLine: 2,
+		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+	},
+	{
+		name:  "Start after \u00E0, 2nd line",
+		input: "Title\nà diacritic",
+		pos:   1,
+		start: 2, startLine: 2,
+		lIndex: 0, lMark: '\u00E0', lWidth: 2, lLine: 2,
+	},
+	{
+		name:  "Backup to previous line newline",
+		input: "Title\n\nà diacritic",
+		pos:   1,
+		start: 0, startLine: 3,
+		lIndex: 0, lMark: utf8.RuneError, lWidth: 0, lLine: 2,
+	},
+	{
+		name:  "Backup to end of line",
+		input: "Title\n\nà diacritic",
+		pos:   1,
+		start: 0, startLine: 2,
+		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+	},
+	{
+		name:  "Backup 3 byte rune",
+		input: "Hello, 世界",
+		pos:   1,
+		start: 10, startLine: 1,
+		lIndex: 7, lMark: '世', lWidth: 3, lLine: 1,
+	},
+}
+
+func TestLexerBackup(t *testing.T) {
+	for _, tt := range backupTests {
+		lex := newLexer(tt.name, tt.input)
+		lex.gotoLocation(tt.start, tt.startLine)
+		lex.backup(tt.pos)
+		if lex.index != tt.lIndex {
+			t.Errorf("Test: %s\n\t Got: lex.index == %d, Expect: %d\n\n",
+				tt.name, lex.index, tt.lIndex)
+		}
+		if lex.mark != tt.lMark {
+			t.Errorf("Test: %s\n\t Got: lex.mark == %#U, Expect: %#U\n\n",
+				tt.name, lex.mark, tt.lMark)
+		}
+		if lex.width != tt.lWidth {
+			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
+				tt.name, lex.width, tt.lWidth)
+		}
+		if lex.LineNumber() != tt.lLine {
+			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
+				tt.name, lex.LineNumber(), tt.lLine)
+		}
+	}
+}

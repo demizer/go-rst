@@ -169,19 +169,33 @@ func (l *lexer) emit(t itemElement) {
 	l.start = l.index
 }
 
-// backup backs up the lexer position by a number of rune positions (pos).
+// backup backs up the lexer position by a number of rune positions (pos). backup cannot backup off
+// the input, in that case the index of the lexer is set to the starting position on the input. The
+// run
 func (l *lexer) backup(pos int) {
 	for i := 0; i < pos; i++ {
-		// The input is normalized, hopefully chars are 1 byte wide... If the last char is
-		// EOF, using l.index -= l.width would result in l.index not decremented.
-		l.index -= 1
-	}
-}
+		if l.index == 0 && l.line != 0 && i < pos {
+			l.line--
+			l.index = len(l.lines[l.line]) + 1
+		}
 
-// current returns the rune at the current position in the input.
-func (l *lexer) current() rune {
-	r, _ := utf8.DecodeRuneInString(l.input[l.index:])
-	return r
+		l.index -= l.width
+		if l.index < 0 {
+			l.index = 0
+		} else if l.index > len(l.lines[l.line]) {
+			l.index -= 1
+		}
+
+		r, w := utf8.DecodeRuneInString(l.currentLine()[l.index:])
+		l.mark = r
+		l.width = w
+
+		// Backup again if iteration has landed on part of a multi-byte rune
+		lLen := len(l.currentLine())
+		if r == utf8.RuneError && lLen != 0 && lLen != l.index {
+			l.backup(1)
+		}
+	}
 }
 
 // peek looks ahead in the input by one position and returns the rune.
