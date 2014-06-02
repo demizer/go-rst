@@ -489,3 +489,93 @@ func TestLexerBackup(t *testing.T) {
 		}
 	}
 }
+
+var nextTests = []struct {
+	name      string
+	input     string
+	start     int
+	startLine int
+	nIndex    int
+	nMark     rune
+	nWidth    int
+	nLine     int
+}{
+	{
+		name:  "next at index 0",
+		input: "Title",
+		start: 0, startLine: 1,
+		nIndex: 1, nMark: 'i', nWidth: 1, nLine: 1,
+	},
+	{
+		name:  "next at index 1",
+		input: "Title",
+		start: 1, startLine: 1,
+		nIndex: 2, nMark: 't', nWidth: 1, nLine: 1,
+	},
+	{
+		name:  "next at end of line",
+		input: "Title",
+		start: 5, startLine: 1,
+		nIndex: 5, nMark: utf8.RuneError, nWidth: 0, nLine: 1,
+	},
+	{
+		name:  "next on diacritic",
+		input: "Buy à diacritic",
+		start: 4, startLine: 1,
+		nIndex: 6, nMark: ' ', nWidth: 1, nLine: 1,
+	},
+	{
+		name:  "next end of 1st line",
+		input: "Title\nà diacritic",
+		start: 5, startLine: 1,
+		nIndex: 0, nMark: '\u00E0', nWidth: 2, nLine: 2,
+	},
+	{
+		name:  "next on 2nd line diacritic",
+		input: "Title\nà diacritic",
+		start: 0, startLine: 2,
+		nIndex: 2, nMark: ' ', nWidth: 1, nLine: 2,
+	},
+	{
+		name:  "next to blank line",
+		input: "title\n\nà diacritic",
+		start: 5, startLine: 1,
+		nIndex: 0, nMark: utf8.RuneError, nWidth: 0, nLine: 2,
+	},
+	{
+		name:  "next on 3 byte rune",
+		input: "Hello, 世界",
+		start: 7, startLine: 1,
+		nIndex: 10, nMark: '界', nWidth: 3, nLine: 1,
+	},
+	{
+		name:  "next on last rune of last line",
+		input: "Hello\n\nworld\nyeah!",
+		start: 4, startLine: 4,
+		nIndex: 5, nMark: utf8.RuneError, nWidth: 0, nLine: 4,
+	},
+}
+
+func TestLexerNext(t *testing.T) {
+	for _, tt := range nextTests {
+		lex := newLexer(tt.name, tt.input)
+		lex.gotoLocation(tt.start, tt.startLine)
+		r, w := lex.next()
+		if lex.index != tt.nIndex {
+			t.Errorf("Test: %s\n\t Got: lexer.index = %d, Expect: %d\n\n",
+				lex.name, lex.index, tt.nIndex)
+		}
+		if r != tt.nMark {
+			t.Errorf("Test: %s\n\t Got: lexer.mark = %#U, Expect: %#U\n\n",
+				lex.name, r, tt.nMark)
+		}
+		if w != tt.nWidth {
+			t.Errorf("Test: %s\n\t Got: lexer.width = %d, Expect: %d\n\n",
+				lex.name, w, tt.nWidth)
+		}
+		if lex.LineNumber() != tt.nLine {
+			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+				lex.name, lex.LineNumber(), tt.nLine)
+		}
+	}
+}

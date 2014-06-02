@@ -237,20 +237,21 @@ func (l *lexer) advanceToRune(to rune) {
 }
 
 // next advances the position of the lexer by one rune and returns that rune.
-func (l *lexer) next() rune {
-	if int(l.index) >= len(l.input) {
-		log.Debugln("Reached eof!")
-		l.width = 0
-		return eof
+func (l *lexer) next() (r rune, width int) {
+	if l.isEndOfLine() && !l.isLastLine() {
+		log.Debugln("Getting next line")
+		l.nextLine()
 	}
-	r, w := utf8.DecodeRuneInString(l.input[l.index:])
-	l.width = w
+
 	l.index += l.width
-	if unicode.In(r, unicode.Diacritic) {
-		log.Debugf("DIACRITIC char found: %#U width: %d\n", r, w)
-	}
-	log.Debugf("cur: %q start: %d pos: %d\n", r, l.start, l.index)
-	return r
+	r, width = utf8.DecodeRuneInString(l.currentLine()[l.index:])
+	l.width = width
+	l.mark = r
+
+	log.Debugf("cur: %#U, l.start: %d (%d), l.index: %d (%d), line: %d\n",
+		r, l.start, l.start+1, l.index, l.index+1, l.LineNumber())
+
+	return
 }
 
 // nextItem returns the next item from the input.
