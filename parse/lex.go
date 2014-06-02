@@ -372,9 +372,9 @@ func isTransition(l *lexer) bool {
 	} else if pBlankLine && nBlankLine {
 		log.Debugln("Found transition (surrounded by newlines)")
 		return true
-	} else if pBlankLine && l.isLastLine() {
-		log.Debugln("Found transition (opened by newline)")
-		return true
+	// } else if pBlankLine && l.isLastLine() {
+		// log.Debugln("Found transition (opened by newline)")
+		// return true
 	}
 	log.Debugln("Transition not found")
 	log.Debugln("End")
@@ -462,10 +462,10 @@ func lexSection(l *lexer) stateFn {
 	} else if isSpace(l.mark) {
 		return lexSpace
 	} else if l.mark == utf8.RuneError {
-		if l.index == 0 {
-			// A blank line
-			l.emit(itemBlankLine)
-		}
+		// if l.index == 0 {
+			// // A blank line
+			// l.emit(itemBlankLine)
+		// }
 		l.next()
 	} else if unicode.IsPrint(l.mark) {
 		return lexTitle
@@ -480,10 +480,10 @@ func lexSection(l *lexer) stateFn {
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		if isSpace(l.mark) && l.index == 0 {
-			log.Debugln("lexing space!")
-			lexSpace(l)
-		}
+		// if isSpace(l.mark) && l.index == 0 {
+			// log.Debugln("lexing space!")
+			// lexSpace(l)
+		// }
 		l.next()
 		if l.isEndOfLine() {
 			l.emit(itemTitle)
@@ -504,7 +504,6 @@ func lexSectionAdornment(l *lexer) stateFn {
 			if l.mark == utf8.RuneError {
 				break
 			}
-			break
 		}
 		l.next()
 	}
