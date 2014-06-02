@@ -120,6 +120,9 @@ func newLexer(name, input string) *lexer {
 	}
 	lines := strings.Split(input, "\n")
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
+
+	log.Debugf("mark: %#U, index: %d, line: %d\n", mark, 0, 1)
+
 	return &lexer{
 		name:  name,
 		input: input,
