@@ -152,24 +152,34 @@ func (l *lexer) run() {
 
 // emit passes an item back to the client.
 func (l *lexer) emit(t itemElement) {
-	if l.start == l.index && int(l.index) < len(l.input) {
-		l.index += 1
+	var tok string
+
+	if t == itemBlankLine {
+		tok = "\n"
+	} else if t == itemEOF {
+		tok = ""
+	} else {
+		tok = l.lines[l.line][l.start:l.index]
 	}
-	log.Infof("#### %s: %q start: %d pos: %d line: %d\n", t,
-		l.input[l.start:l.index], l.start, l.index, l.lineNumber())
+
+	log.Infof("\n#### %s: %q start: %d (%d) end: %d (%d) line: %d\n\n", t,
+		tok, l.start, l.start+1, l.index, l.index+1, l.LineNumber())
+
 	l.id++
-	length := utf8.RuneCountInString(l.input[l.start:l.index])
+	length := utf8.RuneCountInString(tok)
+
 	nItem := item{
 		Id:            Id(l.id),
 		Type:          t,
-		Text:          l.input[l.start:l.index],
-		Line:          Line(l.lineNumber()),
-		StartPosition: StartPosition(l.start + 1), // Positions start at 1 not 0
+		Text:          tok,
+		Line:          Line(l.LineNumber()),
+		StartPosition: StartPosition(l.start + 1), // Positions begin at 1, not 0
 		Length:        length,
 	}
+
 	l.items <- nItem
 	l.lastItem = &nItem
-	l.start = l.index
+	l.start += l.index
 }
 
 // backup backs up the lexer position by a number of rune positions (pos). backup cannot backup off
@@ -254,12 +264,27 @@ func (l *lexer) LineNumber() int {
 	return l.line + 1
 }
 
-// isStartOfLine calculates if the current position of the lexer in the input is the beginning of a
-// new line.
-func (l *lexer) isStartOfLine() bool {
-	return (l.index - l.start) == 0
+func (l *lexer) currentLine() string {
+	return l.lines[l.line]
+}
+
+func (l *lexer) nextLine() string {
+	if len(l.lines) == l.line+1 {
+		return ""
+	}
+	l.line++
+	l.start = 0
+	l.index = 0
+	l.width = 0
+	return l.lines[l.line]
+}
+
 func (l *lexer) isLastLine() bool {
 	return len(l.lines) == l.LineNumber()
+}
+
+func (l *lexer) isEndOfLine() bool {
+	return len(l.lines[l.line]) == l.index
 }
 
 // isSpace reports whether r is a space character.
@@ -267,74 +292,60 @@ func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
 }
 
-// isEndOfLine reports whether r is an end-of-line character.
-func isEndOfLine(r rune) bool {
-	return r == '\r' || r == '\n'
-}
-
 // isSection compares a number of positions (skipping whitespace) to
 // determine if the runes are sectionAdornments and returns a true if the
 // positions match each other. Rune comparison begins at the current lexer
 // position. isSection returns false if there is a blank line between the
 // positions or if there is a rune mismatch between positions.
-func isSection(l *lexer) bool {
-	log.Debugln("Start")
-	var lookPositions = 2
-	var newLineNum int
-	var runePositions []rune
-	var matchCount int
-	cPos := l.index
+func isSection(l *lexer) (found bool) {
+	var nLine string
 
-	exit := func(value bool) bool {
-		l.index = cPos
-		log.Debugln("Returning", value)
-		return value
+	checkLine := func(input string, skipSpace bool) (a bool) {
+		var end int = 3
+		for j := 0; j < end; j++ {
+			log.Debugln("j:", j, )
+			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
+			if skipSpace && isSpace(r) {
+				log.Debugln("Skipping space rune")
+				end++
+				continue
+			}
+			a = isSectionAdornment(r)
+			if !a {
+				return
+			}
+		}
+		return
 	}
 
+	log.Debugln("Checking for transition...")
 	if isTransition(l) {
 		log.Debugln("Returning (found transition)")
-		return false
+		found = false
+		goto exit
 	}
 
-	log.Debugln("Looking ahead", lookPositions, "position(s) for sectionAdornments...")
-
-	// Check two runes to see if they are section adornments, if not, we will check the next
-	// line (after whitespace).
-	if isSectionAdornment(l.current()) && isSectionAdornment(l.peek()) &&
-		l.current() == l.peek() {
-		return true
+	if checkLine(l.currentLine(), false) {
+		log.Debugln("Found section adornment")
+		found = true
+		goto exit
 	}
 
-	// Advance to the end of the line
-	l.advanceToRune('\n')
-
-	for j := 0; j < lookPositions; j++ {
-		for isSpace(l.current()) {
-			if isEndOfLine(l.current()) {
-				if newLineNum == 1 {
-					log.Debugln("Too many newlines!")
-					return exit(false)
-				}
-				newLineNum += 1
-				log.Debugln("newLineNum:", newLineNum)
-			}
-			l.next()
+	nLine = l.peekNextLine()
+	if nLine != "" {
+		if checkLine(nLine, true) {
+			log.Debugln("Found section adornment")
+			found = true
 		}
-		if isSectionAdornment(l.current()) {
-			log.Debugf("Found adornment: \"%s\" pos: %d\n", string(l.current()), l.index)
-			runePositions = append(runePositions, l.current())
-			matchCount += 1
-		}
-		if l.next() == eof {
-			return exit(false)
-		}
+	} else {
+		log.Debugln(`l.peekNextLine() == ""`)
 	}
 
-	if len(runePositions) == 0 || matchCount != lookPositions {
-		return exit(false)
+exit:
+	if !found {
+		log.Debugln("Section adornment not found")
 	}
-
-	return exit(true)
+	return
 }
 
 // isSectionAdornment returns true if r matches a section adornment.
@@ -349,20 +360,19 @@ func isSectionAdornment(r rune) bool {
 
 func isTransition(l *lexer) bool {
 	log.Debugln("Start")
-	log.Debugln("l.index =", l.index)
-	if !isSectionAdornment(l.current()) || !isSectionAdornment(l.peek()) {
+	if r, _ := l.peek(); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
 		log.Debugln("Transition not found")
 		return false
 	}
 	pBlankLine := l.lastItem != nil && l.lastItem.Type == itemBlankLine
-	nBlankLine := l.peekNextLine(1) == '\n'
-	if l.index == 1 && nBlankLine {
+	nBlankLine := l.peekNextLine() == ""
+	if l.line == 0 && nBlankLine {
 		log.Debugln("Found transition (followed by newline)")
 		return true
 	} else if pBlankLine && nBlankLine {
 		log.Debugln("Found transition (surrounded by newlines)")
 		return true
-	} else if pBlankLine {
+	} else if pBlankLine && l.isLastLine() {
 		log.Debugln("Found transition (opened by newline)")
 		return true
 	}
@@ -376,33 +386,41 @@ func isTransition(l *lexer) bool {
 func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		var tokenLength = l.index - l.start
-		r := l.current()
-		// log.Debugln("tokenLength:", tokenLength, l.width)
-		if tokenLength <= l.width && l.width > 0 && !isEndOfLine(r) {
+		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n",
+			// l.mark, l.index, l.start, l.width, l.LineNumber())
+		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			log.Debugln("Start of new token")
+			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.LineNumber())
 			if isSection(l) {
 				return lexSection
 			} else if isTransition(l) {
 				return lexTransition
-			} else if isSpace(r) {
+			} else if isSpace(l.mark) {
 				return lexSpace
 			}
-		} else if isEndOfLine(r) {
+		} else if l.isEndOfLine() {
 			log.Debugln("isEndOfLine == true")
 			if l.index > l.start {
 				l.emit(itemParagraph)
-				l.start += 1 // Skip the new line
+				if l.mark == utf8.RuneError && l.isLastLine() {
+					break
+				}
 			} else if l.start == l.index {
-				l.emit(itemBlankLine)
+				if l.start == 0 && len(l.currentLine()) == 0 {
+					log.Debugln("Found blank line")
+					l.emit(itemBlankLine)
+					if l.isLastLine() {
+						break
+					}
+				} else if l.isLastLine() {
+					log.Debugln("Found end of last line")
+					break
+				}
 			}
 		}
-		if l.next() == eof {
-			break
-		}
+		l.next()
 	}
 
-	// Correctly reached eof.
 	l.emit(itemEOF)
 	log.Debugln("End")
 	return nil
@@ -411,12 +429,18 @@ func lexStart(l *lexer) stateFn {
 // lexSpace consumes space characters (space and tab) in the input and emits a itemSpace token.
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("Start")
-	for isSpace(l.current()) {
-		l.next()
+	for isSpace(l.mark) {
+		if r, _ := l.peek(); isSpace(r) {
+			l.next()
+		} else {
+			l.next()
+			break
+		}
 	}
+	log.Debugf("l.start: %d, l.index: %d\n", l.index, l.start)
 	if l.start < l.index {
 		l.emit(itemSpace)
-		l.next()
+	// l.next()
 	}
 	log.Debugln("End")
 	return lexStart
@@ -426,14 +450,24 @@ func lexSpace(l *lexer) stateFn {
 // From here, the lexTitle() and lexSectionAdornment() are called based on the input.
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
+	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n", l.mark,
+		// l.index, l.start, l.width, l.LineNumber())
 	// The order of the case statements matter here
-	switch r := l.next(); {
-	case isSectionAdornment(r):
+	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
-	case unicode.IsPrint(r):
+
+	} else if isSpace(l.mark) {
+		return lexSpace
+	} else if l.mark == utf8.RuneError {
+		if l.index == 0 {
+			// A blank line
+			l.emit(itemBlankLine)
+		}
+		l.next()
+	} else if unicode.IsPrint(l.mark) {
 		return lexTitle
 	}
 	log.Debugln("Exit")
@@ -445,16 +479,14 @@ func lexSection(l *lexer) stateFn {
 // ignored. On completion control is returned to lexSection.
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
-	l.backup(2) // Start from the newline of the previous line
 	for {
-		if isSpace(l.current()) && l.isStartOfLine() {
-			return lexSpace
+		if isSpace(l.mark) && l.index == 0 {
+			log.Debugln("lexing space!")
+			lexSpace(l)
 		}
 		l.next()
-		if l.peek() == '\n' {
+		if l.isEndOfLine() {
 			l.emit(itemTitle)
-			l.start += 1
-			l.index += 1
 			break
 		}
 	}
@@ -467,13 +499,14 @@ func lexTitle(l *lexer) stateFn {
 func lexSectionAdornment(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		l.next()
-		if l.peek() == '\n' {
+		if l.isEndOfLine() {
 			l.emit(itemSectionAdornment)
-			l.start += 1
-			l.index += 1
+			if l.mark == utf8.RuneError {
+				break
+			}
 			break
 		}
+		l.next()
 	}
 	log.Debugln("End")
 	return lexSection
@@ -482,14 +515,13 @@ func lexSectionAdornment(l *lexer) stateFn {
 func lexTransition(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		l.next()
-		if l.peek() == '\n' {
-			l.emit(itemTransition)
-			l.start += 1
-			l.index += 1
+		if len(l.lines[l.line]) == l.index {
 			break
 		}
+		l.next()
 	}
+	l.emit(itemTransition)
+	l.nextLine()
 	log.Debugln("End")
 	return lexStart
 }

@@ -86,7 +86,7 @@ func LoadTest(path string) (test *Test) {
 	}
 	return &Test{
 		path:     path,
-		data:     string(inputData),
+		data:     string(inputData[:len(inputData)-1]),
 		itemData: string(itemData),
 		nodeData: string(nodeData),
 	}
