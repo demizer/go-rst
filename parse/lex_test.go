@@ -60,6 +60,9 @@ func equal(t *testing.T, items []item, expectItems []item) {
 		case int:
 			got = strconv.Itoa(pFieldVal.Interface().(int))
 			exp = strconv.Itoa(eFieldVal.Interface().(int))
+		case string:
+			got = pFieldVal.Interface().(string)
+			exp = eFieldVal.Interface().(string)
 		default:
 			panic(fmt.Errorf("%T is not implemented!", r))
 		}
