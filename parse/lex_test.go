@@ -61,7 +61,7 @@ func equal(t *testing.T, items []item, expectItems []item) {
 			got = strconv.Itoa(pFieldVal.Interface().(int))
 			exp = strconv.Itoa(eFieldVal.Interface().(int))
 		default:
-			panic(fmt.Errorf("%#v is not implemented!", r))
+			panic(fmt.Errorf("%T is not implemented!", r))
 		}
 		t.Errorf("\n(Id: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got,
 			eFieldName, exp)
