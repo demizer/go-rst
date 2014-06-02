@@ -205,28 +205,12 @@ func (l *lexer) peek() (r rune, width int) {
 	return
 }
 
-// peekNextLine returns rune at pos from the next line of input.
-func (l *lexer) peekNextLine(pos int) (r rune) {
-	var bCount int
-	next := func() {
-		bCount++
-		r = l.next()
+func (l *lexer) peekNextLine() string {
+	if l.isLastLine() {
+		return ""
 	}
-	// Advance to the next line
-	for {
-		next()
-		if r == '\n' {
-			next()
-			break
-		}
-	}
-	for i := 1; i < pos; i++ {
-		next()
-	}
-	l.backup(bCount)
-	return r
+	return l.lines[l.line+1]
 }
-
 
 // next advances the position of the lexer by one rune and returns that rune.
 func (l *lexer) next() (r rune, width int) {
