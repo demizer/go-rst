@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSectionAdornment",
         "text": "=====",
-        "startPosition": 7,
+        "startPosition": 1,
         "line": 2,
         "length": 5
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 13,
+        "startPosition": 1,
         "line": 3,
         "length": 1
     },
@@ -27,14 +27,14 @@
         "id": 4,
         "type": "itemParagraph",
         "text": "Test section header and paragraph.",
-        "startPosition": 14,
+        "startPosition": 1,
         "line": 4,
         "length": 34
     },
     {
         "id": 5,
         "type": "itemEOF",
-        "startPosition": 49,
+        "startPosition": 35,
         "line": 4
     }
 ]

@@ -101,29 +101,40 @@ type item struct {
 type lexer struct {
 	name             string    // The name of the current lexer
 	input            string    // The input text
+	line             int       // The current line number of the parser, from 0
+	lines            []string  // The input split into lines
 	state            stateFn   // The current state of the lexer
+	start            int       // The starting position of the token in the line
 	index            int       // Position in input
-	start            int       // The start of the current token
 	width            int       // The width of the current position
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
-	id               int // Unique id for each item emitted
+	id               int  // Unique id for each item emitted
+	mark             rune // The current lexed rune
+}
+
+func newLexer(name, input string) *lexer {
+	if !norm.NFC.IsNormalString(input) {
+		input = norm.NFC.String(input)
+	}
+	lines := strings.Split(input, "\n")
+	mark, width := utf8.DecodeRuneInString(lines[0][0:])
+	return &lexer{
+		name:  name,
+		input: input,
+		lines: lines,
+		items: make(chan item),
+		index: 1,
+		mark:  mark,
+		width: width,
+	}
 }
 
 // lex is the entry point of the lexer
 func lex(name, input string) *lexer {
-	log.Debugln("Start")
-	if !norm.NFC.IsNormalString(input) {
-		input = norm.NFC.String(input)
-	}
-	l := &lexer{
-		name:  name,
-		input: input,
-		items: make(chan item),
-	}
+	l := newLexer(name, input)
 	go l.run()
-	log.Debugln("End")
 	return l
 }
 

@@ -3,7 +3,6 @@
         "id": 1,
         "type": "NodeParagraph",
         "text": "Test unexpected section titles.",
-        "startPosition": 1,
         "line": 1,
         "length": 31
     },
@@ -37,7 +36,7 @@
                 "id": 6,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
-                "startPosition": 58,
+                "startPosition": 5,
                 "line": 5,
                 "length": 10
             },
@@ -85,7 +84,7 @@
                 "id": 13,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
-                "startPosition": 104,
+                "startPosition": 5,
                 "line": 10,
                 "length": 10
             }

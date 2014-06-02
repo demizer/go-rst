@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemTitle",
         "text": "Title",
-        "startPosition": 7,
+        "startPosition": 1,
         "line": 2,
         "length": 5
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemSectionAdornment",
         "text": "=====",
-        "startPosition": 13,
+        "startPosition": 1,
         "line": 3,
         "length": 5
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 19,
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
@@ -35,14 +35,14 @@
         "id": 5,
         "type": "itemParagraph",
         "text": "Test overline title.",
-        "startPosition": 20,
+        "startPosition": 1,
         "line": 5,
         "length": 20
     },
     {
         "id": 6,
         "type": "itemEOF",
-        "startPosition": 41,
+        "startPosition": 21,
         "line": 5
     }
 ]

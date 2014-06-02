@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSpace",
         "text": " ",
-        "startPosition": 9,
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemParagraph",
         "text": "Title",
-        "startPosition": 10,
+        "startPosition": 2,
         "line": 2,
         "length": 5
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 16,
+        "startPosition": 1,
         "line": 3,
         "length": 1
     },
@@ -35,14 +35,14 @@
         "id": 5,
         "type": "itemParagraph",
         "text": "Test missing underline, with paragraph.",
-        "startPosition": 17,
+        "startPosition": 1,
         "line": 4,
         "length": 39
     },
     {
         "id": 6,
         "type": "itemEOF",
-        "startPosition": 57,
+        "startPosition": 40,
         "line": 4
     }
 ]

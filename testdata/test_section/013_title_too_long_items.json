@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSpace",
         "text": " ",
-        "startPosition": 9,
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemTitle",
         "text": "Long    Title",
-        "startPosition": 10,
+        "startPosition": 2,
         "line": 2,
         "length": 13
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemSectionAdornment",
         "text": "=======",
-        "startPosition": 24,
+        "startPosition": 1,
         "line": 3,
         "length": 7
     },
@@ -35,7 +35,7 @@
         "id": 5,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 32,
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
@@ -43,14 +43,14 @@
         "id": 6,
         "type": "itemParagraph",
         "text": "Test long title and space normalization.",
-        "startPosition": 33,
+        "startPosition": 1,
         "line": 5,
         "length": 40
     },
     {
         "id": 7,
         "type": "itemEOF",
-        "startPosition": 74,
+        "startPosition": 41,
         "line": 5
     }
 ]

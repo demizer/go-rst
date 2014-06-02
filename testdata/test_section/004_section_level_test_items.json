@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 58,
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemTitle",
         "text": "Title 1",
-        "startPosition": 59,
+        "startPosition": 1,
         "line": 3,
         "length": 7
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemSectionAdornment",
         "text": "=======",
-        "startPosition": 67,
+        "startPosition": 1,
         "line": 4,
         "length": 7
     },
@@ -35,7 +35,7 @@
         "id": 5,
         "type": "itemParagraph",
         "text": "Paragraph 1.",
-        "startPosition": 75,
+        "startPosition": 1,
         "line": 5,
         "length": 12
     },
@@ -43,7 +43,7 @@
         "id": 6,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 88,
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
@@ -51,7 +51,7 @@
         "id": 7,
         "type": "itemTitle",
         "text": "Title 2",
-        "startPosition": 89,
+        "startPosition": 1,
         "line": 7,
         "length": 7
     },
@@ -59,7 +59,7 @@
         "id": 8,
         "type": "itemSectionAdornment",
         "text": "-------",
-        "startPosition": 97,
+        "startPosition": 1,
         "line": 8,
         "length": 7
     },
@@ -67,7 +67,7 @@
         "id": 9,
         "type": "itemParagraph",
         "text": "Paragraph 2.",
-        "startPosition": 105,
+        "startPosition": 1,
         "line": 9,
         "length": 12
     },
@@ -75,7 +75,7 @@
         "id": 10,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 118,
+        "startPosition": 1,
         "line": 10,
         "length": 1
     },
@@ -83,7 +83,7 @@
         "id": 11,
         "type": "itemTitle",
         "text": "Title 3",
-        "startPosition": 119,
+        "startPosition": 1,
         "line": 11,
         "length": 7
     },
@@ -91,7 +91,7 @@
         "id": 12,
         "type": "itemSectionAdornment",
         "text": "```````",
-        "startPosition": 127,
+        "startPosition": 1,
         "line": 12,
         "length": 7
     },
@@ -99,7 +99,7 @@
         "id": 13,
         "type": "itemParagraph",
         "text": "Paragraph 3.",
-        "startPosition": 135,
+        "startPosition": 1,
         "line": 13,
         "length": 12
     },
@@ -107,7 +107,7 @@
         "id": 14,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 148,
+        "startPosition": 1,
         "line": 14,
         "length": 1
     },
@@ -115,7 +115,7 @@
         "id": 15,
         "type": "itemTitle",
         "text": "Title 4",
-        "startPosition": 149,
+        "startPosition": 1,
         "line": 15,
         "length": 7
     },
@@ -123,7 +123,7 @@
         "id": 16,
         "type": "itemSectionAdornment",
         "text": "-------",
-        "startPosition": 157,
+        "startPosition": 1,
         "line": 16,
         "length": 7
     },
@@ -131,14 +131,14 @@
         "id": 17,
         "type": "itemParagraph",
         "text": "Paragraph 4.",
-        "startPosition": 165,
+        "startPosition": 1,
         "line": 17,
         "length": 12
     },
     {
         "id": 18,
         "type": "itemEOF",
-        "startPosition": 178,
+        "startPosition": 13,
         "line": 17
     }
 ]

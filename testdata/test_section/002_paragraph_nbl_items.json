@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSectionAdornment",
         "text": "=====",
-        "startPosition": 7,
+        "startPosition": 1,
         "line": 2,
         "length": 5
     },
@@ -19,14 +19,14 @@
         "id": 3,
         "type": "itemParagraph",
         "text": "Test section header no blank line.",
-        "startPosition": 13,
+        "startPosition": 1,
         "line": 3,
         "length": 34
     },
     {
         "id": 4,
         "type": "itemEOF",
-        "startPosition": 48,
+        "startPosition": 35,
         "line": 3
     }
 ]

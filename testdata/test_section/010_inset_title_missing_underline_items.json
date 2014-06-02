@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSpace",
         "text": " ",
-        "startPosition": 26,
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -19,14 +19,14 @@
         "id": 3,
         "type": "itemParagraph",
         "text": "Test Missing Underline",
-        "startPosition": 27,
+        "startPosition": 2,
         "line": 2,
         "length": 22
     },
     {
         "id": 4,
         "type": "itemEOF",
-        "startPosition": 50,
+        "startPosition": 25,
         "line": 2
     }
 ]

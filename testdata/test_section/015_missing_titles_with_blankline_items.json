@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 26,
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemTransition",
         "text": "========================",
-        "startPosition": 27,
+        "startPosition": 1,
         "line": 3,
         "length": 24
     },
@@ -27,7 +27,7 @@
         "id": 4,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 52,
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
@@ -35,7 +35,7 @@
         "id": 5,
         "type": "itemParagraph",
         "text": "Test missing titles; blank line in-between.",
-        "startPosition": 53,
+        "startPosition": 1,
         "line": 5,
         "length": 43
     },
@@ -43,7 +43,7 @@
         "id": 6,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 97,
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
@@ -51,7 +51,7 @@
         "id": 7,
         "type": "itemTransition",
         "text": "========================",
-        "startPosition": 98,
+        "startPosition": 1,
         "line": 7,
         "length": 24
     },
@@ -59,7 +59,7 @@
         "id": 8,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 123,
+        "startPosition": 1,
         "line": 8,
         "length": 1
     },
@@ -67,14 +67,14 @@
         "id": 9,
         "type": "itemTransition",
         "text": "========================",
-        "startPosition": 124,
+        "startPosition": 1,
         "line": 9,
         "length": 24
     },
     {
         "id": 10,
         "type": "itemEOF",
-        "startPosition": 149,
+        "startPosition": 25,
         "line": 9
     }
 ]

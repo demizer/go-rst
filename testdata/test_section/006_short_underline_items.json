@@ -11,7 +11,7 @@
         "id": 2,
         "type": "itemSectionAdornment",
         "text": "====",
-        "startPosition": 7,
+        "startPosition": 1,
         "line": 2,
         "length": 4
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 12,
+        "startPosition": 1,
         "line": 3,
         "length": 1
     },
@@ -27,14 +27,14 @@
         "id": 4,
         "type": "itemParagraph",
         "text": "Test short underline.",
-        "startPosition": 13,
+        "startPosition": 1,
         "line": 4,
         "length": 21
     },
     {
         "id": 5,
         "type": "itemEOF",
-        "startPosition": 35,
+        "startPosition": 22,
         "line": 4
     }
 ]

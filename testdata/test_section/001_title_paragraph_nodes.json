@@ -4,7 +4,6 @@
         "type": "NodeSection",
         "text": "Title",
         "level": 1,
-        "startPosition": 1,
         "line": 1,
         "length": 5,
         "overLine": null,
@@ -12,7 +11,6 @@
             "id": 2,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 7,
             "line": 2,
             "length": 5
         },
@@ -21,7 +19,6 @@
                 "id": 3,
                 "type": "NodeParagraph",
                 "text": "Test section header and paragraph.",
-                "startPosition": 14,
                 "line": 4,
                 "length": 34
             }
