@@ -227,14 +227,6 @@ func (l *lexer) peekNextLine(pos int) (r rune) {
 	return r
 }
 
-// advanceToRune fast forwards the lexer to the next rune in the input specified by "to".
-func (l *lexer) advanceToRune(to rune) {
-	for {
-		if l.next() == eof || to == l.current() {
-			break
-		}
-	}
-}
 
 // next advances the position of the lexer by one rune and returns that rune.
 func (l *lexer) next() (r rune, width int) {
