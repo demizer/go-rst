@@ -126,135 +126,6 @@ func TestLine(t *testing.T) {
 	}
 }
 
-func TestPeekNextLine(t *testing.T) {
-	input := "==============\nTitle\n=============="
-	tLex := &lexer{input: input}
-	t1 := tLex.peekNextLine(1)
-	t2 := tLex.peekNextLine(2)
-	if t1 != 'T' {
-		t.Error("peekNextLine(1) != T, Got:", string(t1))
-	} else if t2 != 'i' {
-		t.Error("peekNextLine(1) != T, Got:", string(t2))
-	}
-}
-
-func TestStartPosition(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	if items[0].Position() != 1 {
-		t.Error("StartPosition != 1")
-	}
-	if items[0].StartPosition.String() != "1" {
-		t.Error(`String StartPosition != "1"`)
-	}
-}
-
-func TestLexSection001(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection002(t *testing.T) {
-	testPath := "test_section/002_paragraph_nbl"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection003(t *testing.T) {
-	testPath := "test_section/003_para_head_para"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection004(t *testing.T) {
-	testPath := "test_section/004_section_level_test"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection005(t *testing.T) {
-	testPath := "test_section/005_unexpected_titles"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection006(t *testing.T) {
-	testPath := "test_section/006_short_underline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection007(t *testing.T) {
-	testPath := "test_section/007_title_combining_chars"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection008(t *testing.T) {
-	testPath := "test_section/008_title_overline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection009(t *testing.T) {
-	testPath := "test_section/009_inset_title_with_overline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection010(t *testing.T) {
-	testPath := "test_section/010_inset_title_missing_underline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection011(t *testing.T) {
-	testPath := "test_section/011_inset_title_missing_underline_with_blankline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection012(t *testing.T) {
-	testPath := "test_section/012_inset_title_missing_underline_and_para"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection013(t *testing.T) {
-	testPath := "test_section/013_title_too_long"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection014(t *testing.T) {
-	testPath := "test_section/014_inset_title_mismatched_underline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
-}
-
-func TestLexSection015(t *testing.T) {
-	testPath := "test_section/015_missing_titles_with_blankline"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	// spd.Dump(items)
-	equal(t, items, test.expectItems())
-}
 
 var lexerTests = []struct {
 	name   string
@@ -662,4 +533,159 @@ func TestLexerPeek(t *testing.T) {
 				lex.name, w, tt.pWidth)
 		}
 	}
+}
+
+func TestPeekNextLinePos(t *testing.T) {
+	input := "==============\nTitle\n=============="
+	tLex := &lexer{input: input}
+	t1 := tLex.peekNextLinePos(1)
+	t2 := tLex.peekNextLinePos(2)
+	if t1 != 'T' {
+		t.Error("peekNextLinePos(1) != T, Got:", string(t1))
+	} else if t2 != 'i' {
+		t.Error("peekNextLinePos(1) != T, Got:", string(t2))
+	}
+	tLex.input = ""
+	tLex.index = 0
+	t3 := tLex.peekNextLinePos(1)
+	if t3 != -1 {
+		t.Error("peekNextLinePos(1) != -1, Got:", string(t3))
+	}
+}
+
+func TestStartPosition(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].Position() != 1 {
+		t.Error("StartPosition != 1")
+	}
+	if items[0].StartPosition.String() != "1" {
+		t.Error(`String StartPosition != "1"`)
+	}
+}
+
+func TestIsLastLine(t *testing.T) {
+	input := "==============\nTitle\n=============="
+	tLex := &lexer{input: input, index: 23}
+	last := tLex.isLastLine()
+	if !last {
+		t.Error("Expect: isLastLine() == true, Got:", last)
+	}
+	tLex.index = 17
+	last = tLex.isLastLine()
+	if last {
+		t.Error("Expect: isLastLine() == false, Got:", last)
+	}
+	tLex.input = ""
+	tLex.index = 0
+	last = tLex.isLastLine()
+	if !last {
+		t.Error("Expect: isLastLine() == false, Got:", last)
+	}
+}
+
+func TestLexSection001(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection002(t *testing.T) {
+	testPath := "test_section/002_paragraph_nbl"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection003(t *testing.T) {
+	testPath := "test_section/003_para_head_para"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection004(t *testing.T) {
+	testPath := "test_section/004_section_level_test"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection005(t *testing.T) {
+	testPath := "test_section/005_unexpected_titles"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection006(t *testing.T) {
+	testPath := "test_section/006_short_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection007(t *testing.T) {
+	testPath := "test_section/007_title_combining_chars"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection008(t *testing.T) {
+	testPath := "test_section/008_title_overline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection009(t *testing.T) {
+	testPath := "test_section/009_inset_title_with_overline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection010(t *testing.T) {
+	testPath := "test_section/010_inset_title_missing_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection011(t *testing.T) {
+	testPath := "test_section/011_inset_title_missing_underline_with_blankline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection012(t *testing.T) {
+	testPath := "test_section/012_inset_title_missing_underline_and_para"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection013(t *testing.T) {
+	testPath := "test_section/013_title_too_long"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection014(t *testing.T) {
+	testPath := "test_section/014_inset_title_mismatched_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection015(t *testing.T) {
+	testPath := "test_section/015_missing_titles_with_blankline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
 }
