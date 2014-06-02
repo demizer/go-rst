@@ -113,17 +113,17 @@ var lexerTests = []struct {
 	{
 		name:   "Default 1",
 		input:  "Title",
-		nIndex: 1, nMark: 'T', nWidth: 1, nLines: 1,
+		nIndex: 0, nMark: 'T', nWidth: 1, nLines: 1,
 	},
 	{
 		name:   "Default with diacritic",
 		input:  "à Title",
-		nIndex: 1, nMark: '\u00E0', nWidth: 2, nLines: 1,
+		nIndex: 0, nMark: '\u00E0', nWidth: 2, nLines: 1,
 	},
 	{
 		name:   "Default with two lines",
 		input:  "à Title\n=======",
-		nIndex: 1, nMark: '\u00E0', nWidth: 2, nLines: 2,
+		nIndex: 0, nMark: '\u00E0', nWidth: 2, nLines: 2,
 	},
 }
 
@@ -517,7 +517,7 @@ func TestIsLastLine(t *testing.T) {
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
 		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
-		lex.name, lex.isLastLine(), true)
+			lex.name, lex.isLastLine(), true)
 	}
 }
 

@@ -125,7 +125,7 @@ func newLexer(name, input string) *lexer {
 		input: input,
 		lines: lines,
 		items: make(chan item),
-		index: 1,
+		index: 0,
 		mark:  mark,
 		width: width,
 	}
