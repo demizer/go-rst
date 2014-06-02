@@ -102,30 +102,6 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	return
 }
 
-func TestId(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	if items[0].IdNumber() != 1 {
-		t.Error("Id != 1")
-	}
-	if items[0].Id.String() != "1" {
-		t.Error(`String Id != "1"`)
-	}
-}
-
-func TestLine(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	if items[0].LineNumber() != 1 {
-		t.Error("Line != 1")
-	}
-	if items[0].Line.String() != "1" {
-		t.Error(`String Line != "1"`)
-	}
-}
-
 var lexerTests = []struct {
 	name   string
 	input  string
@@ -487,21 +463,27 @@ func TestLexerPeek(t *testing.T) {
 	}
 }
 
-func TestPeekNextLinePos(t *testing.T) {
-	input := "==============\nTitle\n=============="
-	tLex := &lexer{input: input}
-	t1 := tLex.peekNextLinePos(1)
-	t2 := tLex.peekNextLinePos(2)
-	if t1 != 'T' {
-		t.Error("peekNextLinePos(1) != T, Got:", string(t1))
-	} else if t2 != 'i' {
-		t.Error("peekNextLinePos(1) != T, Got:", string(t2))
+func TestId(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].IdNumber() != 1 {
+		t.Error("Id != 1")
 	}
-	tLex.input = ""
-	tLex.index = 0
-	t3 := tLex.peekNextLinePos(1)
-	if t3 != -1 {
-		t.Error("peekNextLinePos(1) != -1, Got:", string(t3))
+	if items[0].Id.String() != "1" {
+		t.Error(`String Id != "1"`)
+	}
+}
+
+func TestLine(t *testing.T) {
+	testPath := "test_section/001_title_paragraph"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	if items[0].LineNumber() != 1 {
+		t.Error("Line != 1")
+	}
+	if items[0].Line.String() != "1" {
+		t.Error(`String Line != "1"`)
 	}
 }
 
