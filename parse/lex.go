@@ -227,8 +227,7 @@ func (l *lexer) next() (r rune, width int) {
 	l.width = width
 	l.mark = r
 
-	log.Debugf("cur: %#U, l.start: %d (%d), l.index: %d (%d), line: %d\n",
-		r, l.start, l.start+1, l.index, l.index+1, l.LineNumber())
+	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n", r, l.start, l.index, l.LineNumber())
 
 	return
 }
