@@ -126,54 +126,6 @@ func TestLine(t *testing.T) {
 	}
 }
 
-
-var lexerTests = []struct {
-	name   string
-	input  string
-	nIndex int
-	nMark  rune
-	nWidth int
-	nLines int
-}{
-	{
-		name:   "Default 1",
-		input:  "Title",
-		nIndex: 1, nMark: 'T', nWidth: 1, nLines: 1,
-	},
-	{
-		name:   "Default with diacritic",
-		input:  "à Title",
-		nIndex: 1, nMark: '\u00E0', nWidth: 2, nLines: 1,
-	},
-	{
-		name:   "Default with two lines",
-		input:  "à Title\n=======",
-		nIndex: 1, nMark: '\u00E0', nWidth: 2, nLines: 2,
-	},
-}
-
-func TestLexerNew(t *testing.T) {
-	for _, tt := range lexerTests {
-		lex := newLexer(tt.name, tt.input)
-		if lex.index != tt.nIndex {
-			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
-				lex.name, lex.index, tt.nIndex)
-		}
-		if lex.mark != tt.nMark {
-			t.Errorf("Test: %s\n\t Got: lexer.mark == %#U, Expect: %#U\n\n",
-				lex.name, lex.mark, tt.nMark)
-		}
-		if len(lex.lines) != tt.nLines {
-			t.Errorf("Test: %s\n\t Got: lexer.LineNumber == %d, Expect: %d\n\n",
-				lex.name, lex.LineNumber(), tt.nLines)
-		}
-		if lex.width != tt.nWidth {
-			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
-				lex.name, lex.width, tt.nWidth)
-		}
-	}
-}
-
 var lexerTests = []struct {
 	name   string
 	input  string
