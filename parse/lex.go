@@ -253,6 +253,17 @@ func (l *lexer) next() (r rune, width int) {
 	return
 }
 
+func (l *lexer) nextLine() string {
+	if len(l.lines) == l.line+1 {
+		return ""
+	}
+	l.line++
+	l.start = 0
+	l.index = 0
+	l.width = 0
+	return l.lines[l.line]
+}
+
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() *item {
 	item := <-l.items
@@ -271,23 +282,12 @@ func (l *lexer) gotoLocation(index, line int) {
 	return
 }
 
-func (l *lexer) lineNumber() int {
-	return l.line + 1
-}
-
 func (l *lexer) currentLine() string {
 	return l.lines[l.line]
 }
 
-func (l *lexer) nextLine() string {
-	if len(l.lines) == l.line+1 {
-		return ""
-	}
-	l.line++
-	l.start = 0
-	l.index = 0
-	l.width = 0
-	return l.lines[l.line]
+func (l *lexer) lineNumber() int {
+	return l.line + 1
 }
 
 func (l *lexer) isLastLine() bool {
