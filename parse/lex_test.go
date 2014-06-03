@@ -541,7 +541,7 @@ func TestLexerPeekNextLine(t *testing.T) {
 	}
 }
 
-func TestId(t *testing.T) {
+func TestLexId(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -553,7 +553,7 @@ func TestId(t *testing.T) {
 	}
 }
 
-func TestLine(t *testing.T) {
+func TestLexLine(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -565,7 +565,7 @@ func TestLine(t *testing.T) {
 	}
 }
 
-func TestStartPosition(t *testing.T) {
+func TestLexStartPosition(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
