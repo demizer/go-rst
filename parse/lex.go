@@ -174,7 +174,7 @@ func (l *lexer) emit(t itemElement) {
 	}
 
 	log.Infof("\n#### %s: %q start: %d (%d) end: %d (%d) line: %d\n\n", t,
-		tok, l.start, l.start+1, l.index, l.index+1, l.LineNumber())
+		tok, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 
 	l.id++
 	length := utf8.RuneCountInString(tok)
@@ -183,7 +183,7 @@ func (l *lexer) emit(t itemElement) {
 		ID:            ID(l.id),
 		Type:          t,
 		Text:          tok,
-		Line:          Line(l.LineNumber()),
+		Line:          Line(l.lineNumber()),
 		StartPosition: StartPosition(l.start + 1), // Positions begin at 1, not 0
 		Length:        length,
 	}
@@ -248,7 +248,7 @@ func (l *lexer) next() (r rune, width int) {
 	l.width = width
 	l.mark = r
 
-	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n", r, l.start, l.index, l.LineNumber())
+	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n", r, l.start, l.index, l.lineNumber())
 
 	return
 }
@@ -271,7 +271,7 @@ func (l *lexer) gotoLocation(index, line int) {
 	return
 }
 
-func (l *lexer) LineNumber() int {
+func (l *lexer) lineNumber() int {
 	return l.line + 1
 }
 
@@ -291,7 +291,7 @@ func (l *lexer) nextLine() string {
 }
 
 func (l *lexer) isLastLine() bool {
-	return len(l.lines) == l.LineNumber()
+	return len(l.lines) == l.lineNumber()
 }
 
 func (l *lexer) isEndOfLine() bool {
@@ -397,10 +397,10 @@ func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
 		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n",
-		// l.mark, l.index, l.start, l.width, l.LineNumber())
+		// l.mark, l.index, l.start, l.width, l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			log.Debugln("Start of new token")
-			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.LineNumber())
+			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.lineNumber())
 			if isSection(l) {
 				return lexSection
 			} else if isTransition(l) {
@@ -461,7 +461,7 @@ func lexSpace(l *lexer) stateFn {
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
 	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n", l.mark,
-	// l.index, l.start, l.width, l.LineNumber())
+	// l.index, l.start, l.width, l.lineNumber())
 	// The order of the case statements matter here
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {

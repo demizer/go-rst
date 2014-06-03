@@ -140,8 +140,8 @@ func TestLexerNew(t *testing.T) {
 				lex.name, lex.mark, tt.nMark)
 		}
 		if len(lex.lines) != tt.nLines {
-			t.Errorf("Test: %s\n\t Got: lexer.LineNumber == %d, Expect: %d\n\n",
-				lex.name, lex.LineNumber(), tt.nLines)
+			t.Errorf("Test: %s\n\t Got: lexer.lineNumber == %d, Expect: %d\n\n",
+				lex.name, lex.lineNumber(), tt.nLines)
 		}
 		if lex.width != tt.nWidth {
 			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
@@ -190,9 +190,9 @@ func TestLexerGotoLocation(t *testing.T) {
 			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
 				tt.name, lex.width, tt.lWidth)
 		}
-		if lex.LineNumber() != tt.lLine {
+		if lex.lineNumber() != tt.lLine {
 			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
-				tt.name, lex.LineNumber(), tt.lLine)
+				tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
 }
@@ -283,9 +283,9 @@ func TestLexerBackup(t *testing.T) {
 			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
 				tt.name, lex.width, tt.lWidth)
 		}
-		if lex.LineNumber() != tt.lLine {
+		if lex.lineNumber() != tt.lLine {
 			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
-				tt.name, lex.LineNumber(), tt.lLine)
+				tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
 }
@@ -373,9 +373,9 @@ func TestLexerNext(t *testing.T) {
 			t.Errorf("Test: %s\n\t Got: lexer.width = %d, Expect: %d\n\n",
 				lex.name, w, tt.nWidth)
 		}
-		if lex.LineNumber() != tt.nLine {
+		if lex.lineNumber() != tt.nLine {
 			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
-				lex.name, lex.LineNumber(), tt.nLine)
+				lex.name, lex.lineNumber(), tt.nLine)
 		}
 	}
 }
@@ -449,9 +449,9 @@ func TestLexerPeek(t *testing.T) {
 			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
 				lex.name, lex.width, tt.lWidth)
 		}
-		if lex.LineNumber() != tt.lLine {
+		if lex.lineNumber() != tt.lLine {
 			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
-				lex.name, lex.LineNumber(), tt.lLine)
+				lex.name, lex.lineNumber(), tt.lLine)
 		}
 		if r != tt.pMark {
 			t.Errorf("Test: %s\n\t Got: peek().rune  == %q, Expect: %q\n\n",
