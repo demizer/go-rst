@@ -40,6 +40,7 @@ type parserMessage int
 const (
 	warningShortOverline parserMessage = iota
 	warningShortUnderline
+	errorInvalidSectionOrTransitionMarker
 	severeUnexpectedSectionTitle
 	severeUnexpectedSectionTitleOrTransition
 	severeIncompleteSectionTitle
@@ -50,6 +51,7 @@ const (
 var parserErrors = [...]string{
 	"warningShortOverline",
 	"warningShortUnderline",
+	"errorInvalidSectionOrTransitionMarker",
 	"severeUnexpectedSectionTitle",
 	"severeUnexpectedSectionTitleOrTransition",
 	"severeIncompleteSectionTitle",
@@ -67,6 +69,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Title overline too short."
 	case warningShortUnderline:
 		s = "Title underline too short."
+	case errorInvalidSectionOrTransitionMarker:
+		s = "Invalid section title or transition marker."
 	case severeUnexpectedSectionTitle:
 		s = "Unexpected section title."
 	case severeUnexpectedSectionTitleOrTransition:
@@ -86,7 +90,9 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	switch {
 	case lvl <= 1:
 		s = levelWarning
-	case lvl >= 2:
+	case lvl == 2:
+		s = levelError
+	case lvl >= 3:
 		s = levelSevere
 	}
 	return
@@ -317,12 +323,16 @@ func (t *Tree) section(i *item) Node {
 			}
 		}
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemParagraph {
-		t.next()
+		t.next() // Move the token buffer past the error tokens
 		t.next()
 		if p := t.peek(1); p != nil && p.Type == itemBlankLine {
 			return t.systemMessage(severeMissingMatchingUnderlineForOverline)
 		}
 		return t.systemMessage(severeIncompleteSectionTitle)
+	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemSectionAdornment {
+		// Missing section title
+		t.next() // Move the token buffer past the error token
+		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
 	}
 
 	if overAdorn != nil && overAdorn.Text.(string) != underAdorn.Text.(string) {
@@ -367,9 +377,15 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 
 	log.Debugln("FOUND", err)
+
+	// spd.Dump(t.token)
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
+	case errorInvalidSectionOrTransitionMarker:
+		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+		s.Line = t.token[zed-1].Line
+		lbTextLen = len(lbText) + 1
 	case warningShortOverline, severeOverlineUnderlineMismatch:
 		backToken = zed - 2
 		if t.peekBack(2).Type == itemSpace {
