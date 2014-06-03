@@ -313,15 +313,9 @@ func TestSectionLevelsLevel(t *testing.T) {
 }
 
 func parseTest(t *testing.T, test *Test) (tree *Tree) {
-	var errs []error
 	log.Debugf("Test path: %s\n", test.path)
 	log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
-	tree, errs = Parse(test.path, test.data)
-	if errs != nil {
-		for _, err := range errs {
-			t.Error(err)
-		}
-	}
+	tree, _ = Parse(test.path, test.data)
 	return
 }
 
