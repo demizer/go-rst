@@ -9,13 +9,17 @@
     {
         "id": 2,
         "type": "NodeSection",
-        "text": "Title",
         "level": 1,
-        "line": 3,
-        "length": 5,
         "overLine": null,
-        "underLine": {
+        "title": {
             "id": 3,
+            "type": "NodeTitle",
+            "text": "Title",
+            "line": 3,
+            "length": 5
+        },
+        "underLine": {
+            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
@@ -23,7 +27,7 @@
         },
         "nodeList": [
             {
-                "id": 4,
+                "id": 5,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
                 "line": 6,

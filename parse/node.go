@@ -33,6 +33,9 @@ const (
 	// NodeTransition is a transition element. Transitions are very similar to
 	// NodeSection except that they have newlines before and after.
 	NodeTransition
+
+	// NodeTitle is a section title element to be used inside SectionNodes.
+	NodeTitle
 )
 
 var nodeTypes = [...]string{
@@ -44,6 +47,7 @@ var nodeTypes = [...]string{
 	"NodeLiteralBlock",
 	"NodeIndent",
 	"NodeTransition",
+	"NodeTitle",
 }
 
 // Type returns the type of a node element.
@@ -58,7 +62,6 @@ func (n NodeType) String() string {
 // Node is the interface used to implement parser nodes.
 type Node interface {
 	IDNumber() ID
-	LineNumber() Line
 	NodeType() NodeType
 }
 
@@ -77,23 +80,16 @@ func (l *NodeList) append(n Node) {
 // SectionNode is a a single section node. It contains overline, underline, and
 // indentation nodes. NodeList contains nodes that are children of the section.
 type SectionNode struct {
-	ID     `json:"id"`
-	Type   NodeType `json:"type"`
-	Text   string   `json:"text"`
-	Length int      `json:"length"`
+	ID   `json:"id"`
+	Type NodeType `json:"type"`
 
 	// Level is the heiarchical level of the section. The first level is level
-	// 1, any further sections encountered after the first lever are given
+	// 1, any further sections encountered after the first level are given
 	// consecutive level numbers.
 	Level int `json:"level"`
 
-	// StartPosition is the first location of the underline Node.
-	StartPosition `json:"startPosition"`
-
-	// Line is the line number of the underline Node.
-	Line `json:"line"`
-
 	// OverLine and UnderLine are the parsed Nodes that make up the section.
+	Title     *TitleNode     `json:"title"`
 	OverLine  *AdornmentNode `json:"overLine"`
 	UnderLine *AdornmentNode `json:"underLine"`
 
@@ -113,8 +109,14 @@ func (s *SectionNode) NodeType() NodeType {
 func newSection(title *item, overSec *item, underSec *item, indent *item, id *int) *SectionNode {
 	*id++
 	n := &SectionNode{
+		ID:   ID(*id),
+		Type: NodeSection,
+	}
+
+	*id++
+	n.Title = &TitleNode{
 		ID:            ID(*id),
-		Type:          NodeSection,
+		Type:          NodeTitle,
 		Text:          title.Text.(string),
 		StartPosition: title.StartPosition,
 		Length:        title.Length,
@@ -158,6 +160,21 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 	}
 
 	return n
+}
+
+// TitleNode contains the parsed data for a section titles.
+type TitleNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+// NodeType returns the Node type of the TitleNode.
+func (t TitleNode) NodeType() NodeType {
+	return t.Type
 }
 
 // AdornmentNode contains the parsed data for a section overline or underline.

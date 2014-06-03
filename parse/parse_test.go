@@ -208,7 +208,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != float64(c.pFieldVal.(StartPosition)) {
 				c.dError()
 			}
-		case "indent", "overLine", "underLine":
+		case "indent", "overLine", "title", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "nodeList":
 			for num, node := range c.eFieldVal.([]interface{}) {
@@ -227,9 +227,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		default:
-			if c.eFieldVal != c.pFieldVal {
-				c.dError()
-			}
+			panic(fmt.Errorf("%s is not implemented!", c.eFieldName))
 		}
 	}
 
@@ -248,18 +246,15 @@ var testSectionLevel = [...]SectionNode{
 		OverLine:  &AdornmentNode{Rune: '='},
 		UnderLine: &AdornmentNode{Rune: '='},
 		Level:     1,
-		Length:    5,
 	},
 	SectionNode{
 		OverLine:  &AdornmentNode{Rune: '-'},
 		UnderLine: &AdornmentNode{Rune: '-'},
 		Level:     2,
-		Length:    8,
 	},
 	SectionNode{
 		UnderLine: &AdornmentNode{Rune: '~'},
 		Level:     3,
-		Length:    6,
 	},
 }
 
@@ -269,19 +264,6 @@ func TestSectionLevelsAdd(t *testing.T) {
 	x.Add(v)
 	if v.Level != 1 {
 		t.Errorf("Improper level on first add, Got level: %d, expected: %d", v.Level, 1)
-	}
-}
-
-func TestSectionLevelsString(t *testing.T) {
-	var p sectionLevels
-	p.Add(&testSectionLevel[0])
-	p.Add(&testSectionLevel[1])
-	p.Add(&testSectionLevel[2])
-	out := p.String()
-	expect := "level: 1, rune: '=', overline: true, length: 5\nlevel: 2, rune: '-', " +
-		"overline: true, length: 8\nlevel: 3, rune: '~', overline: false, length: 6\n"
-	if out != expect {
-		t.Errorf("Expect:\t%q,\nGot:\t%q\n", expect, out)
 	}
 }
 

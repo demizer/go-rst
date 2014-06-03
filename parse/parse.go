@@ -10,7 +10,6 @@
 package parse
 
 import (
-	"fmt"
 	"reflect"
 
 	"code.google.com/p/go.text/unicode/norm"
@@ -105,15 +104,6 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 
 type sectionLevels []*SectionNode
 
-func (s *sectionLevels) String() string {
-	var out string
-	for _, sec := range *s {
-		out += fmt.Sprintf("level: %d, rune: %q, overline: %t, length: %d\n",
-			sec.Level, sec.UnderLine.Rune, sec.OverLine != nil, sec.Length)
-	}
-	return out
-}
-
 // Returns nil if not found
 func (s *sectionLevels) FindByRune(adornChar rune) *SectionNode {
 	for _, sec := range *s {
@@ -131,7 +121,7 @@ func (s *sectionLevels) FindByRune(adornChar rune) *SectionNode {
 func (s *sectionLevels) Add(section *SectionNode) (exists bool, sec *SectionNode) {
 	sec = s.FindByRune(section.UnderLine.Rune)
 	if sec != nil {
-		if sec.Text != section.Text {
+		if sec.Title.Text != section.Title.Text {
 			section.Level = sec.Level
 		}
 	} else {

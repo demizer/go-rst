@@ -2,13 +2,17 @@
     {
         "id": 1,
         "type": "NodeSection",
-        "text": "Title",
         "level": 1,
-        "startPosition": 1,
-        "line": 2,
-        "length": 5,
-        "overLine": {
+        "title": {
             "id": 2,
+            "type": "NodeTitle",
+            "text": "Title",
+            "startPosition": 1,
+            "line": 2,
+            "length": 5
+        },
+        "overLine": {
+            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -16,7 +20,7 @@
             "length": 5
         },
         "underLine": {
-            "id": 3,
+            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -25,7 +29,7 @@
         },
         "nodeList": [
             {
-                "id": 4,
+                "id": 5,
                 "type": "NodeParagraph",
                 "text": "Test overline title.",
                 "startPosition": 1,

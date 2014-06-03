@@ -38,3 +38,10 @@ func TestTransitionNodeType(t *testing.T) {
 		t.Error("n.Type != NodeTransition")
 	}
 }
+
+func TestTitleNodeType(t *testing.T) {
+	n := &TitleNode{Type: NodeTitle}
+	if n.NodeType() != NodeTitle {
+		t.Error("n.Type != NodeTitle")
+	}
+}

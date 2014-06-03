@@ -2,13 +2,17 @@
     {
         "id": 1,
         "type": "NodeSection",
-        "text": "Title",
         "level": 1,
-        "line": 1,
-        "length": 5,
         "overLine": null,
-        "underLine": {
+        "title": {
             "id": 2,
+            "type": "NodeTitle",
+            "text": "Title",
+            "line": 1,
+            "length": 5
+        },
+        "underLine": {
+            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
@@ -16,7 +20,7 @@
         },
         "nodeList": [
             {
-                "id": 3,
+                "id": 4,
                 "type": "NodeParagraph",
                 "text": "Test section header no blank line.",
                 "line": 3,

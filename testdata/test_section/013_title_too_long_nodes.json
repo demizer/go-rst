@@ -2,13 +2,17 @@
     {
         "id": 1,
         "type": "NodeSection",
-        "text": "Long    Title",
         "level": 1,
-        "startPosition": 2,
-        "line": 2,
-        "length": 13,
-        "indent": {
+        "title": {
             "id": 2,
+            "type": "NodeTitle",
+            "text": "Long    Title",
+            "startPosition": 2,
+            "line": 2,
+            "length": 13
+        },
+        "indent": {
+            "id": 3,
             "type": "NodeIndent",
             "text": " ",
             "startPosition": 1,
@@ -16,7 +20,7 @@
             "length": 1
         },
         "overLine": {
-            "id": 3,
+            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -24,7 +28,7 @@
             "length": 7
         },
         "underLine": {
-            "id": 4,
+            "id": 5,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -33,19 +37,19 @@
         },
         "nodeList": [
             {
-                "id": 5,
+                "id": 6,
                 "type": "NodeSystemMessage",
                 "severity": "WARNING",
                 "line": 1,
                 "nodeList": [
                     {
-                        "id": 6,
+                        "id": 7,
                         "type": "NodeParagraph",
                         "text": "Title overline too short.",
                         "length": 25
                     },
                     {
-                        "id": 7,
+                        "id": 8,
                         "type": "NodeLiteralBlock",
                         "text": "=======\n Long    Title\n=======",
                         "length": 32
@@ -53,7 +57,7 @@
                 ]
             },
             {
-                "id": 8,
+                "id": 9,
                 "type": "NodeParagraph",
                 "text": "Test long title and space normalization.",
                 "startPosition": 1,
