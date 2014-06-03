@@ -150,7 +150,7 @@ func TestLexerNew(t *testing.T) {
 	}
 }
 
-var gotoLocationTests = []struct {
+var lexerGotoLocationTests = []struct {
 	name      string
 	input     string
 	start     int
@@ -175,7 +175,7 @@ var gotoLocationTests = []struct {
 }
 
 func TestLexerGotoLocation(t *testing.T) {
-	for _, tt := range gotoLocationTests {
+	for _, tt := range lexerGotoLocationTests {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
 		if lex.index != tt.lIndex {
@@ -197,7 +197,7 @@ func TestLexerGotoLocation(t *testing.T) {
 	}
 }
 
-var backupTests = []struct {
+var lexerBackupTests = []struct {
 	name      string
 	input     string
 	start     int
@@ -267,7 +267,7 @@ var backupTests = []struct {
 }
 
 func TestLexerBackup(t *testing.T) {
-	for _, tt := range backupTests {
+	for _, tt := range lexerBackupTests {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
 		lex.backup(tt.pos)
@@ -290,7 +290,7 @@ func TestLexerBackup(t *testing.T) {
 	}
 }
 
-var nextTests = []struct {
+var lexerNextTests = []struct {
 	name      string
 	input     string
 	start     int
@@ -357,7 +357,7 @@ var nextTests = []struct {
 }
 
 func TestLexerNext(t *testing.T) {
-	for _, tt := range nextTests {
+	for _, tt := range lexerNextTests {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
@@ -380,7 +380,7 @@ func TestLexerNext(t *testing.T) {
 	}
 }
 
-var peekTests = []struct {
+var lexerPeekTests = []struct {
 	name      string
 	input     string
 	start     int // Start position begins at 0
@@ -437,7 +437,7 @@ var peekTests = []struct {
 }
 
 func TestLexerPeek(t *testing.T) {
-	for _, tt := range peekTests {
+	for _, tt := range lexerPeekTests {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.peek()
