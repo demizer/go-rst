@@ -464,6 +464,28 @@ func TestLexerPeek(t *testing.T) {
 	}
 }
 
+func TestLexerIsLastLine(t *testing.T) {
+	input := "==============\nTitle\n=============="
+	lex := newLexer("isLastLine test 1", input)
+	lex.gotoLocation(0, 1)
+	if lex.isLastLine() != false {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+			lex.name, lex.isLastLine(), false)
+	}
+	lex = newLexer("isLastLine test 2", input)
+	lex.gotoLocation(0, 2)
+	if lex.isLastLine() != false {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+			lex.name, lex.isLastLine(), false)
+	}
+	lex = newLexer("isLastLine test 3", input)
+	lex.gotoLocation(0, 3)
+	if lex.isLastLine() != true {
+		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+			lex.name, lex.isLastLine(), true)
+	}
+}
+
 var peekNextLineTests = []struct {
 	name      string
 	input     string
@@ -552,28 +574,6 @@ func TestStartPosition(t *testing.T) {
 	}
 	if items[0].StartPosition.String() != "1" {
 		t.Error(`String StartPosition != "1"`)
-	}
-}
-
-func TestIsLastLine(t *testing.T) {
-	input := "==============\nTitle\n=============="
-	lex := newLexer("isLastLine test 1", input)
-	lex.gotoLocation(0, 1)
-	if lex.isLastLine() != false {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), false)
-	}
-	lex = newLexer("isLastLine test 2", input)
-	lex.gotoLocation(0, 2)
-	if lex.isLastLine() != false {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), false)
-	}
-	lex = newLexer("isLastLine test 3", input)
-	lex.gotoLocation(0, 3)
-	if lex.isLastLine() != true {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), true)
 	}
 }
 
