@@ -464,6 +464,61 @@ func TestLexerPeek(t *testing.T) {
 	}
 }
 
+var peekNextLineTests = []struct {
+	name      string
+	input     string
+	start     int
+	startLine int
+	lIndex    int // l* fields do not change after peekNextLine() is called
+	lLine     int
+	nText     string
+}{
+	{
+		name:  "Get next line after first",
+		input: "==============\nTitle\n==============",
+		start: 0, startLine: 1,
+		lIndex: 0, lLine: 1, nText: "Title",
+	},
+	{
+		name:  "Get next line after second.",
+		input: "==============\nTitle\n==============",
+		start: 0, startLine: 2,
+		lIndex: 0, lLine: 2, nText: "==============",
+	},
+	{
+		name:  "Get next line from middle of first",
+		input: "==============\nTitle\n==============",
+		start: 5, startLine: 1,
+		lIndex: 5, lLine: 1, nText: "Title",
+	},
+	{
+		name:  "Attempt to get next line after last",
+		input: "==============\nTitle\n==============",
+		start: 5, startLine: 3,
+		lIndex: 5, lLine: 3, nText: "",
+	},
+}
+
+func TestLexerPeekNextLine(t *testing.T) {
+	for _, tt := range peekNextLineTests {
+		lex := newLexer(tt.name, tt.input)
+		lex.gotoLocation(tt.start, tt.startLine)
+		out := lex.peekNextLine()
+		if lex.index != tt.lIndex {
+			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
+				lex.name, lex.index, tt.lIndex)
+		}
+		if lex.lineNumber() != tt.lLine {
+			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+				lex.name, lex.lineNumber(), tt.lLine)
+		}
+		if out != tt.nText {
+			t.Errorf("Test: %s\n\t Got: text == %s, Expect: %s\n\n",
+				lex.name, out, tt.nText)
+		}
+	}
+}
+
 func TestId(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
