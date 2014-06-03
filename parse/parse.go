@@ -5,11 +5,12 @@
 package parse
 
 import (
-	"code.google.com/p/go.text/unicode/norm"
 	"fmt"
+	"reflect"
+
+	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
-	"reflect"
 )
 
 var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}

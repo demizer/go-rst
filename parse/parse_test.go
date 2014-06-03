@@ -7,16 +7,17 @@
 package parse
 
 import (
-	"code.google.com/p/go.text/unicode/norm"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/demizer/go-elog"
 	"io/ioutil"
 	"reflect"
 	"strconv"
 	"strings"
 	"testing"
+
+	"code.google.com/p/go.text/unicode/norm"
+	"github.com/demizer/go-elog"
 )
 
 func init() { SetDebug() }

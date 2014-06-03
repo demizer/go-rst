@@ -5,12 +5,13 @@
 package parse
 
 import (
-	"code.google.com/p/go.text/unicode/norm"
-	"github.com/demizer/go-elog"
 	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"code.google.com/p/go.text/unicode/norm"
+	"github.com/demizer/go-elog"
 )
 
 type Id int
@@ -303,7 +304,6 @@ func isSection(l *lexer) (found bool) {
 	checkLine := func(input string, skipSpace bool) (a bool) {
 		var end int = 3
 		for j := 0; j < end; j++ {
-			log.Debugln("j:", j, )
 			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
 			if skipSpace && isSpace(r) {
 				log.Debugln("Skipping space rune")
@@ -372,7 +372,7 @@ func isTransition(l *lexer) bool {
 	} else if pBlankLine && nBlankLine {
 		log.Debugln("Found transition (surrounded by newlines)")
 		return true
-	// } else if pBlankLine && l.isLastLine() {
+		// } else if pBlankLine && l.isLastLine() {
 		// log.Debugln("Found transition (opened by newline)")
 		// return true
 	}
@@ -387,7 +387,7 @@ func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
 		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n",
-			// l.mark, l.index, l.start, l.width, l.LineNumber())
+		// l.mark, l.index, l.start, l.width, l.LineNumber())
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			log.Debugln("Start of new token")
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.LineNumber())
@@ -440,7 +440,7 @@ func lexSpace(l *lexer) stateFn {
 	log.Debugf("l.start: %d, l.index: %d\n", l.index, l.start)
 	if l.start < l.index {
 		l.emit(itemSpace)
-	// l.next()
+		// l.next()
 	}
 	log.Debugln("End")
 	return lexStart
@@ -451,7 +451,7 @@ func lexSpace(l *lexer) stateFn {
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
 	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n", l.mark,
-		// l.index, l.start, l.width, l.LineNumber())
+	// l.index, l.start, l.width, l.LineNumber())
 	// The order of the case statements matter here
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {
@@ -463,8 +463,8 @@ func lexSection(l *lexer) stateFn {
 		return lexSpace
 	} else if l.mark == utf8.RuneError {
 		// if l.index == 0 {
-			// // A blank line
-			// l.emit(itemBlankLine)
+		// // A blank line
+		// l.emit(itemBlankLine)
 		// }
 		l.next()
 	} else if unicode.IsPrint(l.mark) {
@@ -481,8 +481,8 @@ func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
 		// if isSpace(l.mark) && l.index == 0 {
-			// log.Debugln("lexing space!")
-			// lexSpace(l)
+		// log.Debugln("lexing space!")
+		// lexSpace(l)
 		// }
 		l.next()
 		if l.isEndOfLine() {
