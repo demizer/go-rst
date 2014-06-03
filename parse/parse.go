@@ -358,6 +358,9 @@ func (t *Tree) section(i *item) Node {
 			}
 		}
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemParagraph {
+		// If a section contains an itemParagraph, it is because the underline
+		// is missing, therefore we generate an error based on what follows the
+		// itemParagraph.
 		t.next() // Move the token buffer past the error tokens
 		t.next()
 		if p := t.peek(1); p != nil && p.Type == itemBlankLine {
