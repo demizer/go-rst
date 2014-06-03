@@ -5,13 +5,14 @@
 package parse
 
 import (
-	"code.google.com/p/go.text/unicode/norm"
 	"fmt"
-	"github.com/demizer/go-elog"
 	"reflect"
 	"strconv"
 	"testing"
 	"unicode/utf8"
+
+	"code.google.com/p/go.text/unicode/norm"
+	"github.com/demizer/go-elog"
 )
 
 var (
@@ -46,9 +47,9 @@ func equal(t *testing.T, items []item, expectItems []item) {
 	dError := func() {
 		var got, exp string
 		switch r := pFieldVal.Interface().(type) {
-		case Id:
-			got = pFieldVal.Interface().(Id).String()
-			exp = eFieldVal.Interface().(Id).String()
+		case ID:
+			got = pFieldVal.Interface().(ID).String()
+			exp = eFieldVal.Interface().(ID).String()
 		case itemElement:
 			got = pFieldVal.Interface().(itemElement).String()
 			exp = eFieldVal.Interface().(itemElement).String()
@@ -67,14 +68,14 @@ func equal(t *testing.T, items []item, expectItems []item) {
 		default:
 			panic(fmt.Errorf("%T is not implemented!", r))
 		}
-		t.Errorf("\n(Id: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got,
+		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got,
 			eFieldName, exp)
 	}
 
 	for eNum, eItem := range expectItems {
 		eVal := reflect.ValueOf(eItem)
 		pVal := reflect.ValueOf(items[eNum])
-		id = int(pVal.FieldByName("Id").Interface().(Id))
+		id = int(pVal.FieldByName("ID").Interface().(ID))
 		for x := 0; x < eVal.NumField(); x++ {
 			eFieldVal = eVal.Field(x)
 			eFieldName = eVal.Type().Field(x).Name
@@ -82,7 +83,7 @@ func equal(t *testing.T, items []item, expectItems []item) {
 			pFieldValStruct, found = pVal.Type().FieldByName(eFieldName)
 			pFieldName = pFieldValStruct.Name
 			if !found {
-				t.Errorf("Parsed item (Id: %d) does not contain field %q\n", id,
+				t.Errorf("Parsed item (ID: %d) does not contain field %q\n", id,
 					eFieldName)
 				continue
 			} else if eFieldName == "Text" {
@@ -467,11 +468,11 @@ func TestId(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
-	if items[0].IdNumber() != 1 {
-		t.Error("Id != 1")
+	if items[0].IDNumber() != 1 {
+		t.Error("ID != 1")
 	}
-	if items[0].Id.String() != "1" {
-		t.Error(`String Id != "1"`)
+	if items[0].ID.String() != "1" {
+		t.Error(`String ID != "1"`)
 	}
 }
 

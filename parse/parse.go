@@ -2,6 +2,11 @@
 // 2014 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
+// Package parse is a reStructuredText parser implemented in Go!
+//
+// This package is only meant for lexing and parsing reStructuredText. See the
+// top level package documentation for details on using the go-rst package
+// package API.
 package parse
 
 import (
@@ -148,10 +153,11 @@ func Parse(name, text string) (t *Tree, errors []error) {
 		text = norm.NFC.String(text)
 	}
 	t.text = text
-	_, errors = t.Parse(text, t)
+	t.Parse(text, t)
 	return
 }
 
+// New returns a fresh parser tree.
 func New(name string) *Tree {
 	return &Tree{
 		Name:          name,
@@ -167,20 +173,19 @@ const (
 	indentWidth = 4 // Default indent width
 )
 
+// Tree contains the parser tree. The Nodes field contains the parsed nodes of
+// the input input data.
 type Tree struct {
-	Name             string
-	Nodes            *NodeList // The root node list
-	nodeTarget       *NodeList // Used by the parser to add nodes to a target NodeList
-	Errors           []error
-	text             string
-	lex              *lexer
-	tokenBackupCount int
-	peekCount        int
-	token            [7]*item
-	sectionLevels    *sectionLevels // Encountered section levels
-	id               int            // The unique id of the node in the tree
-	indentWidth      int
-	indentLevel      int
+	Name          string    // The name of the current parser input
+	Nodes         *NodeList // The root node list
+	nodeTarget    *NodeList // Used by the parser to add nodes to a target NodeList
+	text          string    // The input text
+	lex           *lexer
+	token         [7]*item
+	sectionLevels *sectionLevels // Encountered section levels
+	id            int            // The consecutive id of the node in the tree
+	indentWidth   int
+	indentLevel   int
 }
 
 // startParse initializes the parser, using the lexer.
@@ -188,13 +193,15 @@ func (t *Tree) startParse(lex *lexer) {
 	t.lex = lex
 }
 
-func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree, errors []error) {
+// Parse activates the parser using text as input data. A parse tree is
+// returned on success or failure.
+func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
 	log.Debugln("Start")
 	t.startParse(lex(t.Name, text))
 	t.text = text
 	t.parse(treeSet)
 	log.Debugln("End")
-	return t, t.Errors
+	return t
 }
 
 func (t *Tree) parse(tree *Tree) {
@@ -264,7 +271,7 @@ func (t *Tree) peek(pos int) *item {
 
 func (t *Tree) peekSkip(iSkip itemElement) *item {
 	var nItem *item
-	var count int = 1
+	count := 1
 	for {
 		nItem = t.peek(count)
 		if nItem.Type != iSkip {

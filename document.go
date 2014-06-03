@@ -5,8 +5,9 @@
 package rst
 
 import (
-	"github.com/demizer/go-rst/parse"
 	"fmt"
+
+	"github.com/demizer/go-rst/parse"
 )
 
 type Document struct {
@@ -23,7 +24,7 @@ func New(name string) *Document {
 func (d *Document) Parse(text string) (*Document, error) {
 	tree, err := parse.Parse(d.name, text)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 	fmt.Printf("%#v\n", tree)
 	return nil, nil

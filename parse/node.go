@@ -8,13 +8,30 @@ package parse
 type NodeType int
 
 const (
+	// NodeSection is a section element.
 	NodeSection NodeType = iota
+
+	// NodeParagraph is a paragraph element.
 	NodeParagraph
+
+	// NodeAdornment is the overline or underline of a section.
 	NodeAdornment
+
+	// NodeBlockQuote is a blockquote element.
 	NodeBlockQuote
+
+	// NodeSystemMessage contains an error encountered by the parser.
 	NodeSystemMessage
+
+	// NodeLiteralBlock is a literal block element.
 	NodeLiteralBlock
+
+	// NodeIndent is indention encountered by the lexer. It can be any number
+	// of spaces found before any other element type.
 	NodeIndent
+
+	// NodeTransition is a transition element. Transitions are very similar to
+	// NodeSection except that they have newlines before and after.
 	NodeTransition
 )
 
@@ -29,6 +46,7 @@ var nodeTypes = [...]string{
 	"NodeTransition",
 }
 
+// Type returns the type of a node element.
 func (n NodeType) Type() NodeType {
 	return n
 }
@@ -37,12 +55,14 @@ func (n NodeType) String() string {
 	return nodeTypes[n]
 }
 
+// Node is the interface used to implement parser nodes.
 type Node interface {
-	IdNumber() Id
+	IDNumber() ID
 	LineNumber() Line
 	NodeType() NodeType
 }
 
+// NodeList is a list of parser nodes that implement Node.
 type NodeList []Node
 
 func newList() *NodeList {
@@ -54,20 +74,38 @@ func (l *NodeList) append(n Node) {
 
 }
 
+// SectionNode is a a single section node. It contains overline, underline, and
+// indentation nodes. NodeList contains nodes that are children of the section.
 type SectionNode struct {
-	Id            `json:"id"`
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Level         int      `json:"level"`
-	Length        int      `json:"length"`
+	ID     `json:"id"`
+	Type   NodeType `json:"type"`
+	Text   string   `json:"text"`
+	Length int      `json:"length"`
+
+	// Level is the heiarchical level of the section. The first level is level
+	// 1, any further sections encountered after the first lever are given
+	// consecutive level numbers.
+	Level int `json:"level"`
+
+	// StartPosition is the first location of the underline Node.
 	StartPosition `json:"startPosition"`
-	Line          `json:"line"`
-	OverLine      *AdornmentNode `json:"overLine"`
-	UnderLine     *AdornmentNode `json:"underLine"`
-	Indent        *IndentNode    `json:"underLine"`
-	NodeList      NodeList       `json:"nodeList"`
+
+	// Line is the line number of the underline Node.
+	Line `json:"line"`
+
+	// OverLine and UnderLine are the parsed Nodes that make up the section.
+	OverLine  *AdornmentNode `json:"overLine"`
+	UnderLine *AdornmentNode `json:"underLine"`
+
+	// Indent is indentation encountered by the parser before the SectionNode.
+	// Sections cannot be indented, so this is primarily for error detection.
+	Indent *IndentNode `json:"underLine"`
+
+	// NodeList contains
+	NodeList NodeList `json:"nodeList"`
 }
 
+// NodeType returns the Node type of the SectionNode.
 func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
@@ -75,7 +113,7 @@ func (s *SectionNode) NodeType() NodeType {
 func newSection(title *item, overSec *item, underSec *item, indent *item, id *int) *SectionNode {
 	*id++
 	n := &SectionNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Type:          NodeSection,
 		Text:          title.Text.(string),
 		StartPosition: title.StartPosition,
@@ -86,7 +124,7 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 	if indent != nil && indent.Text != nil {
 		*id++
 		n.Indent = &IndentNode{
-			Id:            Id(*id),
+			ID:            ID(*id),
 			Type:          NodeIndent,
 			Text:          indent.Text.(string),
 			StartPosition: indent.StartPosition,
@@ -99,7 +137,7 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 		*id++
 		Rune := rune(overSec.Text.(string)[0])
 		n.OverLine = &AdornmentNode{
-			Id:            Id(*id),
+			ID:            ID(*id),
 			Type:          NodeAdornment,
 			Rune:          Rune,
 			StartPosition: overSec.StartPosition,
@@ -111,7 +149,7 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 	*id++
 	Rune := rune(underSec.Text.(string)[0])
 	n.UnderLine = &AdornmentNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underSec.StartPosition,
@@ -122,8 +160,9 @@ func newSection(title *item, overSec *item, underSec *item, indent *item, id *in
 	return n
 }
 
+// AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune"`
 	Length        int      `json:"length"`
@@ -131,12 +170,14 @@ type AdornmentNode struct {
 	StartPosition `json:"startPosition"`
 }
 
+// NodeType returns the Node type of the AdornmentNode.
 func (a AdornmentNode) NodeType() NodeType {
 	return a.Type
 }
 
+// ParagraphNode is a parsed paragraph.
 type ParagraphNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -147,7 +188,7 @@ type ParagraphNode struct {
 func newParagraph(i *item, id *int) *ParagraphNode {
 	*id++
 	return &ParagraphNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Type:          NodeParagraph,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -156,23 +197,27 @@ func newParagraph(i *item, id *int) *ParagraphNode {
 	}
 }
 
+// NodeType returns the Node type of the ParagraphNode.
 func (p ParagraphNode) NodeType() NodeType {
 	return p.Type
 }
 
+// BlockQuoteNode contains a parsed blockquote Node. Any nodes that are
+// children of the blockquote are containe in NodeList.
 type BlockQuoteNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Level         int      `json:"level"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
-	NodeList      NodeList `json:"nodeList"`
+	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
+	NodeList NodeList `json:"nodeList"`
 }
 
 func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
 	*id++
 	return &BlockQuoteNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Type:          NodeBlockQuote,
 		Level:         indentLevel,
 		Line:          i.Line,
@@ -180,34 +225,48 @@ func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
 	}
 }
 
+// NodeType returns the Node type of the BlockQuoteNode.
 func (b BlockQuoteNode) NodeType() NodeType {
 	return b.Type
 }
 
+// SystemMessageNode are messages generated by the parser. SystemMessages are
+// leveled by severity and can be one of either Warning, Error, Info, and
+// Severe.
 type SystemMessageNode struct {
-	Id       `json:"id"`
-	Type     NodeType           `json:"type"`
+	ID   `json:"id"`
+	Type NodeType `json:"type"`
+	Line `json:"line"`
+
+	// Severity is the level of importance of the message. It can be one of
+	// either info, warning, error, and severe.
 	Severity systemMessageLevel `json:"severity"`
-	Line     `json:"line"`
+
+	// NodeList contains children Nodes of the systemMessage. Typically
+	// containing the first list item as a NodeParagraph which contains the
+	// message, and a NodeLiteralBlock which contains the input data causing
+	// the systemMessage to be generated.
 	NodeList NodeList `json:"nodeList"`
 }
 
 func newSystemMessage(i *item, severity systemMessageLevel, id *int) *SystemMessageNode {
 	*id++
 	return &SystemMessageNode{
-		Id:       Id(*id),
+		ID:       ID(*id),
 		Type:     NodeSystemMessage,
 		Severity: severity,
 		Line:     i.Line,
 	}
 }
 
+// NodeType returns the Node type of the SystemMessageNode.
 func (s SystemMessageNode) NodeType() NodeType {
 	return s.Type
 }
 
+// LiteralBlockNode is a parsed literal block element.
 type LiteralBlockNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -218,7 +277,7 @@ type LiteralBlockNode struct {
 func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
 	*id++
 	return &LiteralBlockNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Type:          NodeLiteralBlock,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -227,12 +286,15 @@ func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
 	}
 }
 
+// NodeType returns the Node type of LiteralBlockNode.
 func (l LiteralBlockNode) NodeType() NodeType {
 	return l.Type
 }
 
+// IndentNode is any indentation encountered by the parser before block level
+// elements.
 type IndentNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -240,12 +302,15 @@ type IndentNode struct {
 	Line          `json:"line"`
 }
 
+// NodeType returns the Node type of IndentNode.
 func (i IndentNode) NodeType() NodeType {
 	return i.Type
 }
 
+// TransitionNode is a parsed transition element. Transition elements are very
+// similar to AdornmentNodes.
 type TransitionNode struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -256,7 +321,7 @@ type TransitionNode struct {
 func newTransition(i *item, id *int) *TransitionNode {
 	*id++
 	return &TransitionNode{
-		Id:            Id(*id),
+		ID:            ID(*id),
 		Type:          NodeTransition,
 		Text:          i.Text.(string),
 		Length:        i.Length,
@@ -265,6 +330,7 @@ func newTransition(i *item, id *int) *TransitionNode {
 	}
 }
 
+// NodeType returns the Node tye of the TransitionNode.
 func (t TransitionNode) NodeType() NodeType {
 	return t.Type
 }

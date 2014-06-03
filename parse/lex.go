@@ -14,24 +14,34 @@ import (
 	"github.com/demizer/go-elog"
 )
 
-type Id int
+// ID is a consecutive number for identication of a lexed item and parsed item.
+// Primarily for the purpose of debugging lexer and parser output when compared
+// to the JSON encoded tests.
+type ID int
 
-func (i Id) IdNumber() Id { return i }
+// IDNumber returns the ID from an item.
+func (i ID) IDNumber() ID { return i }
 
-func (i Id) String() string { return strconv.Itoa(int(i)) }
+// String implements Stringer and returns ID as a string.
+func (i ID) String() string { return strconv.Itoa(int(i)) }
 
-// The line number of an item in the input string
+// Line contains the number of a lexed item, or parsed item, from the input
+// data.
 type Line int
 
+// LineNumber returns the Line of an item.
 func (l Line) LineNumber() Line { return l }
 
+// String implements Stringer and returns Line converted to a string.
 func (l Line) String() string { return strconv.Itoa(int(l)) }
 
-// The begining location of an item in the input.
+// StartPosition is the starting location of an item in the line of input.
 type StartPosition int
 
+// Position returns the StartPosition of an item.
 func (s StartPosition) Position() StartPosition { return s }
 
+// String implements Stringer and returns StartPosition converted to a string.
 func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
 
 // itemElement are the types that are emitted by the lexer.
@@ -90,7 +100,7 @@ type stateFn func(*lexer) stateFn
 
 // Struct for tokens emitted by the scanning process
 type item struct {
-	Id            `json:"id"`
+	ID            `json:"id"`
 	Type          itemElement `json:"type"`
 	Text          interface{} `json:"text"`
 	Line          `json:"line"`
@@ -111,7 +121,7 @@ type lexer struct {
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
-	id               int  // Unique id for each item emitted
+	id               int  // Unique ID for each item emitted
 	mark             rune // The current lexed rune
 }
 
@@ -170,7 +180,7 @@ func (l *lexer) emit(t itemElement) {
 	length := utf8.RuneCountInString(tok)
 
 	nItem := item{
-		Id:            Id(l.id),
+		ID:            ID(l.id),
 		Type:          t,
 		Text:          tok,
 		Line:          Line(l.LineNumber()),
@@ -197,7 +207,7 @@ func (l *lexer) backup(pos int) {
 		if l.index < 0 {
 			l.index = 0
 		} else if l.index > len(l.lines[l.line]) {
-			l.index -= 1
+			l.index--
 		}
 
 		r, w := utf8.DecodeRuneInString(l.currentLine()[l.index:])
@@ -302,7 +312,7 @@ func isSection(l *lexer) (found bool) {
 	var nLine string
 
 	checkLine := func(input string, skipSpace bool) (a bool) {
-		var end int = 3
+		end := 3
 		for j := 0; j < end; j++ {
 			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
 			if skipSpace && isSpace(r) {

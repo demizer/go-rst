@@ -118,8 +118,8 @@ func (c *checkNode) dError() {
 	var got, exp string
 
 	switch c.pFieldVal.(type) {
-	case Id:
-		got = c.pFieldVal.(Id).String()
+	case ID:
+		got = c.pFieldVal.(ID).String()
 		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
 	case NodeType:
 		got = c.pFieldVal.(NodeType).String()
@@ -140,7 +140,7 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("(Id: %d) Got:\t%s = %q\n\t\tExpect: %s = %q\n\n", c.id, c.pFieldName, got,
+	c.t.Errorf("(ID: %d) Got:\t%s = %q\n\t\tExpect: %s = %q\n\n", c.id, c.pFieldName, got,
 		c.eFieldName, exp)
 }
 
@@ -153,8 +153,14 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
 	c.pFieldName = strings.ToUpper(string(c.eFieldName[0])) + c.eFieldName[1:]
+
+	if c.pFieldName == "Id" {
+		// Overide for uppercase ID
+		c.pFieldName = "ID"
+	}
+
 	if !pVal.FieldByName(c.pFieldName).IsValid() {
-		panic(fmt.Errorf("Missing field: %s.%s\n", c.pNodeName, c.pFieldName))
+		panic(fmt.Errorf("Missing field in parser output: %s.%s\n", c.pNodeName, c.pFieldName))
 	}
 	c.pFieldVal = pVal.FieldByName(c.pFieldName).Interface()
 	c.pFieldType = pVal.FieldByName(c.pFieldName).Type()
@@ -187,7 +193,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		case "id":
-			if c.eFieldVal != float64(c.pFieldVal.(Id)) {
+			if c.eFieldVal != float64(c.pFieldVal.(ID)) {
 				c.dError()
 			}
 		case "level", "length":
