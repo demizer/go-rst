@@ -184,7 +184,8 @@ func (t *Tree) startParse(lex *lexer) {
 }
 
 // Parse activates the parser using text as input data. A parse tree is
-// returned on success or failure.
+// returned on success or failure. Users of the Parse package should use the
+// Top level Parse function.
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
 	log.Debugln("Start")
 	t.startParse(lex(t.Name, text))
