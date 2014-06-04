@@ -145,7 +145,9 @@ func newLexer(name, input string) *lexer {
 	}
 }
 
-// lex is the entry point of the lexer
+// lex is the entry point of the lexer. Name should be any name that signifies
+// the purporse of the lexer. It is mostly used to identify the lexing process
+// in debugging.
 func lex(name, input string) *lexer {
 	l := newLexer(name, input)
 	go l.run()
