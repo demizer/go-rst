@@ -319,6 +319,86 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
+var treePeekTests = []struct {
+	name      string
+	input     string
+	nextNum   int  // Number of times to call Tree.next() before peek
+	peekNum   int  // position argument to Tree.peek()
+	firstTok  item // The item to expect at Tree.token[zed+1]
+	secondTok item // The item to expect at Tree.token[zed+2]
+	thirdTok  item // The item to expect at Tree.token[zed+3]
+}{
+	{
+		name:    "Peek from starting position",
+		input:   "Test\n=====\n\nParagraph.",
+		nextNum: 0, peekNum: 1,
+		firstTok: item{Type: itemTitle, Text: "Test"},
+	},
+	{
+		name:    "Peek from starting position two times",
+		input:   "Test\n=====\n\nParagraph.",
+		nextNum: 0, peekNum: 2,
+		firstTok:  item{Type: itemTitle, Text: "Test"},
+		secondTok: item{Type: itemSectionAdornment, Text: "====="},
+	},
+	{
+		name:    "Peek three positions",
+		input:   "Test\n=====\n\nParagraph.",
+		nextNum: 0, peekNum: 3,
+		firstTok:  item{Type: itemTitle, Text: "Test"},
+		secondTok: item{Type: itemSectionAdornment, Text: "====="},
+		thirdTok:  item{Type: itemBlankLine, Text: "\n"},
+	},
+	{
+		name:    "Next 2 positions, Peek 3 positions",
+		input:   "Test\n=====\n\nParagraph.\nTest 2\n=====\n\nParagraph 2.",
+		nextNum: 2, peekNum: 3,
+		firstTok:  item{Type: itemBlankLine, Text: "\n"},
+		secondTok: item{Type: itemParagraph, Text: "Paragraph."},
+		thirdTok:  item{Type: itemTitle, Text: "Test 2"},
+	},
+}
+
+func TestTreePeek(t *testing.T) {
+	for _, tt := range treePeekTests {
+		tree := New(tt.name, tt.input)
+		tree.lex = lex(tt.name, tt.input)
+		for i := 0; i < tt.nextNum; i++ {
+			tree.next()
+		}
+		tree.peek(tt.peekNum)
+		// spd.Dump(tree.token)
+		if tree.token[zed+1].Type != tt.firstTok.Type {
+			t.Errorf("Test: %s\n\t Got: token[zed+1].Type = %s, Expect: %s\n\n",
+				tree.Name, tree.token[zed+1].Type, tt.firstTok.Type)
+		}
+		if tree.token[zed+1].Text != tt.firstTok.Text {
+			t.Errorf("Test: %s\n\t Got: token[zed+1].Text = %s, Expect: %s\n\n",
+				tree.Name, tree.token[zed+1].Text, tt.firstTok.Text)
+		}
+		if tt.peekNum > 1 {
+			if tree.token[zed+2].Type != tt.secondTok.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed+2].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed+2].Type, tt.secondTok.Type)
+			}
+			if tree.token[zed+2].Text != tt.secondTok.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed+2].Text = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed+2].Text, tt.secondTok.Text)
+			}
+		}
+		if tt.peekNum > 2 {
+			if tree.token[zed+3].Type != tt.thirdTok.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed+3].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed+3].Type, tt.thirdTok.Type)
+			}
+			if tree.token[zed+3].Text != tt.thirdTok.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed+3].Text = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed+3].Text, tt.thirdTok.Text)
+			}
+		}
+	}
+}
+
 func TestParseSection001(t *testing.T) {
 	testPath := "test_section/001_title_paragraph"
 	test := LoadTest(testPath)
