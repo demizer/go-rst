@@ -319,6 +319,136 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
+var treeNextTests = []struct {
+	name     string
+	input    string
+	nextNum  int   // Number of times to call Tree.next(). Value starts at 1.
+	back3Tok *item // The item to expect at Tree.token[zed-3]
+	back2Tok *item // The item to expect at Tree.token[zed-2]
+	back1Tok *item // The item to expect at Tree.token[zed-1]
+	zedToken *item // The item to expect at Tree.token[zed]
+}{
+	{
+		name:    "Next no input",
+		input:   "",
+		nextNum: 1,
+		// zedToken should be nil
+	},
+	{
+		name:     "Single next from start",
+		input:    "Test\n=====\n\nParagraph.",
+		nextNum:  1,
+		zedToken: &item{Type: itemTitle, Text: "Test"},
+	},
+	{
+		name:     "Double next",
+		input:    "Test\n=====\n\nParagraph.",
+		nextNum:  2,
+		back1Tok: &item{Type: itemTitle, Text: "Test"},
+		zedToken: &item{Type: itemSectionAdornment, Text: "====="},
+	},
+	{
+		name:     "Tripple next",
+		input:    "Test\n=====\n\nParagraph.",
+		nextNum:  3,
+		back2Tok: &item{Type: itemTitle, Text: "Test"},
+		back1Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		zedToken: &item{Type: itemBlankLine, Text: "\n"},
+	},
+	{
+		name:     "Quadrupple next",
+		input:    "Test\n=====\n\nParagraph.",
+		nextNum:  4,
+		back3Tok: &item{Type: itemTitle, Text: "Test"},
+		back2Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		back1Tok: &item{Type: itemBlankLine, Text: "\n"},
+		zedToken: &item{Type: itemParagraph, Text: "Paragraph."},
+	},
+	{
+		name:     "Two next() on one line of input",
+		input:    "Test",
+		nextNum:  2,
+		back1Tok: &item{Type: itemParagraph, Text: "Test"},
+		zedToken: &item{Type: itemEOF, Text: ""},
+	},
+}
+
+func TestTreeNext(t *testing.T) {
+	for _, tt := range treeNextTests {
+		tree := New(tt.name, tt.input)
+		tree.lex = lex(tt.name, tt.input)
+		if tt.nextNum > 4 {
+			panic("nextNum cannot be greater than 4")
+		}
+		for i := 0; i < tt.nextNum; i++ {
+			tree.next()
+		}
+		if tree.token[zed] == nil && tt.zedToken == nil {
+			continue
+		}
+		if tt.nextNum > 0 {
+			if tree.token[zed].Type != tt.zedToken.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed].Type, tt.zedToken.Type)
+			}
+			if tree.token[zed].Text != tt.zedToken.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed].Text = %s, Expect: %q\n\n",
+					tree.Name, tree.token[zed].Text, tt.zedToken.Text)
+			}
+		}
+		if tt.nextNum > 1 {
+			if tree.token[zed-1].Type != tt.back1Tok.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed-1].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed-1].Type, tt.back1Tok.Type)
+			}
+			if tree.token[zed-1].Text != tt.back1Tok.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed-1].Text = %q, Expect: %q\n\n",
+					tree.Name, tree.token[zed-1].Text, tt.back1Tok.Text)
+			}
+		}
+		if tt.nextNum > 2 {
+			if tree.token[zed-2].Type != tt.back2Tok.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed-2].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed-2].Type, tt.back2Tok.Type)
+			}
+			if tree.token[zed-2].Text != tt.back2Tok.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed-2].Text = %s, Expect: %q\n\n",
+					tree.Name, tree.token[zed-2].Text, tt.back2Tok.Text)
+			}
+		}
+		if tt.nextNum > 3 {
+			if tree.token[zed-3].Type != tt.back3Tok.Type {
+				t.Errorf("Test: %s\n\t Got: token[zed-3].Type = %s, Expect: %s\n\n",
+					tree.Name, tree.token[zed-3].Type, tt.back3Tok.Type)
+			}
+			if tree.token[zed-3].Text != tt.back3Tok.Text {
+				t.Errorf("Test: %s\n\t Got: token[zed-3].Text = %s, Expect: %q\n\n",
+					tree.Name, tree.token[zed-3].Text, tt.back3Tok.Text)
+			}
+		}
+		// Calculate the number of open backup tokens and make sure they are
+		// empty.
+		for j := 0; j < 4-tt.nextNum; j++ {
+			if tree.token[j] != nil {
+				t.Errorf("Test: %s\n\t Got: token[%d] = %#+v, Expect: nil\n\n",
+					tree.Name, j, tree.token[j])
+			}
+		}
+		// make sure the peek positions are blank
+		if tree.token[zed+1] != nil {
+			t.Errorf("Test: %s\n\t Got: token[zed+1] = %#+v, Expect: nil\n\n",
+				tree.Name, tree.token[zed+1])
+		} else if tree.token[zed+2] != nil {
+			t.Errorf("Test: %s\n\t Got: token[zed+2] = %#+v, Expect: nil\n\n",
+				tree.Name, tree.token[zed+2])
+		} else if tree.token[zed+3] != nil {
+			t.Errorf("Test: %s\n\t Got: token[zed+3] = %#+v, Expect: nil\n\n",
+				tree.Name, tree.token[zed+3])
+		}
+		// spd.Dump(tree.token)
+	}
+}
+
 var treePeekTests = []struct {
 	name     string
 	input    string

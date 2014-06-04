@@ -318,7 +318,7 @@ func (t *Tree) next() *item {
 		t.token[x] = t.token[x+1]
 		t.token[x+1] = nil
 	}
-	if t.token[zed] == nil {
+	if t.token[zed] == nil && t.lex != nil {
 		t.token[zed] = t.lex.nextItem()
 	}
 	// log.Debugf("\n##### next() aftermath #####\n\n")

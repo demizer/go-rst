@@ -126,10 +126,16 @@ type lexer struct {
 }
 
 func newLexer(name, input string) *lexer {
+	if len(input) == 0 {
+		return nil
+	}
+
 	if !norm.NFC.IsNormalString(input) {
 		input = norm.NFC.String(input)
 	}
+
 	lines := strings.Split(input, "\n")
+
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
 
 	log.Debugf("mark: %#U, index: %d, line: %d\n", mark, 0, 1)
@@ -150,6 +156,9 @@ func newLexer(name, input string) *lexer {
 // in debugging.
 func lex(name, input string) *lexer {
 	l := newLexer(name, input)
+	if l == nil {
+		return nil
+	}
 	go l.run()
 	return l
 }
