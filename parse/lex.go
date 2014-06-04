@@ -275,9 +275,9 @@ func (l *lexer) nextItem() *item {
 }
 
 // gotoLine advances the lexer to a line and index within that line. Line numbers start at 1.
-func (l *lexer) gotoLocation(index, line int) {
+func (l *lexer) gotoLocation(start, line int) {
 	l.line = line - 1
-	l.index = index
+	l.index = start
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
