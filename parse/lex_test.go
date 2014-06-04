@@ -519,6 +519,12 @@ var peekNextLineTests = []struct {
 		start: 5, startLine: 3,
 		lIndex: 5, lLine: 3, nText: "",
 	},
+	{
+		name:  "Peek to a blank line",
+		input: "==============\n\nTitle\n==============",
+		start: 5, startLine: 1,
+		lIndex: 5, lLine: 1, nText: "",
+	},
 }
 
 func TestLexerPeekNextLine(t *testing.T) {
