@@ -153,22 +153,22 @@ func (s *sectionLevels) Level() int {
 // Parse is the entry point for the reStructuredText parser. Errors generated
 // by the parser are returned as a NodeList.
 func Parse(name, text string) (t *Tree, errors *NodeList) {
-	t = New(name)
+	t = New(name, text)
 	if !norm.NFC.IsNormalString(text) {
 		text = norm.NFC.String(text)
 	}
-	t.text = text
 	t.Parse(text, t)
 	errors = t.Messages
 	return
 }
 
 // New returns a fresh parser tree.
-func New(name string) *Tree {
+func New(name, text string) *Tree {
 	return &Tree{
 		Name:          name,
 		Nodes:         newList(),
 		Messages:      newList(),
+		text:          text,
 		nodeTarget:    newList(),
 		sectionLevels: new(sectionLevels),
 		indentWidth:   indentWidth,
