@@ -106,7 +106,7 @@ func equal(t *testing.T, items []item, expectItems []item) {
 var lexerTests = []struct {
 	name   string
 	input  string
-	nIndex int
+	nIndex int // Expected index after test is run
 	nMark  rune
 	nWidth int
 	nLines int
@@ -155,7 +155,7 @@ var lexerGotoLocationTests = []struct {
 	input     string
 	start     int
 	startLine int
-	lIndex    int
+	lIndex    int // Index of lexer after gotoLocation() is ran
 	lMark     rune
 	lWidth    int
 	lLine     int
@@ -203,7 +203,7 @@ var lexerBackupTests = []struct {
 	start     int
 	startLine int
 	pos       int // Backup by a number of positions
-	lIndex    int
+	lIndex    int // Expected index after backup
 	lMark     rune
 	lWidth    int
 	lLine     int

@@ -314,6 +314,7 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 func (t *Tree) next() *item {
 	// log.Debugf("\n##### next() before #####\n")
 	// spd.Dump(t.token)
+	// Shift the existing pointers left in the buffer
 	for x := 0; x < len(t.token)-1; x++ {
 		t.token[x] = t.token[x+1]
 		t.token[x+1] = nil
