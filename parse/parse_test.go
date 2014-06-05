@@ -452,40 +452,40 @@ func TestTreeNext(t *testing.T) {
 var treePeekTests = []struct {
 	name     string
 	input    string
-	nextNum  int  // Number of times to call Tree.next() before peek
-	peekNum  int  // position argument to Tree.peek()
-	peek1Tok item // The item to expect at Tree.token[zed+1]
-	peek2Tok item // The item to expect at Tree.token[zed+2]
-	peek3Tok item // The item to expect at Tree.token[zed+3]
+	nextNum  int   // Number of times to call Tree.next() before peek
+	peekNum  int   // position argument to Tree.peek()
+	peek1Tok *item // The item to expect at Tree.token[zed+1]
+	peek2Tok *item // The item to expect at Tree.token[zed+2]
+	peek3Tok *item // The item to expect at Tree.token[zed+3]
 }{
 	{
 		name:    "Peek from starting position",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 1,
-		peek1Tok: item{Type: itemTitle, Text: "Test"},
+		peek1Tok: &item{Type: itemTitle, Text: "Test"},
 	},
 	{
 		name:    "Peek from starting position two times",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 2,
-		peek1Tok: item{Type: itemTitle, Text: "Test"},
-		peek2Tok: item{Type: itemSectionAdornment, Text: "====="},
+		peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 	},
 	{
 		name:    "Peek three positions",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 3,
-		peek1Tok: item{Type: itemTitle, Text: "Test"},
-		peek2Tok: item{Type: itemSectionAdornment, Text: "====="},
-		peek3Tok: item{Type: itemBlankLine, Text: "\n"},
+		peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		peek3Tok: &item{Type: itemBlankLine, Text: "\n"},
 	},
 	{
 		name:    "Next 2 positions, Peek 3 positions",
 		input:   "Test\n=====\n\nParagraph.\nTest 2\n=====\n\nParagraph 2.",
 		nextNum: 2, peekNum: 3,
-		peek1Tok: item{Type: itemBlankLine, Text: "\n"},
-		peek2Tok: item{Type: itemParagraph, Text: "Paragraph."},
-		peek3Tok: item{Type: itemTitle, Text: "Test 2"},
+		peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
+		peek2Tok: &item{Type: itemParagraph, Text: "Paragraph."},
+		peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
 	},
 }
 
