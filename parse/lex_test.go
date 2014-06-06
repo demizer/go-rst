@@ -626,12 +626,13 @@ func TestLexSectionTitleGood0200(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleGood0300(t *testing.T) {
-// testPath := "test_section/01_title_good/03.00_empty_section"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleGood0300(t *testing.T) {
+	// Tests a single section with no other element surrounding it.
+	testPath := "test_section/01_title_good/03.00_empty_section"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 func TestLexSectionTitleBad0000(t *testing.T) {
 	// Tests for severe system messages when the sections are indented.

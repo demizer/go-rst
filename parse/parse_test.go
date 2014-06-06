@@ -749,13 +749,13 @@ func TestParseSectionTitleGood0200(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleGood0300(t *testing.T) {
-// testPath := "test_section/01_title_good/03.00_empty_section"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleGood0300(t *testing.T) {
+	testPath := "test_section/01_title_good/03.00_empty_section"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 func TestParseSectionTitleBad0000(t *testing.T) {
 	// Tests for severe system messages when the sections are indented.

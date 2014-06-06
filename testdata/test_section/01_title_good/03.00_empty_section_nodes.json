@@ -1,4 +1,23 @@
-<document source="test data">
-    <section ids="empty-section" names="empty\ section">
-        <title>
-            Empty Section
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 2,
+            "type": "NodeTitle",
+            "text": "Empty Section",
+            "startPosition": 1,
+            "line": 1,
+            "length": 13
+        },
+        "underLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 2,
+            "length": 13
+        }
+    }
+]

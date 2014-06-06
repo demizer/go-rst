@@ -1,0 +1,25 @@
+[
+    {
+        "id": 1,
+        "type": "itemTitle",
+        "text": "Empty Section",
+        "startPosition": 1,
+        "line": 1,
+        "length": 13
+    },
+    {
+        "id": 2,
+        "type": "itemSectionAdornment",
+        "text": "=============",
+        "startPosition": 1,
+        "line": 2,
+        "length": 13
+    },
+    {
+        "id": 3,
+        "type": "itemEOF",
+        "startPosition": 14,
+        "line": 2
+    }
+]
+
