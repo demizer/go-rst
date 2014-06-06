@@ -701,139 +701,283 @@ func TestSectionLevelsLast(t *testing.T) {
 	}
 }
 
-func TestParseSection001(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
+func TestParseSectionTitleGood0000(t *testing.T) {
+	// Basic title, underline, blankline, and paragraph test
+	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection002(t *testing.T) {
-	testPath := "test_section/002_paragraph_nbl"
+func TestParseSectionTitleGood0001(t *testing.T) {
+	// Basic title, underline, and paragraph with no blankline line after the
+	// section.
+	testPath := "test_section/01_title_good/00.01_paragraph_noblankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection003(t *testing.T) {
-	testPath := "test_section/003_para_head_para"
+func TestParseSectionTitleGood0002(t *testing.T) {
+	// A title that begins with a combining unicode character \u0301. Tests to
+	// make sure the 2 byte unicode does not contribute to the underline length
+	// calculation.
+	testPath := "test_section/01_title_good/00.02_title_combining_chars"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection004(t *testing.T) {
-	testPath := "test_section/004_section_level_test"
+func TestParseSectionTitleGood0100(t *testing.T) {
+	// A basic section in between paragraphs.
+	testPath := "test_section/01_title_good/01.00_para_head_para"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection005(t *testing.T) {
-	testPath := "test_section/005_unexpected_titles"
+// func TestParseSectionTitleGood0200(t *testing.T) {
+// testPath := "test_section/01_title_good/02.00_short_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleGood0300(t *testing.T) {
+// testPath := "test_section/01_title_good/03.00_empty_section"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+func TestParseSectionTitleBad0000(t *testing.T) {
+	// Tests for severe system messages when the sections are indented.
+	testPath := "test_section/02_title_bad/00.00_unexpected_titles"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection006(t *testing.T) {
-	testPath := "test_section/006_short_underline"
+func TestParseSectionTitleBad0100(t *testing.T) {
+	// Tests for severe system message on short title underline
+	testPath := "test_section/02_title_bad/01.00_short_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection007(t *testing.T) {
-	testPath := "test_section/007_title_combining_chars"
+// func TestParseSectionTitleBad0200(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestLexSectionTitleBad0201(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestLexSectionTitleBad0202(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+func TestParseSectionLevelGood0000(t *testing.T) {
+	testPath := "test_section/03_level_good/00.00_section_level_return"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection008(t *testing.T) {
-	testPath := "test_section/008_title_overline"
+func TestParseSectionLevelGood0001(t *testing.T) {
+	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection009(t *testing.T) {
-	testPath := "test_section/009_inset_title_with_overline"
+// func TestParseSectionLevelGood0002(t *testing.T) {
+// testPath := "test_section/03_level_good/00.02_section_level_return"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionLevelGood0100(t *testing.T) {
+// testPath := "test_section/03_level_good/01.00_section_level_return"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionLevelBad0000(t *testing.T) {
+// testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionLevelBad0001(t *testing.T) {
+// testPath := // "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
+	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection010(t *testing.T) {
-	testPath := "test_section/010_inset_title_missing_underline"
+func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
+	testPath := "test_section/05_title_with_overline_good/01.00_inset_title_with_overline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection011(t *testing.T) {
-	testPath := "test_section/011_inset_title_missing_underline_with_blankline"
+// func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
+// testPath := // "test_section/05_title_with_overline_good/02.00_three_char_section_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection012(t *testing.T) {
-	testPath := "test_section/012_inset_title_missing_underline_and_para"
+func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.01_inset_title_missing_underline_with_blankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection013(t *testing.T) {
-	testPath := "test_section/013_title_too_long"
+func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.02_inset_title_missing_underline_and_para"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection014(t *testing.T) {
-	testPath := "test_section/014_inset_title_mismatched_underline"
+func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection015(t *testing.T) {
-	testPath := "test_section/015_missing_titles_with_blankline"
+func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/01.00_title_too_long"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection016(t *testing.T) {
-	testPath := "test_section/016_missing_titles_with_nbl"
+func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/02.00_missing_titles_with_blankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-func TestParseSection017(t *testing.T) {
-	testPath := "test_section/017_section_level_return_highest"
+func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	// spd.Dump(pTree.Nodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
+
+// func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
+// testPath := "test_section/06_title_with_overline_bad/03.00_incomplete_section"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleNumberedGood0000(t *testing.T) {
+// testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleNumberedGood0100(t *testing.T) {
+// testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }
+
+// func TestParseSectionTitleWithInlineMarkupGood0000(t *testing.T) {
+// testPath := // "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
+// test := LoadTest(testPath)
+// pTree := parseTest(t, test)
+// eNodes := test.expectNodes()
+// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// }

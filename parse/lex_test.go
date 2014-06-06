@@ -548,7 +548,7 @@ func TestLexerPeekNextLine(t *testing.T) {
 }
 
 func TestLexId(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
+	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	if items[0].IDNumber() != 1 {
@@ -560,7 +560,7 @@ func TestLexId(t *testing.T) {
 }
 
 func TestLexLine(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
+	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	if items[0].LineNumber() != 1 {
@@ -572,7 +572,7 @@ func TestLexLine(t *testing.T) {
 }
 
 func TestLexStartPosition(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
+	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	if items[0].Position() != 1 {
@@ -817,7 +817,7 @@ func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
 // }
 
 // func TestLexSectionTitleNumberedGood0100(t *testing.T) {
-// testPath := // // "test_section/06_title_with_overline_bad/01.00_enum_list_with_numbered_title"
+// testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
 // test := LoadTest(testPath)
 // items := lexTest(t, test)
 // equal(t, items, test.expectItems())
