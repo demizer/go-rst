@@ -374,7 +374,6 @@ func TestTreeNext(t *testing.T) {
 			t.Errorf("Test: %s\n\t Got: token[zed+3] = %#+v, Expect: nil\n\n",
 				tree.Name, tree.token[zed+3])
 		}
-		// spd.Dump(tree.token)
 	}
 }
 
@@ -426,7 +425,6 @@ func TestTreePeek(t *testing.T) {
 			tree.next()
 		}
 		tree.peek(tt.peekNum)
-		// spd.Dump(tree.token)
 		if tree.token[zed+1].Type != tt.peek1Tok.Type {
 			t.Errorf("Test: %s\n\t Got: token[zed+1].Type = %s, Expect: %s\n\n",
 				tree.Name, tree.token[zed+1].Type, tt.peek1Tok.Type)
