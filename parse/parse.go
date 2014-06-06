@@ -251,8 +251,10 @@ func (t *Tree) parse(tree *Tree) {
 		switch n.NodeType() {
 		case NodeSection, NodeBlockQuote:
 			// Set the loop to append items to the NodeList of the new section
+			// FIXME: Remove this reflection somehow
 			t.nodeTarget = reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
 		}
+
 	}
 
 	log.Debugln("End")
@@ -271,9 +273,6 @@ func (t *Tree) peekBack(pos int) *item {
 // token is used instead and no tokens are received the the lexer stream
 // (channel).
 func (t *Tree) peek(pos int) *item {
-	// log.Debugln("\n", "Pos:", pos)
-	// log.Debugf("##### peek() before #####\n")
-	// spd.Dump(t.token)
 	nItem := t.token[zed]
 	for i := 1; i <= pos; i++ {
 		if t.token[zed+i] != nil {
@@ -286,9 +285,6 @@ func (t *Tree) peek(pos int) *item {
 			nItem = t.token[zed+i]
 		}
 	}
-	// log.Debugf("\n##### peek() aftermath #####\n")
-	// spd.Dump(t.token)
-	// log.Debugf("Returning: %#+v\n", nItem)
 	return nItem
 }
 
@@ -312,9 +308,6 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 // the token buffer, than the token buffer is shifted left and the pointer to
 // the "zed" token is returned.
 func (t *Tree) next() *item {
-	// log.Debugf("\n##### next() before #####\n")
-	// spd.Dump(t.token)
-	// Shift the existing pointers left in the buffer
 	for x := 0; x < len(t.token)-1; x++ {
 		t.token[x] = t.token[x+1]
 		t.token[x+1] = nil
@@ -322,8 +315,6 @@ func (t *Tree) next() *item {
 	if t.token[zed] == nil && t.lex != nil {
 		t.token[zed] = t.lex.nextItem()
 	}
-	// log.Debugf("\n##### next() aftermath #####\n\n")
-	// spd.Dump(t.token)
 	return t.token[zed]
 }
 
@@ -422,7 +413,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 
 	log.Debugln("FOUND", err)
-
 	// spd.Dump(t.token)
 	var overLine, indent, title, underLine, newLine string
 
