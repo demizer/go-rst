@@ -692,6 +692,13 @@ func TestLexSection016(t *testing.T) {
 	testPath := "test_section/016_missing_titles_with_nbl"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
+func TestLexSection017(t *testing.T) {
+	testPath := "test_section/017_section_level_return_highest"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
 	// spd.Dump(items)
 	equal(t, items, test.expectItems())
 }

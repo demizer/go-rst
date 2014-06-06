@@ -826,6 +826,14 @@ func TestParseSection016(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
+
+func TestParseSection017(t *testing.T) {
+	testPath := "test_section/017_section_level_return_highest"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
 	// spd.Dump(pTree.Nodes)
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }

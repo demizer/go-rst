@@ -48,7 +48,8 @@ func (s systemMessageLevel) String() string {
 type parserMessage int
 
 const (
-	warningShortOverline parserMessage = iota
+	okay parserMessage = iota
+	warningShortOverline
 	warningShortUnderline
 	errorInvalidSectionOrTransitionMarker
 	severeUnexpectedSectionTitle
@@ -59,6 +60,7 @@ const (
 )
 
 var parserErrors = [...]string{
+	"parseOkay",
 	"warningShortOverline",
 	"warningShortUnderline",
 	"errorInvalidSectionOrTransitionMarker",
@@ -102,52 +104,102 @@ func (p parserMessage) Message() (s string) {
 func (p parserMessage) Level() (s systemMessageLevel) {
 	lvl := int(p)
 	switch {
-	case lvl <= 1:
+	case lvl <= 2:
 		s = levelWarning
-	case lvl == 2:
+	case lvl == 3:
 		s = levelError
-	case lvl >= 3:
+	case lvl >= 4:
 		s = levelSevere
 	}
 	return
 }
 
-// sectionLevels contains the encountered sections as pointers to a
-// SectionNode.
-type sectionLevels []*SectionNode
+// sectionLevel keeps track of the encountered sections during parsing.
+// "section" is a pointer to the actual SectionNode. "nodeTarget" is used to
+// append child nodes of the section during parsing. "subSec" contains
+// additional children sections found during parsing using the adornment node
+// as encountered to determine the hierarchical level.
+type sectionLevel struct {
+	rChar    rune
+	level    int
+	sections []*SectionNode // New sections matching level are appended here
+}
+
+// sectionLevels contain the encountered sections as an array of pointers to a
+// sectionLevel. Each new section encountered has the NodeTarget set to that
+// SectionNode's NodeList. Newly parsed sections that have a matching rune to
+// an existing level 1 section are appended to the end of sectionLevels. The
+// section hierarchy encountered in sectionLevels[0] is the standard to which
+// all other hierarchies must abide by. Not doing so would produce an
+// parserMessage.
+type sectionLevels []*sectionLevel
 
 // FindByRune loops through the sectionLevels to find a section using a Rune as
 // the key. If the section is found, a pointer to the SectionNode is returned.
-func (s *sectionLevels) FindByRune(adornChar rune) *SectionNode {
+func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
 	for _, sec := range *s {
-		if sec.UnderLine.Rune == adornChar {
+		if sec.rChar == rChar {
 			return sec
 		}
 	}
 	return nil
 }
 
-// If exists == true, a section node with the same text and underline has been found in
-// sectionLevels, sec is the matching SectionNode. If exists == false, then the sec return value is
-// the similarly leveled SectionNode. If exists == false and sec == nil, then the SectionNode added
-// to sectionLevels is a new Node.
-func (s *sectionLevels) Add(section *SectionNode) (exists bool, sec *SectionNode) {
-	sec = s.FindByRune(section.UnderLine.Rune)
-	if sec != nil {
-		if sec.Title.Text != section.Title.Text {
-			section.Level = sec.Level
-		}
+func (s *sectionLevels) Add(sec *SectionNode) (secLvl *sectionLevel, created bool, err parserMessage) {
+	secLvl = s.FindByRune(sec.UnderLine.Rune)
+	if secLvl == nil {
+		log.Debugln("Creating new sectionLevel:", len(*s)+1)
+		secLvl = &sectionLevel{rChar: sec.UnderLine.Rune, level: len(*s) + 1}
+		created = true
+		*s = append(*s, secLvl)
+		secLvl.sections = append(secLvl.sections, sec)
 	} else {
-		section.Level = len(*s) + 1
+		if secLvl.rChar != sec.UnderLine.Rune {
+			err = severeTitleLevelInconsistent
+		}
+		log.Debugln("Using existing sectionLevel:", secLvl.level)
+		secLvl.sections = append(secLvl.sections, sec)
 	}
-	exists = false
-	*s = append(*s, section)
 	return
 }
 
-// Level returns the Level as an integer.
-func (s *sectionLevels) Level() int {
-	return len(*s)
+// LastSectionByLevel returns a pointer to the last section encountered by level
+func (s *sectionLevels) LastSectionByLevel(level int) *SectionNode {
+	var sec *SectionNode
+	for i := len(*s) - 1; i >= 0; i-- {
+		if (*s)[i].level != level {
+			continue
+		}
+		for j := len((*s)[i].sections) - 1; j >= 0; j-- {
+			sec = (*s)[i].sections[j]
+			if sec.Level == level {
+				log.Debugln("Found section with level", sec.Level)
+				return sec
+			}
+		}
+	}
+	return sec
+}
+
+func (s *sectionLevels) LastSectionByLevelExcludeID(level int, excludeID ID) *SectionNode {
+	var sec *SectionNode
+	for i := len(*s) - 1; i >= 0; i-- {
+		if (*s)[i].level != level {
+			continue
+		}
+		for j := len((*s)[i].sections) - 1; j >= 0; j-- {
+			sec = (*s)[i].sections[j]
+			if sec.Level == level {
+				if sec.ID == excludeID {
+					log.Debugln("Excluding ID", sec.ID)
+					continue
+				}
+				log.Debugln("Using section with ID ", sec.ID.String())
+				return sec
+			}
+		}
+	}
+	return nil
 }
 
 // Parse is the entry point for the reStructuredText parser. Errors generated
@@ -195,6 +247,7 @@ type Tree struct {
 	lex           *lexer
 	token         [7]*item
 	sectionLevels *sectionLevels // Encountered section levels
+	sections      []*SectionNode // Pointers to encountered sections
 	id            int            // The consecutive id of the node in the tree
 	indentWidth   int
 	indentLevel   int
@@ -373,17 +426,38 @@ func (t *Tree) section(i *item) Node {
 		return t.systemMessage(severeOverlineUnderlineMismatch)
 	}
 
+	// Determine the level of the section and where to append it to in t.Nodes
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
-	exists, eSec := t.sectionLevels.Add(sec)
-	if !exists && eSec != nil {
-		// There is a matching level in sectionLevels
-		t.nodeTarget = &(*t.sectionLevels)[sec.Level-2].NodeList
+	log.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
+	eSec, created, msg := t.sectionLevels.Add(sec)
+	if msg != okay {
+		log.Debugln("Found inconsistent section level!")
+		return t.systemMessage(severeTitleLevelInconsistent)
+	}
+	sec.Level = eSec.level
+	if sec.Level == 1 {
+		log.Debugln("Setting nodeTarget to Tree.Nodes!")
+		t.nodeTarget = t.Nodes
+	} else {
+		var lSec *SectionNode
+		if created {
+			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
+			t.nodeTarget = &lSec.NodeList
+		} else {
+			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
+			t.nodeTarget = &lSec.NodeList
+		}
+		log.Debugln("Setting nodeTarget to section ID", lSec.ID.String())
 	}
 
+	// The following checks have to be made after the SectionNode has been
+	// initialized so that any parserMessages can be appended to the
+	// SectionNode.NodeList.
 	oLen := title.Length
 	if indent != nil {
 		oLen = indent.Length + title.Length
 	}
+
 	if overAdorn != nil && oLen > overAdorn.Length {
 		sec.NodeList = append(sec.NodeList, t.systemMessage(warningShortOverline))
 	} else if overAdorn == nil && title.Length != underAdorn.Length {

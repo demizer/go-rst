@@ -1,4 +1,4 @@
-.. Test return to existing, highest-level section (Title 3).
+Test return to existing, highest-level section (Title 3).
 
 Title 1
 =======
