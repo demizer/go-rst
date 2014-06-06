@@ -583,122 +583,249 @@ func TestLexStartPosition(t *testing.T) {
 	}
 }
 
-func TestLexSection001(t *testing.T) {
-	testPath := "test_section/001_title_paragraph"
+func TestLexSectionTitleGood0000(t *testing.T) {
+	// Basic title, underline, blankline, and paragraph test
+	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection002(t *testing.T) {
-	testPath := "test_section/002_paragraph_nbl"
+func TestLexSectionTitleGood0001(t *testing.T) {
+	// Basic title, underline, and paragraph with no blankline line after the
+	// section.
+	testPath := "test_section/01_title_good/00.01_paragraph_noblankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection003(t *testing.T) {
-	testPath := "test_section/003_para_head_para"
+func TestLexSectionTitleGood0002(t *testing.T) {
+	// A title that begins with a combining unicode character \u0301. Tests to
+	// make sure the 2 byte unicode does not contribute to the underline length
+	// calculation.
+	testPath := "test_section/01_title_good/00.02_title_combining_chars"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection004(t *testing.T) {
-	testPath := "test_section/004_section_level_test"
+func TestLexSectionTitleGood0100(t *testing.T) {
+	// A basic section in between paragraphs.
+	testPath := "test_section/01_title_good/01.00_para_head_para"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection005(t *testing.T) {
-	testPath := "test_section/005_unexpected_titles"
+// func TestLexSectionTitleGood0200(t *testing.T) {
+// testPath := "test_section/01_title_good/02.00_short_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleGood0300(t *testing.T) {
+// testPath := "test_section/01_title_good/03.00_empty_section"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+func TestLexSectionTitleBad0000(t *testing.T) {
+	// Tests for severe system messages when the sections are indented.
+	testPath := "test_section/02_title_bad/00.00_unexpected_titles"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection006(t *testing.T) {
-	testPath := "test_section/006_short_underline"
+func TestLexSectionTitleBad0100(t *testing.T) {
+	// Tests for severe system message on short title underline
+	testPath := "test_section/02_title_bad/01.00_short_underline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection007(t *testing.T) {
-	testPath := "test_section/007_title_combining_chars"
+// func TestLexSectionTitleBad0200(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleBad0201(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleBad0202(t *testing.T) {
+// testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+func TestLexSectionLevelGood0000(t *testing.T) {
+	testPath := "test_section/03_level_good/00.00_section_level_return"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection008(t *testing.T) {
-	testPath := "test_section/008_title_overline"
+func TestLexSectionLevelGood0001(t *testing.T) {
+	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection009(t *testing.T) {
-	testPath := "test_section/009_inset_title_with_overline"
+// func TestLexSectionLevelGood0002(t *testing.T) {
+// testPath := "test_section/03_level_good/00.02_section_level_return"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionLevelGood0100(t *testing.T) {
+// testPath := "test_section/03_level_good/01.00_section_level_return"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionLevelBad0000(t *testing.T) {
+// testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionLevelBad0001(t *testing.T) {
+// testPath := // "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
+	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection010(t *testing.T) {
-	testPath := "test_section/010_inset_title_missing_underline"
+func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
+	testPath := "test_section/05_title_with_overline_good/01.00_inset_title_with_overline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection011(t *testing.T) {
-	testPath := "test_section/011_inset_title_missing_underline_with_blankline"
+// func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
+// testPath := // "test_section/05_title_with_overline_good/02.00_three_char_section_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection012(t *testing.T) {
-	testPath := "test_section/012_inset_title_missing_underline_and_para"
+func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.01_inset_title_missing_underline_with_blankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection013(t *testing.T) {
-	testPath := "test_section/013_title_too_long"
+func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/00.02_inset_title_missing_underline_and_para"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection014(t *testing.T) {
-	testPath := "test_section/014_inset_title_mismatched_underline"
+// func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
+// testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/01.00_title_too_long"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection015(t *testing.T) {
-	testPath := "test_section/015_missing_titles_with_blankline"
+func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/02.00_missing_titles_with_blankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection016(t *testing.T) {
-	testPath := "test_section/016_missing_titles_with_nbl"
+func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
+	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-func TestLexSection017(t *testing.T) {
-	testPath := "test_section/017_section_level_return_highest"
-	test := LoadTest(testPath)
-	items := lexTest(t, test)
-	// spd.Dump(items)
-	equal(t, items, test.expectItems())
-}
+// func TestLexSectionTitleWithOverlineBad0300(t *testing.T) {
+// testPath := "test_section/06_title_with_overline_bad/03.00_incomplete_section"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
+// testPath := // "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleNumberedGood0000(t *testing.T) {
+// testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleNumberedGood0100(t *testing.T) {
+// testPath := // // "test_section/06_title_with_overline_bad/01.00_enum_list_with_numbered_title"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
+
+// func TestLexSectionTitleWithInlineMarkupGood0000(t *testing.T) {
+// testPath := // "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
+// test := LoadTest(testPath)
+// items := lexTest(t, test)
+// equal(t, items, test.expectItems())
+// }
