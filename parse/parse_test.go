@@ -740,13 +740,14 @@ func TestParseSectionTitleGood0100(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleGood0200(t *testing.T) {
-// testPath := "test_section/01_title_good/02.00_short_title"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleGood0200(t *testing.T) {
+	// Tests section parsing on 3 character long title and underline.
+	testPath := "test_section/01_title_good/02.00_short_title"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 // func TestParseSectionTitleGood0300(t *testing.T) {
 // testPath := "test_section/01_title_good/03.00_empty_section"

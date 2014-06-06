@@ -618,12 +618,13 @@ func TestLexSectionTitleGood0100(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleGood0200(t *testing.T) {
-// testPath := "test_section/01_title_good/02.00_short_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleGood0200(t *testing.T) {
+	// Tests section parsing on 3 character long title and underline.
+	testPath := "test_section/01_title_good/02.00_short_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleGood0300(t *testing.T) {
 // testPath := "test_section/01_title_good/03.00_empty_section"
