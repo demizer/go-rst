@@ -11,6 +11,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"reflect"
 	"strconv"
 	"strings"
@@ -130,6 +131,11 @@ func (c *checkNode) dError() {
 	case Line:
 		got = c.pFieldVal.(Line).String()
 		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
+	case systemMessageLevel:
+		pNumStr := " (" + strconv.Itoa(int(c.pFieldVal.(systemMessageLevel))) + ")"
+		got = c.pFieldVal.(systemMessageLevel).String() + pNumStr
+		eNumStr := " (" + strconv.Itoa(int(systemMessageLevelFromString(c.eFieldVal.(string)))) + ")"
+		exp = c.eFieldVal.(string) + eNumStr
 	case string:
 		got = c.pFieldVal.(string)
 		exp = c.eFieldVal.(string)
@@ -832,6 +838,7 @@ func TestParseSectionTitleGood0200(t *testing.T) {
 }
 
 func TestParseSectionTitleGood0300(t *testing.T) {
+	// Tests a single section with no other element surrounding it.
 	testPath := "test_section/01_title_good/03.00_empty_section"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
