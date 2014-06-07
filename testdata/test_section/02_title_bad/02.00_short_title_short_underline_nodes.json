@@ -1,10 +1,32 @@
-<document source="test data">
-    <system_message level="1" line="2" source="test data" type="INFO">
-        <paragraph>
-            Possible title underline, too short for the title.
-            Treating it as ordinary text because it's so short.
-    <paragraph>
-        ABC
-        ==
-    <paragraph>
-        Underline too short.
+[
+    {
+        "id": 1,
+        "type": "NodeSystemMessage",
+        "severity": "INFO",
+        "line": 1,
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeParagraph",
+                "text": "Possible title underline, too short for the title.\nTreating it as ordinary text because it's so short.",
+                "length": 102
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "NodeParagraph",
+        "text": "ABC\n==",
+        "startPosition": 1,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 4,
+        "type": "NodeParagraph",
+        "text": "Underline too short.",
+        "startPosition": 1,
+        "line": 4,
+        "length": 20
+    }
+]

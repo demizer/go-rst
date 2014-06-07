@@ -650,12 +650,13 @@ func TestLexSectionTitleBad0100(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleBad0200(t *testing.T) {
-// testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleBad0200(t *testing.T) {
+	// Tests for title underlines that are less than three characters.
+	testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleBad0201(t *testing.T) {
 // testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"

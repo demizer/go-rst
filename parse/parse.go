@@ -59,6 +59,7 @@ type parserMessage int
 
 const (
 	okay parserMessage = iota
+	infoUnderlineTooShortForTitle
 	warningShortOverline
 	warningShortUnderline
 	errorInvalidSectionOrTransitionMarker
@@ -71,6 +72,7 @@ const (
 
 var parserErrors = [...]string{
 	"parseOkay",
+	"infoUnderlineTooShortForTitle",
 	"warningShortOverline",
 	"warningShortUnderline",
 	"errorInvalidSectionOrTransitionMarker",
@@ -90,6 +92,9 @@ func (p parserMessage) String() string {
 // Message returns the message of the parserMessage as a string.
 func (p parserMessage) Message() (s string) {
 	switch p {
+	case infoUnderlineTooShortForTitle:
+		s = "Possible title underline, too short for the title.\n" +
+			"Treating it as ordinary text because it's so short."
 	case warningShortOverline:
 		s = "Title overline too short."
 	case warningShortUnderline:
@@ -114,11 +119,13 @@ func (p parserMessage) Message() (s string) {
 func (p parserMessage) Level() (s systemMessageLevel) {
 	lvl := int(p)
 	switch {
-	case lvl <= 2:
+	case lvl == 1:
+		s = levelInfo
+	case lvl <= 3:
 		s = levelWarning
-	case lvl == 3:
+	case lvl == 4:
 		s = levelError
-	case lvl >= 4:
+	case lvl >= 5:
 		s = levelSevere
 	}
 	return
@@ -399,6 +406,9 @@ func (t *Tree) section(i *item) Node {
 
 	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemTitle {
 		// Section with no overline
+		if t.token[zed].Length < 3 && t.token[zed].Length != pBack.Length {
+			return t.systemMessage(infoUnderlineTooShortForTitle)
+		}
 		title = t.peekBack(1)
 		underAdorn = i
 	} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
@@ -504,12 +514,26 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		Text:   err.Message(),
 		Length: len(err.Message()),
 	}, &t.id)
+	s.NodeList = append(s.NodeList, msg)
 
 	log.Debugln("FOUND", err)
 	// spd.Dump(t.token)
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
+	case infoUnderlineTooShortForTitle:
+		infoText := t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+		infoTextLen := len(infoText) + 1
+		s.Line = t.token[zed-1].Line
+		// Modify the token buffer to change the current token to a
+		// itemParagraph then backup the token buffer so the next loop gets the
+		// new paragraph
+		t.token[zed-1] = nil
+		t.token[zed].Type = itemParagraph
+		t.token[zed].Text = infoText
+		t.token[zed].Length = infoTextLen
+		t.token[zed].Line = s.Line
+		t.backup()
 	case errorInvalidSectionOrTransitionMarker:
 		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
 		s.Line = t.token[zed-1].Line
@@ -544,13 +568,15 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbTextLen = len(lbText)
 	}
 
-	lb := newLiteralBlock(&item{
-		Type:   itemLiteralBlock,
-		Text:   lbText,
-		Length: lbTextLen, // Add one to account for the backslash
-	}, &t.id)
+	if lbTextLen > 0 {
+		lb := newLiteralBlock(&item{
+			Type:   itemLiteralBlock,
+			Text:   lbText,
+			Length: lbTextLen, // Add one to account for the backslash
+		}, &t.id)
+		s.NodeList = append(s.NodeList, lb)
+	}
 
-	s.NodeList = append(s.NodeList, msg, lb)
 	t.Messages.append(s)
 
 	return s

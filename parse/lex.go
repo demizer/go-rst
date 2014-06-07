@@ -323,7 +323,7 @@ func isSection(l *lexer) (found bool) {
 	var nLine string
 
 	checkLine := func(input string, skipSpace bool) (a bool) {
-		end := 3
+		end := 2
 		for j := 0; j < end; j++ {
 			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
 			if skipSpace && isSpace(r) {
