@@ -248,6 +248,88 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
+var treeBackupTests = []struct {
+	name      string
+	input     string
+	nextNum   int   // The number of times to call Tree.next().
+	backupNum int   // Number of times to call Tree.backup(). Value starts at 1.
+	Back3Tok  *item // The third backup token.
+	Back2Tok  *item // The second backup token.
+	Back1Tok  *item // The first backup token.
+	ZedToken  *item // The item to expect at Tree.token[zed].
+	Peek1Tok  *item // The first peek token.
+	Peek2Tok  *item // The second peek token.
+	Peek3Tok  *item // The third peek token.
+}{
+	{
+		name:    "Backup once",
+		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
+		nextNum: 2, backupNum: 1,
+		ZedToken: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+	},
+	{
+		name:    "Backup twice",
+		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
+		nextNum: 2, backupNum: 2,
+		Peek1Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+	},
+	{
+		name:    "Backup thrice",
+		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
+		nextNum: 2, backupNum: 3,
+		Peek2Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+	},
+}
+
+func TestTreeBackup(t *testing.T) {
+	for _, tt := range treeBackupTests {
+		tree := New(tt.name, tt.input)
+		tree.lex = lex(tt.name, tt.input)
+		for i := 0; i < tt.nextNum; i++ {
+			tree.next()
+		}
+		for j := 0; j < tt.backupNum; j++ {
+			tree.backup()
+		}
+		for k := 0; k < len(tree.token); k++ {
+			tokenPos := k - zed
+			zedPos := "zed"
+			tokenPosStr := strconv.Itoa(int(math.Abs(float64(k - zed))))
+			var fName string
+			if tokenPos < 0 {
+				fName = "Back" + tokenPosStr + "Tok"
+				zedPos = "zed-" + tokenPosStr
+			} else if tokenPos == 0 {
+				fName = "ZedToken"
+			} else {
+				fName = "Peek" + tokenPosStr + "Tok"
+				zedPos = "zed+" + tokenPosStr
+			}
+			tokenPos = int(math.Abs(float64(k - zed)))
+			tField := reflect.ValueOf(tt).FieldByName(fName)
+			if tField.IsValid() && !tField.IsNil() {
+				val := tField.Interface().(*item)
+				if tree.token[k] == nil {
+					t.Errorf("Test: %q\n\t Got: token[%s] = %#+v, Expect: %#+v\n\n",
+						tree.Name, zedPos, tree.token[k], val)
+				}
+				if tree.token[k].ID != val.ID {
+					t.Errorf("Test: %q\n\t Got: token[%s].ID = %d, Expect: %d\n\n",
+						tree.Name, zedPos, tree.token[k].Type, val.ID)
+				}
+				if tree.token[k].Type != val.Type {
+					t.Errorf("Test: %q\n\t Got: token[%s].Type = %q, Expect: %q\n\n",
+						tree.Name, zedPos, tree.token[k].Type, val.Type)
+				}
+				if tree.token[k].Text != val.Text {
+					t.Errorf("Test: %q\n\t Got: token[%s].Text = %q, Expect: %q\n\n",
+						tree.Name, zedPos, tree.token[k].Text, val.Text)
+				}
+			}
+		}
+	}
+}
+
 var treeNextTests = []struct {
 	name     string
 	input    string

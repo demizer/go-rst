@@ -313,6 +313,15 @@ func (t *Tree) parse(tree *Tree) {
 	log.Debugln("End")
 }
 
+// backup shifts the token buffer right one position.
+func (t *Tree) backup() {
+	t.token[0] = nil
+	for x := len(t.token) - 1; x > 0; x-- {
+		t.token[x] = t.token[x-1]
+		t.token[x-1] = nil
+	}
+}
+
 // peekBack uses the token buffer to "look back" a number of positions (pos).
 // Looking back more positions than the Tree.token buffer allows (3) will
 // generate a panic.
