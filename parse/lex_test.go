@@ -666,12 +666,14 @@ func TestLexSectionTitleBad0201(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleBad0202(t *testing.T) {
-// testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleBad0202(t *testing.T) {
+	// Tests for short title overline with missing underline when the overline
+	// is less than three characters.
+	testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 func TestLexSectionLevelGood0000(t *testing.T) {
 	testPath := "test_section/03_level_good/00.00_section_level_return"

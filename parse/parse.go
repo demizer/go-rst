@@ -455,7 +455,10 @@ func (t *Tree) section(i *item) Node {
 		// itemParagraph.
 		t.next() // Move the token buffer past the error tokens
 		t.next()
-		if p := t.peek(1); p != nil && p.Type == itemBlankLine {
+		if t.token[zed].Length < 3 && t.token[zed].Length != pFor.Length {
+			t.backup()
+			return t.systemMessage(infoOverlineTooShortForTitle)
+		} else if p := t.peek(1); p != nil && p.Type == itemBlankLine {
 			return t.systemMessage(severeMissingMatchingUnderlineForOverline)
 		}
 		return t.systemMessage(severeIncompleteSectionTitle)
@@ -532,17 +535,24 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 
 	log.Debugln("FOUND", err)
 	// spd.Dump(t.token)
+	// os.Exit(1)
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
 	case infoOverlineTooShortForTitle:
-		infoText := t.token[zed-2].Text.(string) + "\n" + t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
-		infoTextLen := len(infoText) + 2
-		s.Line = t.token[zed-2].Line
+		var infoText string
+		if t.token[zed-2] != nil {
+			infoText = t.token[zed-2].Text.(string) + "\n" + t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+			s.Line = t.token[zed-2].Line
+			t.token[zed-2] = nil
+		} else {
+			infoText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+			s.Line = t.token[zed-1].Line
+		}
+		infoTextLen := len(infoText)
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop gets the
 		// new paragraph
-		t.token[zed-2] = nil
 		t.token[zed-1] = nil
 		t.token[zed].Type = itemParagraph
 		t.token[zed].Text = infoText
@@ -587,8 +597,8 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText) + 1
 	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
-		lbText = t.token[zed-2].Text.(string) + "\n" + t.token[zed-1].Text.(string) +
-			t.token[zed].Text.(string)
+		lbText = t.token[zed-2].Text.(string) + "\n" +
+			t.token[zed-1].Text.(string) + t.token[zed].Text.(string)
 		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText) + 1
 	case severeUnexpectedSectionTitleOrTransition:
