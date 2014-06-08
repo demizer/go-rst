@@ -1,23 +1,138 @@
-<document source="test data">
-    <paragraph>
-        Test return to existing, higher-level section (Title 4).
-    <section ids="title-1" names="title\ 1">
-        <title>
-            Title 1
-        <paragraph>
-            Paragraph 1.
-        <section ids="title-2" names="title\ 2">
-            <title>
-                Title 2
-            <paragraph>
-                Paragraph 2.
-            <section ids="title-3" names="title\ 3">
-                <title>
-                    Title 3
-                <paragraph>
-                    Paragraph 3.
-        <section ids="title-4" names="title\ 4">
-            <title>
-                Title 4
-            <paragraph>
-                Paragraph 4.
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Test return to existing, higher-level section (Title 4).",
+        "startPosition": 1,
+        "line": 1,
+        "length": 56
+    },
+    {
+        "id": 2,
+        "type": "NodeSection",
+        "level": 1,
+        "overLine": null,
+        "title": {
+            "id": 3,
+            "type": "NodeTitle",
+            "text": "Title 1",
+            "startPosition": 1,
+            "line": 3,
+            "length": 7
+        },
+        "underLine": {
+                "id": 4,
+                "type": "NodeAdornment",
+                "rune": "=",
+                "startPosition": 1,
+                "line": 4,
+                "length": 7
+        },
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "NodeParagraph",
+                "text": "Paragraph 1.",
+                "startPosition": 1,
+                "line": 5,
+                "length": 12
+            },
+            {
+                "id": 6,
+                "type": "NodeSection",
+                "level": 2,
+                "overLine": null,
+                "title": {
+                    "id": 7,
+                    "type": "NodeTitle",
+                    "text": "Title 2",
+                    "startPosition": 1,
+                    "line": 7,
+                    "length": 7
+                },
+                "underLine": {
+                    "id": 8,
+                    "type": "NodeAdornment",
+                    "rune": "-",
+                    "startPosition": 1,
+                    "line": 8,
+                    "length": 7
+                },
+                "nodeList": [
+                    {
+                        "id": 9,
+                        "type": "NodeParagraph",
+                        "text": "Paragraph 2.",
+                        "startPosition": 1,
+                        "line": 9,
+                        "length": 12
+                    },
+                    {
+                        "id": 10,
+                        "type": "NodeSection",
+                        "level": 3,
+                        "overLine": null,
+                        "title": {
+                            "id": 11,
+                            "type": "NodeTitle",
+                            "text": "Title 3",
+                            "startPosition": 1,
+                            "line": 11,
+                            "length": 7
+                        },
+                        "underLine": {
+                            "id": 12,
+                            "type": "NodeAdornment",
+                            "rune": "`",
+                            "startPosition": 1,
+                            "line": 12,
+                            "length": 7
+                        },
+                        "nodeList": [
+                            {
+                                "id": 13,
+                                "type": "NodeParagraph",
+                                "text": "Paragraph 3.",
+                                "startPosition": 1,
+                                "line": 13,
+                                "length": 12
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 14,
+                "type": "NodeSection",
+                "level": 2,
+                "overLine": null,
+                "title": {
+                    "id": 15,
+                    "type": "NodeTitle",
+                    "text": "Title 4",
+                    "startPosition": 1,
+                    "line": 15,
+                    "length": 7
+                },
+                "underLine": {
+                    "id": 16,
+                    "type": "NodeAdornment",
+                    "rune": "-",
+                    "startPosition": 1,
+                    "line": 16,
+                    "length": 7
+                },
+                "nodeList": [
+                    {
+                        "id": 17,
+                        "type": "NodeParagraph",
+                        "text": "Paragraph 4.",
+                        "startPosition": 1,
+                        "line": 17,
+                        "length": 12
+                    }
+                ]
+            }
+        ]
+    }
+]

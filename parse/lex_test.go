@@ -692,12 +692,13 @@ func TestLexSectionLevelGood0001(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionLevelGood0002(t *testing.T) {
-// testPath := "test_section/03_level_good/00.02_section_level_return"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionLevelGood0002(t *testing.T) {
+	// Test section level with subsection 4 returning to level two.
+	testPath := "test_section/03_level_good/00.02_section_level_return"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionLevelGood0100(t *testing.T) {
 // testPath := "test_section/03_level_good/01.00_section_level_return"
