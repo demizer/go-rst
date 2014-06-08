@@ -190,8 +190,8 @@ func (s *sectionLevels) Add(sec *SectionNode) (secLvl *sectionLevel, created boo
 }
 
 // LastSectionByLevel returns a pointer to the last section encountered by level
-func (s *sectionLevels) LastSectionByLevel(level int) *SectionNode {
-	var sec *SectionNode
+func (s *sectionLevels) LastSectionByLevel(level int) (sec *SectionNode) {
+exit:
 	for i := len(*s) - 1; i >= 0; i-- {
 		if (*s)[i].level != level {
 			continue
@@ -200,15 +200,15 @@ func (s *sectionLevels) LastSectionByLevel(level int) *SectionNode {
 			sec = (*s)[i].sections[j]
 			if sec.Level == level {
 				log.Debugln("Found section with level", sec.Level)
-				return sec
+				break exit
 			}
 		}
 	}
-	return sec
+	return
 }
 
-func (s *sectionLevels) LastSectionByLevelExcludeID(level int, excludeID ID) *SectionNode {
-	var sec *SectionNode
+func (s *sectionLevels) LastSectionByLevelExcludeID(level int, excludeID ID) (sec *SectionNode) {
+exit:
 	for i := len(*s) - 1; i >= 0; i-- {
 		if (*s)[i].level != level {
 			continue
@@ -221,11 +221,11 @@ func (s *sectionLevels) LastSectionByLevelExcludeID(level int, excludeID ID) *Se
 					continue
 				}
 				log.Debugln("Using section with ID ", sec.ID.String())
-				return sec
+				break exit
 			}
 		}
 	}
-	return nil
+	return
 }
 
 // Parse is the entry point for the reStructuredText parser. Errors generated

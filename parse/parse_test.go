@@ -797,6 +797,25 @@ func TestSectionLevelsLast(t *testing.T) {
 	}
 }
 
+func TestSystemMessageLevelFrom(t *testing.T) {
+	name := "Test systemMessageLevel with levelInfo"
+	test0 := ""
+	if -1 != systemMessageLevelFromString(test0) {
+		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+			name, systemMessageLevelFromString(test0), -1)
+	}
+	test1 := "INFO"
+	if levelInfo != systemMessageLevelFromString(test1) {
+		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+			name, systemMessageLevelFromString(test1), levelInfo)
+	}
+	test2 := "SEVERE"
+	if levelInfo != systemMessageLevelFromString(test1) {
+		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+			name, systemMessageLevelFromString(test2), levelSevere)
+	}
+}
+
 func TestParseSectionTitleGood0000(t *testing.T) {
 	// Basic title, underline, blankline, and paragraph test
 	testPath := "test_section/01_title_good/00.00_title_paragraph"
