@@ -217,6 +217,14 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 		case "indent", "overLine", "title", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "nodeList":
+			len1 := len(c.eFieldVal.([]interface{}))
+			len2 := len(c.pFieldVal.(NodeList))
+			if len1 != len2 {
+				id := c.eFieldVal.([]interface{})[0].(map[string]interface{})["id"]
+				c.t.Fatal("Expected NodeList values ( len =", len1, ") and parsed "+
+					"NodeList values ( len =", len2, ") do not match beginning at "+
+					"item ID", id)
+			}
 			for num, node := range c.eFieldVal.([]interface{}) {
 				// Store and reset the parser value, otherwise a panic will occur on
 				// the next iteration
