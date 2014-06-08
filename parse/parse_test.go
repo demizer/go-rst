@@ -947,13 +947,14 @@ func TestParseSectionLevelGood0002(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionLevelGood0100(t *testing.T) {
-// testPath := "test_section/03_level_good/01.00_section_level_return"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionLevelGood0100(t *testing.T) {
+	// Tests section level return with title overlines
+	testPath := "test_section/03_level_good/01.00_section_level_return"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 // func TestParseSectionLevelBad0000(t *testing.T) {
 // testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
