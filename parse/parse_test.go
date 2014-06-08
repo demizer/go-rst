@@ -873,15 +873,16 @@ func TestParseSectionTitleBad0200(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestLexSectionTitleBad0201(t *testing.T) {
-// testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleBad0201(t *testing.T) {
+	// Tests for title overlines and underlines that are less than three characters.
+	testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
-// func TestLexSectionTitleBad0202(t *testing.T) {
+// func TestParseSectionTitleBad0202(t *testing.T) {
 // testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
 // test := LoadTest(testPath)
 // pTree := parseTest(t, test)

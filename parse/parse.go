@@ -58,7 +58,8 @@ func systemMessageLevelFromString(name string) systemMessageLevel {
 type parserMessage int
 
 const (
-	okay parserMessage = iota
+	okay parserMessage = iota // For inconsistent title level message
+	infoOverlineTooShortForTitle
 	infoUnderlineTooShortForTitle
 	warningShortOverline
 	warningShortUnderline
@@ -68,10 +69,12 @@ const (
 	severeIncompleteSectionTitle
 	severeMissingMatchingUnderlineForOverline
 	severeOverlineUnderlineMismatch
+	severeTitleLevelInconsistent
 )
 
 var parserErrors = [...]string{
 	"parseOkay",
+	"infoOverlineTooShortForTitle",
 	"infoUnderlineTooShortForTitle",
 	"warningShortOverline",
 	"warningShortUnderline",
@@ -81,6 +84,7 @@ var parserErrors = [...]string{
 	"severeIncompleteSectionTitle",
 	"severeMissingMatchingUnderlineForOverline",
 	"severeOverlineUnderlineMismatch",
+	"severeTitleLevelInconsistent",
 }
 
 // String implements Stringer and returns the parserMessage as a string. The
@@ -92,6 +96,9 @@ func (p parserMessage) String() string {
 // Message returns the message of the parserMessage as a string.
 func (p parserMessage) Message() (s string) {
 	switch p {
+	case infoOverlineTooShortForTitle:
+		s = "Possible incomplete section title.\n" +
+			"Treating the overline as ordinary text because it's so short."
 	case infoUnderlineTooShortForTitle:
 		s = "Possible title underline, too short for the title.\n" +
 			"Treating it as ordinary text because it's so short."
@@ -111,6 +118,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Missing matching underline for section title overline."
 	case severeOverlineUnderlineMismatch:
 		s = "Title overline & underline mismatch."
+	case severeTitleLevelInconsistent:
+		s = "Title level inconsistent"
 	}
 	return
 }
@@ -119,13 +128,13 @@ func (p parserMessage) Message() (s string) {
 func (p parserMessage) Level() (s systemMessageLevel) {
 	lvl := int(p)
 	switch {
-	case lvl == 1:
+	case lvl > 0 && lvl <= 2:
 		s = levelInfo
-	case lvl <= 3:
+	case lvl <= 4:
 		s = levelWarning
-	case lvl == 4:
+	case lvl == 5:
 		s = levelError
-	case lvl >= 5:
+	case lvl >= 6:
 		s = levelSevere
 	}
 	return
@@ -419,6 +428,11 @@ func (t *Tree) section(i *item) Node {
 		return t.systemMessage(severeUnexpectedSectionTitleOrTransition)
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
 		// Section with overline
+		if t.token[zed].Length < 3 && t.token[zed].Length != pFor.Length {
+			t.next()
+			t.next()
+			return t.systemMessage(infoOverlineTooShortForTitle)
+		}
 		overAdorn = i
 		t.next()
 	loop:
@@ -521,6 +535,20 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
+	case infoOverlineTooShortForTitle:
+		infoText := t.token[zed-2].Text.(string) + "\n" + t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+		infoTextLen := len(infoText) + 2
+		s.Line = t.token[zed-2].Line
+		// Modify the token buffer to change the current token to a
+		// itemParagraph then backup the token buffer so the next loop gets the
+		// new paragraph
+		t.token[zed-2] = nil
+		t.token[zed-1] = nil
+		t.token[zed].Type = itemParagraph
+		t.token[zed].Text = infoText
+		t.token[zed].Length = infoTextLen
+		t.token[zed].Line = s.Line
+		t.backup()
 	case infoUnderlineTooShortForTitle:
 		infoText := t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
 		infoTextLen := len(infoText) + 1
