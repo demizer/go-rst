@@ -893,6 +893,7 @@ func TestParseSectionTitleBad0202(t *testing.T) {
 }
 
 func TestParseSectionLevelGood0000(t *testing.T) {
+	// Tests section level return to level one after three subsections.
 	testPath := "test_section/03_level_good/00.00_section_level_return"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -901,6 +902,8 @@ func TestParseSectionLevelGood0000(t *testing.T) {
 }
 
 func TestParseSectionLevelGood0001(t *testing.T) {
+	// Tests section level return to level one after 1 subsection. The second
+	// level one section has one subsection.
 	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
