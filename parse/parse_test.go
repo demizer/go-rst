@@ -552,16 +552,21 @@ func TestTreePeek(t *testing.T) {
 	}
 }
 
+type testSectionLevelSectionNode struct {
+	eMessage parserMessage
+	node     *SectionNode
+}
+
 var testSectionLevelsAdd = []struct {
 	name      string
-	tSections []*SectionNode
-	eLevels   sectionLevels
+	tSections []*testSectionLevelSectionNode
+	eLevels   []*sectionLevel
 }{
 	{
 		name: "Test two levels with a single SectionNode each",
-		tSections: []*SectionNode{
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
 		},
 		eLevels: []*sectionLevel{
 			{rChar: '=', level: 1,
@@ -578,11 +583,11 @@ var testSectionLevelsAdd = []struct {
 	},
 	{
 		name: "Test two levels with on level one return",
-		tSections: []*SectionNode{
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
 		},
 		eLevels: []*sectionLevel{
 			{rChar: '=', level: 1,
@@ -601,11 +606,11 @@ var testSectionLevelsAdd = []struct {
 	},
 	{
 		name: "Test three levels with one return to level 1",
-		tSections: []*SectionNode{
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}},
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
 		},
 		eLevels: []*sectionLevel{
 			{rChar: '=', level: 1,
@@ -628,13 +633,13 @@ var testSectionLevelsAdd = []struct {
 	},
 	{
 		name: "Test three levels with two returns to level 1",
-		tSections: []*SectionNode{
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}},
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
 		},
 		eLevels: []*sectionLevel{
 			{rChar: '=', level: 1,
@@ -657,17 +662,42 @@ var testSectionLevelsAdd = []struct {
 			},
 		},
 	},
+	{
+		name: "Test inconsistent section level",
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{eMessage: severeTitleLevelInconsistent,
+				node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '`'}}},
+		},
+	},
+	{
+		name: "Test inconsistent section level 2",
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
+			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+			{eMessage: severeTitleLevelInconsistent,
+				node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '`'}}},
+		},
+	},
 }
 
 func TestSectionLevelsAdd(t *testing.T) {
 	for _, tt := range testSectionLevelsAdd {
 		secLvls := new(sectionLevels)
-		for num, secNode := range tt.tSections {
-			log.Debugf("NUM: %d, SECTION POINTER ADDR: %p\n", num, &secNode)
-			secLvls.Add(secNode)
+		for _, secNode := range tt.tSections {
+			msg := secLvls.Add(secNode.node)
+			if msg > parserMessageNil && msg != secNode.eMessage {
+				t.Fatalf("Test: %q\n\t    Got: parserMessage = %q, Expect: %q\n\n",
+					tt.name, msg, secNode.eMessage)
+			}
 		}
 		for sNum, secLvl := range tt.eLevels {
-			pSecLvl := (*secLvls)[sNum]
+			pSecLvl := (secLvls.levels)[sNum]
 			if secLvl.level != pSecLvl.level {
 				t.Errorf("Test: %q\n\t Got: sectionLevel.Level = %d, Expect: %d\n\n",
 					tt.name, secLvl.level, pSecLvl.level)
@@ -694,7 +724,6 @@ var testSectionLevelsLast = []struct {
 	name      string
 	tLevel    int // The last level to get
 	tSections []*SectionNode
-	excludeID ID
 	eLevel    sectionLevel // There can be only one
 }{
 	{
@@ -746,23 +775,6 @@ var testSectionLevelsLast = []struct {
 			},
 		},
 	},
-	{
-		name:   "Test last section level two, exclude ID 4",
-		tLevel: 2, excludeID: 4,
-		tSections: []*SectionNode{
-			{ID: 1, Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{ID: 2, Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{ID: 3, Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{ID: 4, Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{ID: 5, Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
-		},
-		eLevel: sectionLevel{
-			rChar: '-', level: 2,
-			sections: []*SectionNode{
-				{ID: 3, Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			},
-		},
-	},
 }
 
 func TestSectionLevelsLast(t *testing.T) {
@@ -772,11 +784,7 @@ func TestSectionLevelsLast(t *testing.T) {
 			secLvls.Add(secNode)
 		}
 		var pSec *SectionNode
-		if tt.excludeID > 0 {
-			pSec = secLvls.LastSectionByLevelExcludeID(tt.tLevel, tt.excludeID)
-		} else {
-			pSec = secLvls.LastSectionByLevel(tt.tLevel)
-		}
+		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
 			t.Errorf("Test: %q\n\t Got: sectionLevel.Level = %d, Expect: %d\n\n",
 				tt.name, tt.eLevel.level, pSec.Level)

@@ -708,12 +708,13 @@ func TestLexSectionLevelGood0100(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionLevelBad0000(t *testing.T) {
-// testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionLevelBad0000(t *testing.T) {
+	// Test section level return on bad level 2 section adornment
+	testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionLevelBad0001(t *testing.T) {
 // testPath := // "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"

@@ -58,7 +58,7 @@ func systemMessageLevelFromString(name string) systemMessageLevel {
 type parserMessage int
 
 const (
-	okay parserMessage = iota // For inconsistent title level message
+	parserMessageNil parserMessage = iota
 	infoOverlineTooShortForTitle
 	infoUnderlineTooShortForTitle
 	warningShortOverline
@@ -73,7 +73,7 @@ const (
 )
 
 var parserErrors = [...]string{
-	"parseOkay",
+	"parserMessageNil",
 	"infoOverlineTooShortForTitle",
 	"infoUnderlineTooShortForTitle",
 	"warningShortOverline",
@@ -140,30 +140,28 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	return
 }
 
-// sectionLevel keeps track of the encountered sections during parsing.
-// "section" is a pointer to the actual SectionNode. "nodeTarget" is used to
-// append child nodes of the section during parsing. "subSec" contains
-// additional children sections found during parsing using the adornment node
-// as encountered to determine the hierarchical level.
+// sectionLevel is a single section level. sections containes a list of
+// pointers to SectionNode that are dertermined to be a section of the level
+// indicated by level. rChar is the rune character that denotes the section
+// level.
 type sectionLevel struct {
 	rChar    rune
 	level    int
 	sections []*SectionNode // New sections matching level are appended here
 }
 
-// sectionLevels contain the encountered sections as an array of pointers to a
-// sectionLevel. Each new section encountered has the NodeTarget set to that
-// SectionNode's NodeList. Newly parsed sections that have a matching rune to
-// an existing level 1 section are appended to the end of sectionLevels. The
-// section hierarchy encountered in sectionLevels[0] is the standard to which
-// all other hierarchies must abide by. Not doing so would produce an
-// parserMessage.
-type sectionLevels []*sectionLevel
+// sectionLevels contains the encountered section levels in order by level.
+// levels[0] is section level 1 and levels[1] is section level 2.
+// lastSectionNode is a pointer to the lastSectionNode added to levels.
+type sectionLevels struct {
+	lastSectionNode *SectionNode
+	levels          []*sectionLevel
+}
 
 // FindByRune loops through the sectionLevels to find a section using a Rune as
 // the key. If the section is found, a pointer to the SectionNode is returned.
 func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
-	for _, sec := range *s {
+	for _, sec := range s.levels {
 		if sec.rChar == rChar {
 			return sec
 		}
@@ -171,56 +169,58 @@ func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
 	return nil
 }
 
-func (s *sectionLevels) Add(sec *SectionNode) (secLvl *sectionLevel, created bool, err parserMessage) {
-	secLvl = s.FindByRune(sec.UnderLine.Rune)
+// Add determines if the underline rune in the sec argument matches any
+// existing sectionLevel in sectionLevels. Add also checks the section level
+// ordering is correct and returns a severeTitleLevelInconsistent parserMessage
+// if inconsistencies are found.
+func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
+	level := 1
+	secLvl := s.FindByRune(sec.UnderLine.Rune)
 	if secLvl == nil {
-		log.Debugln("Creating new sectionLevel:", len(*s)+1)
-		secLvl = &sectionLevel{rChar: sec.UnderLine.Rune, level: len(*s) + 1}
-		created = true
-		*s = append(*s, secLvl)
+		if s.lastSectionNode != nil {
+			level = s.lastSectionNode.Level + 1
+			lastRune := s.SectionLevelByLevel(s.lastSectionNode.Level + 1)
+			if lastRune != nil && lastRune.rChar != sec.UnderLine.Rune {
+				return severeTitleLevelInconsistent
+			}
+		} else {
+			level = len(s.levels) + 1
+		}
+		log.Debugln("Creating new sectionLevel:", level)
+		secLvl = &sectionLevel{rChar: sec.UnderLine.Rune, level: level}
+		s.levels = append(s.levels, secLvl)
 		secLvl.sections = append(secLvl.sections, sec)
 	} else {
-		if secLvl.rChar != sec.UnderLine.Rune {
-			err = severeTitleLevelInconsistent
-		}
 		log.Debugln("Using existing sectionLevel:", secLvl.level)
+		level = secLvl.level
 		secLvl.sections = append(secLvl.sections, sec)
 	}
+	sec.Level = level
+	s.lastSectionNode = sec
 	return
 }
 
-// LastSectionByLevel returns a pointer to the last section encountered by level
+// SectionLevelByLevel returns a pointer to a sectionLevel of level level. Nil
+// is returned if l is greater than the number of section levels encountered.
+func (s *sectionLevels) SectionLevelByLevel(level int) *sectionLevel {
+	if level > len(s.levels) {
+		return nil
+	}
+	return (s.levels)[level-1]
+}
+
+// LastSectionByLevel returns a pointer to the last section encountered by
+// level.
 func (s *sectionLevels) LastSectionByLevel(level int) (sec *SectionNode) {
 exit:
-	for i := len(*s) - 1; i >= 0; i-- {
-		if (*s)[i].level != level {
+	for i := len(s.levels) - 1; i >= 0; i-- {
+		if (s.levels)[i].level != level {
 			continue
 		}
-		for j := len((*s)[i].sections) - 1; j >= 0; j-- {
-			sec = (*s)[i].sections[j]
+		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
+			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
 				log.Debugln("Found section with level", sec.Level)
-				break exit
-			}
-		}
-	}
-	return
-}
-
-func (s *sectionLevels) LastSectionByLevelExcludeID(level int, excludeID ID) (sec *SectionNode) {
-exit:
-	for i := len(*s) - 1; i >= 0; i-- {
-		if (*s)[i].level != level {
-			continue
-		}
-		for j := len((*s)[i].sections) - 1; j >= 0; j-- {
-			sec = (*s)[i].sections[j]
-			if sec.Level == level {
-				if sec.ID == excludeID {
-					log.Debugln("Excluding ID", sec.ID)
-					continue
-				}
-				log.Debugln("Using section with ID ", sec.ID.String())
 				break exit
 			}
 		}
@@ -475,24 +475,21 @@ func (t *Tree) section(i *item) Node {
 	// Determine the level of the section and where to append it to in t.Nodes
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
 	log.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
-	eSec, created, msg := t.sectionLevels.Add(sec)
-	if msg != okay {
+	msg := t.sectionLevels.Add(sec)
+	if msg != parserMessageNil {
 		log.Debugln("Found inconsistent section level!")
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
-	sec.Level = eSec.level
+	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
 		log.Debugln("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = t.Nodes
 	} else {
-		var lSec *SectionNode
-		if created {
+		lSec := t.sectionLevels.lastSectionNode
+		if sec.Level > 1 {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
-			t.nodeTarget = &lSec.NodeList
-		} else {
-			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
-			t.nodeTarget = &lSec.NodeList
 		}
+		t.nodeTarget = &lSec.NodeList
 		log.Debugln("Setting nodeTarget to section ID", lSec.ID.String())
 	}
 
