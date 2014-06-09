@@ -1,34 +1,82 @@
-<document source="test data">
-    <system_message level="1" line="1" source="test data" type="INFO">
-        <paragraph>
-            Possible incomplete section title.
-            Treating the overline as ordinary text because it's so short.
-    <section dupnames="..." ids="id1">
-        <title>
-            ...
-        <system_message level="1" line="4" source="test data" type="INFO">
-            <paragraph>
-                Possible incomplete section title.
-                Treating the overline as ordinary text because it's so short.
-        <section dupnames="..." ids="id2">
-            <title>
-                ...
-            <system_message backrefs="id2" level="1" line="5" source="test data" type="INFO">
-                <paragraph>
-                    Duplicate implicit target name: "...".
-            <system_message level="1" line="7" source="test data" type="INFO">
-                <paragraph>
-                    Possible incomplete section title.
-                    Treating the overline as ordinary text because it's so short.
-    <system_message level="1" line="7" source="test data" type="INFO">
-        <paragraph>
-            Possible incomplete section title.
-            Treating the overline as ordinary text because it's so short.
-    <section dupnames="..." ids="id3">
-        <title>
-            ...
-        <system_message backrefs="id3" level="1" line="8" source="test data" type="INFO">
-            <paragraph>
-                Duplicate implicit target name: "...".
-        <paragraph>
-            ...
+[
+    {
+        "id": 1,
+        "type": "NodeSystemMessage",
+        "severity": "ERROR",
+        "line": 1,
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeParagraph",
+                "text": "Invalid section title or transition marker.",
+                "length": 43
+            },
+            {
+                "id": 3,
+                "type": "NodeLiteralBlock",
+                "text": "...\n...",
+                "length": 7
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "NodeSystemMessage",
+        "severity": "ERROR",
+        "line": 4,
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "NodeParagraph",
+                "text": "Invalid section title or transition marker.",
+                "length": 43
+            },
+            {
+                "id": 6,
+                "type": "NodeLiteralBlock",
+                "text": "...\n---",
+                "length": 7
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "type": "NodeSystemMessage",
+        "severity": "ERROR",
+        "line": 7,
+        "nodeList": [
+            {
+                "id": 8,
+                "type": "NodeParagraph",
+                "text": "Invalid section title or transition marker.",
+                "length": 43
+            },
+            {
+                "id": 9,
+                "type": "NodeLiteralBlock",
+                "text": "...\n...",
+                "length": 7
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "type": "NodeSystemMessage",
+        "severity": "ERROR",
+        "line": 8,
+        "nodeList": [
+            {
+                "id": 11,
+                "type": "NodeParagraph",
+                "text": "Invalid section title or transition marker.",
+                "length": 43
+            },
+            {
+                "id": 12,
+                "type": "NodeLiteralBlock",
+                "text": "...\n...",
+                "length": 7
+            }
+        ]
+    }
+]

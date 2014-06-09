@@ -814,12 +814,14 @@ func TestLexSectionTitleWithOverlineBad0300(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
-// testPath := // "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
+	// Test three character section adornments with no titles or blanklines in
+	// between.
+	testPath := "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
 // testPath := // "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"

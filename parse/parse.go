@@ -466,6 +466,8 @@ func (t *Tree) section(i *item) Node {
 		// Missing section title
 		t.next() // Move the token buffer past the error token
 		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
+	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemEOF {
+		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
 	}
 
 	if overAdorn != nil && overAdorn.Text.(string) != underAdorn.Text.(string) {
@@ -533,8 +535,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	s.NodeList = append(s.NodeList, msg)
 
 	log.Debugln("FOUND", err)
+	// if t.token[zed].Line == 9 {
 	// spd.Dump(t.token)
 	// os.Exit(1)
+	// }
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {
