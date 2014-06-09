@@ -558,7 +558,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		t.backup()
 	case infoUnderlineTooShortForTitle:
 		infoText := t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
-		infoTextLen := len(infoText) + 1
+		infoTextLen := len(infoText)
 		s.Line = t.token[zed-1].Line
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop gets the
@@ -585,19 +585,19 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		newLine = "\n"
 		lbText = overLine + newLine + indent + title + newLine + underLine
 		s.Line = t.token[backToken].Line
-		lbTextLen = len(lbText) + 2
+		lbTextLen = len(lbText)
 	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
 			backToken = zed - 2
 		}
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
-		lbTextLen = len(lbText) + 1
+		lbTextLen = len(lbText)
 	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
 		lbText = t.token[zed-2].Text.(string) + "\n" +
 			t.token[zed-1].Text.(string) + t.token[zed].Text.(string)
 		s.Line = t.token[zed-2].Line
-		lbTextLen = len(lbText) + 1
+		lbTextLen = len(lbText)
 	case severeUnexpectedSectionTitleOrTransition:
 		lbText = t.token[zed].Text.(string)
 		lbTextLen = len(lbText)

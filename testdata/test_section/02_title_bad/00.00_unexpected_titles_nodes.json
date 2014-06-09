@@ -28,7 +28,7 @@
                         "id": 5,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n=====",
-                        "length": 12
+                        "length": 11
                     }
                 ]
             },
@@ -76,7 +76,7 @@
                         "id": 12,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n-----",
-                        "length": 12
+                        "length": 11
                     }
                 ]
             },
