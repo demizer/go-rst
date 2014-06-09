@@ -473,11 +473,13 @@ func (t *Tree) section(i *item) Node {
 	}
 
 	// Determine the level of the section and where to append it to in t.Nodes
+	undoID := t.id
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
 	log.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
 		log.Debugln("Found inconsistent section level!")
+		t.id = undoID
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 	sec.Level = t.sectionLevels.lastSectionNode.Level
@@ -582,13 +584,14 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = overLine + newLine + indent + title + newLine + underLine
 		s.Line = t.token[backToken].Line
 		lbTextLen = len(lbText)
-	case warningShortUnderline, severeUnexpectedSectionTitle:
+	case warningShortUnderline, severeUnexpectedSectionTitle, severeTitleLevelInconsistent:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
 			backToken = zed - 2
 		}
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
+		s.Line = t.token[zed-1].Line
 	case errorInvalidSectionOrTransitionMarker:
 		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
 		s.Line = t.token[zed-1].Line
