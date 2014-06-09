@@ -749,6 +749,7 @@ func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
+	// Test section title with overline, but no underline.
 	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -756,6 +757,7 @@ func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
+	// Test inset title with overline but missing underline.
 	testPath := "test_section/06_title_with_overline_bad/00.01_inset_title_missing_underline_with_blankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -763,20 +765,24 @@ func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
+	// Test inset title with overline but missing underline. The title is
+	// followed by a blank line and a paragraph.
 	testPath := "test_section/06_title_with_overline_bad/00.02_inset_title_missing_underline_and_para"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
-// testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
+	// Test section overline with missmatched underline.
+	testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
+	// Test overline with really long title.
 	testPath := "test_section/06_title_with_overline_bad/01.00_title_too_long"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -784,6 +790,7 @@ func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
+	// Test overline and underline with blanklines instead of a title.
 	testPath := "test_section/06_title_with_overline_bad/02.00_missing_titles_with_blankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -791,6 +798,8 @@ func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
+	// Test overline and underline with nothing where the title is supposed to
+	// be.
 	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)

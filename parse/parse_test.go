@@ -1012,6 +1012,7 @@ func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
+	// Test section title with overline, but no underline.
 	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1020,6 +1021,7 @@ func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
+	// Test inset title with overline but missing underline.
 	testPath := "test_section/06_title_with_overline_bad/00.01_inset_title_missing_underline_with_blankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1028,6 +1030,8 @@ func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
+	// Test inset title with overline but missing underline. The title is
+	// followed by a blank line and a paragraph.
 	testPath := "test_section/06_title_with_overline_bad/00.02_inset_title_missing_underline_and_para"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1036,6 +1040,7 @@ func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
+	// Test section overline with missmatched underline.
 	testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1044,6 +1049,7 @@ func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
+	// Test overline with really long title.
 	testPath := "test_section/06_title_with_overline_bad/01.00_title_too_long"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1052,6 +1058,7 @@ func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
+	// Test overline and underline with blanklines instead of a title.
 	testPath := "test_section/06_title_with_overline_bad/02.00_missing_titles_with_blankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -1060,6 +1067,8 @@ func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
+	// Test overline and underline with nothing where the title is supposed to
+	// be.
 	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
