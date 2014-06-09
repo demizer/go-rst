@@ -1,7 +1,7 @@
 =========================================
 The reStructuredText Test Data For GO-RST
 =========================================
-:Modified: Mon Jun 09 01:42 2014
+:Modified: Mon Jun 09 01:48 2014
 
 These test files have been transcoded from the docutils "pseudo xml" format
 into standard JSON.
@@ -18,14 +18,15 @@ Test Layout Overview
   sub-catagories.
 * There are currently three files per test: the rst file, the expected lexer
   output "items.json", and the expected parser output "nodes.json".
-* The directories end with "good" or "bad" to indicate how the parser is
-  expected to parse the test. Directories ending with "good" are proper syntax
-  and are expected to be parsed correctly. Directories ending with "bad"
-  usually means the parser is going to generate a system message or two.
+* The sub-directories of each category end with "good" or "bad" to indicate how
+  the parser is expected to parse the test. Directories ending with "good" are
+  proper syntax and are expected to be parsed correctly. Directories ending
+  with "bad" usually means the parser is going to generate a system message or
+  two.
 * Each test file begins with a number syntax formatted with two leading digits,
-  a decimal, and two trailing digits: "00.00" This is to allow for incrementally
-  adding tests at any point to a general category of a test for different
-  variations of that test.
+  a decimal, and two trailing digits: "00.00" This is to allow for
+  incrementally adding additional variations of a single test while keeping
+  the file names unique.
 
 ---------------
 Differing Tests
