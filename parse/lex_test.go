@@ -725,6 +725,7 @@ func TestLexSectionLevelBad0001(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
+	// Test simple section with title overline.
 	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)
@@ -732,6 +733,7 @@ func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 }
 
 func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
+	// Test simple section with inset title and overline.
 	testPath := "test_section/05_title_with_overline_good/01.00_inset_title_with_overline"
 	test := LoadTest(testPath)
 	items := lexTest(t, test)

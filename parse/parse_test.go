@@ -985,6 +985,7 @@ func TestParseSectionLevelBad0001(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
+	// Test simple section with title overline.
 	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
@@ -993,6 +994,7 @@ func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
+	// Test simple section with inset title and overline.
 	testPath := "test_section/05_title_with_overline_good/01.00_inset_title_with_overline"
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
