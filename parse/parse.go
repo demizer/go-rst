@@ -601,6 +601,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	case severeUnexpectedSectionTitleOrTransition:
 		lbText = t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
+		s.Line = t.token[zed].Line
 	}
 
 	if lbTextLen > 0 {

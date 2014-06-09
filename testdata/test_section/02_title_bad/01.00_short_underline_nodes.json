@@ -25,7 +25,7 @@
                 "id": 4,
                 "type": "NodeSystemMessage",
                 "severity": "WARNING",
-                "line": 2,
+                "line": 1,
                 "nodeList": [
                     {
                         "id": 5,
