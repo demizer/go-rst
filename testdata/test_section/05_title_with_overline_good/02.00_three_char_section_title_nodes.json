@@ -1,13 +1,80 @@
-<document source="test data">
-    <section ids="one" names="one">
-        <title>
-            One
-        <paragraph>
-            The bubble-up parser strategy conflicts with short titles
-            (<= 3 char-long over- & underlines).
-    <section ids="two" names="two">
-        <title>
-            Two
-        <paragraph>
-            The parser currently contains a work-around kludge.
-            Without it, the parser ends up in an infinite loop.
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 2,
+            "type": "NodeTitle",
+            "text": "One",
+            "startPosition": 1,
+            "line": 2,
+            "length": 3
+        },
+        "overLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 1,
+            "length": 3
+        },
+        "underLine": {
+            "id": 4,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 3,
+            "length": 3
+        },
+        "nodeList": [
+            {
+                "id": 5,
+                "type": "NodeParagraph",
+                "text": "Paragraph 1.",
+                "startPosition": 1,
+                "line": 5,
+                "length": 12
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 7,
+            "type": "NodeTitle",
+            "text": "Two",
+            "startPosition": 1,
+            "line": 8,
+            "length": 3
+        },
+        "overLine": {
+            "id": 8,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 7,
+            "length": 3
+        },
+        "underLine": {
+            "id": 9,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 9,
+            "length": 3
+        },
+        "nodeList": [
+            {
+                "id": 10,
+                "type": "NodeParagraph",
+                "text": "Paragraph 2.",
+                "startPosition": 1,
+                "line": 11,
+                "length": 12
+            }
+        ]
+    }
+]

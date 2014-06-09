@@ -740,12 +740,13 @@ func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
-// testPath := // "test_section/05_title_with_overline_good/02.00_three_char_section_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
+	// Test sections with three character adornments lines.
+	testPath := "test_section/05_title_with_overline_good/02.00_three_char_section_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
 	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
