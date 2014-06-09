@@ -201,7 +201,7 @@ func (l *lexer) emit(t itemElement) {
 
 	l.items <- nItem
 	l.lastItem = &nItem
-	l.start += l.index
+	l.start = l.index
 }
 
 // backup backs up the lexer position by a number of rune positions (pos). backup cannot backup off
