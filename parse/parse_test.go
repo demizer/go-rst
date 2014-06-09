@@ -146,7 +146,7 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("(ID: %d) Got:\t%s = %q\n\t\tExpect: %s = %q\n\n", c.id, c.pFieldName, got,
+	c.t.Errorf("(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q\n\n", c.id, c.pFieldName, got,
 		c.eFieldName, exp)
 }
 
@@ -221,6 +221,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
 				id := c.eFieldVal.([]interface{})[0].(map[string]interface{})["id"]
+				spd.Dump(pNode)
+				spd.Dump(eNodes)
 				c.t.Fatal("Expected NodeList values ( len =", len1, ") and parsed "+
 					"NodeList values ( len =", len2, ") do not match beginning at "+
 					"item ID", id)
