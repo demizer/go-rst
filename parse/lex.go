@@ -184,7 +184,7 @@ func (l *lexer) emit(t itemElement) {
 		tok = l.lines[l.line][l.start:l.index]
 	}
 
-	log.Infof("\n#### %s: %q start: %d (%d) end: %d (%d) line: %d\n\n", t,
+	log.Infof("\n#### %s: %q l.start: %d (%d) l.index: %d (%d) line: %d\n\n", t,
 		tok, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 
 	l.id++
@@ -461,7 +461,6 @@ func lexSpace(l *lexer) stateFn {
 	log.Debugf("l.start: %d, l.index: %d\n", l.index, l.start)
 	if l.start < l.index {
 		l.emit(itemSpace)
-		// l.next()
 	}
 	log.Debugln("End")
 	return lexStart
