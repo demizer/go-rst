@@ -569,10 +569,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
 		t.backup()
-	case errorInvalidSectionOrTransitionMarker:
-		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
-		s.Line = t.token[zed-1].Line
-		lbTextLen = len(lbText) + 1
 	case warningShortOverline, severeOverlineUnderlineMismatch:
 		backToken = zed - 2
 		if t.peekBack(2).Type == itemSpace {
@@ -592,6 +588,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 			backToken = zed - 2
 		}
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
+		lbTextLen = len(lbText)
+	case errorInvalidSectionOrTransitionMarker:
+		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+		s.Line = t.token[zed-1].Line
 		lbTextLen = len(lbText)
 	case severeIncompleteSectionTitle, severeMissingMatchingUnderlineForOverline:
 		lbText = t.token[zed-2].Text.(string) + "\n" +
