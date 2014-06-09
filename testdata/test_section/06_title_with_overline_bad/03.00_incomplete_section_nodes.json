@@ -1,8 +1,24 @@
-<document source="test data">
-    <system_message level="1" line="1" source="test data" type="INFO">
-        <paragraph>
-            Possible incomplete section title.
-            Treating the overline as ordinary text because it's so short.
-    <paragraph>
-        ==
-        ABC
+[
+    {
+        "id": 1,
+        "type": "NodeSystemMessage",
+        "severity": "INFO",
+        "line": 1,
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeParagraph",
+                "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
+                "length": 96
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "NodeParagraph",
+        "text": "==\nABC",
+        "startPosition": 1,
+        "line": 1,
+        "length": 6
+    }
+]

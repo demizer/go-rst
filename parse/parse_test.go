@@ -1076,13 +1076,14 @@ func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
-// testPath := "test_section/06_title_with_overline_bad/03.00_incomplete_section"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
+	// Test two character overline with no underline.
+	testPath := "test_section/06_title_with_overline_bad/03.00_incomplete_section"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 // func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
 // testPath := // "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
