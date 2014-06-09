@@ -716,12 +716,13 @@ func TestLexSectionLevelBad0000(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionLevelBad0001(t *testing.T) {
-// testPath := // "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionLevelBad0001(t *testing.T) {
+	// Test section level return with title overlines on bad level 2 section adornment
+	testPath := "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"

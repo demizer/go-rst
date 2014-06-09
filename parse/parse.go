@@ -584,7 +584,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = overLine + newLine + indent + title + newLine + underLine
 		s.Line = t.token[backToken].Line
 		lbTextLen = len(lbText)
-	case warningShortUnderline, severeUnexpectedSectionTitle, severeTitleLevelInconsistent:
+	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken = zed - 1
 		if t.peekBack(1).Type == itemSpace {
 			backToken = zed - 2
@@ -605,6 +605,17 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
 		s.Line = t.token[zed].Line
+	case severeTitleLevelInconsistent:
+		if t.peekBack(2).Type == itemSectionAdornment {
+			lbText = t.token[zed-2].Text.(string) + "\n" +
+				t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+			lbTextLen = len(lbText)
+			s.Line = t.token[zed-2].Line
+		} else {
+			lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
+			lbTextLen = len(lbText)
+			s.Line = t.token[zed-1].Line
+		}
 	}
 
 	if lbTextLen > 0 {
