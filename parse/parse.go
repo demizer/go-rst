@@ -355,6 +355,15 @@ func (t *Tree) peekBack(pos int) *item {
 	return t.token[zed-pos]
 }
 
+func (t *Tree) peekBackTo(item itemElement) (tok *item) {
+	for i := zed - 1; i >= 0; i-- {
+		if t.token[i] != nil && t.token[i].Type == item {
+			return t.token[i]
+		}
+	}
+	return
+}
+
 // peek looks ahead in the token stream a number of positions (pos) and gets
 // the next token from the lexer. A pointer to the token is kept in the
 // Tree.token buffer. If a token pointer already exists in the buffer, that
