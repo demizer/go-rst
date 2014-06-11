@@ -60,6 +60,7 @@ type parserMessage int
 const (
 	parserMessageNil parserMessage = iota
 	infoOverlineTooShortForTitle
+	infoUnexpectedTitleOverlineOrTransition
 	infoUnderlineTooShortForTitle
 	warningShortOverline
 	warningShortUnderline
@@ -75,6 +76,7 @@ const (
 var parserErrors = [...]string{
 	"parserMessageNil",
 	"infoOverlineTooShortForTitle",
+	"infoUnexpectedTitleOverlineOrTransition",
 	"infoUnderlineTooShortForTitle",
 	"warningShortOverline",
 	"warningShortUnderline",
@@ -99,6 +101,9 @@ func (p parserMessage) Message() (s string) {
 	case infoOverlineTooShortForTitle:
 		s = "Possible incomplete section title.\n" +
 			"Treating the overline as ordinary text because it's so short."
+	case infoUnexpectedTitleOverlineOrTransition:
+		s = "Unexpected possible title overline or transition.\n" +
+			"Treating it as ordinary text because it's so short."
 	case infoUnderlineTooShortForTitle:
 		s = "Possible title underline, too short for the title.\n" +
 			"Treating it as ordinary text because it's so short."
@@ -128,13 +133,13 @@ func (p parserMessage) Message() (s string) {
 func (p parserMessage) Level() (s systemMessageLevel) {
 	lvl := int(p)
 	switch {
-	case lvl > 0 && lvl <= 2:
+	case lvl > 0 && lvl <= 3:
 		s = levelInfo
-	case lvl <= 4:
+	case lvl <= 5:
 		s = levelWarning
-	case lvl == 5:
+	case lvl == 6:
 		s = levelError
-	case lvl >= 6:
+	case lvl >= 7:
 		s = levelSevere
 	}
 	return
@@ -422,28 +427,27 @@ func (t *Tree) section(i *item) Node {
 	log.Debugln("Start")
 	var overAdorn, indent, title, underAdorn *item
 
-	if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemTitle {
-		// Section with no overline
-		if t.token[zed].Length < 3 && t.token[zed].Length != pBack.Length {
-			return t.systemMessage(infoUnderlineTooShortForTitle)
-		}
-		title = t.peekBack(1)
-		underAdorn = i
-	} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
-		// Indented section (error)
-		if t.peekBack(2).Type == itemTitle {
-			return t.systemMessage(severeUnexpectedSectionTitle)
-		}
-		return t.systemMessage(severeUnexpectedSectionTitleOrTransition)
-	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
+	if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemTitle {
 		// Section with overline
+		// Check for errors
 		if t.token[zed].Length < 3 && t.token[zed].Length != pFor.Length {
 			t.next()
 			t.next()
+			if bTok := t.peekBack(1); bTok != nil && bTok.Type == itemSpace {
+				t.next()
+				t.next()
+				return t.systemMessage(infoUnexpectedTitleOverlineOrTransition)
+			}
 			return t.systemMessage(infoOverlineTooShortForTitle)
+		} else if pBack := t.peekBack(1); pBack != nil && pBack.Type == itemSpace {
+			// Indented section (error)
+			// The section title has an indented overline
+			return t.systemMessage(severeUnexpectedSectionTitleOrTransition)
 		}
+
 		overAdorn = i
 		t.next()
+
 	loop:
 		for {
 			switch tTok := t.token[zed]; tTok.Type {
@@ -458,6 +462,25 @@ func (t *Tree) section(i *item) Node {
 				break loop
 			}
 		}
+	} else if pBack := t.peekBack(1); pBack != nil &&
+		(pBack.Type == itemTitle || pBack.Type == itemSpace) {
+		// Section with no overline
+		// Check for errors
+		if pBack.Type == itemSpace {
+			pBack := t.peekBack(2)
+			if pBack != nil && pBack.Type == itemTitle {
+				// The section underline is indented
+				return t.systemMessage(severeUnexpectedSectionTitle)
+			}
+		} else if t.token[zed].Length < 3 && t.token[zed].Length != pBack.Length {
+			// Short underline
+			return t.systemMessage(infoUnderlineTooShortForTitle)
+		}
+
+		// Section OKAY
+		title = t.peekBack(1)
+		underAdorn = i
+
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemParagraph {
 		// If a section contains an itemParagraph, it is because the underline
 		// is missing, therefore we generate an error based on what follows the
@@ -476,6 +499,7 @@ func (t *Tree) section(i *item) Node {
 		t.next() // Move the token buffer past the error token
 		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
 	} else if pFor := t.peekSkip(itemSpace); pFor != nil && pFor.Type == itemEOF {
+		// Missing underline and at EOF
 		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
 	}
 
@@ -570,6 +594,27 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		t.token[zed].Text = infoText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
+		t.backup()
+	case infoUnexpectedTitleOverlineOrTransition:
+		oLin := t.peekBackTo(itemSectionAdornment)
+		titl := t.peekBackTo(itemTitle)
+		uLin := t.token[zed]
+		infoText := oLin.Text.(string) + "\n" + titl.Text.(string) + "\n" + uLin.Text.(string)
+		s.Line = oLin.Line
+		// FIXME: DRY
+		t.token[zed-4] = nil
+		t.token[zed-3] = nil
+		t.token[zed-2] = nil
+		t.token[zed-1] = nil
+		infoTextLen := len(infoText)
+		// Modify the token buffer to change the current token to a
+		// itemParagraph then backup the token buffer so the next loop gets the
+		// new paragraph
+		t.token[zed].Type = itemParagraph
+		t.token[zed].Text = infoText
+		t.token[zed].Length = infoTextLen
+		t.token[zed].Line = s.Line
+		t.token[zed].StartPosition = oLin.StartPosition
 		t.backup()
 	case infoUnderlineTooShortForTitle:
 		infoText := t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)

@@ -823,12 +823,13 @@ func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
-// testPath := // "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
+	// Tests indented section with overline
+	testPath := "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
 // testPath := // "test_section/06_title_with_overline_bad/05.00_two_char_section_title"

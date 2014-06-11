@@ -10,8 +10,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
+
+	"code.google.com/p/go.text/unicode/norm"
 )
 
 // ID is a consecutive number for identication of a lexed item and parsed item.
