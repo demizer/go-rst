@@ -256,7 +256,7 @@ func New(name, text string) *Tree {
 const (
 	// The middle of the Tree.token buffer so that there are three possible
 	// "backup" token positions and three forward "peek" positions.
-	zed = 3
+	zed = 4
 
 	// Default indent width
 	indentWidth = 4
@@ -271,7 +271,7 @@ type Tree struct {
 	nodeTarget    *NodeList // Used by the parser to add nodes to a target NodeList
 	text          string    // The input text
 	lex           *lexer
-	token         [7]*item
+	token         [9]*item
 	sectionLevels *sectionLevels // Encountered section levels
 	sections      []*SectionNode // Pointers to encountered sections
 	id            int            // The consecutive id of the node in the tree
