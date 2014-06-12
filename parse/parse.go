@@ -10,8 +10,6 @@
 package parse
 
 import (
-	"reflect"
-
 	"code.google.com/p/go.text/unicode/norm"
 	"github.com/demizer/go-elog"
 	"github.com/demizer/go-spew/spew"
@@ -337,7 +335,7 @@ func (t *Tree) parse(tree *Tree) {
 	t.nodeTarget = t.Nodes
 
 	for t.peek(1).Type != itemEOF {
-		var n Node
+		var n interface{}
 
 		token := t.next()
 		log.Infof("\nParser got token: %#+v\n\n", token)
@@ -361,14 +359,14 @@ func (t *Tree) parse(tree *Tree) {
 			continue
 		}
 
-		t.nodeTarget.append(n)
-		switch n.NodeType() {
-		case NodeSection, NodeBlockQuote:
-			// Set the loop to append items to the NodeList of the new section
-			// FIXME: Remove this reflection somehow
-			t.nodeTarget = reflect.ValueOf(n).Elem().FieldByName("NodeList").Addr().Interface().(*NodeList)
+		t.nodeTarget.append(n.(Node))
+		// Set the loop to append items to the NodeList of the new section
+		switch n.(Node).NodeType() {
+		case NodeSection:
+			t.nodeTarget = &n.(*SectionNode).NodeList
+		case NodeBlockQuote:
+			t.nodeTarget = &n.(*BlockQuoteNode).NodeList
 		}
-
 	}
 
 	log.Debugln("End")
