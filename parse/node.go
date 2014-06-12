@@ -100,6 +100,24 @@ func (e EnumListType) String() string {
 	return enumListTypes[e]
 }
 
+type EnumAffixType int
+
+const (
+	enumAffixPeriod EnumAffixType = iota
+	enumAffixParenthesisSurround
+	enumAffixParenthesisRight
+)
+
+var enumAffixesTypes = [...]string{
+	"enumAffixPeriod",
+	"enumAffixParenthesisSurround",
+	"enumAffixParenthesisRight",
+}
+
+func (a EnumAffixType) String() string {
+	return enumAffixesTypes[a]
+}
+
 // SectionNode is a a single section node. It contains overline, underline, and
 // indentation nodes. NodeList contains nodes that are children of the section.
 type SectionNode struct {
