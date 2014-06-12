@@ -425,6 +425,30 @@ func isComment(l *lexer) (ret bool) {
 	return
 }
 
+func isEnumList(l *lexer) (ret bool) {
+	log.Debugln("Start")
+	bCount := 0
+	if isSection(l) {
+		goto exit
+	}
+	if isArabic(l.mark) {
+		for {
+			bCount++
+			if nMark, _ := l.next(); !isArabic(nMark) {
+				if nMark == '.' || nMark == ' ' {
+					log.Debugln("Found arabic enum list!")
+					ret = true
+					goto exit
+				}
+			}
+		}
+	}
+exit:
+	l.backup(bCount)
+	log.Debugln("End")
+	return
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are called depending on
 // the input. When this function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
