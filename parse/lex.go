@@ -317,6 +317,11 @@ func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
 }
 
+// isArabic returns true if rune r is an Arabic numeral.
+func isArabic(r rune) bool {
+	return r > '0' && r < '9'
+}
+
 // isSection compares a number of positions (skipping whitespace) to
 // determine if the runes are sectionAdornments and returns a true if the
 // positions match each other. Rune comparison begins at the current lexer
