@@ -743,3 +743,28 @@ func (t *Tree) indent(i *item) Node {
 	}
 	return nil
 }
+
+var lastEnum *EnumListNode
+
+func (t *Tree) enumList(i *item) (n Node) {
+	// FIXME: This function is COMPLETELY not final. It is only setup for
+	// passing section test TitleNumberedGood0100.
+	var eNode *EnumListNode
+	var affix *item
+	if lastEnum == nil {
+		t.next()
+		affix = t.token[zed]
+		t.next()
+		eNode = newEnumListNode(i, affix, &t.id)
+		t.next()
+		eNode.NodeList.append(newParagraph(t.token[zed], &t.id))
+	} else {
+		t.next()
+		t.next()
+		t.next()
+		lastEnum.NodeList.append(newParagraph(t.token[zed], &t.id))
+		return nil
+	}
+	lastEnum = eNode
+	return eNode
+}
