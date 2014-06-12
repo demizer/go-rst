@@ -74,7 +74,30 @@ type NodeList []Node
 
 func (l *NodeList) append(n Node) {
 	*l = append(*l, n)
+}
 
+type EnumListType int
+
+const (
+	enumListArabic EnumListType = iota
+	enumListUpperAlpha
+	enumListLowerAlpha
+	enumListUpperRoman
+	enumListLowerRoman
+	enumListAuto
+)
+
+var enumListTypes = [...]string{
+	"enumListArabic",
+	"enumListUpperAlpha",
+	"enumListLowerAlpha",
+	"enumListUpperRoman",
+	"enumListLowerRoman",
+	"enumListAuto",
+}
+
+func (e EnumListType) String() string {
+	return enumListTypes[e]
 }
 
 // SectionNode is a a single section node. It contains overline, underline, and
