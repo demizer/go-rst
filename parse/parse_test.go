@@ -326,19 +326,19 @@ func TestTreeBackup(t *testing.T) {
 			if tField.IsValid() && !tField.IsNil() {
 				val := tField.Interface().(*item)
 				if tree.token[k] == nil {
-					t.Errorf("Test: %q\n\t Got: token[%s] = %#+v, Expect: %#+v\n\n",
+					t.Errorf("Test: %q\n\t    Got: token[%s] = %#+v, Expect: %#+v\n\n",
 						tree.Name, zedPos, tree.token[k], val)
 				}
 				if tree.token[k].ID != val.ID {
-					t.Errorf("Test: %q\n\t Got: token[%s].ID = %d, Expect: %d\n\n",
+					t.Errorf("Test: %q\n\t    Got: token[%s].ID = %d, Expect: %d\n\n",
 						tree.Name, zedPos, tree.token[k].Type, val.ID)
 				}
 				if tree.token[k].Type != val.Type {
-					t.Errorf("Test: %q\n\t Got: token[%s].Type = %q, Expect: %q\n\n",
+					t.Errorf("Test: %q\n\t    Got: token[%s].Type = %q, Expect: %q\n\n",
 						tree.Name, zedPos, tree.token[k].Type, val.Type)
 				}
 				if tree.token[k].Text != val.Text {
-					t.Errorf("Test: %q\n\t Got: token[%s].Text = %q, Expect: %q\n\n",
+					t.Errorf("Test: %q\n\t    Got: token[%s].Text = %q, Expect: %q\n\n",
 						tree.Name, zedPos, tree.token[k].Text, val.Text)
 				}
 			}
@@ -435,21 +435,21 @@ func TestTreeNext(t *testing.T) {
 		}
 		if tt.nextNum > 2 {
 			if tree.token[zed-2].Type != tt.back2Tok.Type {
-				t.Errorf("Test: %q\n\t Got: token[zed-2].Type = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed-2].Type = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed-2].Type, tt.back2Tok.Type)
 			}
 			if tree.token[zed-2].Text != tt.back2Tok.Text {
-				t.Errorf("Test: %q\n\t Got: token[zed-2].Text = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed-2].Text = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed-2].Text, tt.back2Tok.Text)
 			}
 		}
 		if tt.nextNum > 3 {
 			if tree.token[zed-3].Type != tt.back3Tok.Type {
-				t.Errorf("Test: %q\n\t Got: token[zed-3].Type = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed-3].Type = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed-3].Type, tt.back3Tok.Type)
 			}
 			if tree.token[zed-3].Text != tt.back3Tok.Text {
-				t.Errorf("Test: %q\n\t Got: token[zed-3].Text = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed-3].Text = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed-3].Text, tt.back3Tok.Text)
 			}
 		}
@@ -457,19 +457,19 @@ func TestTreeNext(t *testing.T) {
 		// empty.
 		for j := 0; j < 4-tt.nextNum; j++ {
 			if tree.token[j] != nil {
-				t.Errorf("Test: %q\n\t Got: token[%d] = %#+v, Expect: nil\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[%d] = %#+v, Expect: nil\n\n",
 					tree.Name, j, tree.token[j])
 			}
 		}
 		// make sure the peek positions are blank
 		if tree.token[zed+1] != nil {
-			t.Errorf("Test: %q\n\t Got: token[zed+1] = %#+v, Expect: nil\n\n",
+			t.Errorf("Test: %q\n\t    Got: token[zed+1] = %#+v, Expect: nil\n\n",
 				tree.Name, tree.token[zed+1])
 		} else if tree.token[zed+2] != nil {
-			t.Errorf("Test: %q\n\t Got: token[zed+2] = %#+v, Expect: nil\n\n",
+			t.Errorf("Test: %q\n\t    Got: token[zed+2] = %#+v, Expect: nil\n\n",
 				tree.Name, tree.token[zed+2])
 		} else if tree.token[zed+3] != nil {
-			t.Errorf("Test: %q\n\t Got: token[zed+3] = %#+v, Expect: nil\n\n",
+			t.Errorf("Test: %q\n\t    Got: token[zed+3] = %#+v, Expect: nil\n\n",
 				tree.Name, tree.token[zed+3])
 		}
 	}
@@ -524,30 +524,30 @@ func TestTreePeek(t *testing.T) {
 		}
 		tree.peek(tt.peekNum)
 		if tree.token[zed+1].Type != tt.peek1Tok.Type {
-			t.Errorf("Test: %q\n\t Got: token[zed+1].Type = %q, Expect: %q\n\n",
+			t.Errorf("Test: %q\n\t    Got: token[zed+1].Type = %q, Expect: %q\n\n",
 				tree.Name, tree.token[zed+1].Type, tt.peek1Tok.Type)
 		}
 		if tree.token[zed+1].Text != tt.peek1Tok.Text {
-			t.Errorf("Test: %q\n\t Got: token[zed+1].Text = %q, Expect: %q\n\n",
+			t.Errorf("Test: %q\n\t    Got: token[zed+1].Text = %q, Expect: %q\n\n",
 				tree.Name, tree.token[zed+1].Text, tt.peek1Tok.Text)
 		}
 		if tt.peekNum > 1 {
 			if tree.token[zed+2].Type != tt.peek2Tok.Type {
-				t.Errorf("Test: %q\n\t Got: token[zed+2].Type = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed+2].Type = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed+2].Type, tt.peek2Tok.Type)
 			}
 			if tree.token[zed+2].Text != tt.peek2Tok.Text {
-				t.Errorf("Test: %q\n\t Got: token[zed+2].Text = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed+2].Text = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed+2].Text, tt.peek2Tok.Text)
 			}
 		}
 		if tt.peekNum > 2 {
 			if tree.token[zed+3].Type != tt.peek3Tok.Type {
-				t.Errorf("Test: %q\n\t Got: token[zed+3].Type = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed+3].Type = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed+3].Type, tt.peek3Tok.Type)
 			}
 			if tree.token[zed+3].Text != tt.peek3Tok.Text {
-				t.Errorf("Test: %q\n\t Got: token[zed+3].Text = %q, Expect: %q\n\n",
+				t.Errorf("Test: %q\n\t    Got: token[zed+3].Text = %q, Expect: %q\n\n",
 					tree.Name, tree.token[zed+3].Text, tt.peek3Tok.Text)
 			}
 		}
@@ -722,11 +722,11 @@ func TestSectionLevelsAdd(t *testing.T) {
 		for sNum, secLvl := range tt.eLevels {
 			pSecLvl := (secLvls.levels)[sNum]
 			if secLvl.level != pSecLvl.level {
-				t.Errorf("Test: %q\n\t Got: sectionLevel.Level = %d, Expect: %d\n\n",
+				t.Errorf("Test: %q\n\t    Got: sectionLevel.Level = %d, Expect: %d\n\n",
 					tt.name, secLvl.level, pSecLvl.level)
 			}
 			if secLvl.rChar != pSecLvl.rChar {
-				t.Errorf("Test: %q\n\t Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
+				t.Errorf("Test: %q\n\t    Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
 					tt.name, secLvl.rChar, pSecLvl.rChar)
 			}
 			if secLvl.overLine != pSecLvl.overLine {
@@ -817,11 +817,11 @@ func TestSectionLevelsLast(t *testing.T) {
 		var pSec *SectionNode
 		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
-			t.Errorf("Test: %q\n\t Got: sectionLevel.Level = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    Got: sectionLevel.Level = %d, Expect: %d\n\n",
 				tt.name, tt.eLevel.level, pSec.Level)
 		}
 		if tt.eLevel.rChar != pSec.UnderLine.Rune {
-			t.Errorf("Test: %q\n\t Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
 				tt.name, tt.eLevel.rChar, pSec.UnderLine.Rune)
 		}
 		// There can be only one
