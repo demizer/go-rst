@@ -1142,13 +1142,14 @@ func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleNumberedGood0000(t *testing.T) {
-// testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleNumberedGood0000(t *testing.T) {
+	// Tests lexing a section where the title begins with a number.
+	testPath := "test_section/07_title_numbered_good/00.00_numbered_title"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 // func TestParseSectionTitleNumberedGood0100(t *testing.T) {
 // testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"

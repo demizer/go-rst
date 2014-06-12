@@ -839,12 +839,13 @@ func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleNumberedGood0000(t *testing.T) {
-// testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleNumberedGood0000(t *testing.T) {
+	// Tests lexing a section where the title begins with a number.
+	testPath := "test_section/07_title_numbered_good/00.00_numbered_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleNumberedGood0100(t *testing.T) {
 // testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
