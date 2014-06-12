@@ -1,0 +1,104 @@
+[
+    {
+        "id": 1,
+        "type": "itemEnumListArabic",
+        "text": "1",
+        "startPosition": 1,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 2,
+        "type": "itemEnumListAffix",
+        "text": ".",
+        "startPosition": 2,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "Item 1.",
+        "startPosition": 4,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 5,
+        "type": "itemEnumListArabic",
+        "text": "2",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemEnumListAffix",
+        "text": ".",
+        "startPosition": 2,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "Item 2.",
+        "startPosition": 4,
+        "line": 2,
+        "length": 7
+    },
+    {
+        "id": 9,
+        "type": "itemTitle",
+        "text": "3. Numbered Title",
+        "startPosition": 1,
+        "line": 3,
+        "length": 17
+    },
+    {
+        "id": 10,
+        "type": "itemSectionAdornment",
+        "text": "=================",
+        "startPosition": 1,
+        "line": 4,
+        "length": 17
+    },
+    {
+        "id": 11,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "startPosition": 1,
+        "line": 6,
+        "length": 10
+    },
+    {
+        "id": 13,
+        "type": "itemEOF",
+        "startPosition": 11,
+        "line": 6
+    }
+]

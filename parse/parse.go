@@ -346,6 +346,13 @@ func (t *Tree) parse(tree *Tree) {
 			n = t.comment(token)
 		case itemSectionAdornment:
 			n = t.section(token)
+		case itemEnumListArabic:
+			n = t.enumList(token)
+			// FIXME: This is only until enumerated list are properly
+			// implemented.
+			if n == nil {
+				continue
+			}
 		case itemSpace:
 			n = t.indent(token)
 			if n == nil {

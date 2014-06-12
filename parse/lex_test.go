@@ -847,15 +847,16 @@ func TestLexSectionTitleNumberedGood0000(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleNumberedGood0100(t *testing.T) {
-// testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleNumberedGood0100(t *testing.T) {
+	// Tests numbered section lexing with enumerated directly above section.
+	testPath := "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleWithInlineMarkupGood0000(t *testing.T) {
-// testPath := // "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
+// testPath := "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
 // test := LoadTest(testPath)
 // items := lexTest(t, test)
 // equal(t, items, test.expectItems())

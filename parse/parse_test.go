@@ -242,6 +242,14 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != c.pFieldVal.(systemMessageLevel).String() {
 				c.dError()
 			}
+		case "enumType":
+			if c.eFieldVal != c.pFieldVal.(EnumListType).String() {
+				c.dError()
+			}
+		case "affix":
+			if c.eFieldVal != c.pFieldVal.(EnumAffixType).String() {
+				c.dError()
+			}
 		default:
 			panic(fmt.Errorf("%s is not implemented!", c.eFieldName))
 		}
@@ -1151,16 +1159,17 @@ func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleNumberedGood0100(t *testing.T) {
-// testPath := // // "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleNumberedGood0100(t *testing.T) {
+	// Tests numbered section lexing with enumerated directly above section.
+	testPath := "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
 
 // func TestParseSectionTitleWithInlineMarkupGood0000(t *testing.T) {
-// testPath := // "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
+// testPath := "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
 // test := LoadTest(testPath)
 // pTree := parseTest(t, test)
 // eNodes := test.expectNodes()

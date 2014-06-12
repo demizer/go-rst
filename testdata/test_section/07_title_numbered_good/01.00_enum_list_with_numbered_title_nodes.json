@@ -1,16 +1,57 @@
-<document source="test data">
-    <enumerated_list enumtype="arabic" prefix="" suffix=".">
-        <list_item>
-            <paragraph>
-                Item 1.
-        <list_item>
-            <paragraph>
-                Item 2.
-    <system_message level="2" line="3" source="test data" type="WARNING">
-        <paragraph>
-            Enumerated list ends without a blank line; unexpected unindent.
-    <section ids="numbered-title" names="3.\ numbered\ title">
-        <title>
-            3. Numbered Title
-        <paragraph>
-            Paragraph.
+[
+    {
+        "id": 1,
+        "type": "NodeEnumList",
+        "enumType": "enumListArabic",
+        "affix": "enumAffixPeriod",
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeParagraph",
+                "text": "Item 1.",
+                "startPosition": 4,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "id": 3,
+                "type": "NodeParagraph",
+                "text": "Item 2.",
+                "startPosition": 4,
+                "line": 2,
+                "length": 7
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 5,
+            "type": "NodeTitle",
+            "text": "3. Numbered Title",
+            "startPosition": 1,
+            "line": 3,
+            "length": 17
+        },
+        "underLine": {
+            "id": 6,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 4,
+            "length": 17
+        },
+        "nodeList": [
+            {
+                "id": 7,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 1,
+                "line": 6,
+                "length": 10
+            }
+        ]
+    }
+]
