@@ -61,6 +61,8 @@ const (
 	itemBlankLine                    // 9
 	itemTransition                   // 10
 	itemComment                      // 11
+	itemEnumListAffix                // 12
+	itemEnumListArabic               // 13
 )
 
 var elements = [...]string{
@@ -76,6 +78,8 @@ var elements = [...]string{
 	"itemBlankLine",
 	"itemTransition",
 	"itemComment",
+	"itemEnumListAffix",
+	"itemEnumListArabic",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -234,6 +238,7 @@ func (l *lexer) backup(pos int) {
 			l.backup(1)
 		}
 	}
+	log.Debugln("l.mark backed up to:", string(l.mark))
 }
 
 // peek looks ahead in the input by one position and returns the rune.
@@ -466,6 +471,8 @@ func lexStart(l *lexer) stateFn {
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
+			} else if isEnumList(l) {
+				return lexEnumList
 			} else if isSection(l) {
 				return lexSection
 			} else if isTransition(l) {
@@ -603,6 +610,26 @@ func lexComment(l *lexer) stateFn {
 	log.Debugln("Start")
 	l.emit(itemComment)
 	l.nextLine()
+	log.Debugln("End")
+	return lexStart
+}
+
+func lexEnumList(l *lexer) stateFn {
+	log.Debugln("Start")
+	if isArabic(l.mark) {
+		for {
+			if nMark, _ := l.next(); !isArabic(nMark) {
+				l.emit(itemEnumListArabic)
+				l.next()
+				if nMark == '.' {
+					l.emit(itemEnumListAffix)
+					l.next()
+				}
+				l.emit(itemSpace)
+				break
+			}
+		}
+	}
 	log.Debugln("End")
 	return lexStart
 }
