@@ -565,3 +565,11 @@ func lexTransition(l *lexer) stateFn {
 	log.Debugln("End")
 	return lexStart
 }
+
+func lexComment(l *lexer) stateFn {
+	log.Debugln("Start")
+	l.emit(itemComment)
+	l.nextLine()
+	log.Debugln("End")
+	return lexStart
+}
