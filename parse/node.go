@@ -39,6 +39,9 @@ const (
 
 	// NodeComment is a comment element
 	NodeComment
+
+	// NodeEnumList is an enumerated list
+	NodeEnumList
 )
 
 var nodeTypes = [...]string{
@@ -52,6 +55,7 @@ var nodeTypes = [...]string{
 	"NodeTransition",
 	"NodeTitle",
 	"NodeComment",
+	"NodeEnumList",
 }
 
 // Type returns the type of a node element.
@@ -418,4 +422,44 @@ func newComment(i *item, id *int) *CommentNode {
 // NodeType returns the Node type of the CommentNode.
 func (t CommentNode) NodeType() NodeType {
 	return t.Type
+}
+
+type EnumListNode struct {
+	ID       `json:"id"`
+	Type     NodeType      `json:"type"`
+	EnumType EnumListType  `json:"enumType"`
+	Affix    EnumAffixType `json:"affix"`
+	NodeList `json:"nodeList"`
+}
+
+// newEnumListNode initializes a new EnumListNode.
+func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
+	*id++
+	var enType EnumListType
+	switch enumList.Type {
+	case itemEnumListArabic:
+		enType = enumListArabic
+	}
+
+	var afType EnumAffixType
+	switch affix.Text.(string) {
+	case ".":
+		afType = enumAffixPeriod
+	case "(":
+		afType = enumAffixParenthesisSurround
+	case ")":
+		afType = enumAffixParenthesisRight
+	}
+
+	return &EnumListNode{
+		ID:       ID(*id),
+		Type:     NodeEnumList,
+		EnumType: enType,
+		Affix:    afType,
+	}
+}
+
+// NodeType returns the Node type of the EnumListNode.
+func (e EnumListNode) NodeType() NodeType {
+	return e.Type
 }
