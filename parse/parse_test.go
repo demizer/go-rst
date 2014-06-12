@@ -861,7 +861,7 @@ func TestParseSectionTitleGood0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleGood0001(t *testing.T) {
@@ -871,7 +871,7 @@ func TestParseSectionTitleGood0001(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleGood0002(t *testing.T) {
@@ -882,7 +882,7 @@ func TestParseSectionTitleGood0002(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleGood0100(t *testing.T) {
@@ -891,7 +891,7 @@ func TestParseSectionTitleGood0100(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleGood0200(t *testing.T) {
@@ -900,7 +900,7 @@ func TestParseSectionTitleGood0200(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleGood0300(t *testing.T) {
@@ -909,7 +909,7 @@ func TestParseSectionTitleGood0300(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleBad0000(t *testing.T) {
@@ -918,7 +918,7 @@ func TestParseSectionTitleBad0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleBad0100(t *testing.T) {
@@ -927,7 +927,7 @@ func TestParseSectionTitleBad0100(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleBad0200(t *testing.T) {
@@ -936,7 +936,7 @@ func TestParseSectionTitleBad0200(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleBad0201(t *testing.T) {
@@ -945,7 +945,7 @@ func TestParseSectionTitleBad0201(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleBad0202(t *testing.T) {
@@ -955,7 +955,7 @@ func TestParseSectionTitleBad0202(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelGood0000(t *testing.T) {
@@ -964,7 +964,7 @@ func TestParseSectionLevelGood0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelGood0001(t *testing.T) {
@@ -974,7 +974,7 @@ func TestParseSectionLevelGood0001(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelGood0002(t *testing.T) {
@@ -983,7 +983,7 @@ func TestParseSectionLevelGood0002(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelGood0100(t *testing.T) {
@@ -992,7 +992,7 @@ func TestParseSectionLevelGood0100(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelBad0000(t *testing.T) {
@@ -1001,7 +1001,7 @@ func TestParseSectionLevelBad0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionLevelBad0001(t *testing.T) {
@@ -1010,7 +1010,7 @@ func TestParseSectionLevelBad0001(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
@@ -1019,7 +1019,7 @@ func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
@@ -1028,7 +1028,7 @@ func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
@@ -1037,7 +1037,7 @@ func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
@@ -1046,7 +1046,7 @@ func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
@@ -1055,7 +1055,7 @@ func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
@@ -1065,7 +1065,7 @@ func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
@@ -1074,7 +1074,7 @@ func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
@@ -1083,7 +1083,7 @@ func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
@@ -1092,7 +1092,7 @@ func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
@@ -1102,7 +1102,7 @@ func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
@@ -1111,7 +1111,7 @@ func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
@@ -1121,7 +1121,7 @@ func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
@@ -1130,7 +1130,7 @@ func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
@@ -1139,7 +1139,7 @@ func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 func TestParseSectionTitleNumberedGood0000(t *testing.T) {
@@ -1148,7 +1148,7 @@ func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 	test := LoadTest(testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
-	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
 // func TestParseSectionTitleNumberedGood0100(t *testing.T) {
@@ -1164,5 +1164,5 @@ func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 // test := LoadTest(testPath)
 // pTree := parseTest(t, test)
 // eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+// checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 // }

@@ -72,10 +72,6 @@ type Node interface {
 // NodeList is a list of parser nodes that implement Node.
 type NodeList []Node
 
-func newList() *NodeList {
-	return new(NodeList)
-}
-
 func (l *NodeList) append(n Node) {
 	*l = append(*l, n)
 
