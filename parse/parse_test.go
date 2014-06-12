@@ -686,6 +686,27 @@ var testSectionLevelsAdd = []struct {
 				node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '`'}}},
 		},
 	},
+	{
+		name: "Test level two with overline with same rune as level one.",
+		tSections: []*testSectionLevelSectionNode{
+			{node: &SectionNode{ID: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+			{node: &SectionNode{ID: 2, OverLine: &AdornmentNode{Rune: '='},
+				UnderLine: &AdornmentNode{Rune: '='}}},
+		},
+		eLevels: []*sectionLevel{
+			{rChar: '=', level: 1, overLine: false,
+				sections: []*SectionNode{
+					{ID: 1, Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
+				},
+			},
+			{rChar: '=', level: 2, overLine: true,
+				sections: []*SectionNode{
+					{ID: 2, Level: 2, OverLine: &AdornmentNode{Rune: '='},
+						UnderLine: &AdornmentNode{Rune: '='}},
+				},
+			},
+		},
+	},
 }
 
 func TestSectionLevelsAdd(t *testing.T) {
@@ -708,7 +729,15 @@ func TestSectionLevelsAdd(t *testing.T) {
 				t.Errorf("Test: %q\n\t Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
 					tt.name, secLvl.rChar, pSecLvl.rChar)
 			}
+			if secLvl.overLine != pSecLvl.overLine {
+				t.Errorf("Test: %q\n\t    Got: sectionLevel.overLine = %t, Expect: %t\n\n",
+					tt.name, secLvl.overLine, pSecLvl.overLine)
+			}
 			for eNum, eSec := range secLvl.sections {
+				if eSec.ID != pSecLvl.sections[eNum].ID {
+					t.Errorf("Test: %q\n\t    Got: level[%d].sections[%d].ID = %d, Expect: %d\n\n",
+						tt.name, sNum, eNum, pSecLvl.sections[eNum].ID, eSec.ID)
+				}
 				if eSec.Level != pSecLvl.sections[eNum].Level {
 					t.Errorf("Test: %q\n\t    Got: level[%d].sections[%d].Level = %d, Expect: %d\n\n",
 						tt.name, sNum, eNum, pSecLvl.sections[eNum].Level, eSec.Level)

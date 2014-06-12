@@ -152,6 +152,7 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 type sectionLevel struct {
 	rChar    rune
 	level    int
+	overLine bool           // If true, the section level should have an overline adornment.
 	sections []*SectionNode // New sections matching level are appended here
 }
 
@@ -181,25 +182,48 @@ func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
 func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 	level := 1
 	secLvl := s.FindByRune(sec.UnderLine.Rune)
+
+	// Local function for creating a sectionLevel
+	var newSectionLevel = func() {
+		var oLine bool
+		if sec.OverLine != nil {
+			oLine = true
+		}
+		log.Debugln("Creating new sectionLevel:", level)
+		secLvl = &sectionLevel{rChar: sec.UnderLine.Rune, level: level, overLine: oLine}
+		s.levels = append(s.levels, secLvl)
+		// secLvl.sections = append(secLvl.sections, sec)
+	}
+
 	if secLvl == nil {
 		if s.lastSectionNode != nil {
+			// Check if the provisional level of sec is already in
+			// sectionLevels; if it is and the adornment characters don't
+			// match, then we have an inconsistent level error.
 			level = s.lastSectionNode.Level + 1
-			lastRune := s.SectionLevelByLevel(s.lastSectionNode.Level + 1)
-			if lastRune != nil && lastRune.rChar != sec.UnderLine.Rune {
+			nextLevel := s.SectionLevelByLevel(level)
+			if nextLevel != nil && nextLevel.rChar != sec.UnderLine.Rune {
 				return severeTitleLevelInconsistent
 			}
 		} else {
 			level = len(s.levels) + 1
 		}
-		log.Debugln("Creating new sectionLevel:", level)
-		secLvl = &sectionLevel{rChar: sec.UnderLine.Rune, level: level}
-		s.levels = append(s.levels, secLvl)
-		secLvl.sections = append(secLvl.sections, sec)
+		newSectionLevel()
 	} else {
-		log.Debugln("Using existing sectionLevel:", secLvl.level)
-		level = secLvl.level
-		secLvl.sections = append(secLvl.sections, sec)
+		if secLvl.overLine && sec.OverLine == nil ||
+			!secLvl.overLine && sec.OverLine != nil {
+			// If sec has an OverLine, but the matching sectionLevel with
+			// the same Rune as sec does not have an OverLine, then they
+			// are not in the same sectionLevel, and visa versa.
+			level = len(s.levels) + 1
+			newSectionLevel()
+		} else {
+			log.Debugln("Using existing sectionLevel:", secLvl.level)
+			level = secLvl.level
+		}
 	}
+
+	secLvl.sections = append(secLvl.sections, sec)
 	sec.Level = level
 	s.lastSectionNode = sec
 	return
