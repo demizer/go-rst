@@ -403,6 +403,26 @@ func isTransition(l *lexer) bool {
 	return false
 }
 
+func isComment(l *lexer) (ret bool) {
+	log.Debugln("Start")
+	if l.lastItem != nil && l.lastItem.Type == itemTitle {
+		return
+	}
+	if nMark, _ := l.peek(); l.mark == '.' && nMark == '.' {
+		l.next()
+		if nMark2, _ := l.peek(); isSpace(nMark2) || nMark2 == utf8.RuneError {
+			ret = true
+			log.Debugln("Found comment!")
+		}
+		l.backup(1)
+	}
+	if !ret {
+		log.Debugln("Comment not found!")
+	}
+	log.Debugln("End")
+	return
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are called depending on
 // the input. When this function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
