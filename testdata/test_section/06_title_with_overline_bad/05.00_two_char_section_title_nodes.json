@@ -1,13 +1,84 @@
-<document source="test data">
-    <comment xml:space="preserve">
-    <system_message level="2" line="2" source="test data" type="WARNING">
-        <paragraph>
-            Explicit markup ends without a blank line; unexpected unindent.
-    <section ids="hi" names="hi">
-        <title>
-            Hi
-        <section ids="yo" names="yo">
-            <title>
-                Yo
-            <paragraph>
-                Ho
+[
+    {
+        "id": 1,
+        "type": "NodeComment",
+        "startPosition": 1,
+        "line": 1
+    },
+    {
+        "id": 2,
+        "type": "NodeSystemMessage",
+        "severity": "WARNING",
+        "line": 2,
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeParagraph",
+                "text": "Explicit markup ends without a blank line; unexpected unindent.",
+                "length": 63
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 5,
+            "type": "NodeTitle",
+            "text": "Hi",
+            "startPosition": 1,
+            "line": 2,
+            "length": 2
+        },
+        "underLine": {
+            "id": 6,
+            "type": "NodeAdornment",
+            "rune": ".",
+            "startPosition": 1,
+            "line": 3,
+            "length": 2
+        },
+        "nodeList": [
+            {
+                "id": 7,
+                "type": "NodeSection",
+                "level": 2,
+                "title": {
+                    "id": 8,
+                    "type": "NodeTitle",
+                    "text": "Yo",
+                    "startPosition": 1,
+                    "line": 6,
+                    "length": 2
+                },
+                "overLine": {
+                    "id": 9,
+                    "type": "NodeAdornment",
+                    "rune": ".",
+                    "startPosition": 1,
+                    "line": 5,
+                    "length": 3
+                },
+                "underLine": {
+                    "id": 10,
+                    "type": "NodeAdornment",
+                    "rune": ".",
+                    "startPosition": 1,
+                    "line": 7,
+                    "length": 3
+                },
+                "nodeList": [
+                    {
+                        "id": 11,
+                        "type": "NodeParagraph",
+                        "text": "Ho",
+                        "startPosition": 1,
+                        "line": 9,
+                        "length": 2
+                    }
+                ]
+            }
+        ]
+    }
+]

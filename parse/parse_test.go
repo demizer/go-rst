@@ -1133,13 +1133,14 @@ func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
 	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
 }
 
-// func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
-// testPath := // "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
-// }
+func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
+	// Tests ".." overline (which is a comment element).
+	testPath := "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
+	test := LoadTest(testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, *pTree.Nodes, testPath)
+}
 
 // func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 // testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"

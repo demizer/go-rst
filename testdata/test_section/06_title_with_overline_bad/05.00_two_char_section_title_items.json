@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "type": "itemComment",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemTitle",
+        "text": "Hi",
+        "startPosition": 1,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 3,
+        "type": "itemSectionAdornment",
+        "text": "..",
+        "startPosition": 1,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemSectionAdornment",
+        "text": "...",
+        "startPosition": 1,
+        "line": 5,
+        "length": 3
+    },
+    {
+        "id": 6,
+        "type": "itemTitle",
+        "text": "Yo",
+        "startPosition": 1,
+        "line": 6,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemSectionAdornment",
+        "text": "...",
+        "startPosition": 1,
+        "line": 7,
+        "length": 3
+    },
+    {
+        "id": 8,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 8,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemParagraph",
+        "text": "Ho",
+        "startPosition": 1,
+        "line": 9,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemEOF",
+        "startPosition": 3,
+        "line": 9
+    }
+]

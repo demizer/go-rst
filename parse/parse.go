@@ -64,6 +64,7 @@ const (
 	infoUnderlineTooShortForTitle
 	warningShortOverline
 	warningShortUnderline
+	warningExplicitMarkupWithUnIndent
 	errorInvalidSectionOrTransitionMarker
 	severeUnexpectedSectionTitle
 	severeUnexpectedSectionTitleOrTransition
@@ -80,6 +81,7 @@ var parserErrors = [...]string{
 	"infoUnderlineTooShortForTitle",
 	"warningShortOverline",
 	"warningShortUnderline",
+	"warningExplicitMarkupWithUnIndent",
 	"errorInvalidSectionOrTransitionMarker",
 	"severeUnexpectedSectionTitle",
 	"severeUnexpectedSectionTitleOrTransition",
@@ -111,6 +113,8 @@ func (p parserMessage) Message() (s string) {
 		s = "Title overline too short."
 	case warningShortUnderline:
 		s = "Title underline too short."
+	case warningExplicitMarkupWithUnIndent:
+		s = "Explicit markup ends without a blank line; unexpected unindent."
 	case errorInvalidSectionOrTransitionMarker:
 		s = "Invalid section title or transition marker."
 	case severeUnexpectedSectionTitle:
@@ -135,11 +139,11 @@ func (p parserMessage) Level() (s systemMessageLevel) {
 	switch {
 	case lvl > 0 && lvl <= 3:
 		s = levelInfo
-	case lvl <= 5:
+	case lvl <= 6:
 		s = levelWarning
-	case lvl == 6:
+	case lvl == 7:
 		s = levelError
-	case lvl >= 7:
+	case lvl >= 8:
 		s = levelSevere
 	}
 	return
@@ -339,10 +343,14 @@ func (t *Tree) parse(tree *Tree) {
 		log.Infof("\nParser got token: %#+v\n\n", token)
 
 		switch token.Type {
-		case itemSectionAdornment:
-			n = t.section(token)
 		case itemParagraph:
 			n = newParagraph(token, &t.id)
+		case itemTransition:
+			n = newTransition(token, &t.id)
+		case itemComment:
+			n = t.comment(token)
+		case itemSectionAdornment:
+			n = t.section(token)
 		case itemSpace:
 			n = t.indent(token)
 			if n == nil {
@@ -351,8 +359,6 @@ func (t *Tree) parse(tree *Tree) {
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
-		case itemTransition:
-			n = newTransition(token, &t.id)
 		}
 
 		t.nodeTarget.append(n)
@@ -572,6 +578,18 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
+func (t *Tree) comment(i *item) Node {
+	n := newComment(i, &t.id)
+	nTok := t.peek(1)
+	if nTok != nil && nTok.Type != itemSpace {
+		// The comment element itself is valid, but we need to add it to the
+		// NodeList before the systemMessage.
+		t.nodeTarget.append(n)
+		return t.systemMessage(warningExplicitMarkupWithUnIndent)
+	}
+	return n
+}
+
 // systemMessage generates a Node based on the passed parserMessage. The
 // generated message is returned as a SystemMessageNode.
 func (t *Tree) systemMessage(err parserMessage) Node {
@@ -674,6 +692,8 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lbText = t.token[backToken].Text.(string) + "\n" + t.token[zed].Text.(string)
 		lbTextLen = len(lbText)
 		s.Line = t.token[zed-1].Line
+	case warningExplicitMarkupWithUnIndent:
+		s.Line = t.token[zed+1].Line
 	case errorInvalidSectionOrTransitionMarker:
 		lbText = t.token[zed-1].Text.(string) + "\n" + t.token[zed].Text.(string)
 		s.Line = t.token[zed-1].Line

@@ -60,6 +60,7 @@ const (
 	itemSpace
 	itemBlankLine
 	itemTransition
+	itemComment
 )
 
 var elements = [...]string{
@@ -74,6 +75,7 @@ var elements = [...]string{
 	"itemSpace",
 	"itemBlankLine",
 	"itemTransition",
+	"itemComment",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -433,7 +435,9 @@ func lexStart(l *lexer) stateFn {
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			log.Debugln("Start of new token")
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.lineNumber())
-			if isSection(l) {
+			if isComment(l) {
+				return lexComment
+			} else if isSection(l) {
 				return lexSection
 			} else if isTransition(l) {
 				return lexTransition

@@ -831,12 +831,13 @@ func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
-// func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
-// testPath := // "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }
+func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
+	// Tests ".." overline (which is a comment element).
+	testPath := "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
 
 // func TestLexSectionTitleNumberedGood0000(t *testing.T) {
 // testPath := // // "test_section/07_title_numbered_good/00.00_numbered_title"
