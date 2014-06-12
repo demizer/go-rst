@@ -45,3 +45,10 @@ func TestTitleNodeType(t *testing.T) {
 		t.Error("n.Type != NodeTitle")
 	}
 }
+
+func TestCommentNodeType(t *testing.T) {
+	n := &CommentNode{Type: NodeComment}
+	if n.NodeType() != NodeComment {
+		t.Error("n.Type != NodeComment")
+	}
+}

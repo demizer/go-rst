@@ -36,6 +36,9 @@ const (
 
 	// NodeTitle is a section title element to be used inside SectionNodes.
 	NodeTitle
+
+	// NodeComment is a comment element
+	NodeComment
 )
 
 var nodeTypes = [...]string{
@@ -48,6 +51,7 @@ var nodeTypes = [...]string{
 	"NodeIndent",
 	"NodeTransition",
 	"NodeTitle",
+	"NodeComment",
 }
 
 // Type returns the type of a node element.
@@ -349,5 +353,32 @@ func newTransition(i *item, id *int) *TransitionNode {
 
 // NodeType returns the Node type of the TransitionNode.
 func (t TransitionNode) NodeType() NodeType {
+	return t.Type
+}
+
+// CommentNode is a parsed comment element. Comment elements do not appear as
+// visible elements in document transformations.
+type CommentNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	StartPosition `json:"startPosition"`
+	Line          `json:"line"`
+}
+
+func newComment(i *item, id *int) *CommentNode {
+	*id++
+	return &CommentNode{
+		ID:            ID(*id),
+		Type:          NodeComment,
+		Length:        i.Length,
+		StartPosition: i.StartPosition,
+		Line:          i.Line,
+	}
+}
+
+// NodeType returns the Node type of the CommentNode.
+func (t CommentNode) NodeType() NodeType {
 	return t.Type
 }
