@@ -1,7 +1,7 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Fri Jun 13 15:48 2014
+:Modified: Fri Jun 13 15:49 2014
 
 A reStructuredText parser for and implemented in the Go programming language.
 
@@ -41,7 +41,7 @@ Contributors
 These people have donated their valuable time in contributing to this library
 and are here graciously recognized for their contributions!
 
-Jesus Alvarez
+* **Jesus Alvarez**
 
 ------
 Status
