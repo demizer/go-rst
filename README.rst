@@ -1,7 +1,7 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Fri Jun 13 15:54 2014
+:Modified: Fri Jun 13 15:55 2014
 
 A reStructuredText parser for and implemented in the Go programming language.
 
@@ -64,6 +64,16 @@ Done  Element                        Detail
 5%    Enumerated lists               Some lexing implemented.
 0%    Definition lists
 0%    Field lists
+0%    Inline:Emphasis
+0%    Inline:Strong
+0%    Inline:Interpreted text
+0%    Inline:Literals
+0%    Inline:Embedded URIs
+0%    Inline:Internal Targets
+0%    Inline:Footnote References
+0%    Inline:Citation References
+0%    Inline:Substitution References
+0%    Inline:Standalone HyperlinkS
 0%    Biblio. fields
 0%    RCS keywords
 0%    Option lists
@@ -85,16 +95,6 @@ Done  Element                        Detail
 0%    Substitution Definitions
 2%    Comments                       Basic lexing and parsing.
 0%    Implicit Hyperlink Targets
-0%    Inline:Emphasis
-0%    Inline:Strong
-0%    Inline:Interpreted text
-0%    Inline:Literals
-0%    Inline:Embedded URIs
-0%    Inline:Internal Targets
-0%    Inline:Footnote References
-0%    Inline:Citation References
-0%    Inline:Substitution References
-0%    Inline:Standalone HyperlinkS
 0%    Units:Length
 0%    Units:Percentage
 0%    Directive:Admonitions
