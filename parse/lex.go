@@ -63,6 +63,8 @@ const (
 	itemComment                      // 11
 	itemEnumListAffix                // 12
 	itemEnumListArabic               // 13
+	itemInlineEmphasis               // 14
+	itemInlineLiteral                // 15
 )
 
 var elements = [...]string{
@@ -80,6 +82,8 @@ var elements = [...]string{
 	"itemComment",
 	"itemEnumListAffix",
 	"itemEnumListArabic",
+	"itemInlineEmphasis",
+	"itemInlineLiteral",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -327,6 +331,12 @@ func isSpace(r rune) bool {
 // isArabic returns true if rune r is an Arabic numeral.
 func isArabic(r rune) bool {
 	return r > '0' && r < '9'
+}
+
+func isInlineMarkup(r rune) bool {
+	// TODO: The check should include a peek for the matching rune markup and
+	// proper spacing.
+	return r == '*' || r == '`' || r == '_' || r == '|'
 }
 
 // isSection compares a number of positions (skipping whitespace) to

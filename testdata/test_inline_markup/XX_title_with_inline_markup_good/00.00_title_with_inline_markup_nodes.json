@@ -1,11 +1,70 @@
-<document source="test data">
-    <section ids="title-containing-inline-markup" names="title\ containing\ inline\ markup">
-        <title>
-            Title containing \n\
-            <emphasis>
-                inline
-             \n\
-            <literal>
-                markup
-        <paragraph>
-            Paragraph.
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 2,
+            "type": "NodeTitle",
+            "text": "Title containing *inline* ``markup``",
+            "startPosition": 1,
+            "line": 1,
+            "length": 36,
+            "markupList": [
+                {
+                    "id": 3,
+                    "type": "NodeParagraph",
+                    "text": "Title containing",
+                    "startPosition": 1,
+                    "length": 16
+                },
+                {
+                    "id": 4,
+                    "type": "NodeSpace",
+                    "text": " ",
+                    "startPosition": 17,
+                    "length": 1
+                },
+                {
+                    "id": 4,
+                    "type": "NodeEmphasis",
+                    "text": "inline",
+                    "startPosition": 18,
+                    "length": 6
+                },
+                {
+                    "id": 4,
+                    "type": "NodeSpace",
+                    "text": " ",
+                    "startPosition": 19,
+                    "length": 1
+                },
+                {
+                    "id": 4,
+                    "type": "NodeInlineLiteral",
+                    "text": "markup",
+                    "startPosition": 20,
+                    "length": 6
+                }
+            ]
+        },
+        "underLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 2,
+            "length": 36
+        },
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeParagraph",
+                "text": "Paragraph.",
+                "startPosition": 1,
+                "line": 4,
+                "length": 10
+            }
+        ]
+    }
+]
