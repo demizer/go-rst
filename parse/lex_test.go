@@ -855,10 +855,3 @@ func TestLexSectionTitleNumberedGood0100(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
-
-// func TestLexSectionTitleWithInlineMarkupGood0000(t *testing.T) {
-// testPath := "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
-// test := LoadTest(testPath)
-// items := lexTest(t, test)
-// equal(t, items, test.expectItems())
-// }

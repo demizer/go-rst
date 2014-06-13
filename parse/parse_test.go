@@ -1167,11 +1167,3 @@ func TestParseSectionTitleNumberedGood0100(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
-
-// func TestParseSectionTitleWithInlineMarkupGood0000(t *testing.T) {
-// testPath := "test_section/08_title_with_inline_markup_good/00.00_title_with_inline_markup"
-// test := LoadTest(testPath)
-// pTree := parseTest(t, test)
-// eNodes := test.expectNodes()
-// checkParseNodes(t, eNodes, pTree.Nodes, testPath)
-// }
