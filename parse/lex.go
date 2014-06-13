@@ -211,9 +211,9 @@ func (l *lexer) emit(t itemElement) {
 	l.start = l.index
 }
 
-// backup backs up the lexer position by a number of rune positions (pos). backup cannot backup off
-// the input, in that case the index of the lexer is set to the starting position on the input. The
-// run
+// backup backs up the lexer position by a number of rune positions (pos).
+// backup cannot backup off the input, in that case the index of the lexer is
+// set to the starting position on the input. The run
 func (l *lexer) backup(pos int) {
 	for i := 0; i < pos; i++ {
 		if l.index == 0 && l.line != 0 && i < pos {
@@ -267,7 +267,8 @@ func (l *lexer) next() (r rune, width int) {
 	l.width = width
 	l.mark = r
 
-	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n", r, l.start, l.index, l.lineNumber())
+	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n",
+		r, l.start, l.index, l.lineNumber())
 
 	return
 }
@@ -291,7 +292,8 @@ func (l *lexer) nextItem() *item {
 
 }
 
-// gotoLine advances the lexer to a line and index within that line. Line numbers start at 1.
+// gotoLine advances the lexer to a line and index within that line. Line
+// numbers start at 1.
 func (l *lexer) gotoLocation(start, line int) {
 	l.line = line - 1
 	l.index = start
@@ -459,16 +461,18 @@ exit:
 	return
 }
 
-// lexStart is the first stateFn called by run(). From here other stateFn's are called depending on
-// the input. When this function returns nil, the lexing is finished and run() will exit.
+// lexStart is the first stateFn called by run(). From here other stateFn's are
+// called depending on the input. When this function returns nil, the lexing is
+// finished and run() will exit.
 func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n",
-		// l.mark, l.index, l.start, l.width, l.lineNumber())
+		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d,
+		// l.line: %d\n", l.mark, l.index, l.start, l.width, l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			log.Debugln("Start of new token")
-			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n", l.index, l.width, l.lineNumber())
+			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
+				l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
 			} else if isEnumList(l) {
@@ -508,7 +512,8 @@ func lexStart(l *lexer) stateFn {
 	return nil
 }
 
-// lexSpace consumes space characters (space and tab) in the input and emits a itemSpace token.
+// lexSpace consumes space characters (space and tab) in the input and emits a
+// itemSpace token.
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("Start")
 	for isSpace(l.mark) {
@@ -527,26 +532,21 @@ func lexSpace(l *lexer) stateFn {
 	return lexStart
 }
 
-// lexSection is used after isSection() has determined that the next runes of input are section.
-// From here, the lexTitle() and lexSectionAdornment() are called based on the input.
+// lexSection is used after isSection() has determined that the next runes of
+// input are section.  From here, the lexTitle() and lexSectionAdornment() are
+// called based on the input.
 func lexSection(l *lexer) stateFn {
 	log.Debugln("Start")
-	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n", l.mark,
-	// l.index, l.start, l.width, l.lineNumber())
-	// The order of the case statements matter here
+	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " +
+	// "l.line: %d\n", l.mark, l.index, l.start, l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
-
 	} else if isSpace(l.mark) {
 		return lexSpace
 	} else if l.mark == utf8.RuneError {
-		// if l.index == 0 {
-		// // A blank line
-		// l.emit(itemBlankLine)
-		// }
 		l.next()
 	} else if unicode.IsPrint(l.mark) {
 		return lexTitle
@@ -555,16 +555,13 @@ func lexSection(l *lexer) stateFn {
 	return lexStart
 }
 
-// lexTitle consumes input until newline and emits an itemTitle token. If spaces are detected at the
-// start of the line, an itemSpace is emitted. Spaces after the title (and before newline) are
-// ignored. On completion control is returned to lexSection.
+// lexTitle consumes input until newline and emits an itemTitle token. If
+// spaces are detected at the start of the line, an itemSpace is emitted.
+// Spaces after the title (and before newline) are ignored. On completion
+// control is returned to lexSection.
 func lexTitle(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		// if isSpace(l.mark) && l.index == 0 {
-		// log.Debugln("lexing space!")
-		// lexSpace(l)
-		// }
 		l.next()
 		if l.isEndOfLine() {
 			l.emit(itemTitle)
@@ -575,8 +572,9 @@ func lexTitle(l *lexer) stateFn {
 	return lexSection
 }
 
-// lexSectionAdornment advances the lexer until a newline is encountered and emits a
-// itemSectionAdornment token. Control is returned to lexSection() on completion.
+// lexSectionAdornment advances the lexer until a newline is encountered and
+// emits a itemSectionAdornment token. Control is returned to lexSection() on
+// completion.
 func lexSectionAdornment(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
