@@ -440,7 +440,8 @@ func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
-		r, w := lex.peek()
+		r := lex.peek()
+		w := utf8.RuneLen(r)
 		if lex.index != tt.lIndex {
 			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
 				lex.name, lex.index, tt.lIndex)

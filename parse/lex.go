@@ -242,8 +242,8 @@ func (l *lexer) backup(pos int) {
 }
 
 // peek looks ahead in the input by one position and returns the rune.
-func (l *lexer) peek() (r rune, width int) {
-	r, width = l.next()
+func (l *lexer) peek() (r rune) {
+	r, _ = l.next()
 	l.backup(1)
 	return
 }
@@ -396,7 +396,7 @@ func isSectionAdornment(r rune) bool {
 
 func isTransition(l *lexer) bool {
 	log.Debugln("Start")
-	if r, _ := l.peek(); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
+	if r := l.peek(); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
 		log.Debugln("Transition not found")
 		return false
 	}
@@ -422,9 +422,10 @@ func isComment(l *lexer) (ret bool) {
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
 		return
 	}
-	if nMark, _ := l.peek(); l.mark == '.' && nMark == '.' {
+	if nMark := l.peek(); l.mark == '.' && nMark == '.' {
 		l.next()
-		if nMark2, _ := l.peek(); isSpace(nMark2) || nMark2 == utf8.RuneError {
+		nMark2 := l.peek()
+		if isSpace(nMark2) || nMark2 == utf8.RuneError {
 			ret = true
 			log.Debugln("Found comment!")
 		}
@@ -517,7 +518,7 @@ func lexStart(l *lexer) stateFn {
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("Start")
 	for isSpace(l.mark) {
-		if r, _ := l.peek(); isSpace(r) {
+		if r := l.peek(); isSpace(r) {
 			l.next()
 		} else {
 			l.next()
