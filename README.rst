@@ -1,7 +1,7 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Fri Jun 13 15:52 2014
+:Modified: Fri Jun 13 15:54 2014
 
 A reStructuredText parser for and implemented in the Go programming language.
 
@@ -57,7 +57,7 @@ Done  Element                        Detail
 0%    HTML transpiler                Tree.Nodes can be easily walked to produce output html.
 0%    Demo homepage                  To be implemented in Go and hosted at restructuredtext.com
 5%    Documentation                  Most functions documented. Nothing on API.
-100%  Section Headers                All tests from docutils converted to JSON and implemented on Fri Jun 13 15:52 2014.
+100%  Section Headers                All tests from docutils converted to JSON and implemented.
 5%    Transitions                    Basic lexing.
 25%   Paragraphs                     Basic lexing, no inline markup, no tests.
 0%    Bullet lists
@@ -71,8 +71,8 @@ Done  Element                        Detail
 0%    Indented literal blocks
 0%    Quoted literal blocks
 0%    Line blocks
-10%   Block quotes                   Some parsing. (demizer~Fri Jun 13 15:52 2014)
-0%    Doctest blocks                 Will use Go instead of Python.  Much lower priority than everything else.
+10%   Block quotes                   Some parsing.
+0%    Doctest blocks                 Will use Go instead of Python. Much lower priority than everything else.
 0%    Grid tables                    Will be gruesome to implement.
 0%    Simple tables
 0%    Footnotes
