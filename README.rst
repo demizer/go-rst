@@ -1,11 +1,47 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Fri Jun 13 15:46 2014
+:Modified: Fri Jun 13 15:48 2014
 
 A reStructuredText parser for and implemented in the Go programming language.
 
 **This library is far from complete and barely usable.**
+
+
+=================
+How to contribute
+=================
+
+* **Convert tests into JSON**
+
+  The docutils tests are implemented in a "psuedo xml" which is non-standard.
+  Translating the tests into JSON has the benefit of making the reStructuredText
+  tests programming language neutral so that reStructuredText parsers can be
+  implemented in other programming languages. See
+  https://github.com/demizer/go-rst/tree/master/testdata
+  for more information.
+
+* **Implement an element**
+
+  Implement an element from the list above.
+
+* **Write some documentation**
+
+  All projects need good documentation!
+
+* **Test and report**
+
+  Not actually possible in the current state, but using the library and writing
+  bug reports is always helpful.
+
+============
+Contributors
+============
+
+These people have donated their valuable time in contributing to this library
+and are here graciously recognized for their contributions!
+
+Jesus Alvarez
 
 ------
 Status
@@ -87,38 +123,3 @@ Jun 13 2014 0%          Directive:Unicode              Numerical unicode charact
 Jun 13 2014 0%          Directive:Date
 Jun 13 2014 0%          Directive:Class                For HTML output.
 =========== ==========  ============================== ======
-
-=================
-How to contribute
-=================
-
-* **Convert tests into JSON**
-
-  The docutils tests are implemented in a "psuedo xml" which is non-standard.
-  Translating the tests into JSON has the benefit of making the reStructuredText
-  tests programming language neutral so that reStructuredText parsers can be
-  implemented in other programming languages. See
-  https://github.com/demizer/go-rst/tree/master/testdata
-  for more information.
-
-* **Implement an element**
-
-  Implement an element from the list above.
-
-* **Write some documentation**
-
-  All projects need good documentation!
-
-* **Test and report**
-
-  Not actually possible in the current state, but using the library and writing
-  bug reports is always helpful.
-
-============
-Contributors
-============
-
-These people have donated their valuable time in contributing to this library
-and are here graciously recognized for their contributions!
-
-Jesus Alvarez
