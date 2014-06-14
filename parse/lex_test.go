@@ -34,15 +34,15 @@ func lexTest(t *testing.T, test *Test) []item {
 	return items
 }
 
-// Test equality between items and expected items from unmarshalled json data, field by field.
-// Returns error in case of error during json unmarshalling, or mismatch between items and the
-// expected output.
+// Test equality between items and expected items from unmarshalled json data,
+// field by field.  Returns error in case of error during json unmarshalling,
+// or mismatch between items and the expected output.
 func equal(t *testing.T, items []item, expectItems []item) {
 	var id int
 	var found bool
 	var pFieldName, eFieldName string
 	var pFieldVal, eFieldVal reflect.Value
-	var pFieldValStruct reflect.StructField
+	var pFieldValS reflect.StructField
 
 	dError := func() {
 		var got, exp string
@@ -68,8 +68,26 @@ func equal(t *testing.T, items []item, expectItems []item) {
 		default:
 			panic(fmt.Errorf("%T is not implemented!", r))
 		}
-		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got,
-			eFieldName, exp)
+		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q\n", id,
+			pFieldName, got, eFieldName, exp)
+	}
+
+	check := func() {
+		if !found {
+			t.Errorf("ID: %d does not contain field %q\n", id,
+				eFieldName)
+			return
+		} else if eFieldName == "Text" {
+			if eFieldVal.Interface() == nil {
+				return
+			}
+			norm := norm.NFC.String(eFieldVal.Interface().(string))
+			if pFieldVal.Interface() != norm {
+				dError()
+			}
+		} else if pFieldVal.Interface() != eFieldVal.Interface() {
+			dError()
+		}
 	}
 
 	for eNum, eItem := range expectItems {
@@ -80,23 +98,9 @@ func equal(t *testing.T, items []item, expectItems []item) {
 			eFieldVal = eVal.Field(x)
 			eFieldName = eVal.Type().Field(x).Name
 			pFieldVal = pVal.FieldByName(eFieldName)
-			pFieldValStruct, found = pVal.Type().FieldByName(eFieldName)
-			pFieldName = pFieldValStruct.Name
-			if !found {
-				t.Errorf("Parsed item (ID: %d) does not contain field %q\n", id,
-					eFieldName)
-				continue
-			} else if eFieldName == "Text" {
-				if eFieldVal.Interface() == nil {
-					continue
-				}
-				if pFieldVal.Interface() !=
-					norm.NFC.String(eFieldVal.Interface().(string)) {
-					dError()
-				}
-			} else if pFieldVal.Interface() != eFieldVal.Interface() {
-				dError()
-			}
+			pFieldValS, found = pVal.Type().FieldByName(eFieldName)
+			pFieldName = pFieldValS.Name
+			check()
 		}
 	}
 
@@ -132,19 +136,23 @@ func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
 		lex := newLexer(tt.name, tt.input)
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t   "+
+				"Got: lexer.index == %d, Expect: %d\n\n",
 				lex.name, lex.index, tt.nIndex)
 		}
 		if lex.mark != tt.nMark {
-			t.Errorf("Test: %s\n\t Got: lexer.mark == %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.mark == %#U, Expect: %#U\n\n",
 				lex.name, lex.mark, tt.nMark)
 		}
 		if len(lex.lines) != tt.nLines {
-			t.Errorf("Test: %s\n\t Got: lexer.lineNumber == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.lineNumber == %d, Expect: %d\n\n",
 				lex.name, lex.lineNumber(), tt.nLines)
 		}
 		if lex.width != tt.nWidth {
-			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.width == %d, Expect: %d\n\n",
 				lex.name, lex.width, tt.nWidth)
 		}
 	}
@@ -179,19 +187,23 @@ func TestLexerGotoLocation(t *testing.T) {
 		lex := newLexer(tt.name, tt.input)
 		lex.gotoLocation(tt.start, tt.startLine)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %s\n\t Got: lex.index == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.index == %d, Expect: %d\n\n",
 				tt.name, lex.index, tt.lIndex)
 		}
 		if lex.mark != tt.lMark {
-			t.Errorf("Test: %s\n\t Got: lex.mark == %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.mark == %#U, Expect: %#U\n\n",
 				tt.name, lex.mark, tt.lMark)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.width == %d, Expect: %d\n\n",
 				tt.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.line = %d, Expect: %d\n\n",
 				tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
@@ -272,19 +284,23 @@ func TestLexerBackup(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		lex.backup(tt.pos)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %s\n\t Got: lex.index == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.index == %d, Expect: %d\n\n",
 				tt.name, lex.index, tt.lIndex)
 		}
 		if lex.mark != tt.lMark {
-			t.Errorf("Test: %s\n\t Got: lex.mark == %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.mark == %#U, Expect: %#U\n\n",
 				tt.name, lex.mark, tt.lMark)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %s\n\t Got: lex.width == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.width == %d, Expect: %d\n\n",
 				tt.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %s\n\t Got: lex.line = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lex.line = %d, Expect: %d\n\n",
 				tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
@@ -362,19 +378,23 @@ func TestLexerNext(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %s\n\t Got: lexer.index = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.index = %d, Expect: %d\n\n",
 				lex.name, lex.index, tt.nIndex)
 		}
 		if r != tt.nMark {
-			t.Errorf("Test: %s\n\t Got: lexer.mark = %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.mark = %#U, Expect: %#U\n\n",
 				lex.name, r, tt.nMark)
 		}
 		if w != tt.nWidth {
-			t.Errorf("Test: %s\n\t Got: lexer.width = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.width = %d, Expect: %d\n\n",
 				lex.name, w, tt.nWidth)
 		}
 		if lex.lineNumber() != tt.nLine {
-			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.line = %d, Expect: %d\n\n",
 				lex.name, lex.lineNumber(), tt.nLine)
 		}
 	}
@@ -443,23 +463,28 @@ func TestLexerPeek(t *testing.T) {
 		r := lex.peek()
 		w := utf8.RuneLen(r)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.index == %d, Expect: %d\n\n",
 				lex.name, lex.index, tt.lIndex)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %s\n\t Got: lexer.width == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.width == %d, Expect: %d\n\n",
 				lex.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.line = %d, Expect: %d\n\n",
 				lex.name, lex.lineNumber(), tt.lLine)
 		}
 		if r != tt.pMark {
-			t.Errorf("Test: %s\n\t Got: peek().rune  == %q, Expect: %q\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: peek().rune  == %q, Expect: %q\n\n",
 				lex.name, r, tt.pMark)
 		}
 		if w != tt.pWidth {
-			t.Errorf("Test: %s\n\t Got: peek().width == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: peek().width == %d, Expect: %d\n\n",
 				lex.name, w, tt.pWidth)
 		}
 	}
@@ -470,19 +495,22 @@ func TestLexerIsLastLine(t *testing.T) {
 	lex := newLexer("isLastLine test 1", input)
 	lex.gotoLocation(0, 1)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: isLastLine == %t, Expect: %t\n\n",
 			lex.name, lex.isLastLine(), false)
 	}
 	lex = newLexer("isLastLine test 2", input)
 	lex.gotoLocation(0, 2)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: isLastLine == %t, Expect: %t\n\n",
 			lex.name, lex.isLastLine(), false)
 	}
 	lex = newLexer("isLastLine test 3", input)
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
-		t.Errorf("Test: %s\n\t Got: isLastLine == %t, Expect: %t\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: isLastLine == %t, Expect: %t\n\n",
 			lex.name, lex.isLastLine(), true)
 	}
 }
@@ -534,15 +562,18 @@ func TestLexerPeekNextLine(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		out := lex.peekNextLine()
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %s\n\t Got: lexer.index == %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.index == %d, Expect: %d\n\n",
 				lex.name, lex.index, tt.lIndex)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %s\n\t Got: lexer.line = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: lexer.line = %d, Expect: %d\n\n",
 				lex.name, lex.lineNumber(), tt.lLine)
 		}
 		if out != tt.nText {
-			t.Errorf("Test: %s\n\t Got: text == %s, Expect: %s\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: text == %s, Expect: %s\n\n",
 				lex.name, out, tt.nText)
 		}
 	}
@@ -653,24 +684,28 @@ func TestLexSectionTitleBad0100(t *testing.T) {
 
 func TestLexSectionTitleBad0200(t *testing.T) {
 	// Tests for title underlines that are less than three characters.
-	testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
+	testPath := "test_section/02_title_bad/" +
+		"02.00_short_title_short_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionTitleBad0201(t *testing.T) {
-	// Tests for title overlines and underlines that are less than three characters.
-	testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
+	// Tests for title overlines and underlines that are less than three
+	// characters.
+	testPath := "test_section/02_title_bad/" +
+		"02.01_short_title_short_overline_and_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionTitleBad0202(t *testing.T) {
-	// Tests for short title overline with missing underline when the overline
-	// is less than three characters.
-	testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
+	// Tests for short title overline with missing underline when the
+	// overline is less than three characters.
+	testPath := "test_section/02_title_bad/0" +
+		"2.02_short_title_short_overline_missing_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -685,8 +720,8 @@ func TestLexSectionLevelGood0000(t *testing.T) {
 }
 
 func TestLexSectionLevelGood0001(t *testing.T) {
-	// Tests section level return to level one after 1 subsection. The second
-	// level one section has one subsection.
+	// Tests section level return to level one after 1 subsection. The
+	// second level one section has one subsection.
 	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -727,8 +762,10 @@ func TestLexSectionLevelBad0000(t *testing.T) {
 }
 
 func TestLexSectionLevelBad0001(t *testing.T) {
-	// Test section level return with title overlines on bad level 2 section adornment
-	testPath := "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
+	// Test section level return with title overlines on bad level 2
+	// section adornment
+	testPath := "test_section/04_level_bad/" +
+		"00.01_bad_subsection_order_with_overlines"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -737,7 +774,8 @@ func TestLexSectionLevelBad0001(t *testing.T) {
 func TestLexSectionLevelBad0100(t *testing.T) {
 	// Tests for a severeTitleLevelInconsistent system message on a bad
 	// level two with an overline. Level one does not have an overline.
-	testPath := "test_section/04_level_bad/01.00_two_level_overline_bad_return"
+	testPath := "test_section/04_level_bad/" +
+		"01.00_two_level_overline_bad_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -745,7 +783,8 @@ func TestLexSectionLevelBad0100(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 	// Test simple section with title overline.
-	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"
+	testPath := "test_section/05_title_with_overline_good/" +
+		"00.00_title_overline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -753,7 +792,8 @@ func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
 	// Test simple section with inset title and overline.
-	testPath := "test_section/05_title_with_overline_good/01.00_inset_title_with_overline"
+	testPath := "test_section/05_title_with_overline_good/" +
+		"01.00_inset_title_with_overline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -761,7 +801,8 @@ func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
 	// Test sections with three character adornments lines.
-	testPath := "test_section/05_title_with_overline_good/02.00_three_char_section_title"
+	testPath := "test_section/05_title_with_overline_good/" +
+		"02.00_three_char_section_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -769,7 +810,8 @@ func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
 	// Test section title with overline, but no underline.
-	testPath := "test_section/06_title_with_overline_bad/00.00_inset_title_missing_underline"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"00.00_inset_title_missing_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -777,7 +819,8 @@ func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
 	// Test inset title with overline but missing underline.
-	testPath := "test_section/06_title_with_overline_bad/00.01_inset_title_missing_underline_with_blankline"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"00.01_inset_title_missing_underline_with_blankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -786,7 +829,8 @@ func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
 func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
 	// Test inset title with overline but missing underline. The title is
 	// followed by a blank line and a paragraph.
-	testPath := "test_section/06_title_with_overline_bad/00.02_inset_title_missing_underline_and_para"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"00.02_inset_title_missing_underline_and_para"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -794,7 +838,8 @@ func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
 	// Test section overline with missmatched underline.
-	testPath := "test_section/06_title_with_overline_bad/00.03_inset_title_mismatched_underline"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"00.03_inset_title_mismatched_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -802,7 +847,8 @@ func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
 	// Test overline with really long title.
-	testPath := "test_section/06_title_with_overline_bad/01.00_title_too_long"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"01.00_title_too_long"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -810,16 +856,18 @@ func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
 	// Test overline and underline with blanklines instead of a title.
-	testPath := "test_section/06_title_with_overline_bad/02.00_missing_titles_with_blankline"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"02.00_missing_titles_with_blankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
-	// Test overline and underline with nothing where the title is supposed to
-	// be.
-	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
+	// Test overline and underline with nothing where the title is supposed
+	// to be.
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"02.01_missing_titles_with_noblankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -827,16 +875,18 @@ func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0300(t *testing.T) {
 	// Test two character overline with no underline.
-	testPath := "test_section/06_title_with_overline_bad/03.00_incomplete_section"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"03.00_incomplete_section"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
 }
 
 func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
-	// Test three character section adornments with no titles or blanklines in
-	// between.
-	testPath := "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
+	// Test three character section adornments with no titles or blanklines
+	// in between.
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"03.01_incomplete_sections_no_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -844,7 +894,8 @@ func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
 	// Tests indented section with overline
-	testPath := "test_section/06_title_with_overline_bad/04.00_indented_title_short_overline_and_underline"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"04.00_indented_title_short_overline_and_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -852,7 +903,8 @@ func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
 
 func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
 	// Tests ".." overline (which is a comment element).
-	testPath := "test_section/06_title_with_overline_bad/05.00_two_char_section_title"
+	testPath := "test_section/06_title_with_overline_bad/" +
+		"05.00_two_char_section_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
@@ -868,7 +920,8 @@ func TestLexSectionTitleNumberedGood0000(t *testing.T) {
 
 func TestLexSectionTitleNumberedGood0100(t *testing.T) {
 	// Tests numbered section lexing with enumerated directly above section.
-	testPath := "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
+	testPath := "test_section/07_title_numbered_good/" +
+		"01.00_enum_list_with_numbered_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, items, test.expectItems())
