@@ -736,6 +736,7 @@ var testSectionLevelsLast = []struct {
 
 func TestSectionLevelsLast(t *testing.T) {
 	for _, tt := range testSectionLevelsLast {
+		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		secLvls := new(sectionLevels)
 		for _, secNode := range tt.tSections {
 			secLvls.Add(secNode)
