@@ -23,8 +23,9 @@ import (
 
 func init() { SetDebug() }
 
-// SetDebug is typically called from the init() function in a test file. SetDebug parses debug flags
-// passed to the test binary and also sets the template for logging output.
+// SetDebug is typically called from the init() function in a test file.
+// SetDebug parses debug flags passed to the test binary and also sets the
+// template for logging output.
 func SetDebug() {
 	var debug bool
 
@@ -47,7 +48,8 @@ func SetDebug() {
 		log.LlineNumber)
 }
 
-// Contains a single test with data loaded from test files in the testdata directory
+// Contains a single test with data loaded from test files in the testdata
+// directory
 type Test struct {
 	path     string // The path including directory and basename
 	data     string // The input data to be parsed
@@ -55,8 +57,9 @@ type Test struct {
 	nodeData string // The expected parse nodes in json
 }
 
-// expectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic
-// occurs if there is an error unmarshaling the JSON data.
+// expectNodes returns the expected parse_tree values from the tests as
+// unmarshaled JSON. A panic occurs if there is an error unmarshaling the JSON
+// data.
 func (l Test) expectNodes() (nl []interface{}) {
 	if err := json.Unmarshal([]byte(l.nodeData), &nl); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
@@ -64,8 +67,8 @@ func (l Test) expectNodes() (nl []interface{}) {
 	return
 }
 
-// expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is
-// an error decoding the JSON data.
+// expectItems unmarshals the expected lex_items into a silce of items. A panic
+// occurs if there is an error decoding the JSON data.
 func (l Test) expectItems() (lexItems []item) {
 	if err := json.Unmarshal([]byte(l.itemData), &lexItems); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
@@ -159,9 +162,11 @@ func (c *checkNode) dError() {
 		got = c.pFieldVal.(Line).String()
 		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
 	case systemMessageLevel:
-		pNumStr := " (" + strconv.Itoa(int(c.pFieldVal.(systemMessageLevel))) + ")"
+		pNum := int(c.pFieldVal.(systemMessageLevel))
+		pNumStr := " (" + strconv.Itoa(pNum) + ")"
 		got = c.pFieldVal.(systemMessageLevel).String() + pNumStr
-		eNumStr := " (" + strconv.Itoa(int(systemMessageLevelFromString(c.eFieldVal.(string)))) + ")"
+		smsLvl := int(systemMessageLevelFromString(c.eFieldVal.(string)))
+		eNumStr := " (" + strconv.Itoa(smsLvl) + ")"
 		exp = c.eFieldVal.(string) + eNumStr
 	case string:
 		got = c.pFieldVal.(string)
@@ -173,11 +178,13 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q\n\n", c.id, c.pFieldName, got,
-		c.eFieldName, exp)
+	eTemp := "(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q\n\n"
+	c.t.Errorf(eTemp, c.id, c.pFieldName, got, c.eFieldName, exp)
 }
 
-func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value) bool {
+func (c *checkNode) updateState(eKey string, eVal interface{},
+	pVal reflect.Value) bool {
+
 	// Expected parser metadata
 	c.eFieldName = eKey
 	c.eFieldVal = eVal
@@ -185,7 +192,8 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 
 	// Actual parsed metadata
 	c.pNodeName = pVal.Type().Name()
-	c.pFieldName = strings.ToUpper(string(c.eFieldName[0])) + c.eFieldName[1:]
+	c.pFieldName = strings.ToUpper(string(c.eFieldName[0]))
+	c.pFieldName += c.eFieldName[1:]
 
 	if c.pFieldName == "Id" {
 		// Overide for uppercase ID
@@ -193,7 +201,8 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 	}
 
 	if !pVal.FieldByName(c.pFieldName).IsValid() {
-		panic(fmt.Errorf("Missing field in parser output: %s.%s\n", c.pNodeName, c.pFieldName))
+		eTmp := "Missing field in parser output: %s.%s\n"
+		panic(fmt.Errorf(eTmp, c.pNodeName, c.pFieldName))
 	}
 	c.pFieldVal = pVal.FieldByName(c.pFieldName).Interface()
 	c.pFieldType = pVal.FieldByName(c.pFieldName).Type()
@@ -218,7 +227,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 		}
 		switch c.eFieldName {
 		case "text":
-			if norm.NFC.String(c.eFieldVal.(string)) != c.pFieldVal.(string) {
+			nExpect := norm.NFC.String(c.eFieldVal.(string))
+			if nExpect != c.pFieldVal.(string) {
 				c.dError()
 			}
 		case "type":
@@ -247,16 +257,18 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
-				id := c.eFieldVal.([]interface{})[0].(map[string]interface{})["id"]
+				iVal := c.eFieldVal.([]interface{})[0]
+				id := iVal.(map[string]interface{})["id"]
 				spd.Dump(pNode)
 				spd.Dump(eNodes)
-				c.t.Fatal("Expected NodeList values ( len =", len1, ") and parsed "+
-					"NodeList values ( len =", len2, ") do not match beginning at "+
-					"item ID", id)
+				eTmp := "Expected NodeList values (len=%d) " +
+					"and parsed NodeList values (len=%d) " +
+					"do not match beginning at item ID: %d"
+				c.t.Fatal(eTmp, len1, len2, id)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
-				// Store and reset the parser value, otherwise a panic will occur on
-				// the next iteration
+				// Store and reset the parser value, otherwise
+				// a panic will occur on the next iteration
 				pFieldVal := c.pFieldVal
 				c.checkFields(node, c.pFieldVal.(NodeList)[num])
 				c.pFieldVal = pFieldVal
@@ -284,11 +296,14 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 
 }
 
-func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testPath string) {
+func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
+	testPath string) {
+
 	state := &checkNode{t: t, testPath: testPath}
 	for eNum, eNode := range eTree {
 		state.checkFields(eNode, pNodes[eNum])
 	}
+
 	return
 }
 
@@ -303,7 +318,7 @@ var treeBackupTests = []struct {
 	name      string
 	input     string
 	nextNum   int   // The number of times to call Tree.next().
-	backupNum int   // Number of times to call Tree.backup(). Value starts at 1.
+	backupNum int   // Number of calls to Tree.backup(). Value starts at 1.
 	Back3Tok  *item // The third backup token.
 	Back2Tok  *item // The second backup token.
 	Back1Tok  *item // The first backup token.
@@ -333,19 +348,46 @@ var treeBackupTests = []struct {
 }
 
 func TestTreeBackup(t *testing.T) {
+	var tField reflect.Value
+	var tr *Tree
+	var zedPos string
+	isEqual := func(pos int) {
+		val := tField.Interface().(*item)
+		if tr.token[pos] == nil {
+			t.Errorf("Test: %q\n\t    Got: token[%s] = %#+v, "+
+				"Expect: %#+v\n\n",
+				tr.Name, zedPos, tr.token[pos], val)
+		}
+		if tr.token[pos].ID != val.ID {
+			t.Errorf("Test: %q\n\t    Got: token[%s].ID = %d, "+
+				"Expect: %d\n\n",
+				tr.Name, zedPos, tr.token[pos].Type, val.ID)
+		}
+		if tr.token[pos].Type != val.Type {
+			t.Errorf("Test: %q\n\t    Got: token[%s].Type = %q, "+
+				"Expect: %q\n\n",
+				tr.Name, zedPos, tr.token[pos].Type, val.Type)
+		}
+		if tr.token[pos].Text != val.Text {
+			t.Errorf("Test: %q\n\t    Got: token[%s].Text = %q, "+
+				"Expect: %q\n\n",
+				tr.Name, zedPos, tr.token[pos].Text, val.Text)
+		}
+	}
 	for _, tt := range treeBackupTests {
-		tree := New(tt.name, tt.input)
-		tree.lex = lex(tt.name, tt.input)
+		tr = New(tt.name, tt.input)
+		tr.lex = lex(tt.name, tt.input)
 		for i := 0; i < tt.nextNum; i++ {
-			tree.next()
+			tr.next()
 		}
 		for j := 0; j < tt.backupNum; j++ {
-			tree.backup()
+			tr.backup()
 		}
-		for k := 0; k < len(tree.token); k++ {
+		for k := 0; k < len(tr.token); k++ {
 			tokenPos := k - zed
-			zedPos := "zed"
-			tokenPosStr := strconv.Itoa(int(math.Abs(float64(k - zed))))
+			zedPos = "zed"
+			tPi := int(math.Abs(float64(k - zed)))
+			tokenPosStr := strconv.Itoa(tPi)
 			var fName string
 			if tokenPos < 0 {
 				fName = "Back" + tokenPosStr + "Tok"
@@ -357,25 +399,9 @@ func TestTreeBackup(t *testing.T) {
 				zedPos = "zed+" + tokenPosStr
 			}
 			tokenPos = int(math.Abs(float64(k - zed)))
-			tField := reflect.ValueOf(tt).FieldByName(fName)
+			tField = reflect.ValueOf(tt).FieldByName(fName)
 			if tField.IsValid() && !tField.IsNil() {
-				val := tField.Interface().(*item)
-				if tree.token[k] == nil {
-					t.Errorf("Test: %q\n\t    Got: token[%s] = %#+v, Expect: %#+v\n\n",
-						tree.Name, zedPos, tree.token[k], val)
-				}
-				if tree.token[k].ID != val.ID {
-					t.Errorf("Test: %q\n\t    Got: token[%s].ID = %d, Expect: %d\n\n",
-						tree.Name, zedPos, tree.token[k].Type, val.ID)
-				}
-				if tree.token[k].Type != val.Type {
-					t.Errorf("Test: %q\n\t    Got: token[%s].Type = %q, Expect: %q\n\n",
-						tree.Name, zedPos, tree.token[k].Type, val.Type)
-				}
-				if tree.token[k].Text != val.Text {
-					t.Errorf("Test: %q\n\t    Got: token[%s].Text = %q, Expect: %q\n\n",
-						tree.Name, zedPos, tree.token[k].Text, val.Text)
-				}
+				isEqual(k)
 			}
 		}
 	}
@@ -900,8 +926,8 @@ func TestParseSectionTitleGood0000(t *testing.T) {
 }
 
 func TestParseSectionTitleGood0001(t *testing.T) {
-	// Basic title, underline, and paragraph with no blankline line after the
-	// section.
+	// Basic title, underline, and paragraph with no blankline line after
+	// the section.
 	testPath := "test_section/01_title_good/00.01_paragraph_noblankline"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -910,9 +936,9 @@ func TestParseSectionTitleGood0001(t *testing.T) {
 }
 
 func TestParseSectionTitleGood0002(t *testing.T) {
-	// A title that begins with a combining unicode character \u0301. Tests to
-	// make sure the 2 byte unicode does not contribute to the underline length
-	// calculation.
+	// A title that begins with a combining unicode character \u0301. Tests
+	// to make sure the 2 byte unicode does not contribute to the underline
+	// length calculation.
 	testPath := "test_section/01_title_good/00.02_title_combining_chars"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -975,7 +1001,8 @@ func TestParseSectionTitleBad0200(t *testing.T) {
 }
 
 func TestParseSectionTitleBad0201(t *testing.T) {
-	// Tests for title overlines and underlines that are less than three characters.
+	// Tests for title overlines and underlines that are less than three
+	// characters.
 	testPath := "test_section/02_title_bad/02.01_short_title_short_overline_and_underline"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -984,8 +1011,8 @@ func TestParseSectionTitleBad0201(t *testing.T) {
 }
 
 func TestParseSectionTitleBad0202(t *testing.T) {
-	// Tests for short title overline with missing underline when the overline
-	// is less than three characters.
+	// Tests for short title overline with missing underline when the
+	// overline is less than three characters.
 	testPath := "test_section/02_title_bad/02.02_short_title_short_overline_missing_underline"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -1003,8 +1030,8 @@ func TestParseSectionLevelGood0000(t *testing.T) {
 }
 
 func TestParseSectionLevelGood0001(t *testing.T) {
-	// Tests section level return to level one after 1 subsection. The second
-	// level one section has one subsection.
+	// Tests section level return to level one after 1 subsection. The
+	// second level one section has one subsection.
 	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -1050,7 +1077,8 @@ func TestParseSectionLevelBad0000(t *testing.T) {
 }
 
 func TestParseSectionLevelBad0001(t *testing.T) {
-	// Test section level return with title overlines on bad level 2 section adornment
+	// Test section level return with title overlines on bad level 2
+	// section adornment
 	testPath := "test_section/04_level_bad/00.01_bad_subsection_order_with_overlines"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -1151,8 +1179,8 @@ func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
-	// Test overline and underline with nothing where the title is supposed to
-	// be.
+	// Test overline and underline with nothing where the title is supposed
+	// to be.
 	testPath := "test_section/06_title_with_overline_bad/02.01_missing_titles_with_noblankline"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -1170,8 +1198,8 @@ func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
 }
 
 func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
-	// Test three character section adornments with no titles or blanklines in
-	// between.
+	// Test three character section adornments with no titles or blanklines
+	// in between.
 	testPath := "test_section/06_title_with_overline_bad/03.01_incomplete_sections_no_title"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -1207,7 +1235,8 @@ func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 }
 
 func TestParseSectionTitleNumberedGood0100(t *testing.T) {
-	// Tests numbered section lexing with enumerated directly above section.
+	// Tests numbered section lexing with enumerated directly above
+	// section.
 	testPath := "test_section/07_title_numbered_good/01.00_enum_list_with_numbered_title"
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
