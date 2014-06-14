@@ -571,7 +571,6 @@ func TestTreeNext(t *testing.T) {
 			tokenPos = int(math.Abs(float64(k - zed)))
 			tField = reflect.ValueOf(tt).FieldByName(fName)
 			if tField.IsValid() && !tField.IsNil() {
-				log.Debugln("FNAME:", fName)
 				isEqual(k)
 			}
 		}
@@ -594,20 +593,20 @@ var treePeekTests = []struct {
 	Peek4Tok *item
 }{
 	{
-		name:    "Peek from starting position",
-		input:   "Test\n=====\n\nParagraph.",
-		nextNum: 0, peekNum: 1,
+		name:     "Single peek no next",
+		input:    "Test\n=====\n\nParagraph.",
+		peekNum:  1,
 		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
 	},
 	{
-		name:    "Peek from starting position two times",
-		input:   "Test\n=====\n\nParagraph.",
-		nextNum: 0, peekNum: 2,
+		name:     "Double peek no next",
+		input:    "Test\n=====\n\nParagraph.",
+		peekNum:  2,
 		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
 		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 	},
 	{
-		name:    "Peek three positions",
+		name:    "Triple peek no next",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 3,
 		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
