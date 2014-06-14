@@ -292,7 +292,10 @@ func (l *lexer) nextLine() string {
 
 // nextItem returns the next item from the input.
 func (l *lexer) nextItem() *item {
-	item := <-l.items
+	item, ok := <-l.items
+	if ok == false {
+		return nil
+	}
 	l.lastItemPosition = item.StartPosition
 	return &item
 

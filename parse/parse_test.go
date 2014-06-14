@@ -534,6 +534,15 @@ var treeNextTests = []struct {
 		Back2Tok: &item{Type: itemParagraph, Text: "Test"},
 		Back1Tok: &item{Type: itemEOF},
 	},
+	{
+		name:    "Four next() on one line of input; Test channel close.",
+		input:   "Test",
+		nextNum: 4,
+		// The channel should be closed on the second next(), otherwise
+		// a deadlock would occur.
+		Back3Tok: &item{Type: itemParagraph, Text: "Test"},
+		Back2Tok: &item{Type: itemEOF},
+	},
 }
 
 func TestTreeNext(t *testing.T) {
