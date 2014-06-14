@@ -126,7 +126,7 @@ func (p parserMessage) Message() (s string) {
 	case severeOverlineUnderlineMismatch:
 		s = "Title overline & underline mismatch."
 	case severeTitleLevelInconsistent:
-		s = "Title level inconsistent"
+		s = "Title level inconsistent."
 	}
 	return
 }

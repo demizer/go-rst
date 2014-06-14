@@ -107,8 +107,8 @@
                     {
                         "id": 15,
                         "type": "NodeParagraph",
-                        "text": "Title level inconsistent",
-                        "length": 24
+                        "text": "Title level inconsistent.",
+                        "length": 25
                     },
                     {
                         "id": 16,
