@@ -447,7 +447,7 @@ var treeNextTests = []struct {
 		ZedToken: &item{Type: itemSectionAdornment, Text: "====="},
 	},
 	{
-		name:     "Tripple next",
+		name:     "Triple next",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  3,
 		Back2Tok: &item{Type: itemTitle, Text: "Test"},
@@ -455,7 +455,7 @@ var treeNextTests = []struct {
 		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
 	},
 	{
-		name:     "Quadrupple next",
+		name:     "Quadruple next",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  4,
 		Back3Tok: &item{Type: itemTitle, Text: "Test"},
