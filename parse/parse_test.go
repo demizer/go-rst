@@ -403,9 +403,10 @@ func TestTreeBackup(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Fatalf("Test: %q\n\t    "+
-				"Got: token[%s] != nil, Expect: nil\n\n",
-				tr.Name, tName)
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s] == %#+v, Expect: nil\n\n",
+				tr.Name, tName, tr.token[tPos])
+			return
 		}
 		if tr.token[tPos].ID != val.ID {
 			t.Errorf("Test: %q\n\t    "+
@@ -733,8 +734,8 @@ func TestTreeClear(t *testing.T) {
 		val := tExp.Interface().(*item)
 		if tr.token[tPos] != nil && val == nil {
 			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] != nil, Expect: nil\n\n",
-				tr.Name, tName)
+				"Got: token[%s] == %#+v, Expect: nil\n\n",
+				tr.Name, tName, tr.token[tPos])
 		}
 	}
 	for _, tt := range testTreeClearTests {
