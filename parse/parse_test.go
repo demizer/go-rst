@@ -308,6 +308,7 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	return
 }
 
+// parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	log.Debugf("Test path: %s\n", test.path)
 	log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
@@ -697,6 +698,75 @@ func TestTreePeek(t *testing.T) {
 				isEqual(k)
 			}
 		}
+	}
+}
+
+var testTreeClearTests = []struct {
+	name       string
+	input      string
+	nextNum    int   // Number of times to call Tree.next() before peek
+	peekNum    int   // position argument to Tree.peek()
+	clearBegin int   // Passed to Tree.clear() as the begin arg
+	clearEnd   int   // Passed to Tree.clear() as the end arg
+	Back4Tok   *item // Use &item{} if the token is not expected to be nil
+	Back3Tok   *item
+	Back2Tok   *item
+	Back1Tok   *item
+	ZedToken   *item
+	Peek1Tok   *item
+	Peek2Tok   *item
+	Peek3Tok   *item
+	Peek4Tok   *item
+}{
+	{
+		name:    "Fill token buffer and clear it.",
+		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		nextNum: 5, peekNum: 4,
+		clearBegin: zed - 4, clearEnd: zed + 4,
+	},
+	{
+		name:    "Fill token buffer and clear back tokens.",
+		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		nextNum: 5, peekNum: 4,
+		clearBegin: zed - 4, clearEnd: zed - 1,
+		ZedToken: &item{},
+		Peek1Tok: &item{},
+		Peek2Tok: &item{},
+		Peek3Tok: &item{},
+		Peek4Tok: &item{},
+	},
+	{
+		name:    "Fill token buffer and clear peek tokens.",
+		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		nextNum: 5, peekNum: 4,
+		clearBegin: zed + 1, clearEnd: zed + 4,
+		Back4Tok: &item{},
+		Back3Tok: &item{},
+		Back2Tok: &item{},
+		Back1Tok: &item{},
+		ZedToken: &item{},
+	},
+}
+
+func TestTreeClear(t *testing.T) {
+	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*item)
+		if tr.token[tPos] != nil && val == nil {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s] != nil, Expect: nil\n\n",
+				tr.Name, tName)
+		}
+	}
+	for _, tt := range testTreeClearTests {
+		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		tr := New(tt.name, tt.input)
+		tr.lex = lex(tt.name, tt.input)
+		for i := 0; i < tt.nextNum; i++ {
+			tr.next()
+		}
+		tr.peek(tt.peekNum)
+		tr.clear(tt.clearBegin, tt.clearEnd)
+		checkTokens(tr, tt, isEqual)
 	}
 }
 

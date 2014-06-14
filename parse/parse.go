@@ -465,6 +465,14 @@ func (t *Tree) next() *item {
 	return t.token[zed]
 }
 
+// clear sets tokens from begin to end to nil.
+func (t *Tree) clear(begin, end int) {
+	for i := begin; i <= end; i++ {
+		log.Debugln("Clearing token: ", i)
+		t.token[i] = nil
+	}
+}
+
 // section is responsible for parsing the title, overline, and underline tokens
 // returned from the parser. If there are errors parsing these elements, than a
 // systemMessage is generated and added to Tree.Nodes.
