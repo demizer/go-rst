@@ -330,20 +330,20 @@ var treeBackupTests = []struct {
 	Peek4Tok  *item // The fourth peek token.
 }{
 	{
-		name:    "Backup once",
+		name:    "Single backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 1,
 		ZedToken: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
 	},
 	{
-		name:    "Backup twice",
+		name:    "Double backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 2,
 		// ZedToken is nil
 		Peek1Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
 	},
 	{
-		name:    "Backup thrice",
+		name:    "Triple backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 3,
 		// ZedToken is nil
