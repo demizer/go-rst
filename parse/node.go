@@ -26,12 +26,12 @@ const (
 	// NodeLiteralBlock is a literal block element.
 	NodeLiteralBlock
 
-	// NodeIndent is indention encountered by the lexer. It can be any number
-	// of spaces found before any other element type.
+	// NodeIndent is indention encountered by the lexer. It can be any
+	// number of spaces found before any other element type.
 	NodeIndent
 
-	// NodeTransition is a transition element. Transitions are very similar to
-	// NodeSection except that they have newlines before and after.
+	// NodeTransition is a transition element. Transitions are very similar
+	// to NodeSection except that they have newlines before and after.
 	NodeTransition
 
 	// NodeTitle is a section title element to be used inside SectionNodes.
@@ -128,18 +128,20 @@ type SectionNode struct {
 	ID   `json:"id"`
 	Type NodeType `json:"type"`
 
-	// Level is the hierarchical level of the section. The first level is level
-	// 1, any further sections encountered after the first level are given
-	// consecutive level numbers.
+	// Level is the hierarchical level of the section. The first level is
+	// level 1, any further sections encountered after the first level are
+	// given consecutive level numbers.
 	Level int `json:"level"`
 
-	// OverLine and UnderLine are the parsed Nodes that make up the section.
+	// OverLine and UnderLine are the parsed Nodes that make up the
+	// section.
 	Title     *TitleNode     `json:"title"`
 	OverLine  *AdornmentNode `json:"overLine"`
 	UnderLine *AdornmentNode `json:"underLine"`
 
-	// Indent is indentation encountered by the parser before the SectionNode.
-	// Sections cannot be indented, so this is primarily for error detection.
+	// Indent is indentation encountered by the parser before the
+	// SectionNode.  Sections cannot be indented, so this is primarily for
+	// error detection.
 	Indent *IndentNode `json:"underLine"`
 
 	// NodeList contains
@@ -151,7 +153,9 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(title *item, overSec *item, underSec *item, indent *item, id *int) *SectionNode {
+func newSection(title *item, overSec *item, underSec *item,
+	indent *item, id *int) *SectionNode {
+
 	*id++
 	n := &SectionNode{
 		ID:   ID(*id),
@@ -306,12 +310,14 @@ type SystemMessageNode struct {
 
 	// NodeList contains children Nodes of the systemMessage. Typically
 	// containing the first list item as a NodeParagraph which contains the
-	// message, and a NodeLiteralBlock which contains the input data causing
-	// the systemMessage to be generated.
+	// message, and a NodeLiteralBlock which contains the input data
+	// causing the systemMessage to be generated.
 	NodeList NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, severity systemMessageLevel, id *int) *SystemMessageNode {
+func newSystemMessage(i *item, severity systemMessageLevel,
+	id *int) *SystemMessageNode {
+
 	*id++
 	return &SystemMessageNode{
 		ID:       ID(*id),
