@@ -1,0 +1,176 @@
+[
+    {
+        "id": 1,
+        "type": "itemTitle",
+        "text": "Hello",
+        "startPosition": 1,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 2,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 1,
+        "line": 2,
+        "length": 5
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "This is a section level one paragraph.",
+        "startPosition": 1,
+        "line": 4,
+        "length": 38
+    },
+    {
+        "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 1,
+        "line": 6,
+        "length": 5
+    },
+    {
+        "id": 7,
+        "type": "itemTitle",
+        "text": "World",
+        "startPosition": 1,
+        "line": 7,
+        "length": 5
+    },
+    {
+        "id": 8,
+        "type": "itemSectionAdornment",
+        "text": "=====",
+        "startPosition": 1,
+        "line": 8,
+        "length": 5
+    },
+    {
+        "id": 9,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 9,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemParagraph",
+        "text": "This is a section level two paragraph.",
+        "startPosition": 1,
+        "line": 10,
+        "length": 38
+    },
+    {
+        "id": 11,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 11,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemTitle",
+        "text": "Hello 2",
+        "startPosition": 1,
+        "line": 12,
+        "length": 7
+    },
+    {
+        "id": 13,
+        "type": "itemSectionAdornment",
+        "text": "=======",
+        "startPosition": 1,
+        "line": 13,
+        "length": 7
+    },
+    {
+        "id": 14,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 14,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemParagraph",
+        "text": "This is a section level one paragraph.",
+        "startPosition": 1,
+        "line": 15,
+        "length": 38
+    },
+    {
+        "id": 16,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 16,
+        "length": 1
+    },
+    {
+        "id": 17,
+        "type": "itemSectionAdornment",
+        "text": "-------",
+        "startPosition": 1,
+        "line": 17,
+        "length": 7
+    },
+    {
+        "id": 18,
+        "type": "itemTitle",
+        "text": "World 2",
+        "startPosition": 1,
+        "line": 18,
+        "length": 7
+    },
+    {
+        "id": 19,
+        "type": "itemSectionAdornment",
+        "text": "-------",
+        "startPosition": 1,
+        "line": 19,
+        "length": 7
+    },
+    {
+        "id": 20,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 20,
+        "length": 1
+    },
+    {
+        "id": 21,
+        "type": "itemParagraph",
+        "text": "World 2 is an inconsistent title!",
+        "startPosition": 1,
+        "line": 21,
+        "length": 33
+    },
+    {
+        "id": 22,
+        "type": "itemEOF",
+        "startPosition": 34,
+        "line": 21
+    }
+]

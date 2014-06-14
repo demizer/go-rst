@@ -734,6 +734,15 @@ func TestLexSectionLevelBad0001(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
+func TestLexSectionLevelBad0100(t *testing.T) {
+	// Tests for a severeTitleLevelInconsistent system message on a bad
+	// level two with an overline. Level one does not have an overline.
+	testPath := "test_section/04_level_bad/01.00_two_level_overline_bad_return"
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
 func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 	// Test simple section with title overline.
 	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"

@@ -1,0 +1,21 @@
+Hello
+=====
+
+This is a section level one paragraph.
+
+=====
+World
+=====
+
+This is a section level two paragraph.
+
+Hello 2
+=======
+
+This is a section level one paragraph.
+
+-------
+World 2
+-------
+
+World 2 is an inconsistent title!

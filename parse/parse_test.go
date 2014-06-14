@@ -1058,6 +1058,16 @@ func TestParseSectionLevelBad0001(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+func TestParseSectionLevelBad0100(t *testing.T) {
+	// Tests for a severeTitleLevelInconsistent system message on a bad
+	// level two with an overline. Level one does not have an overline.
+	testPath := "test_section/04_level_bad/01.00_two_level_overline_bad_return"
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
 func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
 	// Test simple section with title overline.
 	testPath := "test_section/05_title_with_overline_good/00.00_title_overline"

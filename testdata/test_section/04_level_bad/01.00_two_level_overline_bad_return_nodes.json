@@ -1,0 +1,131 @@
+[
+    {
+        "id": 1,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 2,
+            "type": "NodeTitle",
+            "text": "Hello",
+            "startPosition": 1,
+            "line": 1,
+            "length": 5
+        },
+        "underLine": {
+            "id": 3,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 2,
+            "length": 5
+        },
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeParagraph",
+                "text": "This is a section level one paragraph.",
+                "startPosition": 1,
+                "line": 4,
+                "length": 38
+            },
+            {
+                "id": 5,
+                "type": "NodeSection",
+                "level": 2,
+                "title": {
+                    "id": 6,
+                    "type": "NodeTitle",
+                    "text": "World",
+                    "startPosition": 1,
+                    "line": 7,
+                    "length": 5
+                },
+                "overLine": {
+                    "id": 7,
+                    "type": "NodeAdornment",
+                    "rune": "=",
+                    "startPosition": 1,
+                    "line": 6,
+                    "length": 5
+                },
+                "underLine": {
+                    "id": 8,
+                    "type": "NodeAdornment",
+                    "rune": "=",
+                    "startPosition": 1,
+                    "line": 8,
+                    "length": 5
+                },
+                "nodeList": [
+                    {
+                        "id": 9,
+                        "type": "NodeParagraph",
+                        "text": "This is a section level two paragraph.",
+                        "startPosition": 1,
+                        "line": 10,
+                        "length": 38
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "type": "NodeSection",
+        "level": 1,
+        "title": {
+            "id": 11,
+            "type": "NodeTitle",
+            "text": "Hello 2",
+            "startPosition": 1,
+            "line": 12,
+            "length": 7
+        },
+        "underLine": {
+            "id": 12,
+            "type": "NodeAdornment",
+            "rune": "=",
+            "startPosition": 1,
+            "line": 13,
+            "length": 7
+        },
+        "nodeList": [
+            {
+                "id": 13,
+                "type": "NodeParagraph",
+                "text": "This is a section level one paragraph.",
+                "startPosition": 1,
+                "line": 15,
+                "length": 38
+            },
+            {
+                "id": 14,
+                "type": "NodeSystemMessage",
+                "severity": "SEVERE",
+                "line": 17,
+                "nodeList": [
+                    {
+                        "id": 15,
+                        "type": "NodeParagraph",
+                        "text": "Title level inconsistent.",
+                        "length": 25
+                    },
+                    {
+                        "id": 16,
+                        "type": "NodeLiteralBlock",
+                        "text": "-------\nWorld 2\n-------",
+                        "length": 23
+                    }
+                ]
+            },
+            {
+                "id": 17,
+                "type": "NodeParagraph",
+                "text": "World 2 is an inconsistent title!",
+                "startPosition": 1,
+                "line": 21,
+                "length": 33
+            }
+        ]
+    }
+]
