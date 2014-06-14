@@ -526,11 +526,13 @@ var treeNextTests = []struct {
 		ZedToken: &item{Type: itemEOF},
 	},
 	{
-		name:  "Three next() on one line of input; Test channel close.",
-		input: "Test",
+		name:    "Three next() on one line of input; Test channel close.",
+		input:   "Test",
+		nextNum: 3,
 		// The channel should be closed on the second next(), otherwise
 		// a deadlock would occur.
-		nextNum: 3,
+		Back2Tok: &item{Type: itemParagraph, Text: "Test"},
+		Back1Tok: &item{Type: itemEOF},
 	},
 }
 
