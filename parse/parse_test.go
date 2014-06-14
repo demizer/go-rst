@@ -582,13 +582,13 @@ func TestTreeNext(t *testing.T) {
 var treePeekTests = []struct {
 	name     string
 	input    string
-	nextNum  int   // Number of times to call Tree.next() before peek
-	peekNum  int   // position argument to Tree.peek()
-	Back4Tok *item // The Back tokens should be empty on peek tests.
+	nextNum  int // Number of times to call Tree.next() before peek
+	peekNum  int // position argument to Tree.peek()
+	Back4Tok *item
 	Back3Tok *item
 	Back2Tok *item
 	Back1Tok *item
-	ZedToken *item // Should be empty on peek tests.
+	ZedToken *item
 	Peek1Tok *item
 	Peek2Tok *item
 	Peek3Tok *item
@@ -608,9 +608,9 @@ var treePeekTests = []struct {
 		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 	},
 	{
-		name:    "Triple peek no next",
-		input:   "Test\n=====\n\nParagraph.",
-		nextNum: 0, peekNum: 3,
+		name:     "Triple peek no next",
+		input:    "Test\n=====\n\nParagraph.",
+		peekNum:  3,
 		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
 		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		Peek3Tok: &item{Type: itemBlankLine, Text: "\n"},
@@ -619,6 +619,8 @@ var treePeekTests = []struct {
 		name:    "Triple peek and double next",
 		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
 		nextNum: 2, peekNum: 3,
+		Back1Tok: &item{Type: itemTitle, Text: "Test"},
+		ZedToken: &item{Type: itemSectionAdornment, Text: "====="},
 		Peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
 		Peek2Tok: &item{Type: itemParagraph, Text: "One"},
 		Peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
@@ -627,6 +629,9 @@ var treePeekTests = []struct {
 		name:    "Quadruple peek and triple next",
 		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
 		nextNum: 3, peekNum: 4,
+		Back2Tok: &item{Type: itemTitle, Text: "Test"},
+		Back1Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
 		Peek1Tok: &item{Type: itemParagraph, Text: "One"},
 		Peek2Tok: &item{Type: itemTitle, Text: "Test 2"},
 		Peek3Tok: &item{Type: itemSectionAdornment, Text: "====="},
@@ -639,57 +644,37 @@ var treePeekTests = []struct {
 }
 
 func TestTreePeek(t *testing.T) {
-	var tField reflect.Value
-	var fName, zedPos string
-	var tr *Tree
-
-	isEqual := func(pos int) {
-		val := tField.Interface().(*item)
-		if tr.token[pos] == nil {
-			t.Fatalf("Test: %q\n\t    "+
-				"Got: token[%s] = %v, Expect: %#+v\n\n",
-				tr.Name, zedPos, tr.token[pos], val)
+	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*item)
+		if val == nil && tr.token[tPos] == nil {
+			return
 		}
-		if tr.token[pos].Type != val.Type {
+		if val == nil && tr.token[tPos] != nil {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s] == %#+v, Expect: nil\n\n",
+				tr.Name, tName, tr.token[tPos])
+			return
+		}
+		if tr.token[tPos].Type != val.Type {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Type = %q, Expect: %q\n\n",
-				tr.Name, zedPos, tr.token[pos].Type, val.Type)
+				tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
-		if tr.token[pos].Text != val.Text && val.Text != "" {
+		if tr.token[tPos].Text != val.Text && val.Text != "" {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Text = %q, Expect: %q\n\n",
-				tr.Name, zedPos, tr.token[pos].Text, val.Text)
+				tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
-
 	for _, tt := range treePeekTests {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
-		tr = New(tt.name, tt.input)
+		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
 		for i := 0; i < tt.nextNum; i++ {
 			tr.next()
 		}
 		tr.peek(tt.peekNum)
-		for k := 0; k < len(tr.token); k++ {
-			tokenPos := k - zed
-			zedPos = "zed"
-			tPi := int(math.Abs(float64(k - zed)))
-			tokenPosStr := strconv.Itoa(tPi)
-			if tokenPos < 0 {
-				fName = "Back" + tokenPosStr + "Tok"
-				zedPos = "zed-" + tokenPosStr
-			} else if tokenPos == 0 {
-				fName = "ZedToken"
-			} else {
-				fName = "Peek" + tokenPosStr + "Tok"
-				zedPos = "zed+" + tokenPosStr
-			}
-			tokenPos = int(math.Abs(float64(k - zed)))
-			tField = reflect.ValueOf(tt).FieldByName(fName)
-			if tField.IsValid() && !tField.IsNil() {
-				isEqual(k)
-			}
-		}
+		checkTokens(tr, tt, isEqual)
 	}
 }
 
