@@ -354,27 +354,33 @@ func TestTreeBackup(t *testing.T) {
 	isEqual := func(pos int) {
 		val := tField.Interface().(*item)
 		if tr.token[pos] == nil {
-			t.Errorf("Test: %q\n\t    Got: token[%s] = %#+v, "+
-				"Expect: %#+v\n\n",
+			t.Fatalf("Test: %q\n\t    "+
+				"Got: token[%s] = %v, Expect: %#+v\n\n",
+				tr.Name, zedPos, tr.token[pos], val)
+		}
+		if tr.token[pos] == nil {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s] = %#+v, Expect: %#+v\n\n",
 				tr.Name, zedPos, tr.token[pos], val)
 		}
 		if tr.token[pos].ID != val.ID {
-			t.Errorf("Test: %q\n\t    Got: token[%s].ID = %d, "+
-				"Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s].ID = %d, Expect: %d\n\n",
 				tr.Name, zedPos, tr.token[pos].Type, val.ID)
 		}
 		if tr.token[pos].Type != val.Type {
-			t.Errorf("Test: %q\n\t    Got: token[%s].Type = %q, "+
-				"Expect: %q\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s].Type = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Type, val.Type)
 		}
 		if tr.token[pos].Text != val.Text {
-			t.Errorf("Test: %q\n\t    Got: token[%s].Text = %q, "+
-				"Expect: %q\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s].Text = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeBackupTests {
+		log.Debugf("\n\n\n\n%%%%%% RUNNING TEST %q %%%%%%\n\n\n\n", tt.name)
 		tr = New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
 		for i := 0; i < tt.nextNum; i++ {
