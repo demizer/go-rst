@@ -315,6 +315,36 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
+// tokEqualChecker compares the lexed tokens and the expected tokens and
+// reports failures.
+type tokEqualChecker func(*Tree, reflect.Value, int, string)
+
+// checkTokens checks the lexed tokens against the expected tokens and uses
+// isEqual to perform the actual checks and report errors.
+func checkTokens(tr *Tree, trExp interface{}, isEqual tokEqualChecker) {
+	for i := 0; i < len(tr.token); i++ {
+		tokenPos := i - zed
+		zedPos := "zed"
+		tPi := int(math.Abs(float64(i - zed)))
+		tokenPosStr := strconv.Itoa(tPi)
+		var fName string
+		if tokenPos < 0 {
+			fName = "Back" + tokenPosStr + "Tok"
+			zedPos = "zed-" + tokenPosStr
+		} else if tokenPos == 0 {
+			fName = "ZedToken"
+		} else {
+			fName = "Peek" + tokenPosStr + "Tok"
+			zedPos = "zed+" + tokenPosStr
+		}
+		tokenPos = int(math.Abs(float64(i - zed)))
+		tField := reflect.ValueOf(trExp).FieldByName(fName)
+		if tField.IsValid() {
+			isEqual(tr, tField, i, zedPos)
+		}
+	}
+}
+
 var treeBackupTests = []struct {
 	name      string
 	input     string
