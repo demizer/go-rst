@@ -365,6 +365,7 @@ var treeBackupTests = []struct {
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 1,
 		ZedToken: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+		Peek1Tok: &item{ID: 2, Type: itemSectionAdornment},
 	},
 	{
 		name:    "Double backup",
@@ -372,6 +373,7 @@ var treeBackupTests = []struct {
 		nextNum: 2, backupNum: 2,
 		// ZedToken is nil
 		Peek1Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+		Peek2Tok: &item{ID: 2, Type: itemSectionAdornment},
 	},
 	{
 		name:    "Triple backup",
@@ -379,6 +381,7 @@ var treeBackupTests = []struct {
 		nextNum: 2, backupNum: 3,
 		// ZedToken is nil
 		Peek2Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+		Peek3Tok: &item{ID: 2, Type: itemSectionAdornment},
 	},
 	{
 		name:    "Quadruple backup",
@@ -393,40 +396,35 @@ var treeBackupTests = []struct {
 }
 
 func TestTreeBackup(t *testing.T) {
-	var tField reflect.Value
-	var tr *Tree
-	var zedPos string
-	isEqual := func(pos int) {
-		val := tField.Interface().(*item)
-		if tr.token[pos] == nil {
+	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*item)
+		if val == nil && tr.token[tPos] == nil {
+			return
+		}
+		if val == nil && tr.token[tPos] != nil {
 			t.Fatalf("Test: %q\n\t    "+
-				"Got: token[%s] = %v, Expect: %#+v\n\n",
-				tr.Name, zedPos, tr.token[pos], val)
+				"Got: token[%s] != nil, Expect: nil\n\n",
+				tr.Name, tName)
 		}
-		if tr.token[pos] == nil {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] = %#+v, Expect: %#+v\n\n",
-				tr.Name, zedPos, tr.token[pos], val)
-		}
-		if tr.token[pos].ID != val.ID {
+		if tr.token[tPos].ID != val.ID {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].ID = %d, Expect: %d\n\n",
-				tr.Name, zedPos, tr.token[pos].Type, val.ID)
+				tr.Name, tName, tr.token[tPos].Type, val.ID)
 		}
-		if tr.token[pos].Type != val.Type {
+		if tr.token[tPos].Type != val.Type {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Type = %q, Expect: %q\n\n",
-				tr.Name, zedPos, tr.token[pos].Type, val.Type)
+				tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
-		if tr.token[pos].Text != val.Text && val.Text != "" {
+		if tr.token[tPos].Text != val.Text && val.Text != "" {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Text = %q, Expect: %q\n\n",
-				tr.Name, zedPos, tr.token[pos].Text, val.Text)
+				tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeBackupTests {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
-		tr = New(tt.name, tt.input)
+		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
 		for i := 0; i < tt.nextNum; i++ {
 			tr.next()
@@ -434,27 +432,7 @@ func TestTreeBackup(t *testing.T) {
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
 		}
-		for k := 0; k < len(tr.token); k++ {
-			tokenPos := k - zed
-			zedPos = "zed"
-			tPi := int(math.Abs(float64(k - zed)))
-			tokenPosStr := strconv.Itoa(tPi)
-			var fName string
-			if tokenPos < 0 {
-				fName = "Back" + tokenPosStr + "Tok"
-				zedPos = "zed-" + tokenPosStr
-			} else if tokenPos == 0 {
-				fName = "ZedToken"
-			} else {
-				fName = "Peek" + tokenPosStr + "Tok"
-				zedPos = "zed+" + tokenPosStr
-			}
-			tokenPos = int(math.Abs(float64(k - zed)))
-			tField = reflect.ValueOf(tt).FieldByName(fName)
-			if tField.IsValid() && !tField.IsNil() {
-				isEqual(k)
-			}
-		}
+		checkTokens(tr, tt, isEqual)
 	}
 }
 
