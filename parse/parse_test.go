@@ -319,6 +319,7 @@ var treeBackupTests = []struct {
 	input     string
 	nextNum   int   // The number of times to call Tree.next().
 	backupNum int   // Number of calls to Tree.backup(). Value starts at 1.
+	Back4Tok  *item // The fourth backup token.
 	Back3Tok  *item // The third backup token.
 	Back2Tok  *item // The second backup token.
 	Back1Tok  *item // The first backup token.
@@ -326,6 +327,7 @@ var treeBackupTests = []struct {
 	Peek1Tok  *item // The first peek token.
 	Peek2Tok  *item // The second peek token.
 	Peek3Tok  *item // The third peek token.
+	Peek4Tok  *item // The fourth peek token.
 }{
 	{
 		name:    "Backup once",
@@ -337,13 +339,25 @@ var treeBackupTests = []struct {
 		name:    "Backup twice",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 2,
+		// ZedToken is nil
 		Peek1Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
 	},
 	{
 		name:    "Backup thrice",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 3,
+		// ZedToken is nil
 		Peek2Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
+	},
+	{
+		name:    "Quadruple backup",
+		input:   "Title\n=====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		nextNum: 13, backupNum: 4,
+		// Back tokens 4 - 1 and ZedToken are nil
+		Peek1Tok: &item{ID: 10, Type: itemParagraph, Text: "Four"},
+		Peek2Tok: &item{ID: 11, Type: itemBlankLine, Text: "\n"},
+		Peek3Tok: &item{ID: 12, Type: itemParagraph, Text: "Five"},
+		Peek4Tok: &item{ID: 13, Type: itemEOF},
 	},
 }
 
