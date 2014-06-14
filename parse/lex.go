@@ -519,6 +519,7 @@ func lexStart(l *lexer) stateFn {
 	}
 
 	l.emit(itemEOF)
+	close(l.items)
 	log.Debugln("End")
 	return nil
 }

@@ -459,6 +459,13 @@ var treeNextTests = []struct {
 		back1Tok: &item{Type: itemParagraph, Text: "Test"},
 		zedToken: &item{Type: itemEOF, Text: ""},
 	},
+	{
+		name:  "Three next() on one line of input; Test channel close.",
+		input: "Test",
+		// The channel should be closed on the second next(), otherwise
+		// a deadlock would occur.
+		nextNum: 3,
+	},
 }
 
 func TestTreeNext(t *testing.T) {
