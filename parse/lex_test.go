@@ -709,6 +709,15 @@ func TestLexSectionLevelGood0100(t *testing.T) {
 	equal(t, items, test.expectItems())
 }
 
+func TestLexSectionLevelGood0200(t *testing.T) {
+	// Tests section level with two section having the same rune, but the
+	// first not having an overline.
+	testPath := "test_section/03_level_good/02.00_two_level_one_overline"
+	test := LoadTest(testPath)
+	items := lexTest(t, test)
+	equal(t, items, test.expectItems())
+}
+
 func TestLexSectionLevelBad0000(t *testing.T) {
 	// Test section level return on bad level 2 section adornment
 	testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
