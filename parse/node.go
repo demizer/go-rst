@@ -166,27 +166,27 @@ func newSection(title *item, overSec *item, underSec *item,
 	n.Title = &TitleNode{
 		ID:            ID(*id),
 		Type:          NodeTitle,
-		Text:          title.Text.(string),
+		Text:          title.Text,
 		StartPosition: title.StartPosition,
 		Length:        title.Length,
 		Line:          title.Line,
 	}
 
-	if indent != nil && indent.Text != nil {
+	if indent != nil && indent.Text != "" {
 		*id++
 		n.Indent = &IndentNode{
 			ID:            ID(*id),
 			Type:          NodeIndent,
-			Text:          indent.Text.(string),
+			Text:          indent.Text,
 			StartPosition: indent.StartPosition,
 			Line:          indent.Line,
 			Length:        indent.Length,
 		}
 	}
 
-	if overSec != nil && overSec.Text != nil {
+	if overSec != nil && overSec.Text != "" {
 		*id++
-		Rune := rune(overSec.Text.(string)[0])
+		Rune := rune(overSec.Text[0])
 		n.OverLine = &AdornmentNode{
 			ID:            ID(*id),
 			Type:          NodeAdornment,
@@ -198,7 +198,7 @@ func newSection(title *item, overSec *item, underSec *item,
 	}
 
 	*id++
-	Rune := rune(underSec.Text.(string)[0])
+	Rune := rune(underSec.Text[0])
 	n.UnderLine = &AdornmentNode{
 		ID:            ID(*id),
 		Rune:          Rune,
@@ -256,7 +256,7 @@ func newParagraph(i *item, id *int) *ParagraphNode {
 	return &ParagraphNode{
 		ID:            ID(*id),
 		Type:          NodeParagraph,
-		Text:          i.Text.(string),
+		Text:          i.Text,
 		Length:        i.Length,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
@@ -347,7 +347,7 @@ func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
 	return &LiteralBlockNode{
 		ID:            ID(*id),
 		Type:          NodeLiteralBlock,
-		Text:          i.Text.(string),
+		Text:          i.Text,
 		Length:        i.Length,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
@@ -391,7 +391,7 @@ func newTransition(i *item, id *int) *TransitionNode {
 	return &TransitionNode{
 		ID:            ID(*id),
 		Type:          NodeTransition,
-		Text:          i.Text.(string),
+		Text:          i.Text,
 		Length:        i.Length,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
@@ -448,7 +448,7 @@ func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
 	}
 
 	var afType EnumAffixType
-	switch affix.Text.(string) {
+	switch affix.Text {
 	case ".":
 		afType = enumAffixPeriod
 	case "(":

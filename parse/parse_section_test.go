@@ -88,7 +88,7 @@ func TestTreeBackup(t *testing.T) {
 				"Got: token[%s].Type = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Type, val.Type)
 		}
-		if tr.token[pos].Text != val.Text && val.Text != nil {
+		if tr.token[pos].Text != val.Text && val.Text != "" {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Text = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Text, val.Text)
@@ -241,7 +241,7 @@ func TestTreeNext(t *testing.T) {
 				"Got: token[%s].Type = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Type, val.Type)
 		}
-		if tr.token[pos].Text != val.Text && val.Text != nil {
+		if tr.token[pos].Text != val.Text && val.Text != "" {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Text = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Text, val.Text)
@@ -354,7 +354,7 @@ func TestTreePeek(t *testing.T) {
 				"Got: token[%s].Type = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Type, val.Type)
 		}
-		if tr.token[pos].Text != val.Text && val.Text != nil {
+		if tr.token[pos].Text != val.Text && val.Text != "" {
 			t.Errorf("Test: %q\n\t    "+
 				"Got: token[%s].Text = %q, Expect: %q\n\n",
 				tr.Name, zedPos, tr.token[pos].Text, val.Text)

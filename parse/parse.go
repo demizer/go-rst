@@ -559,7 +559,7 @@ func (t *Tree) section(i *item) Node {
 	}
 
 	if overAdorn != nil &&
-		overAdorn.Text.(string) != underAdorn.Text.(string) {
+		overAdorn.Text != underAdorn.Text {
 		return t.systemMessage(severeOverlineUnderlineMismatch)
 	}
 
@@ -650,25 +650,23 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 
 	switch err {
 	case infoOverlineTooShortForTitle:
-		var infoText string
+		var inText string
 		if t.token[zed-2] != nil {
-			infoText = t.token[zed-2].Text.(string) + "\n" +
-				t.token[zed-1].Text.(string) + "\n" +
-				t.token[zed].Text.(string)
+			inText = t.token[zed-2].Text + "\n" +
+				t.token[zed-1].Text + "\n" + t.token[zed].Text
 			s.Line = t.token[zed-2].Line
 			t.token[zed-2] = nil
 		} else {
-			infoText = t.token[zed-1].Text.(string) + "\n" +
-				t.token[zed].Text.(string)
+			inText = t.token[zed-1].Text + "\n" + t.token[zed].Text
 			s.Line = t.token[zed-1].Line
 		}
-		infoTextLen := len(infoText)
+		infoTextLen := len(inText)
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop
 		// gets the new paragraph
 		t.token[zed-1] = nil
 		t.token[zed].Type = itemParagraph
-		t.token[zed].Text = infoText
+		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
 		t.backup()
@@ -676,35 +674,33 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		oLin := t.peekBackTo(itemSectionAdornment)
 		titl := t.peekBackTo(itemTitle)
 		uLin := t.token[zed]
-		infoText := oLin.Text.(string) + "\n" +
-			titl.Text.(string) + "\n" + uLin.Text.(string)
+		inText := oLin.Text + "\n" + titl.Text + "\n" + uLin.Text
 		s.Line = oLin.Line
 		// FIXME: DRY
 		t.token[zed-4] = nil
 		t.token[zed-3] = nil
 		t.token[zed-2] = nil
 		t.token[zed-1] = nil
-		infoTextLen := len(infoText)
+		infoTextLen := len(inText)
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop
 		// gets the new paragraph
 		t.token[zed].Type = itemParagraph
-		t.token[zed].Text = infoText
+		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
 		t.token[zed].StartPosition = oLin.StartPosition
 		t.backup()
 	case infoUnderlineTooShortForTitle:
-		infoText := t.token[zed-1].Text.(string) + "\n" +
-			t.token[zed].Text.(string)
-		infoTextLen := len(infoText)
+		inText := t.token[zed-1].Text + "\n" + t.token[zed].Text
+		infoTextLen := len(inText)
 		s.Line = t.token[zed-1].Line
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop
 		// gets the new paragraph
 		t.token[zed-1] = nil
 		t.token[zed].Type = itemParagraph
-		t.token[zed].Text = infoText
+		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
 		t.backup()
@@ -712,11 +708,11 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		backToken = zed - 2
 		if t.peekBack(2).Type == itemSpace {
 			backToken = zed - 3
-			indent = t.token[zed-2].Text.(string)
+			indent = t.token[zed-2].Text
 		}
-		overLine = t.token[backToken].Text.(string)
-		title = t.token[zed-1].Text.(string)
-		underLine = t.token[zed].Text.(string)
+		overLine = t.token[backToken].Text
+		title = t.token[zed-1].Text
+		underLine = t.token[zed].Text
 		newLine = "\n"
 		lbText = overLine + newLine + indent + title + newLine +
 			underLine
@@ -727,38 +723,33 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		if t.peekBack(1).Type == itemSpace {
 			backToken = zed - 2
 		}
-		lbText = t.token[backToken].Text.(string) + "\n" +
-			t.token[zed].Text.(string)
+		lbText = t.token[backToken].Text + "\n" + t.token[zed].Text
 		lbTextLen = len(lbText)
 		s.Line = t.token[zed-1].Line
 	case warningExplicitMarkupWithUnIndent:
 		s.Line = t.token[zed+1].Line
 	case errorInvalidSectionOrTransitionMarker:
-		lbText = t.token[zed-1].Text.(string) + "\n" +
-			t.token[zed].Text.(string)
+		lbText = t.token[zed-1].Text + "\n" + t.token[zed].Text
 		s.Line = t.token[zed-1].Line
 		lbTextLen = len(lbText)
 	case severeIncompleteSectionTitle,
 		severeMissingMatchingUnderlineForOverline:
-		lbText = t.token[zed-2].Text.(string) + "\n" +
-			t.token[zed-1].Text.(string) +
-			t.token[zed].Text.(string)
+		lbText = t.token[zed-2].Text + "\n" +
+			t.token[zed-1].Text + t.token[zed].Text
 		s.Line = t.token[zed-2].Line
 		lbTextLen = len(lbText)
 	case severeUnexpectedSectionTitleOrTransition:
-		lbText = t.token[zed].Text.(string)
+		lbText = t.token[zed].Text
 		lbTextLen = len(lbText)
 		s.Line = t.token[zed].Line
 	case severeTitleLevelInconsistent:
 		if t.peekBack(2).Type == itemSectionAdornment {
-			lbText = t.token[zed-2].Text.(string) + "\n" +
-				t.token[zed-1].Text.(string) + "\n" +
-				t.token[zed].Text.(string)
+			lbText = t.token[zed-2].Text + "\n" +
+				t.token[zed-1].Text + "\n" + t.token[zed].Text
 			lbTextLen = len(lbText)
 			s.Line = t.token[zed-2].Line
 		} else {
-			lbText = t.token[zed-1].Text.(string) + "\n" +
-				t.token[zed].Text.(string)
+			lbText = t.token[zed-1].Text + "\n" + t.token[zed].Text
 			lbTextLen = len(lbText)
 			s.Line = t.token[zed-1].Line
 		}

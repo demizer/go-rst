@@ -113,7 +113,7 @@ type stateFn func(*lexer) stateFn
 type item struct {
 	ID            `json:"id"`
 	Type          itemElement `json:"type"`
-	Text          interface{} `json:"text"`
+	Text          string      `json:"text"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	Length        int `json:"length"`
