@@ -99,9 +99,9 @@ func (t *itemElement) UnmarshalJSON(data []byte) error {
 }
 
 // Valid section adornment runes
-var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')', '*',
-	'+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\',
-	']', '^', '_', '`', '{', '|', '}', '~'}
+var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')',
+	'*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[',
+	'\\', ']', '^', '_', '`', '{', '|', '}', '~'}
 
 // Emitted by the lexer on End of File
 const eof rune = -1
@@ -123,10 +123,10 @@ type item struct {
 type lexer struct {
 	name             string    // The name of the current lexer
 	input            string    // The input text
-	line             int       // The current line number of the parser, from 0
+	line             int       // Line number of the parser, from 0
 	lines            []string  // The input split into lines
 	state            stateFn   // The current state of the lexer
-	start            int       // The starting position of the token in the line
+	start            int       // Start position of the token in the line
 	index            int       // Position in input
 	width            int       // The width of the current position
 	items            chan item // The channel items are emitted to
@@ -195,18 +195,19 @@ func (l *lexer) emit(t itemElement) {
 		tok = l.lines[l.line][l.start:l.index]
 	}
 
-	log.Infof("\n#### %s: %q l.start: %d (%d) l.index: %d (%d) line: %d\n\n", t,
+	log.Infof("\n%s: %q l.start: %d (%d) l.index: %d (%d) line: %d\n\n", t,
 		tok, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 
 	l.id++
 	length := utf8.RuneCountInString(tok)
 
 	nItem := item{
-		ID:            ID(l.id),
-		Type:          t,
-		Text:          tok,
-		Line:          Line(l.lineNumber()),
-		StartPosition: StartPosition(l.start + 1), // Positions begin at 1, not 0
+		ID:   ID(l.id),
+		Type: t,
+		Text: tok,
+		Line: Line(l.lineNumber()),
+		// +1 because positions begin at 1, not 0
+		StartPosition: StartPosition(l.start + 1),
 		Length:        length,
 	}
 
@@ -236,7 +237,8 @@ func (l *lexer) backup(pos int) {
 		l.mark = r
 		l.width = w
 
-		// Backup again if iteration has landed on part of a multi-byte rune
+		// Backup again if iteration has landed on part of a multi-byte
+		// rune
 		lLen := len(l.currentLine())
 		if r == utf8.RuneError && lLen != 0 && lLen != l.index {
 			l.backup(1)
@@ -339,11 +341,11 @@ func isInlineMarkup(r rune) bool {
 	return r == '*' || r == '`' || r == '_' || r == '|'
 }
 
-// isSection compares a number of positions (skipping whitespace) to
-// determine if the runes are sectionAdornments and returns a true if the
-// positions match each other. Rune comparison begins at the current lexer
-// position. isSection returns false if there is a blank line between the
-// positions or if there is a rune mismatch between positions.
+// isSection compares a number of positions (skipping whitespace) to determine
+// if the runes are sectionAdornments and returns a true if the positions match
+// each other. Rune comparison begins at the current lexer position. isSection
+// returns false if there is a blank line between the positions or if there is
+// a rune mismatch between positions.
 func isSection(l *lexer) (found bool) {
 	var nLine string
 
@@ -478,9 +480,12 @@ exit:
 func lexStart(l *lexer) stateFn {
 	log.Debugln("Start")
 	for {
-		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d,
-		// l.line: %d\n", l.mark, l.index, l.start, l.width, l.lineNumber())
-		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
+		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width:
+		// %d, l.line: %d\n", l.mark, l.index, l.start, l.width,
+		// l.lineNumber())
+		if l.index-l.start <= l.width && l.width > 0 &&
+			!l.isEndOfLine() {
+
 			log.Debugln("Start of new token")
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
