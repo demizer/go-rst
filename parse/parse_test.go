@@ -583,75 +583,110 @@ var treePeekTests = []struct {
 	input    string
 	nextNum  int   // Number of times to call Tree.next() before peek
 	peekNum  int   // position argument to Tree.peek()
-	peek1Tok *item // The item to expect at Tree.token[zed+1]
-	peek2Tok *item // The item to expect at Tree.token[zed+2]
-	peek3Tok *item // The item to expect at Tree.token[zed+3]
+	Back4Tok *item // The Back tokens should be empty on peek tests.
+	Back3Tok *item
+	Back2Tok *item
+	Back1Tok *item
+	ZedToken *item // Should be empty on peek tests.
+	Peek1Tok *item
+	Peek2Tok *item
+	Peek3Tok *item
+	Peek4Tok *item
 }{
 	{
 		name:    "Peek from starting position",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 1,
-		peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
 	},
 	{
 		name:    "Peek from starting position two times",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 2,
-		peek1Tok: &item{Type: itemTitle, Text: "Test"},
-		peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 	},
 	{
 		name:    "Peek three positions",
 		input:   "Test\n=====\n\nParagraph.",
 		nextNum: 0, peekNum: 3,
-		peek1Tok: &item{Type: itemTitle, Text: "Test"},
-		peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		peek3Tok: &item{Type: itemBlankLine, Text: "\n"},
+		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		Peek3Tok: &item{Type: itemBlankLine, Text: "\n"},
 	},
 	{
-		name:    "Next 2 positions, Peek 3 positions",
-		input:   "Test\n=====\n\nParagraph.\nTest 2\n=====\n\nParagraph 2.",
+		name:    "Triple peek and double next",
+		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
 		nextNum: 2, peekNum: 3,
-		peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		peek2Tok: &item{Type: itemParagraph, Text: "Paragraph."},
-		peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
+		Peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
+		Peek2Tok: &item{Type: itemParagraph, Text: "One"},
+		Peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
+	},
+	{
+		name:    "Quadruple peek and triple next",
+		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
+		nextNum: 3, peekNum: 4,
+		Peek1Tok: &item{Type: itemParagraph, Text: "One"},
+		Peek2Tok: &item{Type: itemTitle, Text: "Test 2"},
+		Peek3Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		Peek4Tok: &item{Type: itemBlankLine, Text: "\n"},
+	},
+	{
+		name:    "Peek on no input",
+		peekNum: 1,
 	},
 }
 
 func TestTreePeek(t *testing.T) {
+	var tField reflect.Value
+	var fName, zedPos string
+	var tr *Tree
+
+	isEqual := func(pos int) {
+		val := tField.Interface().(*item)
+		if tr.token[pos] == nil {
+			t.Fatalf("Test: %q\n\t    "+
+				"Got: token[%s] = %v, Expect: %#+v\n\n",
+				tr.Name, zedPos, tr.token[pos], val)
+		}
+		if tr.token[pos].Type != val.Type {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s].Type = %q, Expect: %q\n\n",
+				tr.Name, zedPos, tr.token[pos].Type, val.Type)
+		}
+		if tr.token[pos].Text != val.Text && val.Text != nil {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: token[%s].Text = %q, Expect: %q\n\n",
+				tr.Name, zedPos, tr.token[pos].Text, val.Text)
+		}
+	}
+
 	for _, tt := range treePeekTests {
-		tree := New(tt.name, tt.input)
-		tree.lex = lex(tt.name, tt.input)
+		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		tr = New(tt.name, tt.input)
+		tr.lex = lex(tt.name, tt.input)
 		for i := 0; i < tt.nextNum; i++ {
-			tree.next()
+			tr.next()
 		}
-		tree.peek(tt.peekNum)
-		if tree.token[zed+1].Type != tt.peek1Tok.Type {
-			t.Errorf("Test: %q\n\t    Got: token[zed+1].Type = %q, Expect: %q\n\n",
-				tree.Name, tree.token[zed+1].Type, tt.peek1Tok.Type)
-		}
-		if tree.token[zed+1].Text != tt.peek1Tok.Text {
-			t.Errorf("Test: %q\n\t    Got: token[zed+1].Text = %q, Expect: %q\n\n",
-				tree.Name, tree.token[zed+1].Text, tt.peek1Tok.Text)
-		}
-		if tt.peekNum > 1 {
-			if tree.token[zed+2].Type != tt.peek2Tok.Type {
-				t.Errorf("Test: %q\n\t    Got: token[zed+2].Type = %q, Expect: %q\n\n",
-					tree.Name, tree.token[zed+2].Type, tt.peek2Tok.Type)
+		tr.peek(tt.peekNum)
+		for k := 0; k < len(tr.token); k++ {
+			tokenPos := k - zed
+			zedPos = "zed"
+			tPi := int(math.Abs(float64(k - zed)))
+			tokenPosStr := strconv.Itoa(tPi)
+			if tokenPos < 0 {
+				fName = "Back" + tokenPosStr + "Tok"
+				zedPos = "zed-" + tokenPosStr
+			} else if tokenPos == 0 {
+				fName = "ZedToken"
+			} else {
+				fName = "Peek" + tokenPosStr + "Tok"
+				zedPos = "zed+" + tokenPosStr
 			}
-			if tree.token[zed+2].Text != tt.peek2Tok.Text {
-				t.Errorf("Test: %q\n\t    Got: token[zed+2].Text = %q, Expect: %q\n\n",
-					tree.Name, tree.token[zed+2].Text, tt.peek2Tok.Text)
-			}
-		}
-		if tt.peekNum > 2 {
-			if tree.token[zed+3].Type != tt.peek3Tok.Type {
-				t.Errorf("Test: %q\n\t    Got: token[zed+3].Type = %q, Expect: %q\n\n",
-					tree.Name, tree.token[zed+3].Type, tt.peek3Tok.Type)
-			}
-			if tree.token[zed+3].Text != tt.peek3Tok.Text {
-				t.Errorf("Test: %q\n\t    Got: token[zed+3].Text = %q, Expect: %q\n\n",
-					tree.Name, tree.token[zed+3].Text, tt.peek3Tok.Text)
+			tokenPos = int(math.Abs(float64(k - zed)))
+			tField = reflect.ValueOf(tt).FieldByName(fName)
+			if tField.IsValid() && !tField.IsNil() {
+				isEqual(k)
 			}
 		}
 	}
