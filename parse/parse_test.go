@@ -691,199 +691,271 @@ func TestTreePeek(t *testing.T) {
 	}
 }
 
+type shortSectionNode struct {
+	id    ID
+	level int  // SectionNode level
+	oRune rune // SectionNode Overline Rune
+	uRune rune // SectionNode Underline Rune
+}
+
+// The section nodes to add to fill sectionLevels
 type testSectionLevelSectionNode struct {
-	eMessage parserMessage
-	node     *SectionNode
+	eMessage parserMessage // Expected parser message
+	node     shortSectionNode
+}
+
+type testSectionLevelExpectLevels struct {
+	rChar    rune
+	level    int
+	overLine bool
+	nodes    []shortSectionNode
 }
 
 var testSectionLevelsAdd = []struct {
-	name      string
-	tSections []*testSectionLevelSectionNode
-	eLevels   []*sectionLevel
+	name  string
+	pSecs []*testSectionLevelSectionNode
+	eLvls []*testSectionLevelExpectLevels
 }{
 	{
 		name: "Test two levels with a single SectionNode each",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
 		},
-		eLevels: []*sectionLevel{
-			{rChar: '=', level: 1,
-				sections: []*SectionNode{
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-				},
-			},
-			{rChar: '-', level: 2,
-				sections: []*SectionNode{
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-				},
-			},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+			}},
+			{rChar: '-', level: 2, nodes: []shortSectionNode{
+				{level: 2, uRune: '-'},
+			}},
 		},
 	},
 	{
 		name: "Test two levels with on level one return",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
 		},
-		eLevels: []*sectionLevel{
-			{rChar: '=', level: 1,
-				sections: []*SectionNode{
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-				},
-			},
-			{rChar: '-', level: 2,
-				sections: []*SectionNode{
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-				},
-			},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+				{level: 1, uRune: '='},
+			}},
+			{rChar: '-', level: 2, nodes: []shortSectionNode{
+				{level: 2, uRune: '-'},
+				{level: 2, uRune: '-'},
+			}},
 		},
 	},
 	{
 		name: "Test three levels with one return to level 1",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
-			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
+			{node: shortSectionNode{level: 3, uRune: '~'}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
 		},
-		eLevels: []*sectionLevel{
-			{rChar: '=', level: 1,
-				sections: []*SectionNode{
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-				},
-			},
-			{rChar: '-', level: 2,
-				sections: []*SectionNode{
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-				},
-			},
-			{rChar: '~', level: 3,
-				sections: []*SectionNode{
-					{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}},
-				},
-			},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+				{level: 1, uRune: '='},
+			}},
+			{rChar: '-', level: 2, nodes: []shortSectionNode{
+				{level: 2, uRune: '-'},
+			}},
+			{rChar: '~', level: 3, nodes: []shortSectionNode{
+				{level: 3, uRune: '~'},
+			}},
 		},
 	},
 	{
 		name: "Test three levels with two returns to level 1",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
-			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
+			{node: shortSectionNode{level: 3, uRune: '~'}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
 		},
-		eLevels: []*sectionLevel{
-			{rChar: '=', level: 1,
-				sections: []*SectionNode{
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-					{Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-				},
-			},
-			{rChar: '-', level: 2,
-				sections: []*SectionNode{
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-					{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}},
-				},
-			},
-			{rChar: '~', level: 3,
-				sections: []*SectionNode{
-					{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}},
-				},
-			},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+				{level: 1, uRune: '='},
+				{level: 1, uRune: '='},
+			}},
+			{rChar: '-', level: 2, nodes: []shortSectionNode{
+				{level: 2, uRune: '-'},
+				{level: 2, uRune: '-'},
+			}},
+			{rChar: '~', level: 3, nodes: []shortSectionNode{
+				{level: 3, uRune: '~'},
+			}},
 		},
 	},
 	{
 		name: "Test inconsistent section level",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
 			{eMessage: severeTitleLevelInconsistent,
-				node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '`'}}},
+				node: shortSectionNode{level: 2, uRune: '`'}},
 		},
 	},
 	{
 		name: "Test inconsistent section level 2",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
-			{node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '~'}}},
-			{node: &SectionNode{Level: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{Level: 2, UnderLine: &AdornmentNode{Rune: '-'}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
+			{node: shortSectionNode{level: 3, uRune: '~'}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, uRune: '-'}},
 			{eMessage: severeTitleLevelInconsistent,
-				node: &SectionNode{Level: 3, UnderLine: &AdornmentNode{Rune: '`'}}},
+				node: shortSectionNode{level: 3, uRune: '`'}},
+		},
+	},
+	{
+		name: "Test level two with overline and all runes similar",
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{id: 1, level: 1, uRune: '='}},
+			{node: shortSectionNode{
+				id: 2, level: 2, oRune: '=', uRune: '=',
+			}},
+		},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+			}},
+			{rChar: '=', level: 2, overLine: true,
+				nodes: []shortSectionNode{
+					{level: 2, uRune: '='},
+				},
+			},
 		},
 	},
 	{
 		name: "Test level two with overline with same rune as level one.",
-		tSections: []*testSectionLevelSectionNode{
-			{node: &SectionNode{ID: 1, UnderLine: &AdornmentNode{Rune: '='}}},
-			{node: &SectionNode{ID: 2, OverLine: &AdornmentNode{Rune: '='},
-				UnderLine: &AdornmentNode{Rune: '='}}},
+		pSecs: []*testSectionLevelSectionNode{
+			{node: shortSectionNode{id: 1, level: 1, uRune: '='}},
+			{node: shortSectionNode{
+				id: 2, level: 2, oRune: '=', uRune: '=',
+			}},
 		},
-		eLevels: []*sectionLevel{
-			{rChar: '=', level: 1, overLine: false,
-				sections: []*SectionNode{
-					{ID: 1, Level: 1, UnderLine: &AdornmentNode{Rune: '='}},
-				},
-			},
+		eLvls: []*testSectionLevelExpectLevels{
+			{rChar: '=', level: 1, nodes: []shortSectionNode{
+				{level: 1, uRune: '='},
+			}},
 			{rChar: '=', level: 2, overLine: true,
-				sections: []*SectionNode{
-					{ID: 2, Level: 2, OverLine: &AdornmentNode{Rune: '='},
-						UnderLine: &AdornmentNode{Rune: '='}},
+				nodes: []shortSectionNode{
+					{level: 2, uRune: '='},
 				},
 			},
 		},
 	},
 }
 
-func TestSectionLevelsAdd(t *testing.T) {
-	for _, tt := range testSectionLevelsAdd {
-		secLvls := new(sectionLevels)
-		for _, secNode := range tt.tSections {
-			msg := secLvls.Add(secNode.node)
-			if msg > parserMessageNil && msg != secNode.eMessage {
-				t.Fatalf("Test: %q\n\t    Got: parserMessage = %q, Expect: %q\n\n",
-					tt.name, msg, secNode.eMessage)
-			}
+func testSectionLevelsAddCheckEqual(t *testing.T, testName string,
+	pos int, pLvl, eLvl *sectionLevel) {
+
+	if eLvl.level != pLvl.level {
+		t.Errorf("Test: %q\n\t    "+
+			"Got: sectionLevel.Level = %d, "+
+			"Expect: %d\n\n",
+			testName, pLvl.level, eLvl.level)
+	}
+	if eLvl.rChar != pLvl.rChar {
+		t.Errorf("Test: %q\n\t    "+
+			"Got: sectionLevel.rChar = %#U, "+
+			"Expect: %#U\n\n",
+			testName, pLvl.rChar, eLvl.rChar)
+	}
+	if eLvl.overLine != pLvl.overLine {
+		t.Errorf("Test: %q\n\t    "+
+			"Got: sectionLevel.overLine = %t, "+
+			"Expect: %t\n\n",
+			testName, pLvl.overLine, eLvl.overLine)
+	}
+	for eNum, eSec := range eLvl.sections {
+		if eSec.ID != pLvl.sections[eNum].ID {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: level[%d].sections[%d].ID = %d, "+
+				"Expect: %d\n\n",
+				testName, pos, eNum,
+				pLvl.sections[eNum].ID, eSec.ID)
 		}
-		for sNum, secLvl := range tt.eLevels {
-			pSecLvl := (secLvls.levels)[sNum]
-			if secLvl.level != pSecLvl.level {
-				t.Errorf("Test: %q\n\t    Got: sectionLevel.Level = %d, Expect: %d\n\n",
-					tt.name, secLvl.level, pSecLvl.level)
+		if eSec.Level != pLvl.sections[eNum].Level {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: level[%d].sections[%d].Level = %d, "+
+				"Expect: %d\n\n",
+				testName, pos, eNum,
+				pLvl.sections[eNum].Level, eSec.Level)
+		}
+		eRune := eSec.UnderLine.Rune
+		pRune := pLvl.sections[eNum].UnderLine.Rune
+		if eRune != pRune {
+			t.Errorf("Test: %q\n\t    "+
+				"Got: level[%d].section[%d].Rune = %#U, "+
+				"Expect: %#U\n\n",
+				testName, pos, eNum,
+				pLvl.sections[eNum].UnderLine.Rune,
+				eSec.UnderLine.Rune)
+		}
+	}
+}
+
+func TestSectionLevelsAdd(t *testing.T) {
+	var pSecLvls, eSecLvls sectionLevels
+	var testName string
+
+	addSection := func(s *testSectionLevelSectionNode) {
+		n := &SectionNode{Level: s.node.level,
+			UnderLine: &AdornmentNode{Rune: s.node.uRune}}
+		if s.node.oRune != 0 {
+			n.OverLine = &AdornmentNode{Rune: s.node.oRune}
+		}
+		msg := pSecLvls.Add(n)
+		if msg > parserMessageNil && msg != s.eMessage {
+			t.Fatalf("Test: %q\n\t    Got: parserMessage = %q, "+
+				"Expect: %q\n\n", testName, msg, s.eMessage)
+		}
+	}
+
+	for _, tt := range testSectionLevelsAdd {
+		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		pSecLvls = *new(sectionLevels)
+		eSecLvls = *new(sectionLevels)
+		testName = tt.name
+
+		// pSecLvls := new(sectionLevels)
+		for _, secNode := range tt.pSecs {
+			addSection(secNode)
+		}
+
+		// Initialize the expected sectionLevels
+		for _, slvl := range tt.eLvls {
+			s := &sectionLevel{rChar: slvl.rChar,
+				level: slvl.level, overLine: slvl.overLine,
 			}
-			if secLvl.rChar != pSecLvl.rChar {
-				t.Errorf("Test: %q\n\t    Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
-					tt.name, secLvl.rChar, pSecLvl.rChar)
-			}
-			if secLvl.overLine != pSecLvl.overLine {
-				t.Errorf("Test: %q\n\t    Got: sectionLevel.overLine = %t, Expect: %t\n\n",
-					tt.name, secLvl.overLine, pSecLvl.overLine)
-			}
-			for eNum, eSec := range secLvl.sections {
-				if eSec.ID != pSecLvl.sections[eNum].ID {
-					t.Errorf("Test: %q\n\t    Got: level[%d].sections[%d].ID = %d, Expect: %d\n\n",
-						tt.name, sNum, eNum, pSecLvl.sections[eNum].ID, eSec.ID)
+			for _, sn := range slvl.nodes {
+				n := &SectionNode{ID: sn.id, Level: sn.level}
+				n.UnderLine = &AdornmentNode{Rune: sn.uRune}
+				if sn.oRune != 0 {
+					n.OverLine = &AdornmentNode{
+						Rune: sn.oRune,
+					}
 				}
-				if eSec.Level != pSecLvl.sections[eNum].Level {
-					t.Errorf("Test: %q\n\t    Got: level[%d].sections[%d].Level = %d, Expect: %d\n\n",
-						tt.name, sNum, eNum, pSecLvl.sections[eNum].Level, eSec.Level)
-				}
-				if eSec.UnderLine.Rune != pSecLvl.sections[eNum].UnderLine.Rune {
-					t.Errorf("Test: %q\n\t    Got: level[%d].section[%d].Rune = %#U, Expect: %#U\n\n",
-						tt.name, sNum, eNum, pSecLvl.sections[eNum].UnderLine.Rune, eSec.UnderLine.Rune)
-				}
+				s.sections = append(s.sections, n)
 			}
+			eSecLvls.levels = append(eSecLvls.levels, s)
+		}
+
+		for i := 0; i < len(eSecLvls.levels); i++ {
+			testSectionLevelsAddCheckEqual(t, testName, i,
+				pSecLvls.levels[i], eSecLvls.levels[i])
 		}
 	}
 }
