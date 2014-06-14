@@ -971,15 +971,20 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level two",
 		tLevel: 2,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"},
+				UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '-', level: 2,
 			sections: []*SectionNode{
-				{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '~'}},
+				{Level: 2, Title: &TitleNode{Text: "Title 4"},
+					UnderLine: &AdornmentNode{Rune: '~'}},
 			},
 		},
 	},
@@ -987,15 +992,20 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level one",
 		tLevel: 1,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"},
+				UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '=', level: 1,
 			sections: []*SectionNode{
-				{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
+				{Level: 1, Title: &TitleNode{Text: "Title 1"},
+					UnderLine: &AdornmentNode{Rune: '='}},
 			},
 		},
 	},
@@ -1003,16 +1013,22 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level three",
 		tLevel: 3,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"},
+				UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"},
+				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 3, Title: &TitleNode{Text: "Title 5"},
+				UnderLine: &AdornmentNode{Rune: '+'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '+', level: 3,
 			sections: []*SectionNode{
-				{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
+				{Level: 3, Title: &TitleNode{Text: "Title 5"},
+					UnderLine: &AdornmentNode{Rune: '+'}},
 			},
 		},
 	},
@@ -1027,21 +1043,28 @@ func TestSectionLevelsLast(t *testing.T) {
 		var pSec *SectionNode
 		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
-			t.Errorf("Test: %q\n\t    Got: sectionLevel.Level = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: sectionLevel.Level = %d, Expect: %d\n\n",
 				tt.name, tt.eLevel.level, pSec.Level)
 		}
 		if tt.eLevel.rChar != pSec.UnderLine.Rune {
-			t.Errorf("Test: %q\n\t    Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
 				tt.name, tt.eLevel.rChar, pSec.UnderLine.Rune)
 		}
 		// There can be only one
 		if tt.eLevel.sections[0].ID != pSec.ID {
-			t.Errorf("Test: %q\n\t    Got: level[0].sections[0].ID = %d, Expect: %d\n\n",
+			t.Errorf("Test: %q\n\t    "+
+				"Got: level[0].sections[0].ID = %d, "+
+				"Expect: %d\n\n",
 				tt.name, pSec.ID, tt.eLevel.sections[0].ID)
 		}
 		if tt.eLevel.sections[0].Title.Text != pSec.Title.Text {
-			t.Errorf("Test: %q\n\t    Got: level[0].sections[0].Title.Text = %q, Expect: %q\n\n",
-				tt.name, pSec.Title.Text, tt.eLevel.sections[0].Title.Text)
+			t.Errorf("Test: %q\n\t    "+
+				"Got: level[0].sections[0].Title.Text = %q, "+
+				"Expect: %q\n\n",
+				tt.name, pSec.Title.Text,
+				tt.eLevel.sections[0].Title.Text)
 		}
 	}
 }
@@ -1050,17 +1073,20 @@ func TestSystemMessageLevelFrom(t *testing.T) {
 	name := "Test systemMessageLevel with levelInfo"
 	test0 := ""
 	if -1 != systemMessageLevelFromString(test0) {
-		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: systemMessageLevel = %q, Expect: %q\n\n",
 			name, systemMessageLevelFromString(test0), -1)
 	}
 	test1 := "INFO"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: systemMessageLevel = %q, Expect: %q\n\n",
 			name, systemMessageLevelFromString(test1), levelInfo)
 	}
 	test2 := "SEVERE"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\t    Got: systemMessageLevel = %q, Expect: %q\n\n",
+		t.Errorf("Test: %q\n\t    "+
+			"Got: systemMessageLevel = %q, Expect: %q\n\n",
 			name, systemMessageLevelFromString(test2), levelSevere)
 	}
 }
