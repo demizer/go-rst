@@ -414,6 +414,9 @@ func (t *Tree) peek(pos int) *item {
 			log.Debugf("Using %#+v\n", nItem)
 			continue
 		} else {
+			if t.lex == nil {
+				continue
+			}
 			log.Debugln("Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
