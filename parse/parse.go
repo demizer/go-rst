@@ -465,10 +465,9 @@ func (t *Tree) next() *item {
 	return t.token[zed]
 }
 
-// clear sets tokens from begin to end to nil.
-func (t *Tree) clear(begin, end int) {
+// clearTokens sets tokens from begin to end to nil.
+func (t *Tree) clearTokens(begin, end int) {
 	for i := begin; i <= end; i++ {
-		log.Debugln("Clearing token: ", i)
 		t.token[i] = nil
 	}
 }

@@ -678,7 +678,7 @@ func TestTreePeek(t *testing.T) {
 	}
 }
 
-var testTreeClearTests = []struct {
+var testTreeClearTokensTests = []struct {
 	name       string
 	input      string
 	nextNum    int   // Number of times to call Tree.next() before peek
@@ -725,7 +725,7 @@ var testTreeClearTests = []struct {
 	},
 }
 
-func TestTreeClear(t *testing.T) {
+func TestTreeClearTokens(t *testing.T) {
 	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
 		val := tExp.Interface().(*item)
 		if tr.token[tPos] != nil && val == nil {
@@ -734,7 +734,7 @@ func TestTreeClear(t *testing.T) {
 				tr.Name, tName, tr.token[tPos])
 		}
 	}
-	for _, tt := range testTreeClearTests {
+	for _, tt := range testTreeClearTokensTests {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
@@ -742,7 +742,7 @@ func TestTreeClear(t *testing.T) {
 			tr.next()
 		}
 		tr.peek(tt.peekNum)
-		tr.clear(tt.clearBegin, tt.clearEnd)
+		tr.clearTokens(tt.clearBegin, tt.clearEnd)
 		checkTokens(tr, tt, isEqual)
 	}
 }
