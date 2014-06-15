@@ -428,9 +428,7 @@ func TestTreeBackup(t *testing.T) {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
-		for i := 0; i < tt.nextNum; i++ {
-			tr.next()
-		}
+		tr.next(tt.nextNum)
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
 		}
@@ -572,9 +570,7 @@ func TestTreeNext(t *testing.T) {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
-		for i := 0; i < tt.nextNum; i++ {
-			tr.next()
-		}
+		tr.next(tt.nextNum)
 		checkTokens(tr, tt, isEqual)
 	}
 }
@@ -670,9 +666,7 @@ func TestTreePeek(t *testing.T) {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
-		for i := 0; i < tt.nextNum; i++ {
-			tr.next()
-		}
+		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		checkTokens(tr, tt, isEqual)
 	}
@@ -738,9 +732,7 @@ func TestTreeClearTokens(t *testing.T) {
 		log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, tt.input)
-		for i := 0; i < tt.nextNum; i++ {
-			tr.next()
-		}
+		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		tr.clearTokens(tt.clearBegin, tt.clearEnd)
 		checkTokens(tr, tt, isEqual)

@@ -342,7 +342,7 @@ func (t *Tree) parse(tree *Tree) {
 	for t.peek(1).Type != itemEOF {
 		var n interface{}
 
-		token := t.next()
+		token := t.next(1)
 		log.Infof("\nParser got token: %#+v\n\n", token)
 
 		switch token.Type {
@@ -453,14 +453,21 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 // next is the workhorse of the parser. It is repsonsible for getting the next
 // token from the lexer stream (channel). If the next token already exists in
 // the token buffer, than the token buffer is shifted left and the pointer to
-// the "zed" token is returned.
-func (t *Tree) next() *item {
+// the "zed" token is returned. pos specifies the number of times to call next.
+func (t *Tree) next(pos int) *item {
+	if pos == 0 {
+		return t.token[zed]
+	}
 	for x := 0; x < len(t.token)-1; x++ {
 		t.token[x] = t.token[x+1]
 		t.token[x+1] = nil
 	}
 	if t.token[zed] == nil && t.lex != nil {
 		t.token[zed] = t.lex.nextItem()
+	}
+	pos--
+	if pos > 0 {
+		t.next(pos)
 	}
 	return t.token[zed]
 }
@@ -488,12 +495,10 @@ func (t *Tree) section(i *item) Node {
 		pBack := t.peekBack(1)
 		// Check for errors
 		if tZedLen < 3 && tZedLen != pFor.Length {
-			t.next()
-			t.next()
+			t.next(2)
 			bTok := t.peekBack(1)
 			if bTok != nil && bTok.Type == itemSpace {
-				t.next()
-				t.next()
+				t.next(2)
 				m := infoUnexpectedTitleOverlineOrTransition
 				return t.systemMessage(m)
 			}
@@ -506,17 +511,17 @@ func (t *Tree) section(i *item) Node {
 		}
 
 		overAdorn = i
-		t.next()
+		t.next(1)
 
 	loop:
 		for {
 			switch tTok := t.token[zed]; tTok.Type {
 			case itemTitle:
 				title = tTok
-				t.next()
+				t.next(1)
 			case itemSpace:
 				indent = tTok
-				t.next()
+				t.next(1)
 			case itemSectionAdornment:
 				underAdorn = tTok
 				break loop
@@ -546,8 +551,7 @@ func (t *Tree) section(i *item) Node {
 		// If a section contains an itemParagraph, it is because the
 		// underline is missing, therefore we generate an error based
 		// on what follows the itemParagraph.
-		t.next() // Move the token buffer past the error tokens
-		t.next()
+		t.next(2) // Move the token buffer past the error tokens
 		if tZedLen < 3 && tZedLen != pFor.Length {
 			t.backup()
 			return t.systemMessage(infoOverlineTooShortForTitle)
@@ -558,7 +562,7 @@ func (t *Tree) section(i *item) Node {
 		return t.systemMessage(severeIncompleteSectionTitle)
 	} else if pFor != nil && pFor.Type == itemSectionAdornment {
 		// Missing section title
-		t.next() // Move the token buffer past the error token
+		t.next(1) // Move the token buffer past the error token
 		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
 	} else if pFor != nil && pFor.Type == itemEOF {
 		// Missing underline and at EOF
@@ -797,16 +801,14 @@ func (t *Tree) enumList(i *item) (n Node) {
 	var eNode *EnumListNode
 	var affix *item
 	if lastEnum == nil {
-		t.next()
+		t.next(1)
 		affix = t.token[zed]
-		t.next()
+		t.next(1)
 		eNode = newEnumListNode(i, affix, &t.id)
-		t.next()
+		t.next(1)
 		eNode.NodeList.append(newParagraph(t.token[zed], &t.id))
 	} else {
-		t.next()
-		t.next()
-		t.next()
+		t.next(3)
 		lastEnum.NodeList.append(newParagraph(t.token[zed], &t.id))
 		return nil
 	}
