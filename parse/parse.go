@@ -683,11 +683,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		uLin := t.token[zed]
 		inText := oLin.Text + "\n" + titl.Text + "\n" + uLin.Text
 		s.Line = oLin.Line
-		// FIXME: DRY
-		t.token[zed-4] = nil
-		t.token[zed-3] = nil
-		t.token[zed-2] = nil
-		t.token[zed-1] = nil
+		t.clearTokens(zed-4, zed-1)
 		infoTextLen := len(inText)
 		// Modify the token buffer to change the current token to a
 		// itemParagraph then backup the token buffer so the next loop
