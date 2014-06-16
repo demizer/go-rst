@@ -304,6 +304,9 @@ type SystemMessageNode struct {
 	Type NodeType `json:"type"`
 	Line `json:"line"`
 
+	// The type of parser message that generated the systemMessage.
+	MessageType parserMessage `json:"messageType"`
+
 	// Severity is the level of importance of the message. It can be one of
 	// either info, warning, error, and severe.
 	Severity systemMessageLevel `json:"severity"`
@@ -315,15 +318,14 @@ type SystemMessageNode struct {
 	NodeList NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, severity systemMessageLevel,
-	id *int) *SystemMessageNode {
-
+func newSystemMessage(i *item, m parserMessage, id *int) *SystemMessageNode {
 	*id++
 	return &SystemMessageNode{
-		ID:       ID(*id),
-		Type:     NodeSystemMessage,
-		Severity: severity,
-		Line:     i.Line,
+		ID:          ID(*id),
+		Type:        NodeSystemMessage,
+		MessageType: m,
+		Severity:    m.Level(),
+		Line:        i.Line,
 	}
 }
 

@@ -125,6 +125,7 @@
             {
                 "id": 17,
                 "type": "NodeSystemMessage",
+                "messageType": "severeTitleLevelInconsistent",
                 "severity": "SEVERE",
                 "line": 18,
                 "nodeList": [

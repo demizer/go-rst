@@ -16,6 +16,7 @@
             {
                 "id": 3,
                 "type": "NodeSystemMessage",
+                "messageType": "infoUnexpectedTitleOverlineOrTransition",
                 "severity": "INFO",
                 "line": 3,
                 "nodeList": [

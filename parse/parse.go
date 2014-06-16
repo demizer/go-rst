@@ -644,7 +644,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		Type: itemSystemMessage,
 		Line: t.token[zed].Line,
 	},
-		err.Level(), &t.id)
+		err, &t.id)
 
 	msg := newParagraph(&item{
 		Text:   err.Message(),

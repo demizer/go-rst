@@ -2,6 +2,7 @@
     {
         "id": 1,
         "type": "NodeSystemMessage",
+        "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 1,
         "nodeList": [
@@ -22,6 +23,7 @@
     {
         "id": 4,
         "type": "NodeSystemMessage",
+        "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 4,
         "nodeList": [
@@ -42,6 +44,7 @@
     {
         "id": 7,
         "type": "NodeSystemMessage",
+        "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 7,
         "nodeList": [
@@ -62,6 +65,7 @@
     {
         "id": 10,
         "type": "NodeSystemMessage",
+        "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 8,
         "nodeList": [

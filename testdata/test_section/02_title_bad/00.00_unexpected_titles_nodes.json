@@ -15,6 +15,7 @@
             {
                 "id": 3,
                 "type": "NodeSystemMessage",
+                "messageType": "severeUnexpectedSectionTitle",
                 "severity": "SEVERE",
                 "line": 4,
                 "nodeList": [
@@ -43,6 +44,7 @@
             {
                 "id": 7,
                 "type": "NodeSystemMessage",
+                "messageType": "severeUnexpectedSectionTitleOrTransition",
                 "severity": "SEVERE",
                 "line": 7,
                 "nodeList": [
@@ -63,6 +65,7 @@
             {
                 "id": 10,
                 "type": "NodeSystemMessage",
+                "messageType": "severeUnexpectedSectionTitle",
                 "severity": "SEVERE",
                 "line": 9,
                 "nodeList": [

@@ -2,6 +2,7 @@
     {
         "id": 1,
         "type": "NodeSystemMessage",
+        "messageType": "infoUnderlineTooShortForTitle",
         "severity": "INFO",
         "line": 1,
         "nodeList": [
