@@ -202,7 +202,8 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 
 	if !pVal.FieldByName(c.pFieldName).IsValid() {
 		eTmp := "Missing field in parser output: %s.%s\n"
-		panic(fmt.Errorf(eTmp, c.pNodeName, c.pFieldName))
+		c.t.Errorf(eTmp, c.pNodeName, c.pFieldName)
+		return false
 	}
 	c.pFieldVal = pVal.FieldByName(c.pFieldName).Interface()
 	c.pFieldType = pVal.FieldByName(c.pFieldName).Type()
@@ -291,7 +292,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		default:
-			panic(fmt.Errorf("%s is not implemented!", c.eFieldName))
+			c.t.Errorf("%s is not implemented!", c.eFieldName)
 		}
 	}
 
