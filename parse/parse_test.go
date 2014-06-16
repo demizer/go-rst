@@ -236,10 +236,10 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 			_, in := pNodeVal.Type().FieldByName(sfName)
 			if !in {
 				nName := reflect.TypeOf(pNode)
-				return fmt.Errorf("Node (%s) missing field %q from parser\n", nName, sfName)
+				tmp := "Node (%s) missing field %q from parser\n"
+				return fmt.Errorf(tmp, nName, sfName)
 			}
 		}
-
 		// Compare pNode against eNodes
 		for i := 0; i < pNodeVal.NumField(); i++ {
 			pName := pNodeVal.Type().Field(i).Tag.Get("json")
