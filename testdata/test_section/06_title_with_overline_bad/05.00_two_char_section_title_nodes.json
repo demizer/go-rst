@@ -3,7 +3,8 @@
         "id": 1,
         "type": "NodeComment",
         "startPosition": 1,
-        "line": 1
+        "line": 1,
+        "length": 2
     },
     {
         "id": 2,
