@@ -12,6 +12,7 @@ import (
 	"unicode/utf8"
 
 	"code.google.com/p/go.text/unicode/norm"
+
 	"github.com/demizer/go-elog"
 )
 
@@ -37,7 +38,7 @@ func lexTest(t *testing.T, test *Test) []item {
 // Test equality between items and expected items from unmarshalled json data,
 // field by field.  Returns error in case of error during json unmarshalling,
 // or mismatch between items and the expected output.
-func equal(t *testing.T, items []item, expectItems []item) {
+func equal(t *testing.T, expectItems []item, items []item) {
 	var id int
 	var found bool
 	var pFieldName, eFieldName string

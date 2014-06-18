@@ -11,7 +11,7 @@ func TestLexSectionTitleGood0000(t *testing.T) {
 	testPath := "test_section/01_title_good/00.00_title_paragraph"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleGood0001(t *testing.T) {
@@ -20,7 +20,7 @@ func TestLexSectionTitleGood0001(t *testing.T) {
 	testPath := "test_section/01_title_good/00.01_paragraph_noblankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleGood0002(t *testing.T) {
@@ -30,7 +30,7 @@ func TestLexSectionTitleGood0002(t *testing.T) {
 	testPath := "test_section/01_title_good/00.02_title_combining_chars"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleGood0100(t *testing.T) {
@@ -38,7 +38,7 @@ func TestLexSectionTitleGood0100(t *testing.T) {
 	testPath := "test_section/01_title_good/01.00_para_head_para"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleGood0200(t *testing.T) {
@@ -46,7 +46,7 @@ func TestLexSectionTitleGood0200(t *testing.T) {
 	testPath := "test_section/01_title_good/02.00_short_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleGood0300(t *testing.T) {
@@ -54,7 +54,7 @@ func TestLexSectionTitleGood0300(t *testing.T) {
 	testPath := "test_section/01_title_good/03.00_empty_section"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleBad0000(t *testing.T) {
@@ -62,7 +62,7 @@ func TestLexSectionTitleBad0000(t *testing.T) {
 	testPath := "test_section/02_title_bad/00.00_unexpected_titles"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleBad0100(t *testing.T) {
@@ -70,7 +70,7 @@ func TestLexSectionTitleBad0100(t *testing.T) {
 	testPath := "test_section/02_title_bad/01.00_short_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleBad0200(t *testing.T) {
@@ -79,7 +79,7 @@ func TestLexSectionTitleBad0200(t *testing.T) {
 		"02.00_short_title_short_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleBad0201(t *testing.T) {
@@ -89,7 +89,7 @@ func TestLexSectionTitleBad0201(t *testing.T) {
 		"02.01_short_title_short_overline_and_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleBad0202(t *testing.T) {
@@ -99,7 +99,7 @@ func TestLexSectionTitleBad0202(t *testing.T) {
 		"2.02_short_title_short_overline_missing_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelGood0000(t *testing.T) {
@@ -107,7 +107,7 @@ func TestLexSectionLevelGood0000(t *testing.T) {
 	testPath := "test_section/03_level_good/00.00_section_level_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelGood0001(t *testing.T) {
@@ -116,7 +116,7 @@ func TestLexSectionLevelGood0001(t *testing.T) {
 	testPath := "test_section/03_level_good/00.01_section_level_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelGood0002(t *testing.T) {
@@ -124,7 +124,7 @@ func TestLexSectionLevelGood0002(t *testing.T) {
 	testPath := "test_section/03_level_good/00.02_section_level_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelGood0100(t *testing.T) {
@@ -132,7 +132,7 @@ func TestLexSectionLevelGood0100(t *testing.T) {
 	testPath := "test_section/03_level_good/01.00_section_level_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelGood0200(t *testing.T) {
@@ -141,7 +141,7 @@ func TestLexSectionLevelGood0200(t *testing.T) {
 	testPath := "test_section/03_level_good/02.00_two_level_one_overline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelBad0000(t *testing.T) {
@@ -149,7 +149,7 @@ func TestLexSectionLevelBad0000(t *testing.T) {
 	testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelBad0001(t *testing.T) {
@@ -159,7 +159,7 @@ func TestLexSectionLevelBad0001(t *testing.T) {
 		"00.01_bad_subsection_order_with_overlines"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionLevelBad0100(t *testing.T) {
@@ -169,7 +169,7 @@ func TestLexSectionLevelBad0100(t *testing.T) {
 		"01.00_two_level_overline_bad_return"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
@@ -178,7 +178,7 @@ func TestLexSectionTitleWithOverlineGood0000(t *testing.T) {
 		"00.00_title_overline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
@@ -187,7 +187,7 @@ func TestLexSectionTitleWithOverlineGood0100(t *testing.T) {
 		"01.00_inset_title_with_overline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
@@ -196,7 +196,7 @@ func TestLexSectionTitleWithOverlineGood0200(t *testing.T) {
 		"02.00_three_char_section_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
@@ -205,7 +205,7 @@ func TestLexSectionTitleWithOverlineBad0000(t *testing.T) {
 		"00.00_inset_title_missing_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
@@ -214,7 +214,7 @@ func TestLexSectionTitleWithOverlineBad0001(t *testing.T) {
 		"00.01_inset_title_missing_underline_with_blankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
@@ -224,7 +224,7 @@ func TestLexSectionTitleWithOverlineBad0002(t *testing.T) {
 		"00.02_inset_title_missing_underline_and_para"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
@@ -233,7 +233,7 @@ func TestLexSectionTitleWithOverlineBad0003(t *testing.T) {
 		"00.03_inset_title_mismatched_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
@@ -242,7 +242,7 @@ func TestLexSectionTitleWithOverlineBad0100(t *testing.T) {
 		"01.00_title_too_long"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
@@ -251,7 +251,7 @@ func TestLexSectionTitleWithOverlineBad0200(t *testing.T) {
 		"02.00_missing_titles_with_blankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
@@ -261,7 +261,7 @@ func TestLexSectionTitleWithOverlineBad0201(t *testing.T) {
 		"02.01_missing_titles_with_noblankline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0300(t *testing.T) {
@@ -270,7 +270,7 @@ func TestLexSectionTitleWithOverlineBad0300(t *testing.T) {
 		"03.00_incomplete_section"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
@@ -280,7 +280,7 @@ func TestLexSectionTitleWithOverlineBad0301(t *testing.T) {
 		"03.01_incomplete_sections_no_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
@@ -289,7 +289,7 @@ func TestLexSectionTitleWithOverlineBad0400(t *testing.T) {
 		"04.00_indented_title_short_overline_and_underline"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
@@ -298,7 +298,7 @@ func TestLexSectionTitleWithOverlineBad0500(t *testing.T) {
 		"05.00_two_char_section_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleNumberedGood0000(t *testing.T) {
@@ -306,7 +306,7 @@ func TestLexSectionTitleNumberedGood0000(t *testing.T) {
 	testPath := "test_section/07_title_numbered_good/00.00_numbered_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
 
 func TestLexSectionTitleNumberedGood0100(t *testing.T) {
@@ -315,5 +315,5 @@ func TestLexSectionTitleNumberedGood0100(t *testing.T) {
 		"01.00_enum_list_with_numbered_title"
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, items, test.expectItems())
+	equal(t, test.expectItems(), items)
 }
