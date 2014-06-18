@@ -294,6 +294,9 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	return nil
 }
 
+// checkFields is a recursive function that compares the expected node output
+// to the parser output comparing the two objects field by field. eNodes is
+// unmarshaled json input and pNode is the parser node to check.
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 	c.id = int(eNodes.(map[string]interface{})["id"].(float64))
 	if err := c.checkMatchingFields(eNodes, pNode); err != nil {
@@ -380,6 +383,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 
 }
 
+// checkParseNodes compares the expected parser output (*_nodes.json) against
+// the actual parser output node by node.
 func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	testPath string) {
 
