@@ -24,7 +24,6 @@
         "id": 4,
         "type": "NodeParagraph",
         "text": "Paragraph.",
-        "startPosition": 1,
         "line": 5,
         "length": 10
     }

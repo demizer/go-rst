@@ -18,7 +18,6 @@
         "id": 3,
         "type": "NodeParagraph",
         "text": "==\nABC\n==",
-        "startPosition": 1,
         "line": 1,
         "length": 9
     },
@@ -26,7 +25,6 @@
         "id": 4,
         "type": "NodeParagraph",
         "text": "Over & underline too short.",
-        "startPosition": 1,
         "line": 5,
         "length": 27
     }

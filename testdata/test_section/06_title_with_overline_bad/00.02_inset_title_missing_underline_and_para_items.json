@@ -3,7 +3,6 @@
         "id": 1,
         "type": "itemSectionAdornment",
         "text": "=======",
-        "startPosition": 1,
         "line": 1,
         "length": 7
     },
@@ -11,7 +10,6 @@
         "id": 2,
         "type": "itemSpace",
         "text": " ",
-        "startPosition": 1,
         "line": 2,
         "length": 1
     },
@@ -27,7 +25,6 @@
         "id": 4,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 1,
         "line": 3,
         "length": 1
     },
@@ -35,7 +32,6 @@
         "id": 5,
         "type": "itemParagraph",
         "text": "Test missing underline, with paragraph.",
-        "startPosition": 1,
         "line": 4,
         "length": 39
     },

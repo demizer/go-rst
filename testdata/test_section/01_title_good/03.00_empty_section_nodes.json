@@ -7,7 +7,6 @@
             "id": 2,
             "type": "NodeTitle",
             "text": "Empty Section",
-            "startPosition": 1,
             "line": 1,
             "length": 13
         },
@@ -15,7 +14,6 @@
             "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 2,
             "length": 13
         }

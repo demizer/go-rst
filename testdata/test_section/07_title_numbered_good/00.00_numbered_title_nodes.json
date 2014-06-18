@@ -7,7 +7,6 @@
             "id": 2,
             "type": "NodeTitle",
             "text": "1. Numbered Title",
-            "startPosition": 1,
             "line": 1,
             "length": 17
         },
@@ -15,7 +14,6 @@
             "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 2,
             "length": 17
         },
@@ -24,7 +22,6 @@
                 "id": 4,
                 "type": "NodeParagraph",
                 "text": "Paragraph.",
-                "startPosition": 1,
                 "line": 4,
                 "length": 10
             }

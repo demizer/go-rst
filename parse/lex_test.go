@@ -78,15 +78,24 @@ func equal(t *testing.T, expectItems []item, items []item) {
 			t.Errorf("ID: %d does not contain field %q\n", id,
 				eFieldName)
 			return
-		} else if eFieldName == "Text" {
-			if eFieldVal.Interface() == nil {
+		}
+
+		// Handle special cases when comparing fields
+		switch eFieldName {
+		case "Text":
+			normalized := norm.NFC.String(eFieldVal.Interface().(string))
+			eFieldVal = reflect.ValueOf(normalized)
+		case "StartPosition":
+			if pFieldVal.Interface().(StartPosition) == 1 {
+				// Ignore StartPositions that begin at 1 from
+				// the parsed output items. This allows
+				// startPosition to be excluded from the
+				// expected items tests (*_items.json).
 				return
 			}
-			norm := norm.NFC.String(eFieldVal.Interface().(string))
-			if pFieldVal.Interface() != norm {
-				dError()
-			}
-		} else if pFieldVal.Interface() != eFieldVal.Interface() {
+		}
+
+		if eFieldVal.Interface() != pFieldVal.Interface() {
 			dError()
 		}
 	}

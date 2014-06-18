@@ -3,7 +3,6 @@
         "id": 1,
         "type": "itemSectionAdornment",
         "text": "==",
-        "startPosition": 1,
         "line": 1,
         "length": 2
     },
@@ -11,7 +10,6 @@
         "id": 2,
         "type": "itemParagraph",
         "text": "ABC",
-        "startPosition": 1,
         "line": 2,
         "length": 3
     },

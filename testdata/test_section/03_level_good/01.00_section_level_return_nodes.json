@@ -4,7 +4,6 @@
         "id": 1,
         "type": "NodeParagraph",
         "text": "Test return to existing, highest-level section (Title 3, with overlines).",
-        "startPosition": 1,
         "line": 1,
         "length": 73
     },
@@ -16,7 +15,6 @@
             "id": 3,
             "type": "NodeTitle",
             "text": "Title 1",
-            "startPosition": 1,
             "line": 4,
             "length": 7
         },
@@ -24,7 +22,6 @@
             "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 3,
             "length": 7
         },
@@ -32,7 +29,6 @@
             "id": 5,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 5,
             "length": 7
         },
@@ -41,7 +37,6 @@
                 "id": 6,
                 "type": "NodeParagraph",
                 "text": "Paragraph 1.",
-                "startPosition": 1,
                 "line": 6,
                 "length": 12
             },
@@ -53,7 +48,6 @@
                     "id": 8,
                     "type": "NodeTitle",
                     "text": "Title 2",
-                    "startPosition": 1,
                     "line": 9,
                     "length": 7
                 },
@@ -61,7 +55,6 @@
                     "id": 9,
                     "type": "NodeAdornment",
                     "rune": "-",
-                    "startPosition": 1,
                     "line": 8,
                     "length": 7
                 },
@@ -69,7 +62,6 @@
                     "id": 10,
                     "type": "NodeAdornment",
                     "rune": "-",
-                    "startPosition": 1,
                     "line": 10,
                     "length": 7
                 },
@@ -78,7 +70,6 @@
                         "id": 11,
                         "type": "NodeParagraph",
                         "text": "Paragraph 2.",
-                        "startPosition": 1,
                         "line": 11,
                         "length": 12
                     }
@@ -94,7 +85,6 @@
             "id": 13,
             "type": "NodeTitle",
             "text": "Title 3",
-            "startPosition": 1,
             "line": 14,
             "length": 7
         },
@@ -102,7 +92,6 @@
             "id": 14,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 13,
             "length": 7
         },
@@ -110,7 +99,6 @@
             "id": 15,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 15,
             "length": 7
         },
@@ -119,7 +107,6 @@
                 "id": 16,
                 "type": "NodeParagraph",
                 "text": "Paragraph 3.",
-                "startPosition": 1,
                 "line": 16,
                 "length": 12
             },
@@ -131,7 +118,6 @@
                     "id": 18,
                     "type": "NodeTitle",
                     "text": "Title 4",
-                    "startPosition": 1,
                     "line": 19,
                     "length": 7
                 },
@@ -139,7 +125,6 @@
                     "id": 19,
                     "type": "NodeAdornment",
                     "rune": "-",
-                    "startPosition": 1,
                     "line": 18,
                     "length": 7
                 },
@@ -147,7 +132,6 @@
                     "id": 20,
                     "type": "NodeAdornment",
                     "rune": "-",
-                    "startPosition": 1,
                     "line": 20,
                     "length": 7
                 },
@@ -156,7 +140,6 @@
                         "id": 21,
                         "type": "NodeParagraph",
                         "text": "Paragraph 4.",
-                        "startPosition": 1,
                         "line": 21,
                         "length": 12
                     }

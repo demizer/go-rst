@@ -3,7 +3,6 @@
         "id": 1,
         "type": "itemTitle",
         "text": "ABC",
-        "startPosition": 1,
         "line": 1,
         "length": 3
     },
@@ -11,7 +10,6 @@
         "id": 2,
         "type": "itemSectionAdornment",
         "text": "==",
-        "startPosition": 1,
         "line": 2,
         "length": 2
     },
@@ -19,7 +17,6 @@
         "id": 3,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 1,
         "line": 3,
         "length": 1
     },
@@ -27,7 +24,6 @@
         "id": 4,
         "type": "itemParagraph",
         "text": "Underline too short.",
-        "startPosition": 1,
         "line": 4,
         "length": 20
     },

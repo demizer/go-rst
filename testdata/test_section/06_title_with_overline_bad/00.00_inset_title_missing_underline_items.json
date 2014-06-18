@@ -3,7 +3,6 @@
         "id": 1,
         "type": "itemSectionAdornment",
         "text": "========================",
-        "startPosition": 1,
         "line": 1,
         "length": 24
     },
@@ -11,7 +10,6 @@
         "id": 2,
         "type": "itemSpace",
         "text": " ",
-        "startPosition": 1,
         "line": 2,
         "length": 1
     },

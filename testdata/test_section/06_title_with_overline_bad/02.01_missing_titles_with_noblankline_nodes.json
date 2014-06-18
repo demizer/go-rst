@@ -24,7 +24,6 @@
         "id": 4,
         "type": "NodeParagraph",
         "text": "Test missing titles; nothing in-between.",
-        "startPosition": 1,
         "line": 4,
         "length": 40
     },

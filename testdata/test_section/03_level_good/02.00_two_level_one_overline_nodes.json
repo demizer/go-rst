@@ -7,7 +7,6 @@
             "id": 2,
             "type": "NodeTitle",
             "text": "Hello",
-            "startPosition": 1,
             "line": 1,
             "length": 5
         },
@@ -15,7 +14,6 @@
             "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
             "line": 2,
             "length": 5
         },
@@ -24,7 +22,6 @@
                 "id": 4,
                 "type": "NodeParagraph",
                 "text": "This is a section level one paragraph.",
-                "startPosition": 1,
                 "line": 4,
                 "length": 38
             },
@@ -36,7 +33,6 @@
                     "id": 6,
                     "type": "NodeTitle",
                     "text": "World",
-                    "startPosition": 1,
                     "line": 7,
                     "length": 5
                 },
@@ -44,7 +40,6 @@
                     "id": 7,
                     "type": "NodeAdornment",
                     "rune": "=",
-                    "startPosition": 1,
                     "line": 6,
                     "length": 5
                 },
@@ -52,7 +47,6 @@
                     "id": 8,
                     "type": "NodeAdornment",
                     "rune": "=",
-                    "startPosition": 1,
                     "line": 8,
                     "length": 5
                 },
@@ -61,7 +55,6 @@
                         "id": 9,
                         "type": "NodeParagraph",
                         "text": "This is a section level two paragraph.",
-                        "startPosition": 1,
                         "line": 10,
                         "length": 38
                     }
