@@ -1,7 +1,7 @@
 =============================================================
 Guidlines for Contributing to the Go reStructuredText Project
 =============================================================
-:Modified: Wed Jun 18 00:56 2014
+:Modified: Wed Jun 18 00:58 2014
 
 ---------------
 Getting started
@@ -78,17 +78,18 @@ Debugging
 ---------
 
 Debugging is often necessary when adding new parts to the lexer or parser.
-go-rst imports the go-spew library (https://github.com/davecgh/go-spew) for
+go-rst imports the `go-spew library <https://github.com/davecgh/go-spew>`_ for
 pretty printing lexer Items or parser Nodes. The spew ConfigState is stored in
 the ``spd`` global variable, so dumping objects to stdout is as simple as::
 
   spd.Spew(<input>)
 
 Besides using go-spew, debug output can be sent to stdout (or anywhere with
-some changes) using the go-elog package (https://github.com/demizer/go-elog).
-go-elog is a replacement library for the standard log package that adds logging
-levels and support for other output streams (io.Writer). Logging debug output
-is easy using the Debug, Debugln, and Debugf functions::
+some changes) using the `go-elog package
+<https://github.com/demizer/go-elog>`_. go-elog is a replacement library for
+the standard log package that adds logging levels and support for other output
+streams (io.Writer). Logging debug output is easy using the Debug, Debugln, and
+Debugf functions::
 
   log.Debugln("Hello!")
 
