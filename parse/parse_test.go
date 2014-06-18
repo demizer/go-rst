@@ -218,81 +218,77 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 	return true
 }
 
+// checkMatchingFields compares the expected node output retrieved from the
+// nodes.json file and the actual parser NodeList output. Returns an error if
+// a mismatch is found.
 func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
-	if len(eNodes.(map[string]interface{})) !=
-		reflect.Indirect(reflect.ValueOf(pNode)).Type().NumField() {
-		// If the value is missing in eNodes and nil in pNode than we
-		// can exclude it.
-		// var id int
+	// If the value is missing in eNodes and nil in pNode than we can
+	// exclude it.
+	eFields := eNodes.(map[string]interface{})
+	pNodeVal := reflect.Indirect(reflect.ValueOf(pNode))
+	// Check expected node to parsed node
+	for eName, _ := range eFields {
+		var sfName string
+		if eName == "id" {
+			sfName = "ID"
+		} else {
+			sfName = strings.ToUpper(eName[0:1]) + eName[1:]
+		}
+		_, in := pNodeVal.Type().FieldByName(sfName)
+		if !in {
+			nName := reflect.TypeOf(pNode)
+			return fmt.Errorf("Node (%s) missing field %q\n",
+				nName, sfName)
+		}
+	}
+	// Compare pNode against eNodes
+	for i := 0; i < pNodeVal.NumField(); i++ {
+		pName := pNodeVal.Type().Field(i).Tag.Get("json")
+		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
-		pNodeVal := reflect.Indirect(reflect.ValueOf(pNode))
-		for eName, _ := range eFields {
-			var sfName string
-			if eName == "id" {
-				sfName = "ID"
-			} else {
-				sfName = strings.ToUpper(eName[0:1]) + eName[1:]
+		switch pName {
+		case "indentLength":
+			// Some title nodes aren't indented.
+			if pVal == 0 {
+				continue
 			}
-			_, in := pNodeVal.Type().FieldByName(sfName)
-			if !in {
-				nName := reflect.TypeOf(pNode)
-				tmp := "Node (%s) missing field %q from parser\n"
-				return fmt.Errorf(tmp, nName, sfName)
+		case "startPosition":
+			// Most nodes begin at position one in the line,
+			// therefore we can ignore them if it hasn't been
+			// specified in the expected nodes.
+			if pVal.(StartPosition).Position() == 0 ||
+				pVal.(StartPosition).Position() == 1 {
+				continue
+			}
+		case "line":
+			// zero, then we ignore it.  systemMessage literal
+			// block nodes have no line position.
+			if pVal.(Line).LineNumber() == 0 {
+				continue
+			}
+		case "overLine":
+			// Some sections don't have overlines
+			if eFields[pName] == nil &&
+				pVal.(*AdornmentNode) == nil {
+				continue
+			}
+		case "nodeList":
+			// Some Nodes don't have child nodes.
+			if eFields[pName] == nil && pVal.(NodeList) == nil {
+				continue
+			}
+		case "text":
+			// Some Nodes don't have text.
+			if eFields[pName] == nil && pVal.(string) == "" {
+				continue
 			}
 		}
-		// Compare pNode against eNodes
-		for i := 0; i < pNodeVal.NumField(); i++ {
-			pName := pNodeVal.Type().Field(i).Tag.Get("json")
-			pVal := pNodeVal.Field(i).Interface()
-			eFields := eNodes.(map[string]interface{})
-			switch pName {
-			case "indent":
-				// Some title nodes aren't indented.
-				if pVal == 0 {
-					continue
-				}
-			case "startPosition":
-				// Most nodes begin at position one in the
-				// line, therefore we can ignore them if it
-				// hasn't been specified in the expected nodes.
-				if pVal.(StartPosition).Position() == 0 ||
-					pVal.(StartPosition).Position() == 1 {
-					continue
-				}
-			case "line":
-				// log.Debugf("IN HERE %d\n", pVal) If line is
-				// zero, then we ignore it.  systemMessage
-				// literal block nodes have no line position.
-				if pVal.(Line).LineNumber() == 0 {
-					// log.Debugln("PLOP")
-					continue
-				}
-			case "overLine":
-				// Some sections don't have overlines
-				if eFields[pName] == nil &&
-					pVal.(*AdornmentNode) == nil {
-					continue
-				}
-			case "nodeList":
-				// Some Nodes don't have child nodes.
-				if eFields[pName] == nil &&
-					pVal.(NodeList) == nil {
-					continue
-				}
-			case "text":
-				// Some Nodes don't have text.
-				if eFields[pName] == nil &&
-					pVal.(string) == "" {
-					continue
-				}
-			}
-			eNode := eNodes.(map[string]interface{})
-			if eNode[pName] == nil {
-				tmp := "Expect Node ID=%.0f missing field %q" +
-					"\n\t   Parser got: %q == %v\n"
-				return fmt.Errorf(tmp, eNode["id"], pName,
-					pName, pVal)
-			}
+		eNode := eNodes.(map[string]interface{})
+		if eNode[pName] == nil {
+			tmp := "Expect Node ID=%.0f missing field %q\n\t   " +
+				"Parser got: %q == %v\n"
+			return fmt.Errorf(tmp, eNode["id"], pName,
+				pName, pVal)
 		}
 	}
 	return nil
