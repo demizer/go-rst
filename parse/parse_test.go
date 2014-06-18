@@ -326,7 +326,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != float64(c.pFieldVal.(ID)) {
 				c.dError()
 			}
-		case "level", "length":
+		case "level", "length", "indentLength":
 			if c.eFieldVal != float64(c.pFieldVal.(int)) {
 				c.dError()
 			}

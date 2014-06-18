@@ -25,13 +25,6 @@ func TestLiteralBlockNodeType(t *testing.T) {
 	}
 }
 
-func TestIndentNodeType(t *testing.T) {
-	n := &IndentNode{Type: NodeIndent}
-	if n.NodeType() != NodeIndent {
-		t.Error("n.Type != NodeIndent")
-	}
-}
-
 func TestTransitionNodeType(t *testing.T) {
 	n := &TransitionNode{Type: NodeTransition}
 	if n.NodeType() != NodeTransition {

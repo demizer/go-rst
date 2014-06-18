@@ -26,10 +26,6 @@ const (
 	// NodeLiteralBlock is a literal block element.
 	NodeLiteralBlock
 
-	// NodeIndent is indention encountered by the lexer. It can be any
-	// number of spaces found before any other element type.
-	NodeIndent
-
 	// NodeTransition is a transition element. Transitions are very similar
 	// to NodeSection except that they have newlines before and after.
 	NodeTransition
@@ -51,7 +47,6 @@ var nodeTypes = [...]string{
 	"NodeBlockQuote",
 	"NodeSystemMessage",
 	"NodeLiteralBlock",
-	"NodeIndent",
 	"NodeTransition",
 	"NodeTitle",
 	"NodeComment",
@@ -122,8 +117,8 @@ func (a EnumAffixType) String() string {
 	return enumAffixesTypes[a]
 }
 
-// SectionNode is a a single section node. It contains overline, underline, and
-// indentation nodes. NodeList contains nodes that are children of the section.
+// SectionNode is a a single section node. It contains overline, title, and
+// underline nodes. NodeList contains nodes that are children of the section.
 type SectionNode struct {
 	ID   `json:"id"`
 	Type NodeType `json:"type"`
@@ -138,11 +133,6 @@ type SectionNode struct {
 	Title     *TitleNode     `json:"title"`
 	OverLine  *AdornmentNode `json:"overLine"`
 	UnderLine *AdornmentNode `json:"underLine"`
-
-	// Indent is indentation encountered by the parser before the
-	// SectionNode.  Sections cannot be indented, so this is primarily for
-	// error detection.
-	Indent *IndentNode `json:"underLine"`
 
 	// NodeList contains
 	NodeList NodeList `json:"nodeList"`
@@ -163,25 +153,18 @@ func newSection(title *item, overSec *item, underSec *item,
 	}
 
 	*id++
+	var indentLen int
+	if indent != nil {
+		indentLen = indent.Length
+	}
 	n.Title = &TitleNode{
 		ID:            ID(*id),
 		Type:          NodeTitle,
 		Text:          title.Text,
 		StartPosition: title.StartPosition,
+		IndentLength:  indentLen,
 		Length:        title.Length,
 		Line:          title.Line,
-	}
-
-	if indent != nil && indent.Text != "" {
-		*id++
-		n.Indent = &IndentNode{
-			ID:            ID(*id),
-			Type:          NodeIndent,
-			Text:          indent.Text,
-			StartPosition: indent.StartPosition,
-			Line:          indent.Line,
-			Length:        indent.Length,
-		}
 	}
 
 	if overSec != nil && overSec.Text != "" {
@@ -216,6 +199,7 @@ type TitleNode struct {
 	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
+	IndentLength  int      `json:"indentLength"`
 	Length        int      `json:"length"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
@@ -359,22 +343,6 @@ func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
 // NodeType returns the Node type of LiteralBlockNode.
 func (l LiteralBlockNode) NodeType() NodeType {
 	return l.Type
-}
-
-// IndentNode is any indentation encountered by the parser before block level
-// elements.
-type IndentNode struct {
-	ID            `json:"id"`
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	StartPosition `json:"startPosition"`
-	Line          `json:"line"`
-}
-
-// NodeType returns the Node type of IndentNode.
-func (i IndentNode) NodeType() NodeType {
-	return i.Type
 }
 
 // TransitionNode is a parsed transition element. Transition elements are very

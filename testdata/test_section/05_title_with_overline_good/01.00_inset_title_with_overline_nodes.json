@@ -6,21 +6,14 @@
         "title": {
             "id": 2,
             "type": "NodeTitle",
+            "indentLength": 1,
             "text": "Title",
             "startPosition": 2,
             "line": 2,
             "length": 5
         },
-        "indent": {
-            "id": 3,
-            "type": "NodeIndent",
-            "text": " ",
-            "startPosition": 1,
-            "line": 2,
-            "length": 1
-        },
         "overLine": {
-            "id": 4,
+            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -28,7 +21,7 @@
             "length": 7
         },
         "underLine": {
-            "id": 5,
+            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "startPosition": 1,
@@ -37,7 +30,7 @@
         },
         "nodeList": [
             {
-                "id": 6,
+                "id": 5,
                 "type": "NodeParagraph",
                 "text": "Test overline title with inset.",
                 "startPosition": 1,
