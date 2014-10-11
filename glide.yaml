@@ -1,0 +1,15 @@
+package: main
+
+import:
+
+    - package: github.com/davecgh/go-spew/spew
+      # ref: 3fdaf5cea8d23107b993d363e98992fa529dd713
+      vcs: git
+
+    - package: github.com/demizer/go-elog
+      # ref: e5b2dd5a0b096f83d0e71420c43646e507bb6fcf
+      vcs: git
+
+    - package: code.google.com/p/go.text/unicode/norm
+      vcs: git
+
