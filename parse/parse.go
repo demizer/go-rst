@@ -11,8 +11,8 @@ package parse
 
 import (
 	"code.google.com/p/go.text/unicode/norm"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/demizer/go-elog"
-	"github.com/demizer/go-spew/spew"
 )
 
 // Used for debugging only
@@ -324,18 +324,18 @@ func (t *Tree) startParse(lex *lexer) {
 // returned on success or failure. Users of the Parse package should use the
 // Top level Parse function.
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
-	log.Debugln("Start")
+	log.Debugln("START")
 	t.startParse(lex(t.Name, text))
 	t.text = text
 	t.parse(treeSet)
-	log.Debugln("End")
+	log.Debugln("END")
 	return t
 }
 
 // parse is where items are retrieved from the parser and dispatched according
 // to the itemElement type.
 func (t *Tree) parse(tree *Tree) {
-	log.Debugln("Start")
+	log.Debugln("START")
 
 	t.nodeTarget = &t.Nodes
 
@@ -382,8 +382,7 @@ func (t *Tree) parse(tree *Tree) {
 			t.nodeTarget = &n.(*BlockQuoteNode).NodeList
 		}
 	}
-
-	log.Debugln("End")
+	log.Debugln("END")
 }
 
 // backup shifts the token buffer right one position.
@@ -483,7 +482,7 @@ func (t *Tree) clearTokens(begin, end int) {
 // returned from the parser. If there are errors parsing these elements, than a
 // systemMessage is generated and added to Tree.Nodes.
 func (t *Tree) section(i *item) Node {
-	log.Debugln("Start")
+	log.Debugln("START")
 	var overAdorn, indent, title, underAdorn *item
 
 	pBack := t.peekBack(1)
@@ -616,8 +615,7 @@ func (t *Tree) section(i *item) Node {
 		m := warningShortUnderline
 		sec.NodeList = append(sec.NodeList, t.systemMessage(m))
 	}
-
-	log.Debugln("End")
+	log.Debugln("END")
 	return sec
 }
 

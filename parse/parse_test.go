@@ -39,13 +39,16 @@ func SetDebug() {
 	log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
 		"{{if .Prefix}}{{.Prefix}} {{end}}" +
 		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
+		"{{if .Id}}{{.Id}} {{end}}" +
+		"{{if .Indent}}{{.Indent}}{{end}}" +
 		"{{if .FileName}}{{.FileName}}: {{end}}" +
 		"{{if .FunctionName}}{{.FunctionName}}{{end}}" +
 		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
 		"{{if .Text}}{{.Text}}{{end}}")
 
-	log.SetFlags(log.Lansi | log.LnoPrefix | log.LfunctionName |
-		log.LlineNumber)
+	log.SetFlags(log.LdebugTreeFlags)
+
+	// log.SetIndent(-1)
 }
 
 // Contains a single test with data loaded from test files in the testdata
