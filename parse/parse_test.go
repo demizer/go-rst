@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -47,8 +49,6 @@ func SetDebug() {
 		"{{if .Text}}{{.Text}}{{end}}")
 
 	log.SetFlags(log.LdebugTreeFlags)
-
-	// log.SetIndent(-1)
 }
 
 // Contains a single test with data loaded from test files in the testdata
@@ -79,8 +79,42 @@ func (l Test) expectItems() (lexItems []item) {
 	return
 }
 
+// Contains absolute file paths for the test data
+var TESTDATA_FILES []string
+
+// testPathsFromDirectory walks through the file tree in the testdata directory
+// containing all of the tests and returns a string slice of all the discovered
+// paths.
+func testPathsFromDirectory(dir string) (paths []string) {
+	wFunc := func(p string, info os.FileInfo, err error) error {
+		path, _ := filepath.Abs(p)
+		if filepath.Ext(path) == ".rst" {
+			paths = append(paths, path[:len(path)-4])
+		}
+		return nil
+	}
+	err := filepath.Walk(dir, wFunc)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
+// testPathFromName loops through TESTDATA_FILES until name is matched.
+func testPathFromName(name string) (path string) {
+	if len(TESTDATA_FILES) < 1 {
+		TESTDATA_FILES = testPathsFromDirectory("../testdata")
+	}
+	for _, p := range TESTDATA_FILES {
+		if p[len(p)-len(name):] == name {
+			return p
+		}
+	}
+	panic(fmt.Sprintf("Could not find test for %q\n", name))
+}
+
 func LoadLexTest(t *testing.T, path string) (test *Test) {
-	iDPath := "../testdata/" + path + ".rst"
+	iDPath := path + ".rst"
 	inputData, err := ioutil.ReadFile(iDPath)
 	if err != nil {
 		t.Fatal(err)
@@ -88,7 +122,7 @@ func LoadLexTest(t *testing.T, path string) (test *Test) {
 	if len(inputData) == 0 {
 		t.Fatalf("\"%s\" is empty!", iDPath)
 	}
-	itemFPath := "../testdata/" + path + "_items.json"
+	itemFPath := path + "-items.json"
 	itemData, err := ioutil.ReadFile(itemFPath)
 	if err != nil {
 		t.Fatal(err)
@@ -104,7 +138,7 @@ func LoadLexTest(t *testing.T, path string) (test *Test) {
 }
 
 func LoadParseTest(t *testing.T, path string) (test *Test) {
-	iDPath := "../testdata/" + path + ".rst"
+	iDPath := path + ".rst"
 	inputData, err := ioutil.ReadFile(iDPath)
 	if err != nil {
 		t.Fatal(err)
@@ -112,7 +146,7 @@ func LoadParseTest(t *testing.T, path string) (test *Test) {
 	if len(inputData) == 0 {
 		t.Fatalf("\"%s\" is empty!", iDPath)
 	}
-	nDPath := "../testdata/" + path + "_nodes.json"
+	nDPath := path + "-nodes.json"
 	nodeData, err := ioutil.ReadFile(nDPath)
 	if err != nil {
 		t.Fatal(err)

@@ -338,11 +338,11 @@ func isArabic(r rune) bool {
 	return r > '0' && r < '9'
 }
 
-func isInlineMarkup(r rune) bool {
-	// TODO: The check should include a peek for the matching rune markup and
-	// proper spacing.
-	return r == '*' || r == '`' || r == '_' || r == '|'
-}
+// func isInlineMarkup(r rune) bool {
+// // TODO: The check should include a peek for the matching rune markup and
+// // proper spacing.
+// return r == '*' || r == '`' || r == '_' || r == '|'
+// }
 
 // isSection compares a number of positions (skipping whitespace) to determine
 // if the runes are sectionAdornments and returns a true if the positions match

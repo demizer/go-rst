@@ -10,7 +10,7 @@ import "testing"
 
 func TestParseSectionTitleGood0000(t *testing.T) {
 	// Basic title, underline, blankline, and paragraph test
-	testPath := "test_section/01_title_good/00.00_title_paragraph"
+	testPath := testPathFromName("00.00-title-paragraph")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -20,7 +20,7 @@ func TestParseSectionTitleGood0000(t *testing.T) {
 func TestParseSectionTitleGood0001(t *testing.T) {
 	// Basic title, underline, and paragraph with no blankline line after
 	// the section.
-	testPath := "test_section/01_title_good/00.01_paragraph_noblankline"
+	testPath := testPathFromName("00.01-paragraph-noblankline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -31,7 +31,7 @@ func TestParseSectionTitleGood0002(t *testing.T) {
 	// A title that begins with a combining unicode character \u0301. Tests
 	// to make sure the 2 byte unicode does not contribute to the underline
 	// length calculation.
-	testPath := "test_section/01_title_good/00.02_title_combining_chars"
+	testPath := testPathFromName("00.02-title-combining-chars")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -40,7 +40,7 @@ func TestParseSectionTitleGood0002(t *testing.T) {
 
 func TestParseSectionTitleGood0100(t *testing.T) {
 	// A basic section in between paragraphs.
-	testPath := "test_section/01_title_good/01.00_para_head_para"
+	testPath := testPathFromName("01.00-para-head-para")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -49,7 +49,7 @@ func TestParseSectionTitleGood0100(t *testing.T) {
 
 func TestParseSectionTitleGood0200(t *testing.T) {
 	// Tests section parsing on 3 character long title and underline.
-	testPath := "test_section/01_title_good/02.00_short_title"
+	testPath := testPathFromName("02.00-short-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -58,7 +58,7 @@ func TestParseSectionTitleGood0200(t *testing.T) {
 
 func TestParseSectionTitleGood0300(t *testing.T) {
 	// Tests a single section with no other element surrounding it.
-	testPath := "test_section/01_title_good/03.00_empty_section"
+	testPath := testPathFromName("03.00-empty-section")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -67,7 +67,7 @@ func TestParseSectionTitleGood0300(t *testing.T) {
 
 func TestParseSectionTitleBad0000(t *testing.T) {
 	// Tests for severe system messages when the sections are indented.
-	testPath := "test_section/02_title_bad/00.00_unexpected_titles"
+	testPath := testPathFromName("00.00-unexpected-titles")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -76,7 +76,7 @@ func TestParseSectionTitleBad0000(t *testing.T) {
 
 func TestParseSectionTitleBad0100(t *testing.T) {
 	// Tests for severe system message on short title underline
-	testPath := "test_section/02_title_bad/01.00_short_underline"
+	testPath := testPathFromName("01.00-short-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -85,7 +85,7 @@ func TestParseSectionTitleBad0100(t *testing.T) {
 
 func TestParseSectionTitleBad0200(t *testing.T) {
 	// Tests for title underlines that are less than three characters.
-	testPath := "test_section/02_title_bad/02.00_short_title_short_underline"
+	testPath := testPathFromName("02.00-short-title-short-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -95,8 +95,7 @@ func TestParseSectionTitleBad0200(t *testing.T) {
 func TestParseSectionTitleBad0201(t *testing.T) {
 	// Tests for title overlines and underlines that are less than three
 	// characters.
-	testPath := "test_section/02_title_bad/" +
-		"02.01_short_title_short_overline_and_underline"
+	testPath := testPathFromName("02.01-short-title-short-overline-and-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -106,8 +105,7 @@ func TestParseSectionTitleBad0201(t *testing.T) {
 func TestParseSectionTitleBad0202(t *testing.T) {
 	// Tests for short title overline with missing underline when the
 	// overline is less than three characters.
-	testPath := "test_section/02_title_bad/" +
-		"02.02_short_title_short_overline_missing_underline"
+	testPath := testPathFromName("02.02-short-title-short-overline-missing-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -116,8 +114,7 @@ func TestParseSectionTitleBad0202(t *testing.T) {
 
 func TestParseSectionLevelGood0000(t *testing.T) {
 	// Tests section level return to level one after three subsections.
-	testPath := "test_section/03_level_good/" +
-		"00.00_section_level_return"
+	testPath := testPathFromName("00.00-section-level-return")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -127,8 +124,7 @@ func TestParseSectionLevelGood0000(t *testing.T) {
 func TestParseSectionLevelGood0001(t *testing.T) {
 	// Tests section level return to level one after 1 subsection. The
 	// second level one section has one subsection.
-	testPath := "test_section/03_level_good/" +
-		"00.01_section_level_return"
+	testPath := testPathFromName("00.01-section-level-return")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -137,7 +133,7 @@ func TestParseSectionLevelGood0001(t *testing.T) {
 
 func TestParseSectionLevelGood0002(t *testing.T) {
 	// Test section level with subsection 4 returning to level two.
-	testPath := "test_section/03_level_good/00.02_section_level_return"
+	testPath := testPathFromName("00.02-section-level-return")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -146,7 +142,7 @@ func TestParseSectionLevelGood0002(t *testing.T) {
 
 func TestParseSectionLevelGood0100(t *testing.T) {
 	// Tests section level return with title overlines
-	testPath := "test_section/03_level_good/01.00_section_level_return"
+	testPath := testPathFromName("01.00-section-level-return")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -156,7 +152,7 @@ func TestParseSectionLevelGood0100(t *testing.T) {
 func TestParseSectionLevelGood0200(t *testing.T) {
 	// Tests section level with two section having the same rune, but the
 	// first not having an overline.
-	testPath := "test_section/03_level_good/02.00_two_level_one_overline"
+	testPath := testPathFromName("02.00-two-level-one-overline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -165,7 +161,7 @@ func TestParseSectionLevelGood0200(t *testing.T) {
 
 func TestParseSectionLevelBad0000(t *testing.T) {
 	// Test section level return on bad level 2 section adornment
-	testPath := "test_section/04_level_bad/00.00_bad_subsection_order"
+	testPath := testPathFromName("00.00-bad-subsection-order")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -175,8 +171,7 @@ func TestParseSectionLevelBad0000(t *testing.T) {
 func TestParseSectionLevelBad0001(t *testing.T) {
 	// Test section level return with title overlines on bad level 2
 	// section adornment
-	testPath := "test_section/04_level_bad/" +
-		"00.01_bad_subsection_order_with_overlines"
+	testPath := testPathFromName("00.01-bad-subsection-order-with-overlines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -186,8 +181,7 @@ func TestParseSectionLevelBad0001(t *testing.T) {
 func TestParseSectionLevelBad0100(t *testing.T) {
 	// Tests for a severeTitleLevelInconsistent system message on a bad
 	// level two with an overline. Level one does not have an overline.
-	testPath := "test_section/04_level_bad/" +
-		"01.00_two_level_overline_bad_return"
+	testPath := testPathFromName("01.00-two-level-overline-bad-return")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -196,8 +190,7 @@ func TestParseSectionLevelBad0100(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
 	// Test simple section with title overline.
-	testPath := "test_section/05_title_with_overline_good/" +
-		"00.00_title_overline"
+	testPath := testPathFromName("00.00-title-overline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -206,8 +199,7 @@ func TestParseSectionTitleWithOverlineGood0000(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
 	// Test simple section with inset title and overline.
-	testPath := "test_section/05_title_with_overline_good/" +
-		"01.00_inset_title_with_overline"
+	testPath := testPathFromName("01.00-inset-title-with-overline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -216,8 +208,7 @@ func TestParseSectionTitleWithOverlineGood0100(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
 	// Test sections with three character adornments lines.
-	testPath := "test_section/05_title_with_overline_good/" +
-		"02.00_three_char_section_title"
+	testPath := testPathFromName("02.00-three-char-section-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -226,8 +217,7 @@ func TestParseSectionTitleWithOverlineGood0200(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
 	// Test section title with overline, but no underline.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"00.00_inset_title_missing_underline"
+	testPath := testPathFromName("00.00-inset-title-missing-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -236,8 +226,7 @@ func TestParseSectionTitleWithOverlineBad0000(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
 	// Test inset title with overline but missing underline.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"00.01_inset_title_missing_underline_with_blankline"
+	testPath := testPathFromName("00.01-inset-title-missing-underline-with-blankline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -247,8 +236,7 @@ func TestParseSectionTitleWithOverlineBad0001(t *testing.T) {
 func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
 	// Test inset title with overline but missing underline. The title is
 	// followed by a blank line and a paragraph.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"00.02_inset_title_missing_underline_and_para"
+	testPath := testPathFromName("00.02-inset-title-missing-underline-and-para")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -257,8 +245,7 @@ func TestParseSectionTitleWithOverlineBad0002(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
 	// Test section overline with missmatched underline.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"00.03_inset_title_mismatched_underline"
+	testPath := testPathFromName("00.03-inset-title-mismatched-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -267,8 +254,7 @@ func TestParseSectionTitleWithOverlineBad0003(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
 	// Test overline with really long title.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"01.00_title_too_long"
+	testPath := testPathFromName("01.00-title-too-long")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -277,8 +263,7 @@ func TestParseSectionTitleWithOverlineBad0100(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
 	// Test overline and underline with blanklines instead of a title.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"02.00_missing_titles_with_blankline"
+	testPath := testPathFromName("02.00-missing-titles-with-blankline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -288,8 +273,7 @@ func TestParseSectionTitleWithOverlineBad0200(t *testing.T) {
 func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
 	// Test overline and underline with nothing where the title is supposed
 	// to be.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"02.01_missing_titles_with_noblankline"
+	testPath := testPathFromName("02.01-missing-titles-with-noblankline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -298,8 +282,7 @@ func TestParseSectionTitleWithOverlineBad0201(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
 	// Test two character overline with no underline.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"03.00_incomplete_section"
+	testPath := testPathFromName("03.00-incomplete-section")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -309,8 +292,7 @@ func TestParseSectionTitleWithOverlineBad0300(t *testing.T) {
 func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
 	// Test three character section adornments with no titles or blanklines
 	// in between.
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"03.01_incomplete_sections_no_title"
+	testPath := testPathFromName("03.01-incomplete-sections-no-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -319,8 +301,7 @@ func TestParseSectionTitleWithOverlineBad0301(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
 	// Tests indented section with overline
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"04.00_indented_title_short_overline_and_underline"
+	testPath := testPathFromName("04.00-indented-title-short-overline-and-underline")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -329,8 +310,7 @@ func TestParseSectionTitleWithOverlineBad0400(t *testing.T) {
 
 func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
 	// Tests ".." overline (which is a comment element).
-	testPath := "test_section/06_title_with_overline_bad/" +
-		"05.00_two_char_section_title"
+	testPath := testPathFromName("05.00-two-char-section-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -339,8 +319,7 @@ func TestParseSectionTitleWithOverlineBad0500(t *testing.T) {
 
 func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 	// Tests lexing a section where the title begins with a number.
-	testPath := "test_section/07_title_numbered_good/" +
-		"00.00_numbered_title"
+	testPath := testPathFromName("00.00-numbered-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -350,8 +329,7 @@ func TestParseSectionTitleNumberedGood0000(t *testing.T) {
 func TestParseSectionTitleNumberedGood0100(t *testing.T) {
 	// Tests numbered section lexing with enumerated directly above
 	// section.
-	testPath := "test_section/07_title_numbered_good/" +
-		"01.00_enum_list_with_numbered_title"
+	testPath := testPathFromName("01.00-enum-list-with-numbered-title")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()

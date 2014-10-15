@@ -421,10 +421,10 @@ func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
 	switch affix.Text {
 	case ".":
 		afType = enumAffixPeriod
-	case "(":
-		afType = enumAffixParenthesisSurround
-	case ")":
-		afType = enumAffixParenthesisRight
+		// case "(":
+		// afType = enumAffixParenthesisSurround
+		// case ")":
+		// afType = enumAffixParenthesisRight
 	}
 
 	return &EnumListNode{

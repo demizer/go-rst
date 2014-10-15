@@ -404,7 +404,8 @@ func (t *Tree) peekBack(pos int) *item {
 func (t *Tree) peekBackTo(item itemElement) (tok *item) {
 	for i := zed - 1; i >= 0; i-- {
 		if t.token[i] != nil && t.token[i].Type == item {
-			return t.token[i]
+			tok = t.token[i]
+			break
 		}
 	}
 	return
@@ -619,16 +620,16 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) comment(i *item) Node {
-	n := newComment(i, &t.id)
+func (t *Tree) comment(i *item) (n Node) {
+	n = newComment(i, &t.id)
 	nTok := t.peek(1)
 	if nTok != nil && nTok.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it
 		// to the NodeList before the systemMessage.
 		t.nodeTarget.append(n)
-		return t.systemMessage(warningExplicitMarkupWithUnIndent)
+		n = t.systemMessage(warningExplicitMarkupWithUnIndent)
 	}
-	return n
+	return
 }
 
 // systemMessage generates a Node based on the passed parserMessage. The

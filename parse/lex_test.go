@@ -591,7 +591,7 @@ func TestLexerPeekNextLine(t *testing.T) {
 }
 
 func TestLexId(t *testing.T) {
-	testPath := "test_section/01_title_good/00.00_title_paragraph"
+	testPath := testPathFromName("00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].IDNumber() != 1 {
@@ -603,7 +603,7 @@ func TestLexId(t *testing.T) {
 }
 
 func TestLexLine(t *testing.T) {
-	testPath := "test_section/01_title_good/00.00_title_paragraph"
+	testPath := testPathFromName("00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].LineNumber() != 1 {
@@ -615,7 +615,7 @@ func TestLexLine(t *testing.T) {
 }
 
 func TestLexStartPosition(t *testing.T) {
-	testPath := "test_section/01_title_good/00.00_title_paragraph"
+	testPath := testPathFromName("00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].Position() != 1 {
