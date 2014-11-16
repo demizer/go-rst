@@ -1,0 +1,28 @@
+{
+	"ImportPath": "github.com/demizer/go-rst",
+	"GoVersion": "go1.3.3",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/go.text/unicode/norm",
+			"Comment": "null-106",
+			"Rev": "f230eca7a9431ddd0ee1c1174e676fcb944d1a40"
+		},
+		{
+			"ImportPath": "github.com/aybabtme/rgbterm",
+			"Rev": "9e3d038e1b8341ed7416c841a884cab4a3487941"
+		},
+		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Rev": "83f84dc933714d51504ceed59f43ead21d096fe7"
+		},
+		{
+			"ImportPath": "github.com/demizer/go-elog",
+			"Rev": "5376ad33ff7116636da3b30cb07105341d1fc5e2"
+		},
+		{
+			"ImportPath": "golang.org/x/text/transform",
+			"Comment": "null-106",
+			"Rev": "f230eca7a9431ddd0ee1c1174e676fcb944d1a40"
+		}
+	]
+}
