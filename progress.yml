@@ -1,281 +1,540 @@
 - whitespace:
-    - tab-to-space: todo
-    - form-feed-to-space: todo
-    - vertical-tab-to-space: todo
+    - tab-to-space:
+        progress: todo
+    - form-feed-to-space:
+        progress: todo
+    - vertical-tab-to-space:
+        progress: todo
     - blank-lines:
-        - multiple-blank-lines-is-a-single-blank-line: todo
-        - whitespace-preserved-in-literal-blocks: todo
+        - multiple-blank-lines-is-a-single-blank-line:
+            progress: todo
+        - whitespace-preserved-in-literal-blocks:
+            progress: todo
     - indentation:
-        - indented-list-item-content: todo
-        - indented-literal-block-content: todo
-        - indented-block-quote: todo
-        - indented-explicit-markup-blocks: todo
-        - indented-bullet-list-paragraph: todo
-        - indented-footnote-paragraph: todo
-        - indented-line-after-field-list-marker: todo
-        - indented-line-after-option-list-marker: todo
-        - dedent-ends-previous-indent-level: todo
-- escaping-mechanism: todo
+        - indented-list-item-content:
+            progress: todo
+        - indented-literal-block-content:
+            progress: todo
+        - indented-block-quote:
+            progress: todo
+        - indented-explicit-markup-blocks:
+            progress: todo
+        - indented-bullet-list-paragraph:
+            progress: todo
+        - indented-footnote-paragraph:
+            progress: todo
+        - indented-line-after-field-list-marker:
+            progress: todo
+        - indented-line-after-option-list-marker:
+            progress: todo
+        - dedent-ends-previous-indent-level:
+            progress: todo
+- escaping-mechanism:
+    progress: todo
 - reference-names:
-    - normalized-whitespace-in-reference-names: todo
-    - case-insensitive-reference-name: todo
-    - simple-reference-footnote-label: todo
-    - simple-reference-citation-label: todo
-    - simple-reference-interpreted-text-roles: todo
-    - simple-reference-hyperlink-references: todo
-    - simple-reference-backquotes: todo
-    - phrase-reference-backquotes: todo
-    - shared-reference-namespace: todo
+    - normalized-whitespace-in-reference-names:
+        progress: todo
+    - case-insensitive-reference-name:
+        progress: todo
+    - simple-reference-footnote-label:
+        progress: todo
+    - simple-reference-citation-label:
+        progress: todo
+    - simple-reference-interpreted-text-roles:
+        progress: todo
+    - simple-reference-hyperlink-references:
+        progress: todo
+    - simple-reference-backquotes:
+        progress: todo
+    - phrase-reference-backquotes:
+        progress: todo
+    - shared-reference-namespace:
+        progress: todo
 - document-structure:
     - document:
-        - doctree-top-level-element-document: todo
+        - doctree-top-level-element-document:
+            progress: todo
     - sections:
-        - title: done
-        - underline: done
-        - overline: done
-        - overline-underline-match-length: done
-        - overline-underline-match-character: done
-        - overline-underline-with-inset-title: done
-        - overline-underline-is-distinct-from-underline-only-section: done
-        - underline-only-section-no-inset: done
-        - enforced-section-hierarchy-using-adornments: done
-        - nested-sections: done
-        - section-body-elements: done
-        - six-level-section-for-html: todo
-        - automatic-section-hyperlink: todo
+        - title:
+            progress: done
+            completed-on: 20140303
+        - underline:
+            progress: done
+            completed-on: 20140303
+        - overline:
+            progress: done
+            completed-on: 20140303
+        - overline-underline-match-length:
+            progress: done
+            completed-on: 20140303
+        - overline-underline-match-character:
+            progress: done
+            completed-on: 20140303
+        - overline-underline-with-inset-title:
+            progress: done
+            completed-on: 20140303
+        - overline-underline-is-distinct-from-underline-only-section:
+            progress: done
+            completed-on: 20140303
+        - underline-only-section-no-inset:
+            progress: done
+            completed-on: 20140303
+        - enforced-section-hierarchy-using-adornments:
+            progress: done
+            completed-on: 20140303
+        - nested-sections:
+            progress: done
+            completed-on: 20140303
+        - section-body-elements:
+            progress: done
+            completed-on: 20140303
+        - six-level-section-for-html:
+            progress: done
+            completed-on: 20140303
+        - automatic-section-hyperlink:
+            progress: done
+            completed-on: 20140303
     - transitions:
-        - transition-marker: todo
-        - disallow-begin-or-end-transitions: done
-        - disallow-adjacent-transitions: todo
+        - transition-marker:
+            progress: todo
+        - disallow-begin-or-end-transitions:
+            progress: todo
+        - disallow-adjacent-transitions:
+            progress: todo
 - body-elements:
     - paragraphs:
-        - basic-paragraph: done
-        - paragraph-separated-by-blankline: done
-        - paragraph-with-inline-markup: todo
+        - basic-paragraph:
+            progress: todo
+        - paragraph-separated-by-blankline:
+            progress: todo
+        - paragraph-with-inline-markup:
+            progress: todo
     - bullet-lists:
-        - basic-unordered-bullet-list: todo
-        - bullet-list-item-body-text-is-relatively-left-aligned: todo
-        - bullet-list-with-blankline-and-left-aligned-body-element: todo
-        - left-aligned-sublist-separated-by-blanklines: todo
-        - bullet-list-dedent-level-return: todo
-        - optional-blankline-after-bullet-list-item-body: todo
-        - warning-on-missing-blankline-after-bullet-item: todo
+        - basic-unordered-bullet-list:
+            progress: todo
+        - bullet-list-item-body-text-is-relatively-left-aligned:
+            progress: todo
+        - bullet-list-with-blankline-and-left-aligned-body-element:
+            progress: todo
+        - left-aligned-sublist-separated-by-blanklines:
+            progress: todo
+        - bullet-list-dedent-level-return:
+            progress: todo
+        - optional-blankline-after-bullet-list-item-body:
+            progress: todo
+        - warning-on-missing-blankline-after-bullet-item:
+            progress: todo
     - enumerated-lists:
-        - arabic-numerals: todo
-        - uppercase-alphabet-characters: todo
-        - lowercase-alphabet-characters: todo
-        - uppercase-roman-numerals: todo
-        - lowercase-roman-numerals: todo
-        - auto-enumerator: todo
-        - period-suffix: todo
-        - parenthesis-suffix: todo
-        - parenthesis-prefix-and-suffix: todo
-        - newlist-on-enumerator-mismatch: todo
-        - newlist-on-enumerator-sequence-interruption: todo
-        - level-1-system-message-on-non-ordinal-one-start: todo
-        - roman-numerals-must-begin-with-i-or-ii: todo
-        - alphabetical-list-cannot-begin-with-i: todo
-        - second-line-after-enumerated-list-item-is-valid: todo
-        - escape-mechanism-for-paragraphs-that-begin-with-enumerator: todo
-        - nested-enumerated-lists: todo
+        - arabic-numerals:
+            progress: todo
+        - uppercase-alphabet-characters:
+            progress: todo
+        - lowercase-alphabet-characters:
+            progress: todo
+        - uppercase-roman-numerals:
+            progress: todo
+        - lowercase-roman-numerals:
+            progress: todo
+        - auto-enumerator:
+            progress: todo
+        - period-suffix:
+            progress: todo
+        - parenthesis-suffix:
+            progress: todo
+        - parenthesis-prefix-and-suffix:
+            progress: todo
+        - newlist-on-enumerator-mismatch:
+            progress: todo
+        - newlist-on-enumerator-sequence-interruption:
+            progress: todo
+        - level-1-system-message-on-non-ordinal-one-start:
+            progress: todo
+        - roman-numerals-must-begin-with-i-or-ii:
+            progress: todo
+        - alphabetical-list-cannot-begin-with-i:
+            progress: todo
+        - second-line-after-enumerated-list-item-is-valid:
+            progress: todo
+        - escape-mechanism-for-paragraphs-that-begin-with-enumerator:
+            progress: todo
+        - nested-enumerated-lists:
+            progress: todo
     - definition-lists:
-        - definition-term: todo
-        - definition-term-inline-markup: todo
-        - indented-definition-block: todo
-        - indented-definition-block-with-body-elements: todo
-        - definition-classifier: todo
-        - definition-multiple-classifiers: todo
+        - definition-term:
+            progress: todo
+        - definition-term-inline-markup:
+            progress: todo
+        - indented-definition-block:
+            progress: todo
+        - indented-definition-block-with-body-elements:
+            progress: todo
+        - definition-classifier:
+            progress: todo
+        - definition-multiple-classifiers:
+            progress: todo
     - field-lists:
-        - field-name: todo
-        - field-name-colon-escape: todo
-        - field-name-inline-markup: todo
-        - field-name-case-insensitive: todo
-        - field-name-multi-word: todo
-        - field-body: todo
-        - field-body-relative-indented-body-elements: todo
-        - field-body-long-with-relative-indent: todo
+        - field-name:
+            progress: todo
+        - field-name-colon-escape:
+            progress: todo
+        - field-name-inline-markup:
+            progress: todo
+        - field-name-case-insensitive:
+            progress: todo
+        - field-name-multi-word:
+            progress: todo
+        - field-body:
+            progress: todo
+        - field-body-relative-indented-body-elements:
+            progress: todo
+        - field-body-long-with-relative-indent:
+            progress: todo
         - bibliographic-fields:
-            - first-element-field-list-to-bibliographic-data: todo
-            - author-field-name: todo
-            - authors-field-name: todo
-            - authors-field-name-with-colon: todo
-            - authors-field-name-with-comma: todo
-            - authors-field-name-with-bullet-list: todo
-            - organization-field-name: todo
-            - contact-field-name: todo
-            - address-field-name: todo
-            - address-field-name-multi-line-whitespace-preservation: todo
-            - version-field-name: todo
-            - status-field-name: todo
-            - date-field-name: todo
-            - copyright-field-name: todo
-            - dedication-field-name: todo
-            - dedication-field-name-is-unique: todo
-            - dedication-field-name-with-body-elements: todo
-            - abstract-field-name: todo
-            - abstract-field-name-is-unique: todo
-            - abstract-field-name-with-body-elements: todo
-        - rcs-keywords: todo
+            - first-element-field-list-to-bibliographic-data:
+                progress: todo
+            - author-field-name:
+                progress: todo
+            - authors-field-name:
+                progress: todo
+            - authors-field-name-with-colon:
+                progress: todo
+            - authors-field-name-with-comma:
+                progress: todo
+            - authors-field-name-with-bullet-list:
+                progress: todo
+            - organization-field-name:
+                progress: todo
+            - contact-field-name:
+                progress: todo
+            - address-field-name:
+                progress: todo
+            - address-field-name-multi-line-whitespace-preservation:
+                progress: todo
+            - version-field-name:
+                progress: todo
+            - status-field-name:
+                progress: todo
+            - date-field-name:
+                progress: todo
+            - copyright-field-name:
+                progress: todo
+            - dedication-field-name:
+                progress: todo
+            - dedication-field-name-is-unique:
+                progress: todo
+            - dedication-field-name-with-body-elements:
+                progress: todo
+            - abstract-field-name:
+                progress: todo
+            - abstract-field-name-is-unique:
+                progress: todo
+            - abstract-field-name-with-body-elements:
+                progress: todo
+        - rcs-keywords:
+            progress: todo
     - option-lists:
-        - short-posix-style: todo
-        - long-posix-style: todo
-        - gnu-plus-style: todo
-        - dos-style: todo
-        - argument-placeholder-alphabetic: todo
-        - argument-placeholder-angle-brackets: todo
-        - multiple-option-synonyms: todo
-        - option-description: todo
-        - option-description-with-multiple-body-elements: todo
-        - option-description-opening-blank-line: todo
-        - option-description-optional-blank-lines: todo
-        - option-description-closing-blank-line: todo
+        - short-posix-style:
+            progress: todo
+        - long-posix-style:
+            progress: todo
+        - gnu-plus-style:
+            progress: todo
+        - dos-style:
+            progress: todo
+        - argument-placeholder-alphabetic:
+            progress: todo
+        - argument-placeholder-angle-brackets:
+            progress: todo
+        - multiple-option-synonyms:
+            progress: todo
+        - option-description:
+            progress: todo
+        - option-description-with-multiple-body-elements:
+            progress: todo
+        - option-description-opening-blank-line:
+            progress: todo
+        - option-description-optional-blank-lines:
+            progress: todo
+        - option-description-closing-blank-line:
+            progress: todo
     - literal-blocks:
-        - literal-blocks: todo
-        - double-colon-is-removed-from-output: todo
-        - double-colon-ends-paragraph: todo
-        - double-colon-partial-minimization: todo
-        - double-colon-full-minimization: todo
-        - indented-literal-blocks: todo
-        - quoted-literal-blocks: todo
+        - literal-blocks:
+            progress: todo
+        - double-colon-is-removed-from-output:
+            progress: todo
+        - double-colon-ends-paragraph:
+            progress: todo
+        - double-colon-partial-minimization:
+            progress: todo
+        - double-colon-full-minimization:
+            progress: todo
+        - indented-literal-blocks:
+            progress: todo
+        - quoted-literal-blocks:
+            progress: todo
     - line-blocks:
-        - line-blocks: todo
-        - line-blocks-with-inline-markup: todo
-        - indented-line-blocks: todo
-        - line-blocks-with-preserved-blank-lines: todo
-        - line-blocks-with-preserved-indentation: todo
-        - line-blocks-with-line-continuation: todo
-        - line-blocks-end-with-blankline: todo
+        - line-blocks:
+            progress: todo
+        - line-blocks-with-inline-markup:
+            progress: todo
+        - indented-line-blocks:
+            progress: todo
+        - line-blocks-with-preserved-blank-lines:
+            progress: todo
+        - line-blocks-with-preserved-indentation:
+            progress: todo
+        - line-blocks-with-line-continuation:
+            progress: todo
+        - line-blocks-end-with-blankline:
+            progress: todo
     - block-quotes:
-        - block-quote: todo
-        - block-quote-with-body-elements: todo
-        - block-quote-with-inline-markup: todo
-        - block-quote-with-attribution: todo
-        - multiple-block-quotes-with-attribution: todo
-        - empty-comment-starts-block-quote: todo
-        - empty-comment-separates-block-quotes: todo
-    - doctest-blocks: todo
+        - block-quote:
+            progress: todo
+        - block-quote-with-body-elements:
+            progress: todo
+        - block-quote-with-inline-markup:
+            progress: todo
+        - block-quote-with-attribution:
+            progress: todo
+        - multiple-block-quotes-with-attribution:
+            progress: todo
+        - empty-comment-starts-block-quote:
+            progress: todo
+        - empty-comment-separates-block-quotes:
+            progress: todo
+    - doctest-blocks:
+        progress: todo
     - tables:
-        - indented-table-is-blockquote: todo
-        - tables-are-left-aligned: todo
+        - indented-table-is-blockquote:
+            progress: todo
+        - tables-are-left-aligned:
+            progress: todo
         - grid-table:
-            - body-elements: todo
-            - row-separator: todo
-            - column-separator: todo
-            - header-rows: todo
+            - body-elements:
+                progress: todo
+            - row-separator:
+                progress: todo
+            - column-separator:
+                progress: todo
+            - header-rows:
+                progress: todo
         - simple-tables:
-            - top-and-bottom-borders: todo
-            - column-spans: todo
-            - row-separation-character: todo
-            - header-rows: todo
-            - one-space-column-boundary: todo
-            - two-space-column-boundary: todo
-            - two-column-minimum-table-header: todo
-            - no-blank-line-after-header-row-separator: todo
-            - table-rows: todo
-            - table-rows-contain-body-elements: todo
-            - table-cell-line-continuation: todo
-            - first-column-cells-of-new-rows-must-contain-text: todo
-            - first-column-comment-omits-cell-text: todo
-            - first-column-back-slash-space-escape: todo
-            - ignore-blanklines-between-rows: todo
-            - blanklines-within-multilne-rows: todo
-            - rightmost-column-is-unbounded: todo
+            - top-and-bottom-borders:
+                progress: todo
+            - column-spans:
+                progress: todo
+            - row-separation-character:
+                progress: todo
+            - header-rows:
+                progress: todo
+            - one-space-column-boundary:
+                progress: todo
+            - two-space-column-boundary:
+                progress: todo
+            - two-column-minimum-table-header:
+                progress: todo
+            - no-blank-line-after-header-row-separator:
+                progress: todo
+            - table-rows:
+                progress: todo
+            - table-rows-contain-body-elements:
+                progress: todo
+            - table-cell-line-continuation:
+                progress: todo
+            - first-column-cells-of-new-rows-must-contain-text:
+                progress: todo
+            - first-column-comment-omits-cell-text:
+                progress: todo
+            - first-column-back-slash-space-escape:
+                progress: todo
+            - ignore-blanklines-between-rows:
+                progress: todo
+            - blanklines-within-multilne-rows:
+                progress: todo
+            - rightmost-column-is-unbounded:
+                progress: todo
     - explicit-markup-blocks:
-        - start-notation: todo
-        - indented-block-body: todo
-        - blank-lines: todo
+        - start-notation:
+            progress: todo
+        - indented-block-body:
+            progress: todo
+        - blank-lines:
+            progress: todo
         - footnotes:
-            - manual-numbered: todo
-            - auto-numbered: todo
-            - auto-symbol: todo
-            - mixed-manual-and-auto-numbered: todo
-        - citations: todo
+            - manual-numbered:
+                progress: todo
+            - auto-numbered:
+                progress: todo
+            - auto-symbol:
+                progress: todo
+            - mixed-manual-and-auto-numbered:
+                progress: todo
+        - citations:
+            progress: todo
         - explicit-hyperlink-targets:
-            - named-targets: todo
-            - anonymous-targets: todo
-            - internal-targets: todo
-            - internal-targets-chained: todo
-            - external-targets: todo
-            - indirect-targets: todo
+            - named-targets:
+                progress: todo
+            - anonymous-targets:
+                progress: todo
+            - internal-targets:
+                progress: todo
+            - internal-targets-chained:
+                progress: todo
+            - external-targets:
+                progress: todo
+            - indirect-targets:
+                progress: todo
             - directives:
-                - directive-markers: todo
+                - directive-markers:
+                    progress: todo
                 - directive-blocks:
-                    - directive-arguments: todo
-                    - directive-options: todo
-                    - directive-content: todo
+                    - directive-arguments:
+                        progress: todo
+                    - directive-options:
+                        progress: todo
+                    - directive-content:
+                        progress: todo
                 - directives:
-                    - code: todo
-                    - image: todo
-                    - admonitions: todo
-                    - figure: todo
-                    - math: todo
-                    - list-table-yaml: todo
-                    - contents: todo
-                    - sectnum: todo
-                    - meta: todo
-                    - replace: todo
-                    - date: todo
-                    - include: todo
-                    - raw: todo
-                    - class: todo
-                    - role: todo
+                    - code:
+                        progress: todo
+                    - image:
+                        progress: todo
+                    - admonitions:
+                        progress: todo
+                    - figure:
+                        progress: todo
+                    - math:
+                        progress: todo
+                    - list-table-yaml:
+                        progress: todo
+                    - contents:
+                        progress: todo
+                    - sectnum:
+                        progress: todo
+                    - meta:
+                        progress: todo
+                    - replace:
+                        progress: todo
+                    - date:
+                        progress: todo
+                    - include:
+                        progress: todo
+                    - raw:
+                        progress: todo
+                    - class:
+                        progress: todo
+                    - role:
+                        progress: todo
         - substitution-definitions:
-            - definition-block: todo
-            - circular-reference-error: todo
-            - case-sensitive-matching: todo
-        - comments: todo
+            - definition-block:
+                progress: todo
+            - circular-reference-error:
+                progress: todo
+            - case-sensitive-matching:
+                progress: todo
+        - comments:
+            progress: todo
 - implicit-hyperlink-targets:
-    - from-section-titles: todo
-    - from-footnotes: todo
-    - from-citations: todo
-    - from-extensions: todo
-    - explicit-hyperlink-targets-have-priority: todo
-    - level-1-system-message-for-duplicate-implici-hyperlink-targets: todo
-    - level-2-system-message-for-duplicate-explicit-hyperlink-targets: todo
-    - unique-hyperlink-targets: todo
+    - from-section-titles:
+        progress: todo
+    - from-footnotes:
+        progress: todo
+    - from-citations:
+        progress: todo
+    - from-extensions:
+        progress: todo
+    - explicit-hyperlink-targets-have-priority:
+        progress: todo
+    - level-1-system-message-for-duplicate-implici-hyperlink-targets:
+        progress: todo
+    - level-2-system-message-for-duplicate-explicit-hyperlink-targets:
+        progress: todo
+    - unique-hyperlink-targets:
+        progress: todo
 - inline-markup:
-    - cannot-begin-or-end-with-whitespace: todo
-    - cannot-be-nested: todo
+    - cannot-begin-or-end-with-whitespace:
+        progress: todo
+    - cannot-be-nested:
+        progress: todo
     - inline-markup-recognition-rules:
-        - start-strings-must-start-text-block: todo
-        - start-strings-preceded-by-whitespace: todo
-        - start-strings-preceded-by-supported-ascii-chars: todo
-        - start-strings-preceded-by-supported-unicode-chars: todo
-        - start-strings-preceded-by-supported-unicode-chars: todo
-        - start-strings-followed-by-non-whitespace: todo
-        - end-strings-preceded-by-non-whitespace: todo
-        - end-strings-must-end-text-block: todo
-        - end-strings-are-followed-by-whitespace: todo
-        - end-strings-are-followed-by-supported-ascii-chars: todo
-        - end-strings-are-followed-by-supported-unicode-chars: todo
-        - start-strings-preceded-with-immediate-supported-chars-must-not-be-followed-by-closing-chars: todo
-        - end-string-must-be-separated-by-start-string-char: todo
-        - unescaped-back-slash-disables-markup: todo
-    - recognition-order: todo
-    - character-level-inline-markup: todo
-    - emphasis: todo
-    - strong-emphasis: todo
+        - start-strings-must-start-text-block:
+            progress: todo
+        - start-strings-preceded-by-whitespace:
+            progress: todo
+        - start-strings-preceded-by-supported-ascii-chars:
+            progress: todo
+        - start-strings-preceded-by-supported-unicode-chars:
+            progress: todo
+        - start-strings-preceded-by-supported-unicode-chars:
+            progress: todo
+        - start-strings-followed-by-non-whitespace:
+            progress: todo
+        - end-strings-preceded-by-non-whitespace:
+            progress: todo
+        - end-strings-must-end-text-block:
+            progress: todo
+        - end-strings-are-followed-by-whitespace:
+            progress: todo
+        - end-strings-are-followed-by-supported-ascii-chars:
+            progress: todo
+        - end-strings-are-followed-by-supported-unicode-chars:
+            progress: todo
+        - start-strings-preceded-with-immediate-supported-chars-must-not-be-followed-by-closing-chars:
+            progress: todo
+        - end-string-must-be-separated-by-start-string-char:
+            progress: todo
+        - unescaped-back-slash-disables-markup:
+            progress: todo
+    - recognition-order:
+        progress: todo
+    - character-level-inline-markup:
+        progress: todo
+    - emphasis:
+        progress: todo
+    - strong-emphasis:
+        progress: todo
     - interpreted-text:
-        - emphasis-role: todo
-        - literal-role: todo
-        - code-role: todo
-        - math-role: todo
-        - pep-reference: todo
-        - rfc-reference: todo
-        - strong-role: todo
-        - subscript-role: todo
-        - superscript-role: todo
-        - title-reference-role: todo
-        - raw-role: todo
-    - inline-literals: todo
+        - emphasis-role:
+            progress: todo
+        - literal-role:
+            progress: todo
+        - code-role:
+            progress: todo
+        - math-role:
+            progress: todo
+        - pep-reference:
+            progress: todo
+        - rfc-reference:
+            progress: todo
+        - strong-role:
+            progress: todo
+        - subscript-role:
+            progress: todo
+        - superscript-role:
+            progress: todo
+        - title-reference-role:
+            progress: todo
+        - raw-role:
+            progress: todo
+    - inline-literals:
+        progress: todo
     - hyperlink-references:
-        - named-references: todo
-        - anonymous-references: todo
-        - embedded-uris-and-aliases: todo
-    - inline-internal-targets: todo
-    - footnote-references: todo
-    - citation-references: todo
-    - substitution-references: todo
+        - named-references:
+            progress: todo
+        - anonymous-references:
+            progress: todo
+        - embedded-uris-and-aliases:
+            progress: todo
+    - inline-internal-targets:
+        progress: todo
+    - footnote-references:
+        progress: todo
+    - citation-references:
+        progress: todo
+    - substitution-references:
+        progress: todo
     - standalone-hyperlinks:
-        - absolute-uri: todo
-        - email-addresses: todo
+        - absolute-uri:
+            progress: todo
+        - email-addresses:
+            progress: todo
