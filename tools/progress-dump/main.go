@@ -36,6 +36,9 @@ var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
 type Table struct {
 	Sections     []*TableSection
+	TotalItems   int
+	TotalDone    int
+	OverAllPerc  float64
 	MaxCol1Chars int
 	MaxCol2Chars int
 	MaxCol3Chars int
@@ -49,6 +52,7 @@ type TableSection struct {
 
 type TableSectionHeader struct {
 	Name     string
+	Done     string
 	DonePerc int
 }
 
@@ -86,6 +90,7 @@ func (s *State) ReadProgressFile(path string) {
 
 func (s *State) DumpTable() {
 	s.Walk(s.Items, nil, 0)
+	s.CalcPercentages()
 	spd.Dump(s.Table)
 }
 
@@ -94,8 +99,9 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 		if depth == 0 {
 			s.Id++
 			sec = &TableSection{
-				Header: &TableSectionHeader{Name: x.Item},
-				Id:     s.Id,
+				Header: &TableSectionHeader{Name: x.Item,
+					Done: x.Done},
+				Id: s.Id,
 			}
 		}
 		if x.SubItems != nil {
@@ -105,8 +111,9 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 				name = sec.Header.Name + ":" + x.Item
 			}
 			subSec := &TableSection{
-				Header: &TableSectionHeader{Name: name},
-				Id:     s.Id,
+				Header: &TableSectionHeader{Name: name,
+					Done: x.Done},
+				Id: s.Id,
 			}
 			depth++
 			s.Walk(x.SubItems, subSec, depth)
@@ -129,6 +136,30 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 			s.Table.Sections = append(s.Table.Sections, sec)
 		}
 	}
+}
+
+func (s *State) CalcPercentages() {
+	for _, x := range s.Table.Sections {
+		sDone := 0.0
+		s.Table.TotalItems++
+		if x.Header.Done == "yes" {
+			s.Table.TotalDone++
+			sDone++
+		}
+		for _, y := range x.Rows {
+			s.Table.TotalItems++
+			if y.Done == "yes" {
+				s.Table.TotalDone++
+				sDone++
+			}
+		}
+		if sDone != 0 {
+			p := (sDone / float64(len(x.Rows)+1)) * 100
+			x.Header.DonePerc = int(p)
+		}
+	}
+	s.Table.OverAllPerc = (float64(s.Table.TotalDone) /
+		float64(s.Table.TotalItems)) * 100
 }
 
 func main() {

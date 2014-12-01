@@ -67,7 +67,7 @@
         - item: doctree-top-level-element-document
           done: no
     - item: sections
-      done: no
+      done: yes
       sub-items:
         - item: section
           done: yes
