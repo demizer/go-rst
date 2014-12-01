@@ -86,5 +86,6 @@ done
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 cd $DIR/../tools/progress-dump/
-go run main.go
-cd -
+go install
+cd - > /dev/null
+progress-dump
