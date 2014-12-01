@@ -1,540 +1,617 @@
-- whitespace:
-    - tab-to-space:
-        progress: todo
-    - form-feed-to-space:
-        progress: todo
-    - vertical-tab-to-space:
-        progress: todo
-    - blank-lines:
-        - multiple-blank-lines-is-a-single-blank-line:
-            progress: todo
-        - whitespace-preserved-in-literal-blocks:
-            progress: todo
-    - indentation:
-        - indented-list-item-content:
-            progress: todo
-        - indented-literal-block-content:
-            progress: todo
-        - indented-block-quote:
-            progress: todo
-        - indented-explicit-markup-blocks:
-            progress: todo
-        - indented-bullet-list-paragraph:
-            progress: todo
-        - indented-footnote-paragraph:
-            progress: todo
-        - indented-line-after-field-list-marker:
-            progress: todo
-        - indented-line-after-option-list-marker:
-            progress: todo
-        - dedent-ends-previous-indent-level:
-            progress: todo
-- escaping-mechanism:
-    progress: todo
-- reference-names:
-    - normalized-whitespace-in-reference-names:
-        progress: todo
-    - case-insensitive-reference-name:
-        progress: todo
-    - simple-reference-footnote-label:
-        progress: todo
-    - simple-reference-citation-label:
-        progress: todo
-    - simple-reference-interpreted-text-roles:
-        progress: todo
-    - simple-reference-hyperlink-references:
-        progress: todo
-    - simple-reference-backquotes:
-        progress: todo
-    - phrase-reference-backquotes:
-        progress: todo
-    - shared-reference-namespace:
-        progress: todo
-- document-structure:
-    - document:
-        - doctree-top-level-element-document:
-            progress: todo
-    - sections:
-        - title:
-            progress: done
-            completed-on: 20140303
-        - underline:
-            progress: done
-            completed-on: 20140303
-        - overline:
-            progress: done
-            completed-on: 20140303
-        - overline-underline-match-length:
-            progress: done
-            completed-on: 20140303
-        - overline-underline-match-character:
-            progress: done
-            completed-on: 20140303
-        - overline-underline-with-inset-title:
-            progress: done
-            completed-on: 20140303
-        - overline-underline-is-distinct-from-underline-only-section:
-            progress: done
-            completed-on: 20140303
-        - underline-only-section-no-inset:
-            progress: done
-            completed-on: 20140303
-        - enforced-section-hierarchy-using-adornments:
-            progress: done
-            completed-on: 20140303
-        - nested-sections:
-            progress: done
-            completed-on: 20140303
-        - section-body-elements:
-            progress: done
-            completed-on: 20140303
-        - six-level-section-for-html:
-            progress: done
-            completed-on: 20140303
-        - automatic-section-hyperlink:
-            progress: done
-            completed-on: 20140303
-    - transitions:
-        - transition-marker:
-            progress: todo
-        - disallow-begin-or-end-transitions:
-            progress: todo
-        - disallow-adjacent-transitions:
-            progress: todo
-- body-elements:
-    - paragraphs:
-        - basic-paragraph:
-            progress: todo
-        - paragraph-separated-by-blankline:
-            progress: todo
-        - paragraph-with-inline-markup:
-            progress: todo
-    - bullet-lists:
-        - basic-unordered-bullet-list:
-            progress: todo
-        - bullet-list-item-body-text-is-relatively-left-aligned:
-            progress: todo
-        - bullet-list-with-blankline-and-left-aligned-body-element:
-            progress: todo
-        - left-aligned-sublist-separated-by-blanklines:
-            progress: todo
-        - bullet-list-dedent-level-return:
-            progress: todo
-        - optional-blankline-after-bullet-list-item-body:
-            progress: todo
-        - warning-on-missing-blankline-after-bullet-item:
-            progress: todo
-    - enumerated-lists:
-        - arabic-numerals:
-            progress: todo
-        - uppercase-alphabet-characters:
-            progress: todo
-        - lowercase-alphabet-characters:
-            progress: todo
-        - uppercase-roman-numerals:
-            progress: todo
-        - lowercase-roman-numerals:
-            progress: todo
-        - auto-enumerator:
-            progress: todo
-        - period-suffix:
-            progress: todo
-        - parenthesis-suffix:
-            progress: todo
-        - parenthesis-prefix-and-suffix:
-            progress: todo
-        - newlist-on-enumerator-mismatch:
-            progress: todo
-        - newlist-on-enumerator-sequence-interruption:
-            progress: todo
-        - level-1-system-message-on-non-ordinal-one-start:
-            progress: todo
-        - roman-numerals-must-begin-with-i-or-ii:
-            progress: todo
-        - alphabetical-list-cannot-begin-with-i:
-            progress: todo
-        - second-line-after-enumerated-list-item-is-valid:
-            progress: todo
-        - escape-mechanism-for-paragraphs-that-begin-with-enumerator:
-            progress: todo
-        - nested-enumerated-lists:
-            progress: todo
-    - definition-lists:
-        - definition-term:
-            progress: todo
-        - definition-term-inline-markup:
-            progress: todo
-        - indented-definition-block:
-            progress: todo
-        - indented-definition-block-with-body-elements:
-            progress: todo
-        - definition-classifier:
-            progress: todo
-        - definition-multiple-classifiers:
-            progress: todo
-    - field-lists:
-        - field-name:
-            progress: todo
-        - field-name-colon-escape:
-            progress: todo
-        - field-name-inline-markup:
-            progress: todo
-        - field-name-case-insensitive:
-            progress: todo
-        - field-name-multi-word:
-            progress: todo
-        - field-body:
-            progress: todo
-        - field-body-relative-indented-body-elements:
-            progress: todo
-        - field-body-long-with-relative-indent:
-            progress: todo
-        - bibliographic-fields:
-            - first-element-field-list-to-bibliographic-data:
-                progress: todo
-            - author-field-name:
-                progress: todo
-            - authors-field-name:
-                progress: todo
-            - authors-field-name-with-colon:
-                progress: todo
-            - authors-field-name-with-comma:
-                progress: todo
-            - authors-field-name-with-bullet-list:
-                progress: todo
-            - organization-field-name:
-                progress: todo
-            - contact-field-name:
-                progress: todo
-            - address-field-name:
-                progress: todo
-            - address-field-name-multi-line-whitespace-preservation:
-                progress: todo
-            - version-field-name:
-                progress: todo
-            - status-field-name:
-                progress: todo
-            - date-field-name:
-                progress: todo
-            - copyright-field-name:
-                progress: todo
-            - dedication-field-name:
-                progress: todo
-            - dedication-field-name-is-unique:
-                progress: todo
-            - dedication-field-name-with-body-elements:
-                progress: todo
-            - abstract-field-name:
-                progress: todo
-            - abstract-field-name-is-unique:
-                progress: todo
-            - abstract-field-name-with-body-elements:
-                progress: todo
-        - rcs-keywords:
-            progress: todo
-    - option-lists:
-        - short-posix-style:
-            progress: todo
-        - long-posix-style:
-            progress: todo
-        - gnu-plus-style:
-            progress: todo
-        - dos-style:
-            progress: todo
-        - argument-placeholder-alphabetic:
-            progress: todo
-        - argument-placeholder-angle-brackets:
-            progress: todo
-        - multiple-option-synonyms:
-            progress: todo
-        - option-description:
-            progress: todo
-        - option-description-with-multiple-body-elements:
-            progress: todo
-        - option-description-opening-blank-line:
-            progress: todo
-        - option-description-optional-blank-lines:
-            progress: todo
-        - option-description-closing-blank-line:
-            progress: todo
-    - literal-blocks:
-        - literal-blocks:
-            progress: todo
-        - double-colon-is-removed-from-output:
-            progress: todo
-        - double-colon-ends-paragraph:
-            progress: todo
-        - double-colon-partial-minimization:
-            progress: todo
-        - double-colon-full-minimization:
-            progress: todo
-        - indented-literal-blocks:
-            progress: todo
-        - quoted-literal-blocks:
-            progress: todo
-    - line-blocks:
-        - line-blocks:
-            progress: todo
-        - line-blocks-with-inline-markup:
-            progress: todo
-        - indented-line-blocks:
-            progress: todo
-        - line-blocks-with-preserved-blank-lines:
-            progress: todo
-        - line-blocks-with-preserved-indentation:
-            progress: todo
-        - line-blocks-with-line-continuation:
-            progress: todo
-        - line-blocks-end-with-blankline:
-            progress: todo
-    - block-quotes:
-        - block-quote:
-            progress: todo
-        - block-quote-with-body-elements:
-            progress: todo
-        - block-quote-with-inline-markup:
-            progress: todo
-        - block-quote-with-attribution:
-            progress: todo
-        - multiple-block-quotes-with-attribution:
-            progress: todo
-        - empty-comment-starts-block-quote:
-            progress: todo
-        - empty-comment-separates-block-quotes:
-            progress: todo
-    - doctest-blocks:
-        progress: todo
-    - tables:
-        - indented-table-is-blockquote:
-            progress: todo
-        - tables-are-left-aligned:
-            progress: todo
-        - grid-table:
-            - body-elements:
-                progress: todo
-            - row-separator:
-                progress: todo
-            - column-separator:
-                progress: todo
-            - header-rows:
-                progress: todo
-        - simple-tables:
-            - top-and-bottom-borders:
-                progress: todo
-            - column-spans:
-                progress: todo
-            - row-separation-character:
-                progress: todo
-            - header-rows:
-                progress: todo
-            - one-space-column-boundary:
-                progress: todo
-            - two-space-column-boundary:
-                progress: todo
-            - two-column-minimum-table-header:
-                progress: todo
-            - no-blank-line-after-header-row-separator:
-                progress: todo
-            - table-rows:
-                progress: todo
-            - table-rows-contain-body-elements:
-                progress: todo
-            - table-cell-line-continuation:
-                progress: todo
-            - first-column-cells-of-new-rows-must-contain-text:
-                progress: todo
-            - first-column-comment-omits-cell-text:
-                progress: todo
-            - first-column-back-slash-space-escape:
-                progress: todo
-            - ignore-blanklines-between-rows:
-                progress: todo
-            - blanklines-within-multilne-rows:
-                progress: todo
-            - rightmost-column-is-unbounded:
-                progress: todo
-    - explicit-markup-blocks:
-        - start-notation:
-            progress: todo
-        - indented-block-body:
-            progress: todo
-        - blank-lines:
-            progress: todo
-        - footnotes:
-            - manual-numbered:
-                progress: todo
-            - auto-numbered:
-                progress: todo
-            - auto-symbol:
-                progress: todo
-            - mixed-manual-and-auto-numbered:
-                progress: todo
-        - citations:
-            progress: todo
-        - explicit-hyperlink-targets:
-            - named-targets:
-                progress: todo
-            - anonymous-targets:
-                progress: todo
-            - internal-targets:
-                progress: todo
-            - internal-targets-chained:
-                progress: todo
-            - external-targets:
-                progress: todo
-            - indirect-targets:
-                progress: todo
-            - directives:
-                - directive-markers:
-                    progress: todo
-                - directive-blocks:
-                    - directive-arguments:
-                        progress: todo
-                    - directive-options:
-                        progress: todo
-                    - directive-content:
-                        progress: todo
-                - directives:
-                    - code:
-                        progress: todo
-                    - image:
-                        progress: todo
-                    - admonitions:
-                        progress: todo
-                    - figure:
-                        progress: todo
-                    - math:
-                        progress: todo
-                    - list-table-yaml:
-                        progress: todo
-                    - contents:
-                        progress: todo
-                    - sectnum:
-                        progress: todo
-                    - meta:
-                        progress: todo
-                    - replace:
-                        progress: todo
-                    - date:
-                        progress: todo
-                    - include:
-                        progress: todo
-                    - raw:
-                        progress: todo
-                    - class:
-                        progress: todo
-                    - role:
-                        progress: todo
-        - substitution-definitions:
-            - definition-block:
-                progress: todo
-            - circular-reference-error:
-                progress: todo
-            - case-sensitive-matching:
-                progress: todo
-        - comments:
-            progress: todo
-- implicit-hyperlink-targets:
-    - from-section-titles:
-        progress: todo
-    - from-footnotes:
-        progress: todo
-    - from-citations:
-        progress: todo
-    - from-extensions:
-        progress: todo
-    - explicit-hyperlink-targets-have-priority:
-        progress: todo
-    - level-1-system-message-for-duplicate-implici-hyperlink-targets:
-        progress: todo
-    - level-2-system-message-for-duplicate-explicit-hyperlink-targets:
-        progress: todo
-    - unique-hyperlink-targets:
-        progress: todo
-- inline-markup:
-    - cannot-begin-or-end-with-whitespace:
-        progress: todo
-    - cannot-be-nested:
-        progress: todo
-    - inline-markup-recognition-rules:
-        - start-strings-must-start-text-block:
-            progress: todo
-        - start-strings-preceded-by-whitespace:
-            progress: todo
-        - start-strings-preceded-by-supported-ascii-chars:
-            progress: todo
-        - start-strings-preceded-by-supported-unicode-chars:
-            progress: todo
-        - start-strings-preceded-by-supported-unicode-chars:
-            progress: todo
-        - start-strings-followed-by-non-whitespace:
-            progress: todo
-        - end-strings-preceded-by-non-whitespace:
-            progress: todo
-        - end-strings-must-end-text-block:
-            progress: todo
-        - end-strings-are-followed-by-whitespace:
-            progress: todo
-        - end-strings-are-followed-by-supported-ascii-chars:
-            progress: todo
-        - end-strings-are-followed-by-supported-unicode-chars:
-            progress: todo
-        - start-strings-preceded-with-immediate-supported-chars-must-not-be-followed-by-closing-chars:
-            progress: todo
-        - end-string-must-be-separated-by-start-string-char:
-            progress: todo
-        - unescaped-back-slash-disables-markup:
-            progress: todo
-    - recognition-order:
-        progress: todo
-    - character-level-inline-markup:
-        progress: todo
-    - emphasis:
-        progress: todo
-    - strong-emphasis:
-        progress: todo
-    - interpreted-text:
-        - emphasis-role:
-            progress: todo
-        - literal-role:
-            progress: todo
-        - code-role:
-            progress: todo
-        - math-role:
-            progress: todo
-        - pep-reference:
-            progress: todo
-        - rfc-reference:
-            progress: todo
-        - strong-role:
-            progress: todo
-        - subscript-role:
-            progress: todo
-        - superscript-role:
-            progress: todo
-        - title-reference-role:
-            progress: todo
-        - raw-role:
-            progress: todo
-    - inline-literals:
-        progress: todo
-    - hyperlink-references:
-        - named-references:
-            progress: todo
-        - anonymous-references:
-            progress: todo
-        - embedded-uris-and-aliases:
-            progress: todo
-    - inline-internal-targets:
-        progress: todo
-    - footnote-references:
-        progress: todo
-    - citation-references:
-        progress: todo
-    - substitution-references:
-        progress: todo
-    - standalone-hyperlinks:
-        - absolute-uri:
-            progress: todo
-        - email-addresses:
-            progress: todo
+- item: whitespace
+  done: no
+  sub-items:
+    - item: tab-to-space
+      done: no
+    - item: form-feed-to-space
+      done: no
+    - item: vertical-tab-to-space
+      done: no
+    - item: blank-lines
+      done: no
+      sub-items:
+        - item: multiple-blank-lines-is-a-single-blank-line
+          done: no
+        - item: whitespace-preserved-in-literal-blocks
+          done: no
+    - item: indentation
+      done: no
+      sub-items:
+        - item: indented-list-item-content
+          done: no
+        - item: indented-literal-block-content
+          done: no
+        - item: indented-block-quote
+          done: no
+        - item: indented-explicit-markup-blocks
+          done: no
+        - item: indented-bullet-list-paragraph
+          done: no
+        - item: indented-footnote-paragraph
+          done: no
+        - item: indented-line-after-field-list-marker
+          done: no
+        - item: indented-line-after-option-list-marker
+          done: no
+        - item: dedent-ends-previous-indent-level
+          done: no
+- item: escaping-mechanism
+  done: no
+- item: reference-names
+  done: no
+  sub-items:
+    - item: elemenormalized-whitespace-in-reference-names
+      done: no
+    - item: case-insensitive-reference-name
+      done: no
+    - item: simple-reference-footnote-label
+      done: no
+    - item: simple-reference-citation-label
+      done: no
+    - item: simple-reference-interpreted-text-roles
+      done: no
+    - item: simple-reference-hyperlink-references
+      done: no
+    - item: simple-reference-backquotes
+      done: no
+    - item: phrase-reference-backquotes
+      done: no
+    - item: shared-reference-namespace
+      done: no
+- item: document-structure
+  done: no
+  sub-items:
+    - item: document
+      done: no
+      sub-items:
+        - item: doctree-top-level-element-document
+          done: no
+    - item: sections
+      done: no
+      sub-items:
+        - item: section
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+          note: All tests from docutils converted to JSON and implemented.
+        - item: title
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: underline
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: overline
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: overline-underline-match-length
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: overline-underline-match-character
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: overline-underline-with-inset-title
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: overline-underline-is-distinct-from-underline-only-section
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: underline-only-section-no-inset
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: enforced-section-hierarchy-using-adornments
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: nested-sections
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: section-body-elements
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: six-level-section-for-html
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+        - item: automatic-section-hyperlink
+          done: yes
+          completed: Thu Nov 27 10:16 2014
+    - item: transitions
+      done: no
+      sub-items:
+        - item: transition-marker
+          done: yes
+        - item: sallow-begin-or-end-transitions
+          done: no
+        - item: sallow-adjacent-transitions
+          done: no
+- item: body-ements
+  done: no
+  sub-items:
+    - item: paragraphs
+      done: no
+      sub-items:
+        - item: basic-paragraph
+          done: yes
+        - item: paragraph-separated-by-blankline
+          done: no
+        - item: paragraph-with-inline-markup
+          done: no
+    - item: bullet-lists
+      done: no
+      sub-items:
+        - item: basic-unordered-bullet-list
+          progress: todo
+        - item: bullet-list-item-body-text-is-relatively-left-aligned
+          done: no
+        - item: bullet-list-with-blankline-and-left-aligned-body-element
+          done: no
+        - item: left-aligned-sublist-separated-by-blanklines
+          done: no
+        - item: bullet-list-dedent-level-return
+          done: no
+        - item: optional-blankline-after-bullet-list-item-body
+          done: no
+        - item: warning-on-missing-blankline-after-bullet-item
+          done: no
+    - item: enumerated-lists
+      done: no
+      sub-items:
+        - item: arabic-numerals
+          done: no
+        - item: uppercase-alphabet-characters
+          done: no
+        - item: lowercase-alphabet-characters
+          done: no
+        - item: uppercase-roman-numerals
+          done: no
+        - item: lowercase-roman-numerals
+          done: no
+        - item: auto-enumerator
+          done: no
+        - item: period-suffix
+          done: no
+        - item: parenthesis-suffix
+          done: no
+        - item: parenthesis-prefix-and-suffix
+          done: no
+        - item: newlist-on-enumerator-mismatch
+          done: no
+        - item: newlist-on-enumerator-sequence-interruption
+          done: no
+        - item: level-1-system-message-on-non-ordinal-one-start
+          done: no
+        - item: roman-numerals-must-begin-with-i-or-ii
+          done: no
+        - item: alphabetical-list-cannot-begin-with-i
+          done: no
+        - item: second-line-after-enumerated-list-item-is-valid
+          done: no
+        - item: escape-mechanism-for-paragraphs-that-begin-with-enumerator
+          done: no
+        - item: nested-enumerated-lists
+          done: no
+    - item: definition-lists
+      done: no
+      sub-items:
+        - item: definition-term
+          done: no
+        - item: definition-term-inline-markup
+          done: no
+        - item: indented-definition-block
+          done: no
+        - item: indented-definition-block-with-body-elements
+          done: no
+        - item: definition-classifier
+          done: no
+        - item: definition-multiple-classifiers
+          done: no
+    - item: field-lists
+      done: no
+      sub-items:
+        - item: field-name
+          done: no
+        - item: field-name-colon-escape
+          done: no
+        - item: field-name-inline-markup
+          done: no
+        - item: field-name-case-insensitive
+          done: no
+        - item: field-name-multi-word
+          done: no
+        - item: field-body
+          done: no
+        - item: field-body-relative-indented-body-elements
+          done: no
+        - item: field-body-long-with-relative-indent
+          done: no
+        - item: bibliographic-fields
+          done: no
+          sub-items:
+            - item: first-element-field-list-to-bibliographic-data
+              done: no
+            - item: author-field-name
+              done: no
+            - item: authors-field-name
+              done: no
+            - item: authors-field-name-with-colon
+              done: no
+            - item: authors-field-name-with-comma
+              done: no
+            - item: authors-field-name-with-bullet-list
+              done: no
+            - item: organization-field-name
+              done: no
+            - item: contact-field-name
+              done: no
+            - item: address-field-name
+              done: no
+            - item: address-field-name-multi-line-whitespace-preservation
+              done: no
+            - item: version-field-name
+              done: no
+            - item: status-field-name
+              done: no
+            - item: date-field-name
+              done: no
+            - item: copyright-field-name
+              done: no
+            - item: dedication-field-name
+              done: no
+            - item: dedication-field-name-is-unique
+              done: no
+            - item: dedication-field-name-with-body-elements
+              done: no
+            - item: abstract-field-name
+              done: no
+            - item: abstract-field-name-is-unique
+              done: no
+            - item: abstract-field-name-with-body-elements
+              done: no
+        - item: rcs-keywords
+          done: no
+    - item: option-lists
+      done: no
+      sub-items:
+        - item: short-posix-style
+          done: no
+        - item: long-posix-style
+          done: no
+        - item: gnu-plus-style
+          done: no
+        - item: dos-style
+          done: no
+        - item: argument-placeholder-alphabetic
+          done: no
+        - item: argument-placeholder-angle-brackets
+          done: no
+        - item: multiple-option-synonyms
+          done: no
+        - item: option-description
+          done: no
+        - item: option-description-with-multiple-body-elements
+          done: no
+        - item: option-description-opening-blank-line
+          done: no
+        - item: option-description-optional-blank-lines
+          done: no
+        - item: option-description-closing-blank-line
+          done: no
+    - item: literal-blocks
+      done: no
+      sub-items:
+        - item: literal-blocks
+          done: no
+        - item: double-colon-is-removed-from-output
+          done: no
+        - item: double-colon-ends-paragraph
+          done: no
+        - item: double-colon-partial-minimization
+          done: no
+        - item: double-colon-full-minimization
+          done: no
+        - item: indented-literal-blocks
+          done: no
+        - item: quoted-literal-blocks
+          done: no
+    - item: line-blocks
+      done: no
+      sub-items:
+        - item: line-blocks
+          done: no
+        - item: line-blocks-with-inline-markup
+          done: no
+        - item: indented-line-blocks
+          done: no
+        - item: line-blocks-with-preserved-blank-lines
+          done: no
+        - item: line-blocks-with-preserved-indentation
+          done: no
+        - item: line-blocks-with-line-continuation
+          done: no
+        - item: line-blocks-end-with-blankline
+          done: no
+    - item: block-quotes
+      done: no
+      sub-items:
+        - item: block-quote
+          done: no
+        - item: block-quote-with-body-elements
+          done: no
+        - item: block-quote-with-inline-markup
+          done: no
+        - item: block-quote-with-attribution
+          done: no
+        - item: multiple-block-quotes-with-attribution
+          done: no
+        - item: empty-comment-starts-block-quote
+          done: no
+        - item: empty-comment-separates-block-quotes
+          done: no
+    - item: doctest-blocks
+      done: no
+      note: Use Go instead of python.
+    - item: tables
+      done: no
+      sub-items:
+        - item: indented-table-is-blockquote
+          done: no
+        - item: tables-are-left-aligned
+          done: no
+        - item: grid-table
+          done: no
+          sub-items:
+            - item: body-elements
+              done: no
+            - item: row-separator
+              done: no
+            - item: column-separator
+              done: no
+            - item: header-rows
+              done: no
+        - item: simple-tables
+          done: no
+          sub-items:
+            - item: top-and-bottom-borders
+              done: no
+            - item: column-spans
+              done: no
+            - item: row-separation-character
+              done: no
+            - item: header-rows
+              done: no
+            - item: one-space-column-boundary
+              done: no
+            - item: two-space-column-boundary
+              done: no
+            - item: two-column-minimum-table-header
+              done: no
+            - item: no-blank-line-after-header-row-separator
+              done: no
+            - item: table-rows
+              done: no
+            - item: table-rows-contain-body-elements
+              done: no
+            - item: table-cell-line-continuation
+              done: no
+            - item: first-column-cells-of-new-rows-must-contain-text
+              done: no
+            - item: first-column-comment-omits-cell-text
+              done: no
+            - item: first-column-back-slash-space-escape
+              done: no
+            - item: ignore-blanklines-between-rows
+              done: no
+            - item: blanklines-within-multilne-rows
+              done: no
+            - item: rightmost-column-is-unbounded
+              done: no
+    - item: explicit-markup-blocks
+      done: no
+      sub-items:
+        - item: start-notation
+          done: no
+        - item: indented-block-body
+          done: no
+        - item: blank-lines
+          done: no
+        - item: footnotes
+          done: no
+          sub-items:
+            - item: manual-numbered
+              done: no
+            - item: auto-numbered
+              done: no
+            - item: auto-symbol
+              done: no
+            - item: mixed-manual-and-auto-numbered
+              done: no
+        - item: citations
+          done: no
+        - item: explicit-hyperlink-targets
+          done: no
+          sub-items:
+            - item: named-targets
+              done: no
+            - item: anonymous-targets
+              done: no
+            - item: internal-targets
+              done: no
+            - item: internal-targets-chained
+              done: no
+            - item: external-targets
+              done: no
+            - item: indirect-targets
+              done: no
+            - item: directives
+              done: no
+              sub-items:
+                - item: directive-markers
+                  done: no
+                - item: directive-blocks
+                  done: no
+                  sub-items:
+                    - item: directive-arguments
+                      done: no
+                    - item: directive-options
+                      done: no
+                    - item: directive-content
+                      done: no
+                - item: directives
+                  done: no
+                  sub-items:
+                    - item: code
+                      done: no
+                    - item: image
+                      done: no
+                    - item: admonitions
+                      done: no
+                    - item: figure
+                      done: no
+                    - item: math
+                      done: no
+                    - item: list-table-yaml
+                      done: no
+                    - item: contents
+                      done: no
+                    - item: sectnum
+                      done: no
+                    - item: meta
+                      done: no
+                      note: HTML meta tags.
+                    - item: replace
+                      done: no
+                    - item: date
+                      done: no
+                    - item: include
+                      done: no
+                    - item: raw
+                      done: no
+                    - item: class
+                      done: no
+                      note: For HTML output.
+                    - item: role
+                      done: no
+        - item: substitution-definitions
+          done: no
+          sub-items:
+            - item: definition-block
+              done: no
+            - item: circular-reference-error
+              done: no
+            - item: case-sensitive-matching
+              done: no
+        - item: comments
+          done: no
+- item: implicit-hyperlink-targets
+  done: no
+  sub-items:
+    - item: from-section-titles
+      done: no
+    - item: from-footnotes
+      done: no
+    - item: from-citations
+      done: no
+    - item: from-extensions
+      done: no
+    - item: explicit-hyperlink-targets-have-priority
+      done: no
+    - item: level-1-system-message-for-duplicate-implici-hyperlink-targets
+      done: no
+    - item: level-2-system-message-for-duplicate-explicit-hyperlink-targets
+      done: no
+    - item: unique-hyperlink-targets
+      done: no
+- item: inline-markup
+  done: no
+  sub-items:
+    - item: cannot-begin-or-end-with-whitespace
+      done: no
+    - item: cannot-be-nested
+      done: no
+    - item: inline-markup-recognition-rules
+      done: no
+      sub-items:
+        - item: start-strings-must-start-text-block
+          done: no
+        - item: start-strings-preceded-by-whitespace
+          done: no
+        - item: start-strings-preceded-by-supported-ascii-chars
+          done: no
+        - item: start-strings-preceded-by-supported-unicode-chars
+          done: no
+        - item: start-strings-preceded-by-supported-unicode-chars
+          done: no
+        - item: start-strings-followed-by-non-whitespace
+          done: no
+        - item: end-strings-preceded-by-non-whitespace
+          done: no
+        - item: end-strings-must-end-text-block
+          done: no
+        - item: end-strings-are-followed-by-whitespace
+          done: no
+        - item: end-strings-are-followed-by-supported-ascii-chars
+          done: no
+        - item: end-strings-are-followed-by-supported-unicode-chars
+          done: no
+        - item: start-strings-preceded-with-immediate-supported-chars-must-not-be-followed-by-closing-chars
+          done: no
+        - item: end-string-must-be-separated-by-start-string-char
+          done: no
+        - item: unescaped-back-slash-disables-markup
+          done: no
+    - item: recognition-order
+      progress: todo
+    - item: character-level-inline-markup
+      done: no
+    - item: emphasis
+      done: no
+    - item: strong-emphasis
+      done: no
+    - item: interpreted-text
+      done: no
+      sub-items:
+        - item: emphasis-role
+          done: no
+        - item: literal-role
+          done: no
+        - item: code-role
+          done: no
+        - item: math-role
+          done: no
+        - item: pep-reference
+          done: no
+        - item: rfc-reference
+          done: no
+        - item: strong-role
+          done: no
+        - item: subscript-role
+          done: no
+        - item: superscript-role
+          done: no
+        - item: title-reference-role
+          done: no
+        - item: raw-role
+          done: no
+    - item: inline-literals
+      done: no
+    - item: hyperlink-references
+      done: no
+      sub-items:
+        - item: named-references
+          done: no
+        - item: anonymous-references
+          done: no
+        - item: embedded-uris-and-aliases
+          done: no
+    - item: inline-internal-targets
+      done: no
+    - item: footnote-references
+      done: no
+    - item: citation-references
+      done: no
+    - item: substitution-references
+      done: no
+    - item: standalone-hyperlinks
+      done: no
+      sub-items:
+        - item: absolute-uri
+          done: no
+        - item: email-addresses
+          done: no
