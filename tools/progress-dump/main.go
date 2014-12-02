@@ -17,7 +17,7 @@ import (
 	"github.com/aybabtme/rgbterm"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/demizer/go-elog"
-	"github.com/docopt/docopt.go"
+	"github.com/docopt/docopt-go"
 	"gopkg.in/yaml.v2"
 )
 
