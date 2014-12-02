@@ -121,7 +121,7 @@
           done: no
         - item: sallow-adjacent-transitions
           done: no
-- item: body-ements
+- item: body-elements
   done: no
   sub-items:
     - item: paragraphs
