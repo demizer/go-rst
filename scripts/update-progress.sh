@@ -86,6 +86,13 @@ done
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 cd $DIR/../tools/progress-dump/
-go install
+
+go run main.go --progress-yml ../../progress.yml > /tmp/go-rst-progress-table
+
 cd - > /dev/null
-progress-dump
+
+cat README.rst.template | sed -e "/%%PROGRESS_TABLE%%/ {
+    r /tmp/go-rst-progress-table
+    d
+}" | sed -e "s/%%MODIFIED_DATE%%/:Modified: `date +\"%a %b %d %H:%M %Y\"`/g" > README.rst
+

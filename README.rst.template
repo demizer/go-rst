@@ -1,0 +1,41 @@
+================================
+go-rst - reStructuredText for Go
+================================
+%%MODIFIED_DATE%%
+
+A reStructuredText parser for and implemented in the Go programming language.
+
+-----------------
+How to contribute
+-----------------
+
+* **Convert tests into JSON**
+
+  The docutils tests are implemented in a "psuedo xml" which is non-standard.
+  Translating the tests into JSON has the benefit of making the reStructuredText
+  tests programming language neutral so that reStructuredText parsers can be
+  implemented in other programming languages. See
+  https://github.com/demizer/go-rst/tree/master/testdata
+  for more information.
+
+* **Implement an element**
+
+  Implement an element from the list above.
+
+* **Write documentation**
+
+  All projects need good documentation.
+
+* **Test and report**
+
+  Not actually possible in the current state, but using the library and writing
+  bug reports is always helpful.
+
+------
+Status
+------
+
+Work is currently underway on translating the docutils tests from psuedo xml
+into JSON.
+
+%%PROGRESS_TABLE%%
