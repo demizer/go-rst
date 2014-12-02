@@ -89,6 +89,15 @@ func (t *Table) Dump() {
 
 	fmt.Println(topWithEndPoints)
 
+	totalDoneHdr := fmt.Sprintf("**The go-rst Library Implements "+
+		"%0.0f%% of the Official Specification (%d of %d Items)**",
+		t.OverAllPerc, t.TotalDone, t.TotalItems)
+
+	fmt.Printf("| %s |\n", totalDoneHdr+strings.Repeat(" ",
+		tWidth-len(totalDoneHdr)))
+
+	fmt.Println(sepWithPoints)
+
 	for x, y := range t.Sections {
 		secTitle := fmt.Sprintf("**%0.0f%% Complete -- %s**",
 			y.Header.DonePerc, y.Header.Name)
