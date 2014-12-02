@@ -25,7 +25,7 @@
 			"Rev": "f230eca7a9431ddd0ee1c1174e676fcb944d1a40"
 		},
         {
-            "ImportPath": "github.com/docopt/docopt.go",
+            "ImportPath": "github.com/docopt/docopt-go",
             "Rev": "c5dac536301992c0371c6115d998fb62944bfad3"
         },
         {
