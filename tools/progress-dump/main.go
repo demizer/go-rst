@@ -94,7 +94,7 @@ func (t *Table) Dump() {
 		t.OverAllPerc, t.TotalDone, t.TotalItems)
 
 	fmt.Printf("| %s |\n", totalDoneHdr+strings.Repeat(" ",
-		tWidth-len(totalDoneHdr)))
+		tWidth-len(totalDoneHdr)-2))
 
 	fmt.Println(sepWithPoints)
 

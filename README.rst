@@ -1,7 +1,7 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Tue Dec 02 00:13 2014
+:Modified: Tue Dec 02 00:21 2014
 
 .. image:: https://travis-ci.org/demizer/go-rst.png?branch=master
     :target: https://travis-ci.org/demizer/go-rst
@@ -49,7 +49,7 @@ Work is currently underway on translating the docutils tests from psuedo xml
 into JSON.
 
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **The go-rst Library Implements 6% of the Official Specification (17 of 283 Items)**                                                                                  |
+| **The go-rst Library Implements 6% of the Official Specification (17 of 283 Items)**                                                                                |
 +----------+---------------------------------------------------------------------------------------------+------------------------------------------------------------+
 | **0% Complete -- whitespace**                                                                                                                                       |
 +----------+---------------------------------------------------------------------------------------------+------------------------------------------------------------+
