@@ -1,7 +1,7 @@
 =============================================================
 Guidlines for Contributing to the Go reStructuredText Project
 =============================================================
-:Modified: Wed Jun 18 00:58 2014
+:Modified: Mon Dec 01 23:54 2014
 
 ---------------
 Getting started
@@ -48,11 +48,11 @@ Testing
 
 To run the projects tests, simply use::
 
-  go test
+  go test -v . ./parse
 
 To run a specific test, use::
 
-  go test -test.run <test_name>
+  go test -v -test.run <test_name>
 
 The name used can be all or some of the name. For example, to run the first
 lexer test for section headers, ``<test_name>`` can be either
@@ -60,11 +60,11 @@ lexer test for section headers, ``<test_name>`` can be either
 
 To run a test with debug output, use::
 
-  go test -test.run <test_name> -debug
+  go test -v -test.run <test_name> -debug
 
 To examine test coverage, use::
 
-  go test -coverprofile c.out && go tool cover -html c.out
+  go test -v -coverprofile c.out && go tool cover -html c.out
 
 Testdata
 ========
