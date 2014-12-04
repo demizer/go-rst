@@ -130,7 +130,7 @@
         - item: basic-paragraph
           done: yes
         - item: paragraph-separated-by-blankline
-          done: no
+          done: yes
         - item: paragraph-with-inline-markup
           done: no
     - item: bullet-lists

@@ -347,7 +347,7 @@ func (t *Tree) parse(tree *Tree) {
 
 		switch token.Type {
 		case itemParagraph:
-			n = newParagraph(token, &t.id)
+			n = t.paragraph(token)
 		case itemTransition:
 			n = newTransition(token, &t.id)
 		case itemComment:
@@ -813,4 +813,33 @@ func (t *Tree) enumList(i *item) (n Node) {
 	}
 	lastEnum = eNode
 	return eNode
+}
+
+func (t *Tree) paragraph(i *item) Node {
+	log.Debugln("START")
+
+	npItem := &item{
+		Text:          i.Text,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+
+	// Get all the paragraphs. If the paragraphs are not separted by blank
+	// lines, then add a newline between the previous paragraph and the
+	// current.
+	for {
+		nItem := t.next(1)
+		if nItem.Type != itemParagraph {
+			t.backup()
+			break
+		}
+		npItem.Text += "\n" + nItem.Text
+	}
+
+	npItem.Length = len(npItem.Text)
+
+	sec := newParagraph(npItem, &t.id)
+
+	log.Debugln("END")
+	return sec
 }

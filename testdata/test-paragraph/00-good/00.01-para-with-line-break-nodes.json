@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "A paragraph with a line\nbreak.",
+        "line": 1,
+        "length": 30
+    }
+]

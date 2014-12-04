@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "A paragraph.",
+        "line": 1,
+        "length": 12
+    },
+    {
+        "id": 2,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 1
+    }
+]

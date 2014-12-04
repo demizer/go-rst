@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Line 1: Two paragraphs with three lines each.\nLine 2.\nLine 3.",
+        "line": 1,
+        "length": 61
+    },
+    {
+        "id": 2,
+        "type": "NodeParagraph",
+        "text": "Paragraph 2, Line 1.\nLine 2.\nLine 3.",
+        "line": 5,
+        "length": 36
+    }
+]

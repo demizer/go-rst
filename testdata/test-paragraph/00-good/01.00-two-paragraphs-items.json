@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Two paragraphs test.",
+        "line": 1,
+        "length": 20
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "Paragraph 2.",
+        "line": 3,
+        "length": 12
+    },
+    {
+        "id": 4,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 3
+    }
+]

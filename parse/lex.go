@@ -503,7 +503,10 @@ func lexStart(l *lexer) stateFn {
 				return lexTransition
 			} else if isSpace(l.mark) {
 				return lexSpace
+			} else {
+				return lexParagraph
 			}
+
 		} else if l.isEndOfLine() {
 			log.Debugln("isEndOfLine == true")
 			if l.index > l.start {
@@ -649,6 +652,20 @@ func lexEnumList(l *lexer) stateFn {
 			}
 		}
 	}
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexParagraph(l *lexer) stateFn {
+	log.Debugln("START")
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemParagraph)
+			break
+		}
+	}
+	l.nextLine()
 	log.Debugln("END")
 	return lexStart
 }
