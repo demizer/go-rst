@@ -647,6 +647,16 @@ func (t *Tree) comment(i *item) Node {
 				}
 			}
 			nPara.Length = len(nPara.Text)
+		} else if t.peek(1).Type != itemBlankLine &&
+			t.peek(1).Type != itemCommentMark {
+			// A valid comment contains a blank line after the
+			// comment block
+			log.Debugln("Found warningExplicitMarkupWithUnIndent")
+			// n = newComment(&item{Text: nPara.Text, Line: i.Line}, &t.id)
+			n = newComment(nPara, &t.id)
+			t.nodeTarget.append(n)
+			return t.systemMessage(warningExplicitMarkupWithUnIndent)
+
 		} else {
 			log.Debugln("Found NodeComment")
 		}
