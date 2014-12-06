@@ -6,9 +6,17 @@ package parse
 
 import "testing"
 
-func TestLexComment0000(t *testing.T) {
+func TestLexCommentGood0000(t *testing.T) {
 	// A single comment
 	testPath := testPathFromName("00.00-comment")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+func TestLexCommentBlockGood0001(t *testing.T) {
+	// A single comment block split with a newline
+	testPath := testPathFromName("00.01-comment-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

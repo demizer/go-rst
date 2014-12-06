@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "A comment",
+        "startPosition": 4,
+        "line": 1,
+        "length": 9
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 2,
+        "length": 3
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "block.",
+        "startPosition": 4,
+        "line": 2,
+        "length": 6
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "line": 4,
+        "length": 10
+    },
+    {
+        "id": 8,
+        "type": "itemEOF",
+        "startPosition": 11,
+        "line": 4
+    }
+]
