@@ -636,9 +636,17 @@ func (t *Tree) comment(i *item) Node {
 		t.next(2)
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
 			log.Debugln("Found NodeComment block")
-			nPara.Text += "\n" + t.peek(2).Text
-			nPara.Length = len(nPara.Text)
 			t.next(2)
+			for {
+				nPara.Text += "\n" + t.token[zed].Text
+				if t.peek(1).Type == itemSpace &&
+					t.peek(2).Type == itemParagraph {
+					t.next(2)
+				} else {
+					break
+				}
+			}
+			nPara.Length = len(nPara.Text)
 		} else {
 			log.Debugln("Found NodeComment")
 		}

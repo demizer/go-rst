@@ -21,3 +21,12 @@ func TestLexCommentBlockGood0001(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentBlockOnSecondLineGood0100(t *testing.T) {
+	// A comment block that begins on the second line after the comment
+	// mark
+	testPath := testPathFromName("01.00-comment-block-second-line")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

@@ -25,3 +25,13 @@ func TestParseCommentBlockGood0001(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentBlockOnSecondLineGood0100(t *testing.T) {
+	// A comment block that begins on the second line after the comment
+	// mark
+	testPath := testPathFromName("01.00-comment-block-second-line")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
