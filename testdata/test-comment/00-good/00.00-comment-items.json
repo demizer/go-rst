@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "type": "itemComment",
+        "text": "A comment",
+        "line": 1,
+        "length": 9
+    },
+    {
+        "id": 2,
+        "type": "itemParagraph",
+        "text": "Paragraph.",
+        "line": 3,
+        "length": 10
+    },
+    {
+        "id": 3,
+        "type": "itemEOF",
+        "line": 3,
+        "startPosition": 11
+    }
+]
