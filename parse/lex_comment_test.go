@@ -30,3 +30,11 @@ func TestLexCommentBlockOnSecondLineGood0100(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexTwoCommentsGood0200(t *testing.T) {
+	// One comment after another
+	testPath := testPathFromName("02.00-two-comments")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
