@@ -259,6 +259,9 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 // nodes.json file and the actual parser NodeList output. Returns an error if
 // a mismatch is found.
 func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
+	if eNodes == nil || pNode == nil {
+		panic("arguments must not be nil!")
+	}
 	// If the value is missing in eNodes and nil in pNode than we can
 	// exclude it.
 	eFields := eNodes.(map[string]interface{})
@@ -319,10 +322,14 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 			if eFields[pName] == nil && pVal.(string) == "" {
 				continue
 			}
+		case "length":
+			if eFields[pName] == nil && pVal == 0 {
+				continue
+			}
 		}
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
-			tmp := "Expect Node ID=%.0f missing field %q\n\t   " +
+			tmp := "Node ID=%.0f missing field %q\n\t   " +
 				"Parser got: %q == %v\n"
 			return fmt.Errorf(tmp, eNode["id"], pName,
 				pName, pVal)
@@ -335,6 +342,9 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 // to the parser output comparing the two objects field by field. eNodes is
 // unmarshaled json input and pNode is the parser node to check.
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
+	if eNodes == nil || pNode == nil {
+		panic("arguments cannot be nil!")
+	}
 	c.id = int(eNodes.(map[string]interface{})["id"].(float64))
 	if err := c.checkMatchingFields(eNodes, pNode); err != nil {
 		c.t.Error(err)
@@ -382,8 +392,10 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if len1 != len2 {
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
+				// DO NOT REMOVE SPD CALLS
 				spd.Dump(pNode)
 				spd.Dump(eNodes)
+				// DO NOT REMOVE SPD CALLS
 				eTmp := "Expected NodeList values (len=%d) " +
 					"and parsed NodeList values (len=%d) " +
 					"do not match beginning at item ID: %d"
