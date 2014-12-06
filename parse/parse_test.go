@@ -390,16 +390,20 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
+				log.SetFlags(log.LstdFlags)
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
 				// DO NOT REMOVE SPD CALLS
+				log.Criticalf("\n%d Parse NodeList Nodes\n\n", len2)
 				spd.Dump(pNode)
+				log.Criticalf("\n%d Expected NodeList Nodes\n\n", len1)
 				spd.Dump(eNodes)
+				fmt.Println()
 				// DO NOT REMOVE SPD CALLS
 				eTmp := "Expected NodeList values (len=%d) " +
 					"and parsed NodeList values (len=%d) " +
 					"do not match beginning at item ID: %d"
-				c.t.Fatal(eTmp, len1, len2, id)
+				c.t.Fatalf(eTmp, len1, len2, id)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
 				// Store and reset the parser value, otherwise
@@ -438,6 +442,18 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	testPath string) {
 
 	state := &checkNode{t: t, testPath: testPath}
+
+	if len(pNodes) != len(eTree) {
+		log.SetFlags(log.LstdFlags)
+		log.Criticalf("\n%d Parse Nodes\n\n", len(pNodes))
+		spd.Dump(pNodes)
+		log.Criticalf("\n%d Expected Nodes\n\n", len(eTree))
+		spd.Dump(eTree)
+		fmt.Println("\n")
+		log.Criticalln("The number of parsed nodes does not match expected nodes!")
+		os.Exit(1)
+	}
+
 	for eNum, eNode := range eTree {
 		state.checkFields(eNode, pNodes[eNum])
 	}
