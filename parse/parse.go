@@ -667,17 +667,15 @@ func (t *Tree) comment(i *item) Node {
 			// A valid comment contains a blank line after the
 			// comment block
 			log.Debugln("Found warningExplicitMarkupWithUnIndent")
-			// n = newComment(&item{Text: nPara.Text, Line: i.Line}, &t.id)
 			n = newComment(nPara, &t.id)
 			t.nodeTarget.append(n)
 			return t.systemMessage(warningExplicitMarkupWithUnIndent)
-
 		} else {
 			log.Debugln("Found NodeComment")
 		}
-		return newComment(nPara, &t.id)
+		n = newComment(nPara, &t.id)
 	}
-	return nil
+	return n
 }
 
 // systemMessage generates a Node based on the passed parserMessage. The
@@ -890,15 +888,6 @@ func (t *Tree) blockquote(i *item) Node {
 
 	log.Debugf("t.indentLevel == level :: %d == %d\n", t.indentLevel, level)
 	if t.indentLevel == level {
-		if i.Type != itemBlockQuote {
-			// A calculated level is already being used so a new
-			// blockquote is not necessary. Returning nil here will
-			// force the parser to append future items to the
-			// nodeTarget.
-			log.Debugf("t.indentLevel == level :: %d == %d\n",
-				t.indentLevel, level)
-			return nil
-		}
 		i.Type = itemParagraph
 		return newParagraph(i, &t.id)
 	}

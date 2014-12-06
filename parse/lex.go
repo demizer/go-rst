@@ -533,12 +533,7 @@ func lexStart(l *lexer) stateFn {
 
 		} else if l.isEndOfLine() {
 			log.Debugln("isEndOfLine == true")
-			if l.index > l.start {
-				l.emit(itemParagraph)
-				if l.mark == utf8.RuneError && l.isLastLine() {
-					break
-				}
-			} else if l.start == l.index {
+			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
 					log.Debugln("Found blank line")
 					l.emit(itemBlankLine)
