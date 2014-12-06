@@ -492,7 +492,9 @@ func lexStart(l *lexer) stateFn {
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
 			if isComment(l) {
-				l.next()
+				if !l.isEndOfLine() {
+					l.next()
+				}
 				l.emit(itemCommentMark)
 				return lexStart
 			} else if isEnumList(l) {

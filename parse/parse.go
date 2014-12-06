@@ -627,6 +627,7 @@ func (t *Tree) comment(i *item) Node {
 		// The comment element itself is valid, but we need to add it
 		// to the NodeList before the systemMessage.
 		log.Debugln("Found warningExplicitMarkupWithUnIndent")
+		n = newComment(&item{Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
 		return t.systemMessage(warningExplicitMarkupWithUnIndent)
 	}

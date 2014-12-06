@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemComment",
+        "type": "itemCommentMark",
         "text": "..",
         "line": 1,
         "length": 2
