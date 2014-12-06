@@ -350,7 +350,7 @@ func (t *Tree) parse(tree *Tree) {
 			n = t.paragraph(token)
 		case itemTransition:
 			n = newTransition(token, &t.id)
-		case itemComment:
+		case itemCommentMark:
 			n = t.comment(token)
 		case itemSectionAdornment:
 			n = t.section(token)
@@ -620,16 +620,23 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) comment(i *item) (n Node) {
-	n = newComment(i, &t.id)
-	nTok := t.peek(1)
-	if nTok != nil && nTok.Type != itemSpace {
+func (t *Tree) comment(i *item) Node {
+	var n Node
+	nSpace := t.peek(1)
+	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it
 		// to the NodeList before the systemMessage.
+		log.Debugln("Found warningExplicitMarkupWithUnIndent")
 		t.nodeTarget.append(n)
-		n = t.systemMessage(warningExplicitMarkupWithUnIndent)
+		return t.systemMessage(warningExplicitMarkupWithUnIndent)
 	}
-	return
+	nPara := t.peek(2)
+	if nPara != nil && nPara.Type == itemParagraph {
+		t.next(2)
+		log.Debugln("Found NodeComment")
+		return newComment(nPara, &t.id)
+	}
+	return nil
 }
 
 // systemMessage generates a Node based on the passed parserMessage. The

@@ -60,7 +60,7 @@ const (
 	itemSpace                        // 8
 	itemBlankLine                    // 9
 	itemTransition                   // 10
-	itemComment                      // 11
+	itemCommentMark                  // 11
 	itemEnumListAffix                // 12
 	itemEnumListArabic               // 13
 	itemInlineEmphasis               // 14
@@ -79,7 +79,7 @@ var elements = [...]string{
 	"itemSpace",
 	"itemBlankLine",
 	"itemTransition",
-	"itemComment",
+	"itemCommentMark",
 	"itemEnumListAffix",
 	"itemEnumListArabic",
 	"itemInlineEmphasis",
@@ -434,25 +434,23 @@ func isTransition(l *lexer) bool {
 	return false
 }
 
-func isComment(l *lexer) (ret bool) {
+func isComment(l *lexer) bool {
 	log.Debugln("START")
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
-		return
+		return false
 	}
 	if nMark := l.peek(); l.mark == '.' && nMark == '.' {
 		l.next()
 		nMark2 := l.peek()
 		if isSpace(nMark2) || nMark2 == utf8.RuneError {
-			ret = true
 			log.Debugln("Found comment!")
+			return true
 		}
 		l.backup(1)
 	}
-	if !ret {
-		log.Debugln("Comment not found!")
-	}
+	log.Debugln("Comment not found!")
 	log.Debugln("END")
-	return
+	return false
 }
 
 func isEnumList(l *lexer) (ret bool) {
@@ -494,7 +492,9 @@ func lexStart(l *lexer) stateFn {
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
 			if isComment(l) {
-				return lexComment
+				l.next()
+				l.emit(itemCommentMark)
+				return lexStart
 			} else if isEnumList(l) {
 				return lexEnumList
 			} else if isSection(l) {
@@ -623,14 +623,6 @@ func lexTransition(l *lexer) stateFn {
 		l.next()
 	}
 	l.emit(itemTransition)
-	l.nextLine()
-	log.Debugln("END")
-	return lexStart
-}
-
-func lexComment(l *lexer) stateFn {
-	log.Debugln("START")
-	l.emit(itemComment)
 	l.nextLine()
 	log.Debugln("END")
 	return lexStart

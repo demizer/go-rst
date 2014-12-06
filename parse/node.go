@@ -389,6 +389,7 @@ func newComment(i *item, id *int) *CommentNode {
 	return &CommentNode{
 		ID:            ID(*id),
 		Type:          NodeComment,
+		Text:          i.Text,
 		Length:        i.Length,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
