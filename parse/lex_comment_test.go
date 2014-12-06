@@ -46,3 +46,11 @@ func TestLexCommentNoBlankLineBad0000(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexTwoCommentsNoBlankLineBad0001(t *testing.T) {
+	// Two comments, no blank line after second comment
+	testPath := testPathFromName("00.01-two-comments-no-blankline")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
