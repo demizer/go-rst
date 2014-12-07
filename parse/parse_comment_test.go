@@ -116,3 +116,12 @@ func TestParseCommentWithBlockquoteGood0300(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentInDefinitionGood0400(t *testing.T) {
+	// A definition list with a comment in the definition
+	testPath := testPathFromName("04.00-comment-in-definition")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

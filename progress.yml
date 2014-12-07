@@ -22,7 +22,7 @@
         - item: indented-literal-block-content
           done: no
         - item: indented-block-quote
-          done: no
+          done: yes
         - item: indented-explicit-markup-blocks
           done: no
         - item: indented-bullet-list-paragraph
@@ -191,7 +191,7 @@
       done: no
       sub-items:
         - item: definition-term
-          done: no
+          done: yes
         - item: definition-term-inline-markup
           done: no
         - item: indented-definition-block
@@ -331,7 +331,7 @@
       done: no
       sub-items:
         - item: block-quote
-          done: no
+          done: yes
         - item: block-quote-with-body-elements
           done: no
         - item: block-quote-with-inline-markup

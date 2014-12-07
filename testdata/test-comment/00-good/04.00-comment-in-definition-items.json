@@ -1,0 +1,104 @@
+[
+    {
+        "id": 1,
+        "type": "itemDefinitionTerm",
+        "text": "term 1",
+        "startPosition": 1,
+        "line": 1,
+        "length": 6
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "definition 1",
+        "startPosition": 3,
+        "line": 2,
+        "length": 12
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 4,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 3,
+        "line": 4,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 5,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "a comment",
+        "startPosition": 6,
+        "line": 4,
+        "length": 9
+    },
+    {
+        "id": 9,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemDefinitionTerm",
+        "text": "term 2",
+        "startPosition": 1,
+        "line": 6,
+        "length": 6
+    },
+    {
+        "id": 11,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 7,
+        "length": 2
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": "definition 2",
+        "startPosition": 3,
+        "line": 7,
+        "length": 12
+    },
+    {
+        "id": 13,
+        "type": "itemEOF",
+        "startPosition": 15,
+        "line": 7
+    }
+]

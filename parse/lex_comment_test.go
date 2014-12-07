@@ -102,3 +102,11 @@ func TestLexCommentWithBlockquoteGood0300(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentInDefinitionGood0400(t *testing.T) {
+	// A definition list with a comment in the definition
+	testPath := testPathFromName("04.00-comment-in-definition")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
