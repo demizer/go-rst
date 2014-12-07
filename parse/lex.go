@@ -540,11 +540,7 @@ func lexStart(l *lexer) stateFn {
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
 			if isComment(l) {
-				if !l.isEndOfLine() {
-					l.next()
-				}
-				l.emit(itemCommentMark)
-				return lexStart
+				return lexComment
 			} else if isEnumList(l) {
 				return lexEnumList
 			} else if isSection(l) {
@@ -710,6 +706,21 @@ func lexParagraph(l *lexer) stateFn {
 		}
 	}
 	l.nextLine()
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexComment(l *lexer) stateFn {
+	log.Debugln("START")
+	for l.mark == '.' {
+		l.next()
+	}
+	l.emit(itemCommentMark)
+	if l.mark != utf8.RuneError {
+		l.next()
+		lexSpace(l)
+		lexParagraph(l)
+	}
 	log.Debugln("END")
 	return lexStart
 }
