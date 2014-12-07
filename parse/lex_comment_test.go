@@ -86,3 +86,11 @@ func TestLexCommentNotCitationGood0005(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentNotSubstitutionDefinitionGood0005(t *testing.T) {
+	// A comment block with substitution definition syntax in the text
+	testPath := testPathFromName("00.06-comment-not-subs-def")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

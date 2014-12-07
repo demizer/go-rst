@@ -98,3 +98,12 @@ func TestParseCommentNotCitationGood0005(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentNotSubstitutionDefinitionGood0005(t *testing.T) {
+	// A comment block with substitution definition syntax in the text
+	testPath := testPathFromName("00.06-comment-not-subs-def")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
