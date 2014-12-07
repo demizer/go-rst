@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 2,
+        "length": 3
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "[comment] Not a citation.",
+        "startPosition": 4,
+        "line": 2,
+        "length": 25
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "The extra newline before the comment text prevents",
+        "startPosition": 1,
+        "line": 4,
+        "length": 50
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "the parser from recognizing a citation.",
+        "startPosition": 1,
+        "line": 5,
+        "length": 39
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "startPosition": 40,
+        "line": 5
+    }
+]

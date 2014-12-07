@@ -78,3 +78,11 @@ func TestLexNewlineAfterCommentMarkGood0004(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentNotCitationGood0005(t *testing.T) {
+	// A comment block with citation syntax in the text
+	testPath := testPathFromName("00.05-comment-not-citation")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

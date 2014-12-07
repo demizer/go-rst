@@ -89,3 +89,12 @@ func TestParseNewlineAfterCommentMarkGood0004(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentNotCitationGood0005(t *testing.T) {
+	// A comment block with citation syntax in the text
+	testPath := testPathFromName("00.05-comment-not-citation")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
