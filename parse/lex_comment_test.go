@@ -94,3 +94,11 @@ func TestLexCommentNotSubstitutionDefinitionGood0005(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentWithBlockquoteGood0300(t *testing.T) {
+	// An empty comment followed by a blockquote
+	testPath := testPathFromName("03.00-empty-comment-with-blockquote")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
