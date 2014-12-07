@@ -49,22 +49,22 @@ func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
 type itemElement int
 
 const (
-	itemEOF              itemElement = iota
-	itemError                        // 1
-	itemTitle                        // 2
-	itemSectionAdornment             // 3
-	itemParagraph                    // 4
-	itemBlockQuote                   // 5
-	itemLiteralBlock                 // 6
-	itemSystemMessage                // 7
-	itemSpace                        // 8
-	itemBlankLine                    // 9
-	itemTransition                   // 10
-	itemCommentMark                  // 11
-	itemEnumListAffix                // 12
-	itemEnumListArabic               // 13
-	itemInlineEmphasis               // 14
-	itemInlineLiteral                // 15
+	itemEOF itemElement = iota
+	itemError
+	itemTitle
+	itemSectionAdornment
+	itemParagraph
+	itemBlockQuote
+	itemLiteralBlock
+	itemSystemMessage
+	itemSpace
+	itemBlankLine
+	itemTransition
+	itemCommentMark
+	itemEnumListAffix
+	itemEnumListArabic
+	itemInlineEmphasis
+	itemInlineLiteral
 )
 
 var elements = [...]string{

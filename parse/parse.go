@@ -16,7 +16,7 @@ import (
 )
 
 // Used for debugging only
-var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
+var spd = spew.ConfigState{Indent: "\t"} //, DisableMethods: true}
 
 // systemMessageLevel implements four levels for messages and is used in
 // conjunction with the parserMessage type.
