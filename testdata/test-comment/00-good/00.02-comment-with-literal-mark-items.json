@@ -1,0 +1,47 @@
+
+[
+    {
+        "id": 1,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "A comment::",
+        "startPosition": 4,
+        "line": 1,
+        "length": 11
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "A paragraph.",
+        "line": 3,
+        "length": 12
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 3
+    }
+]

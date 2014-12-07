@@ -54,3 +54,11 @@ func TestLexTwoCommentsNoBlankLineBad0001(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentWithLiteralMarkGood0002(t *testing.T) {
+	// A comment ending with a literal block mark.
+	testPath := testPathFromName("00.02-comment-with-literal-mark")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

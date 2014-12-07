@@ -62,3 +62,12 @@ func TestParseTwoCommentsNoBlankLineBad0001(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentWithLiteralMarkGood0002(t *testing.T) {
+	// A comment ending with a literal block mark.
+	testPath := testPathFromName("00.02-comment-with-literal-mark")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
