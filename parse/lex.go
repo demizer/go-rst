@@ -54,7 +54,7 @@ const (
 	itemTitle                        // 2
 	itemSectionAdornment             // 3
 	itemParagraph                    // 4
-	itemBlockquote                   // 5
+	itemBlockQuote                   // 5
 	itemLiteralBlock                 // 6
 	itemSystemMessage                // 7
 	itemSpace                        // 8
@@ -73,7 +73,7 @@ var elements = [...]string{
 	"itemTitle",
 	"itemSectionAdornment",
 	"itemParagraph",
-	"itemBlockquote",
+	"itemBlockQuote",
 	"itemLiteralBlock",
 	"itemSystemMessage",
 	"itemSpace",
@@ -324,6 +324,17 @@ func (l *lexer) isLastLine() bool {
 	return len(l.lines) == l.lineNumber()
 }
 
+func (l *lexer) lastLineIsBlankLine() bool {
+	if l.line == 0 {
+		return false
+	}
+	m, _ := utf8.DecodeRuneInString(l.lines[l.line-1])
+	if m == utf8.RuneError {
+		return true
+	}
+	return false
+}
+
 func (l *lexer) isEndOfLine() bool {
 	return len(l.lines[l.line]) == l.index
 }
@@ -477,6 +488,15 @@ exit:
 	return
 }
 
+func isBlockquote(l *lexer) bool {
+	log.Debugln("START")
+	if l.lastLineIsBlankLine() && l.lastItem.Type == itemSpace {
+		return true
+	}
+	log.Debugln("END")
+	return false
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are
 // called depending on the input. When this function returns nil, the lexing is
 // finished and run() will exit.
@@ -505,6 +525,8 @@ func lexStart(l *lexer) stateFn {
 				return lexTransition
 			} else if isSpace(l.mark) {
 				return lexSpace
+			} else if isBlockquote(l) {
+				return lexBlockquote
 			} else {
 				return lexParagraph
 			}
@@ -656,6 +678,20 @@ func lexParagraph(l *lexer) stateFn {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
 			l.emit(itemParagraph)
+			break
+		}
+	}
+	l.nextLine()
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexBlockquote(l *lexer) stateFn {
+	log.Debugln("START")
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemBlockQuote)
 			break
 		}
 	}

@@ -362,14 +362,22 @@ func (t *Tree) parse(tree *Tree) {
 				continue
 			}
 		case itemSpace:
-			n = t.indent(token)
+			if t.peekBack(1).Type == itemBlankLine {
+				n = t.blockquote(token)
+			}
 			if n == nil {
+				// The calculated indent level was the same as
+				// the current indent level. Future items will
+				// be added to the NodeList using the
+				// nodeTarget below.
 				continue
 			}
 		case itemTitle, itemBlankLine:
 			// itemTitle is consumed when evaluating
 			// itemSectionAdornment
 			continue
+		case itemBlockQuote:
+			n = t.blockquote(token)
 		}
 
 		t.nodeTarget.append(n.(Node))
@@ -622,6 +630,13 @@ func (t *Tree) section(i *item) Node {
 
 func (t *Tree) comment(i *item) Node {
 	var n Node
+	if t.peek(1).Type == itemBlankLine {
+		log.Debugln("Found empty comment block")
+		return newComment(&item{
+			StartPosition: i.StartPosition,
+			Line:          i.Line,
+		}, &t.id)
+	}
 	nSpace := t.peek(1)
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it
@@ -808,23 +823,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	return s
 }
 
-// indent parses IndentNode's returned from the lexer and returns a
-// BlockQuoteNode.
-func (t *Tree) indent(i *item) Node {
-	level := i.Length / t.indentWidth
-	if t.peekBack(1).Type == itemBlankLine {
-		if t.indentLevel == level {
-			// Append to the current blockquote NodeList
-			return nil
-		}
-		t.indentLevel = level
-		return newBlockQuote(
-			&item{Type: itemBlockquote, Line: i.Line},
-			level, &t.id)
-	}
-	return nil
-}
-
 var lastEnum *EnumListNode
 
 func (t *Tree) enumList(i *item) (n Node) {
@@ -872,6 +870,68 @@ func (t *Tree) paragraph(i *item) Node {
 	npItem.Length = len(npItem.Text)
 
 	sec := newParagraph(npItem, &t.id)
+
+	log.Debugln("END")
+	return sec
+}
+
+func (t *Tree) blockquote(i *item) Node {
+	log.Debugln("START")
+	log.Debugln("Got type", i.Type)
+
+	s := i
+	if i.Type != itemSpace {
+		// If i is not itemSpace, it is a itemBlockQuote. In that case
+		// we will get the last itemSpace token found to use for the
+		// indent level calculation.
+		s = t.peekBackTo(itemSpace)
+	}
+	level := s.Length / t.indentWidth
+
+	log.Debugf("t.indentLevel == level :: %d == %d\n", t.indentLevel, level)
+	if t.indentLevel == level {
+		if i.Type != itemBlockQuote {
+			// A calculated level is already being used so a new
+			// blockquote is not necessary. Returning nil here will
+			// force the parser to append future items to the
+			// nodeTarget.
+			log.Debugf("t.indentLevel == level :: %d == %d\n",
+				t.indentLevel, level)
+			return nil
+		}
+		i.Type = itemParagraph
+		return newParagraph(i, &t.id)
+	}
+
+	if i.Type == itemSpace {
+		if t.peek(1).Type != itemBlockQuote {
+			t.indentLevel = level
+			return newBlockQuote(
+				&item{Type: itemBlockQuote, Line: i.Line},
+				level, &t.id)
+		}
+		log.Debugln("Next item is itemBlockQuote")
+		return nil
+	}
+
+	levelChanged := false
+	if t.indentLevel != level {
+		log.Debugln("Setting indentLevel to ", level)
+		t.indentLevel = level
+		levelChanged = true
+	}
+
+	var sec Node
+	n := *i
+
+	if levelChanged {
+		// FIXME: Code a token ring insertion API
+		t.token[zed+1] = &n
+		t.indentLevel = level
+		sec = newBlockQuote(&item{Type: itemBlockQuote, Line: i.Line,
+			StartPosition: i.StartPosition, Length: i.Length}, level,
+			&t.id)
+	}
 
 	log.Debugln("END")
 	return sec
