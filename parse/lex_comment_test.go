@@ -70,3 +70,11 @@ func TestLexNewlineAfterCommentMarkGood0003(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexNewlineAfterCommentMarkGood0004(t *testing.T) {
+	// A comment block with a newline after the comment mark
+	testPath := testPathFromName("00.04-newline-after-comment-mark")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

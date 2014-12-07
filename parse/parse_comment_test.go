@@ -80,3 +80,12 @@ func TestParseNewlineAfterCommentMarkGood0003(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseNewlineAfterCommentMarkGood0004(t *testing.T) {
+	// A comment block with a newline after the comment mark
+	testPath := testPathFromName("00.04-newline-after-comment-mark")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
