@@ -284,6 +284,11 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	// Compare pNode against eNodes
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
+		if pName == "" {
+			log.SetFlags(log.LstdFlags)
+			log.Criticalf("pName == nil; Check struct tags!\n", pName)
+			os.Exit(1)
+		}
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
 		switch pName {
@@ -386,6 +391,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			}
 		case "indent", "overLine", "title", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+		case "term", "definition":
+			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "nodeList":
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
@@ -430,7 +437,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		default:
-			c.t.Errorf("%s is not implemented!", c.eFieldName)
+			c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
 		}
 	}
 

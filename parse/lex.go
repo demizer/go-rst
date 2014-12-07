@@ -65,6 +65,7 @@ const (
 	itemEnumListArabic
 	itemInlineEmphasis
 	itemInlineLiteral
+	itemDefinitionTerm
 )
 
 var elements = [...]string{
@@ -84,6 +85,7 @@ var elements = [...]string{
 	"itemEnumListArabic",
 	"itemInlineEmphasis",
 	"itemInlineLiteral",
+	"itemDefinitionTerm",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -488,6 +490,32 @@ exit:
 	return
 }
 
+func isDefinitionTerm(l *lexer) bool {
+	log.Debugln("START")
+	// Definition terms are preceded by a blankline
+	if l.line != 0 && !l.lastLineIsBlankLine() {
+		log.Debugln("Not definition, lastLineIsBlankLine == false")
+		return false
+	}
+	nL := l.peekNextLine()
+	sCount := 0
+	for {
+		if sCount < len(nL) && isSpace(rune(nL[sCount])) {
+			sCount++
+		} else {
+			break
+		}
+	}
+	log.Debugln("sCount =", sCount)
+	if sCount >= 2 {
+		log.Debugln("Found definition term!")
+		return true
+	}
+	log.Debugln("Did not find definition term.")
+	log.Debugln("END")
+	return false
+}
+
 func isBlockquote(l *lexer) bool {
 	log.Debugln("START")
 	if l.lastLineIsBlankLine() && l.lastItem.Type == itemSpace {
@@ -527,6 +555,8 @@ func lexStart(l *lexer) stateFn {
 				return lexSpace
 			} else if isBlockquote(l) {
 				return lexBlockquote
+			} else if isDefinitionTerm(l) {
+				return lexDefinitionTerm
 			} else {
 				return lexParagraph
 			}
@@ -559,10 +589,13 @@ func lexStart(l *lexer) stateFn {
 // itemSpace token.
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("START")
+	log.Debugln("l.mark ==", l.mark)
 	for isSpace(l.mark) {
+		log.Debugln("isSpace ==", isSpace(l.mark))
 		if r := l.peek(); isSpace(r) {
 			l.next()
 		} else {
+			log.Debugln("Next mark is not space!")
 			l.next()
 			break
 		}
@@ -691,6 +724,30 @@ func lexBlockquote(l *lexer) stateFn {
 		}
 	}
 	l.nextLine()
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexDefinitionTerm(l *lexer) stateFn {
+	log.Debugln("START")
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemDefinitionTerm)
+			break
+		}
+	}
+	l.nextLine()
+	l.next()
+	log.Debugf("Current line: %q\n", l.currentLine())
+	lexSpace(l)
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemParagraph)
+			break
+		}
+	}
 	log.Debugln("END")
 	return lexStart
 }
