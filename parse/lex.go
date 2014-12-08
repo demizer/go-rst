@@ -66,6 +66,7 @@ const (
 	itemInlineEmphasis
 	itemInlineLiteral
 	itemDefinitionTerm
+	itemBullet
 )
 
 var elements = [...]string{
@@ -86,6 +87,7 @@ var elements = [...]string{
 	"itemInlineEmphasis",
 	"itemInlineLiteral",
 	"itemDefinitionTerm",
+	"itemBullet",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -104,6 +106,8 @@ func (t *itemElement) UnmarshalJSON(data []byte) error {
 var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')',
 	'*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[',
 	'\\', ']', '^', '_', '`', '{', '|', '}', '~'}
+
+var bullets = []rune{'*', '+', '-', '•', '‣', '⁃'}
 
 // Emitted by the lexer on End of File
 const eof rune = -1
@@ -134,8 +138,10 @@ type lexer struct {
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
-	id               int  // Unique ID for each item emitted
-	mark             rune // The current lexed rune
+	id               int    // Unique ID for each item emitted
+	mark             rune   // The current lexed rune
+	indentLevel      int    // For tracking indentation with indentable items
+	indentWidth      string // For tracking indent width
 }
 
 func newLexer(name, input string) *lexer {
@@ -490,6 +496,30 @@ exit:
 	return
 }
 
+func isBulletList(l *lexer) bool {
+	log.Debugln("START")
+	var hazBullet bool
+	var ret bool
+	log.Debugf("l.mark == %s\n", string(l.mark))
+	for _, x := range bullets {
+		if l.mark == x {
+			log.Debugln("hazBullet == true")
+			hazBullet = true
+		}
+	}
+	if !hazBullet {
+		log.Debugln("NO BULLET FOR YOU!")
+		goto exit
+	}
+	if l.peek() == ' ' {
+		log.Debugln("I haz bullet!")
+		ret = true
+	}
+exit:
+	log.Debugln("END")
+	return ret
+}
+
 func isDefinitionTerm(l *lexer) bool {
 	log.Debugln("START")
 	// Definition terms are preceded by a blankline
@@ -517,11 +547,12 @@ func isDefinitionTerm(l *lexer) bool {
 }
 
 func isBlockquote(l *lexer) bool {
-	log.Debugln("START")
-	if l.lastLineIsBlankLine() && l.lastItem.Type == itemSpace {
+	if !l.lastLineIsBlankLine() || l.lastItem.Type != itemSpace {
+		return false
+	}
+	if l.index != len(l.indentWidth) {
 		return true
 	}
-	log.Debugln("END")
 	return false
 }
 
@@ -536,11 +567,16 @@ func lexStart(l *lexer) stateFn {
 		// l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 &&
 			!l.isEndOfLine() {
-
+			if l.index == 0 && l.mark != ' ' {
+				l.indentLevel = 0
+				l.indentWidth = ""
+			}
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
+			} else if isBulletList(l) {
+				return lexBullet
 			} else if isEnumList(l) {
 				return lexEnumList
 			} else if isSection(l) {
@@ -759,6 +795,18 @@ func lexDefinitionTerm(l *lexer) stateFn {
 			break
 		}
 	}
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexBullet(l *lexer) stateFn {
+	log.Debugln("START")
+	l.next()
+	l.emit(itemBullet)
+	lexSpace(l)
+	l.indentWidth += l.lastItem.Text + " "
+	lexParagraph(l)
+	l.indentLevel++
 	log.Debugln("END")
 	return lexStart
 }

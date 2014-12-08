@@ -36,6 +36,9 @@ const (
 	// NodeComment is a comment element
 	NodeComment
 
+	NodeBulletList
+	NodeBulletListItem
+
 	// NodeEnumList is an enumerated list
 	NodeEnumList
 
@@ -55,6 +58,8 @@ var nodeTypes = [...]string{
 	"NodeTransition",
 	"NodeTitle",
 	"NodeComment",
+	"NodeBulletList",
+	"NodeBulletListItem",
 	"NodeEnumList",
 	"NodeDefinitionList",
 	"NodeDefinitionListItem",
@@ -144,7 +149,7 @@ type SectionNode struct {
 	UnderLine *AdornmentNode `json:"underLine"`
 
 	// NodeList contains
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 // NodeType returns the Node type of the SectionNode.
@@ -270,7 +275,7 @@ type BlockQuoteNode struct {
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
@@ -308,7 +313,7 @@ type SystemMessageNode struct {
 	// containing the first list item as a NodeParagraph which contains the
 	// message, and a NodeLiteralBlock which contains the input data
 	// causing the systemMessage to be generated.
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 func newSystemMessage(i *item, m parserMessage, id *int) *SystemMessageNode {
@@ -408,6 +413,50 @@ func newComment(i *item, id *int) *CommentNode {
 // NodeType returns the Node type of the CommentNode.
 func (t CommentNode) NodeType() NodeType {
 	return t.Type
+}
+
+type BulletListNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Bullet   string   `json:"bullet"`
+	Line     `json:"line"`
+	NodeList `json:"nodeList"`
+}
+
+// newEnumListNode initializes a new EnumListNode.
+func newBulletListNode(i *item, id *int) *BulletListNode {
+	*id++
+	return &BulletListNode{
+		ID:     ID(*id),
+		Type:   NodeBulletList,
+		Bullet: i.Text,
+		Line:   i.Line,
+	}
+}
+
+func (b BulletListNode) NodeType() NodeType {
+	return b.Type
+}
+
+type BulletListItemNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Line     `json:"line"`
+	NodeList `json:"nodeList"`
+}
+
+// newEnumListNode initializes a new EnumListNode.
+func newBulletListItemNode(i *item, id *int) *BulletListItemNode {
+	*id++
+	return &BulletListItemNode{
+		ID:   ID(*id),
+		Type: NodeBulletListItem,
+		Line: i.Line,
+	}
+}
+
+func (b BulletListItemNode) NodeType() NodeType {
+	return b.Type
 }
 
 type EnumListNode struct {
@@ -526,7 +575,7 @@ type DefinitionNode struct {
 	ID       `json:"id"`
 	Type     NodeType `json:"type"`
 	Line     `json:"line"`
-	NodeList `json:"nodeList"`
+	NodeList  `json:"nodeList"`
 }
 
 func (d DefinitionNode) NodeType() NodeType {

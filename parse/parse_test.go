@@ -428,6 +428,10 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != pFVal {
 				c.dError()
 			}
+		case "bullet":
+			if c.eFieldVal.(string) != c.pFieldVal.(string) {
+				c.dError()
+			}
 		case "enumType":
 			if c.eFieldVal != c.pFieldVal.(EnumListType).String() {
 				c.dError()

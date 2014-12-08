@@ -314,6 +314,7 @@ type Tree struct {
 	indentWidth        int
 	indentLevel        int
 	openDefinitionList *NodeList
+	openBulletList     *NodeList
 }
 
 // startParse initializes the parser, using the lexer.
@@ -397,6 +398,18 @@ func (t *Tree) parse(tree *Tree) {
 			n = t.definitionListItem(token)
 			t.nodeTarget = t.openDefinitionList
 			t.indentLevel++
+		case itemBullet:
+			// FIXME: This will get fixed when I am ready for full
+			// bullet list support.
+			var nn Node
+			if t.openBulletList == nil && t.indentLevel == 0 {
+				nn = t.bulletList(token)
+				t.nodeTarget.append(nn.(Node))
+				t.openBulletList = &nn.(*BulletListNode).NodeList
+			}
+			n = t.bulletListItem(token)
+			t.nodeTarget = t.openBulletList
+			t.indentLevel++
 		}
 
 		t.nodeTarget.append(n.(Node))
@@ -409,6 +422,8 @@ func (t *Tree) parse(tree *Tree) {
 			t.nodeTarget = &n.(*BlockQuoteNode).NodeList
 		case NodeDefinitionListItem:
 			t.nodeTarget = &n.(*DefinitionListItemNode).Definition.NodeList
+		case NodeBulletListItem:
+			t.nodeTarget = &n.(*BulletListItemNode).NodeList
 		}
 	}
 	log.Debugln("END")
@@ -961,6 +976,13 @@ func (t *Tree) definitionList(i *item) Node {
 func (t *Tree) definitionListItem(i *item) Node {
 	// TODO: Check for proper indentation!
 	def := t.peek(2)
-	sec := newDefinitionListItem(i, def, &t.id)
-	return sec
+	return newDefinitionListItem(i, def, &t.id)
+}
+
+func (t *Tree) bulletList(i *item) Node {
+	return newBulletListNode(i, &t.id)
+}
+
+func (t *Tree) bulletListItem(i *item) Node {
+	return newBulletListItemNode(i, &t.id)
 }
