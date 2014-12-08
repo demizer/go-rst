@@ -118,3 +118,11 @@ func TestLexCommentAfterDefinitionGood0401(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentBetweenBulletParagrapsGood0500(t *testing.T) {
+	// A comment between two bullet paragraphs
+	testPath := testPathFromName("05.00-comment-between-bullet-paragraphs")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

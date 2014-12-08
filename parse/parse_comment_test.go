@@ -134,3 +134,12 @@ func TestParseCommentAfterDefinitionGood0401(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentBetweenBulletParagraphsGood0500(t *testing.T) {
+	// A comment between two paragraphs in a bullet list item
+	testPath := testPathFromName("05.00-comment-between-bullet-paragraphs")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
