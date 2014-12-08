@@ -110,3 +110,11 @@ func TestLexCommentInDefinitionGood0400(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentAfterDefinitionGood0401(t *testing.T) {
+	// A comment after a definition
+	testPath := testPathFromName("04.01-comment-after-definition")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}

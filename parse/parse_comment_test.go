@@ -125,3 +125,12 @@ func TestParseCommentInDefinitionGood0400(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentAfterDefinitionGood0401(t *testing.T) {
+	// A comment after a definition
+	testPath := testPathFromName("04.01-comment-after-definition")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
