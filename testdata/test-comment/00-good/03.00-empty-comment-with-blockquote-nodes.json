@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1,
+        "type": "NodeComment",
+        "text": "Next is an empty comment, which serves to end this comment and\nprevents the following block quote being swallowed up.",
+        "startPosition": 4,
+        "line": 1,
+        "length": 117
+    },
+    {
+        "id": 2,
+        "type": "NodeComment",
+        "startPosition": 1,
+        "line": 4
+    },
+    {
+        "id": 3,
+        "type": "NodeBlockQuote",
+        "startPosition": 5,
+        "level": 1,
+        "line": 6,
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeParagraph",
+                "text": "A block quote.",
+                "startPosition": 5,
+                "line": 6,
+                "length": 14
+            }
+        ]
+    }
+]

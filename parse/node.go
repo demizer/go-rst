@@ -36,8 +36,16 @@ const (
 	// NodeComment is a comment element
 	NodeComment
 
+	NodeBulletList
+	NodeBulletListItem
+
 	// NodeEnumList is an enumerated list
 	NodeEnumList
+
+	NodeDefinitionList
+	NodeDefinitionListItem
+	NodeDefinitionTerm
+	NodeDefinition
 )
 
 var nodeTypes = [...]string{
@@ -50,7 +58,13 @@ var nodeTypes = [...]string{
 	"NodeTransition",
 	"NodeTitle",
 	"NodeComment",
+	"NodeBulletList",
+	"NodeBulletListItem",
 	"NodeEnumList",
+	"NodeDefinitionList",
+	"NodeDefinitionListItem",
+	"NodeDefinitionTerm",
+	"NodeDefinition",
 }
 
 // Type returns the type of a node element.
@@ -135,7 +149,7 @@ type SectionNode struct {
 	UnderLine *AdornmentNode `json:"underLine"`
 
 	// NodeList contains
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 // NodeType returns the Node type of the SectionNode.
@@ -261,7 +275,7 @@ type BlockQuoteNode struct {
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
@@ -299,7 +313,7 @@ type SystemMessageNode struct {
 	// containing the first list item as a NodeParagraph which contains the
 	// message, and a NodeLiteralBlock which contains the input data
 	// causing the systemMessage to be generated.
-	NodeList NodeList `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 func newSystemMessage(i *item, m parserMessage, id *int) *SystemMessageNode {
@@ -389,6 +403,7 @@ func newComment(i *item, id *int) *CommentNode {
 	return &CommentNode{
 		ID:            ID(*id),
 		Type:          NodeComment,
+		Text:          i.Text,
 		Length:        i.Length,
 		StartPosition: i.StartPosition,
 		Line:          i.Line,
@@ -398,6 +413,50 @@ func newComment(i *item, id *int) *CommentNode {
 // NodeType returns the Node type of the CommentNode.
 func (t CommentNode) NodeType() NodeType {
 	return t.Type
+}
+
+type BulletListNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Bullet   string   `json:"bullet"`
+	Line     `json:"line"`
+	NodeList `json:"nodeList"`
+}
+
+// newEnumListNode initializes a new EnumListNode.
+func newBulletListNode(i *item, id *int) *BulletListNode {
+	*id++
+	return &BulletListNode{
+		ID:     ID(*id),
+		Type:   NodeBulletList,
+		Bullet: i.Text,
+		Line:   i.Line,
+	}
+}
+
+func (b BulletListNode) NodeType() NodeType {
+	return b.Type
+}
+
+type BulletListItemNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Line     `json:"line"`
+	NodeList `json:"nodeList"`
+}
+
+// newEnumListNode initializes a new EnumListNode.
+func newBulletListItemNode(i *item, id *int) *BulletListItemNode {
+	*id++
+	return &BulletListItemNode{
+		ID:   ID(*id),
+		Type: NodeBulletListItem,
+		Line: i.Line,
+	}
+}
+
+func (b BulletListItemNode) NodeType() NodeType {
+	return b.Type
 }
 
 type EnumListNode struct {
@@ -438,4 +497,87 @@ func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
 // NodeType returns the Node type of the EnumListNode.
 func (e EnumListNode) NodeType() NodeType {
 	return e.Type
+}
+
+type DefinitionListNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Line     `json:"line"`
+	NodeList `json:"nodeList"`
+}
+
+func newDefinitionList(i *item, id *int) *DefinitionListNode {
+	*id++
+	return &DefinitionListNode{
+		ID:   ID(*id),
+		Type: NodeDefinitionList,
+		Line: i.Line,
+	}
+}
+
+func (d DefinitionListNode) NodeType() NodeType {
+	return d.Type
+}
+
+type DefinitionListItemNode struct {
+	ID         `json:"id"`
+	Type       NodeType `json:"type"`
+	Line       `json:"line"`
+	Term       *DefinitionTermNode `json:"term"`
+	Definition *DefinitionNode     `json:"definition"`
+}
+
+func newDefinitionListItem(defTerm *item, def *item, id *int) *DefinitionListItemNode {
+	*id++
+	n := &DefinitionListItemNode{
+		ID:   ID(*id),
+		Type: NodeDefinitionListItem,
+		Line: defTerm.Line,
+	}
+	*id++
+	ndt := &DefinitionTermNode{
+		ID:            ID(*id),
+		Type:          NodeDefinitionTerm,
+		Text:          defTerm.Text,
+		Length:        defTerm.Length,
+		StartPosition: defTerm.StartPosition,
+		Line:          defTerm.Line,
+	}
+	*id++
+	nd := &DefinitionNode{
+		ID:   ID(*id),
+		Type: NodeDefinition,
+		Line: def.Line,
+	}
+	n.Term = ndt
+	n.Definition = nd
+	return n
+}
+
+func (d DefinitionListItemNode) NodeType() NodeType {
+	return d.Type
+}
+
+type DefinitionTermNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	StartPosition `json:"startPosition"`
+	Line          `json:"line"`
+}
+
+func (d DefinitionTermNode) NodeType() NodeType {
+	return d.Type
+}
+
+type DefinitionNode struct {
+	ID       `json:"id"`
+	Type     NodeType `json:"type"`
+	Line     `json:"line"`
+	NodeList  `json:"nodeList"`
+}
+
+func (d DefinitionNode) NodeType() NodeType {
+	return d.Type
 }

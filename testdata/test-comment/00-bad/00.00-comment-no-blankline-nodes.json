@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1,
+        "type": "NodeComment",
+        "text": "A comment.",
+        "startPosition": 4,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 2,
+        "type": "NodeSystemMessage",
+        "messageType": "warningExplicitMarkupWithUnIndent",
+        "severity": "WARNING",
+        "line": 2,
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeParagraph",
+                "text": "Explicit markup ends without a blank line; unexpected unindent.",
+                "length": 63
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "type": "NodeParagraph",
+        "text": "no blank line",
+        "startPosition": 1,
+        "line": 2,
+        "length": 13
+    },
+    {
+        "id": 5,
+        "type": "NodeParagraph",
+        "text": "A paragraph.",
+        "startPosition": 1,
+        "line": 4,
+        "length": 12
+    }
+]

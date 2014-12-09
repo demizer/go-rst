@@ -1,0 +1,120 @@
+[
+    {
+        "id": 1,
+        "type": "itemBullet",
+        "text": "+",
+        "startPosition": 1,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 2,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "bullet paragraph 1",
+        "startPosition": 3,
+        "line": 1,
+        "length": 18
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "bullet paragraph 2",
+        "startPosition": 3,
+        "line": 3,
+        "length": 18
+    },
+    {
+        "id": 7,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 9,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 3,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 5,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemParagraph",
+        "text": "comment between bullet paragraphs 2 and 3",
+        "startPosition": 6,
+        "line": 5,
+        "length": 41
+    },
+    {
+        "id": 12,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "id": 13,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 7,
+        "length": 2
+    },
+    {
+        "id": 14,
+        "type": "itemParagraph",
+        "text": "bullet paragraph 3",
+        "startPosition": 3,
+        "line": 7,
+        "length": 18
+    },
+    {
+        "id": 15,
+        "type": "itemEOF",
+        "startPosition": 21,
+        "line": 7
+    }
+]

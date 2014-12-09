@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "type": "NodeComment",
+        "text": "[comment] Not a citation.",
+        "startPosition": 4,
+        "line": 2,
+        "length": 25
+    },
+    {
+        "id": 2,
+        "type": "NodeParagraph",
+        "text": "The extra newline before the comment text prevents\nthe parser from recognizing a citation.",
+        "startPosition": 1,
+        "line": 4,
+        "length": 90
+    }
+]

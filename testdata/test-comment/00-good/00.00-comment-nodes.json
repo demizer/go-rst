@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "type": "NodeComment",
+        "text": "A comment.",
+        "startPosition": 4,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 2,
+        "type": "NodeParagraph",
+        "text": "Paragraph.",
+        "line": 3,
+        "length": 10
+    }
+]

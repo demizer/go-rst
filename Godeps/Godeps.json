@@ -1,6 +1,9 @@
 {
 	"ImportPath": "github.com/demizer/go-rst",
 	"GoVersion": "go1.3.3",
+	"Packages": [
+		"./..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "code.google.com/p/go.text/unicode/norm",
@@ -20,16 +23,18 @@
 			"Rev": "5376ad33ff7116636da3b30cb07105341d1fc5e2"
 		},
 		{
+			"ImportPath": "github.com/docopt/docopt-go",
+			"Comment": "0.6.1-1-gc5dac53",
+			"Rev": "c5dac536301992c0371c6115d998fb62944bfad3"
+		},
+		{
 			"ImportPath": "golang.org/x/text/transform",
 			"Comment": "null-106",
 			"Rev": "f230eca7a9431ddd0ee1c1174e676fcb944d1a40"
 		},
-        {
-            "ImportPath": "github.com/docopt/docopt-go",
-            "Rev": "c5dac536301992c0371c6115d998fb62944bfad3"
-        },
-        {
-            "ImportPath": "gopkg.in/yaml.v2"
-        }
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "eca94c41d994ae2215d455ce578ae6e2dc6ee516"
+		}
 	]
 }

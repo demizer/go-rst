@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 2,
+        "length": 3
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "A comment consisting of multiple lines",
+        "startPosition": 4,
+        "line": 2,
+        "length": 38
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 3,
+        "length": 3
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "starting on the line after the",
+        "startPosition": 4,
+        "line": 3,
+        "length": 30
+    },
+    {
+        "id": 6,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 4,
+        "length": 3
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "explicit markup start.",
+        "startPosition": 4,
+        "line": 4,
+        "length": 22
+    },
+    {
+        "id": 8,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemParagraph",
+        "text": "A paragraph.",
+        "startPosition": 1,
+        "line": 6,
+        "length": 12
+    },
+    {
+        "id": 10,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 6
+    }
+]

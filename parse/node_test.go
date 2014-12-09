@@ -45,3 +45,38 @@ func TestCommentNodeType(t *testing.T) {
 		t.Error("n.Type != NodeComment")
 	}
 }
+
+func TestDefinitionListNodeType(t *testing.T) {
+	n := &DefinitionListNode{Type: NodeDefinitionList}
+	if n.NodeType() != NodeDefinitionList {
+		t.Error("n.Type != NodeDefinitionList")
+	}
+}
+
+func TestDefinitionListItemNodeType(t *testing.T) {
+	n := &DefinitionListItemNode{Type: NodeDefinitionListItem}
+	if n.NodeType() != NodeDefinitionListItem {
+		t.Error("n.Type != NodeDefinitionListItem")
+	}
+}
+
+func TestDefinitionTermNodeType(t *testing.T) {
+	n := &DefinitionTermNode{Type: NodeDefinitionTerm}
+	if n.NodeType() != NodeDefinitionTerm {
+		t.Error("n.Type != NodeDefinitionTerm")
+	}
+}
+
+func TestDefinitionNodeType(t *testing.T) {
+	n := &DefinitionNode{Type: NodeDefinition}
+	if n.NodeType() != NodeDefinition {
+		t.Error("n.Type != NodeDefinition")
+	}
+}
+
+func TestBulletListType(t *testing.T) {
+	n := &BulletListNode{Type: NodeBulletList}
+	if n.NodeType() != NodeBulletList {
+		t.Error("n.Type != NodeBulletList")
+	}
+}

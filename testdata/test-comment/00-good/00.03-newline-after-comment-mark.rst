@@ -1,0 +1,5 @@
+..
+   comment::
+
+The extra newline before the comment text prevent
+the parser from recognizing a directive.

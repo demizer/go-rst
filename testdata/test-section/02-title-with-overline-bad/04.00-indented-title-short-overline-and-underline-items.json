@@ -74,7 +74,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemBlockQuote",
         "text": "Over & underline too short.",
         "startPosition": 5,
         "line": 7,

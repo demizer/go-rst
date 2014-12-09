@@ -1,6 +1,3 @@
 !*
 *.test
-todo.rst
 c.out
-_vendor/
-Godeps/_workspace/

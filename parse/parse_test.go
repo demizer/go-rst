@@ -259,6 +259,9 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 // nodes.json file and the actual parser NodeList output. Returns an error if
 // a mismatch is found.
 func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
+	if eNodes == nil || pNode == nil {
+		panic("arguments must not be nil!")
+	}
 	// If the value is missing in eNodes and nil in pNode than we can
 	// exclude it.
 	eFields := eNodes.(map[string]interface{})
@@ -281,6 +284,11 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	// Compare pNode against eNodes
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
+		if pName == "" {
+			log.SetFlags(log.LstdFlags)
+			log.Criticalf("pName == nil; Check struct tags!\n", pName)
+			os.Exit(1)
+		}
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
 		switch pName {
@@ -319,10 +327,14 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 			if eFields[pName] == nil && pVal.(string) == "" {
 				continue
 			}
+		case "length":
+			if eFields[pName] == nil && pVal == 0 {
+				continue
+			}
 		}
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
-			tmp := "Expect Node ID=%.0f missing field %q\n\t   " +
+			tmp := "Node ID=%.0f missing field %q\n\t   " +
 				"Parser got: %q == %v\n"
 			return fmt.Errorf(tmp, eNode["id"], pName,
 				pName, pVal)
@@ -335,6 +347,9 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 // to the parser output comparing the two objects field by field. eNodes is
 // unmarshaled json input and pNode is the parser node to check.
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
+	if eNodes == nil || pNode == nil {
+		panic("arguments cannot be nil!")
+	}
 	c.id = int(eNodes.(map[string]interface{})["id"].(float64))
 	if err := c.checkMatchingFields(eNodes, pNode); err != nil {
 		c.t.Error(err)
@@ -376,18 +391,26 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			}
 		case "indent", "overLine", "title", "underLine":
 			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+		case "term", "definition":
+			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 		case "nodeList":
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
+				log.SetFlags(log.LstdFlags)
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
+				// DO NOT REMOVE SPD CALLS
+				log.Criticalf("\n%d Parse NodeList Nodes\n\n", len2)
 				spd.Dump(pNode)
+				log.Criticalf("\n%d Expected NodeList Nodes\n\n", len1)
 				spd.Dump(eNodes)
+				fmt.Println()
+				// DO NOT REMOVE SPD CALLS
 				eTmp := "Expected NodeList values (len=%d) " +
 					"and parsed NodeList values (len=%d) " +
 					"do not match beginning at item ID: %d"
-				c.t.Fatal(eTmp, len1, len2, id)
+				c.t.Fatalf(eTmp, len1, len2, id)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
 				// Store and reset the parser value, otherwise
@@ -405,6 +428,10 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != pFVal {
 				c.dError()
 			}
+		case "bullet":
+			if c.eFieldVal.(string) != c.pFieldVal.(string) {
+				c.dError()
+			}
 		case "enumType":
 			if c.eFieldVal != c.pFieldVal.(EnumListType).String() {
 				c.dError()
@@ -414,7 +441,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		default:
-			c.t.Errorf("%s is not implemented!", c.eFieldName)
+			c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
 		}
 	}
 
@@ -426,6 +453,18 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	testPath string) {
 
 	state := &checkNode{t: t, testPath: testPath}
+
+	if len(pNodes) != len(eTree) {
+		log.SetFlags(log.LstdFlags)
+		log.Criticalf("\n%d Parse Nodes\n\n", len(pNodes))
+		spd.Dump(pNodes)
+		log.Criticalf("\n%d Expected Nodes\n\n", len(eTree))
+		spd.Dump(eTree)
+		fmt.Println("\n")
+		log.Criticalln("The number of parsed nodes does not match expected nodes!")
+		os.Exit(1)
+	}
+
 	for eNum, eNode := range eTree {
 		state.checkFields(eNode, pNodes[eNum])
 	}

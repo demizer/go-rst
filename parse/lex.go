@@ -49,22 +49,24 @@ func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
 type itemElement int
 
 const (
-	itemEOF              itemElement = iota
-	itemError                        // 1
-	itemTitle                        // 2
-	itemSectionAdornment             // 3
-	itemParagraph                    // 4
-	itemBlockquote                   // 5
-	itemLiteralBlock                 // 6
-	itemSystemMessage                // 7
-	itemSpace                        // 8
-	itemBlankLine                    // 9
-	itemTransition                   // 10
-	itemComment                      // 11
-	itemEnumListAffix                // 12
-	itemEnumListArabic               // 13
-	itemInlineEmphasis               // 14
-	itemInlineLiteral                // 15
+	itemEOF itemElement = iota
+	itemError
+	itemTitle
+	itemSectionAdornment
+	itemParagraph
+	itemBlockQuote
+	itemLiteralBlock
+	itemSystemMessage
+	itemSpace
+	itemBlankLine
+	itemTransition
+	itemCommentMark
+	itemEnumListAffix
+	itemEnumListArabic
+	itemInlineEmphasis
+	itemInlineLiteral
+	itemDefinitionTerm
+	itemBullet
 )
 
 var elements = [...]string{
@@ -73,17 +75,19 @@ var elements = [...]string{
 	"itemTitle",
 	"itemSectionAdornment",
 	"itemParagraph",
-	"itemBlockquote",
+	"itemBlockQuote",
 	"itemLiteralBlock",
 	"itemSystemMessage",
 	"itemSpace",
 	"itemBlankLine",
 	"itemTransition",
-	"itemComment",
+	"itemCommentMark",
 	"itemEnumListAffix",
 	"itemEnumListArabic",
 	"itemInlineEmphasis",
 	"itemInlineLiteral",
+	"itemDefinitionTerm",
+	"itemBullet",
 }
 
 // String implements the Stringer interface for printing itemElement types.
@@ -102,6 +106,8 @@ func (t *itemElement) UnmarshalJSON(data []byte) error {
 var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')',
 	'*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[',
 	'\\', ']', '^', '_', '`', '{', '|', '}', '~'}
+
+var bullets = []rune{'*', '+', '-', '•', '‣', '⁃'}
 
 // Emitted by the lexer on End of File
 const eof rune = -1
@@ -132,8 +138,10 @@ type lexer struct {
 	items            chan item // The channel items are emitted to
 	lastItem         *item     // The last item emitted to the channel
 	lastItemPosition StartPosition
-	id               int  // Unique ID for each item emitted
-	mark             rune // The current lexed rune
+	id               int    // Unique ID for each item emitted
+	mark             rune   // The current lexed rune
+	indentLevel      int    // For tracking indentation with indentable items
+	indentWidth      string // For tracking indent width
 }
 
 func newLexer(name, input string) *lexer {
@@ -324,6 +332,17 @@ func (l *lexer) isLastLine() bool {
 	return len(l.lines) == l.lineNumber()
 }
 
+func (l *lexer) lastLineIsBlankLine() bool {
+	if l.line == 0 {
+		return false
+	}
+	m, _ := utf8.DecodeRuneInString(l.lines[l.line-1])
+	if m == utf8.RuneError {
+		return true
+	}
+	return false
+}
+
 func (l *lexer) isEndOfLine() bool {
 	return len(l.lines[l.line]) == l.index
 }
@@ -434,25 +453,23 @@ func isTransition(l *lexer) bool {
 	return false
 }
 
-func isComment(l *lexer) (ret bool) {
+func isComment(l *lexer) bool {
 	log.Debugln("START")
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
-		return
+		return false
 	}
 	if nMark := l.peek(); l.mark == '.' && nMark == '.' {
 		l.next()
 		nMark2 := l.peek()
 		if isSpace(nMark2) || nMark2 == utf8.RuneError {
-			ret = true
 			log.Debugln("Found comment!")
+			return true
 		}
 		l.backup(1)
 	}
-	if !ret {
-		log.Debugln("Comment not found!")
-	}
+	log.Debugln("Comment not found!")
 	log.Debugln("END")
-	return
+	return false
 }
 
 func isEnumList(l *lexer) (ret bool) {
@@ -479,6 +496,66 @@ exit:
 	return
 }
 
+func isBulletList(l *lexer) bool {
+	log.Debugln("START")
+	var hazBullet bool
+	var ret bool
+	log.Debugf("l.mark == %s\n", string(l.mark))
+	for _, x := range bullets {
+		if l.mark == x {
+			log.Debugln("hazBullet == true")
+			hazBullet = true
+		}
+	}
+	if !hazBullet {
+		log.Debugln("NO BULLET FOR YOU!")
+		goto exit
+	}
+	if l.peek() == ' ' {
+		log.Debugln("I haz bullet!")
+		ret = true
+	}
+exit:
+	log.Debugln("END")
+	return ret
+}
+
+func isDefinitionTerm(l *lexer) bool {
+	log.Debugln("START")
+	// Definition terms are preceded by a blankline
+	if l.line != 0 && !l.lastLineIsBlankLine() {
+		log.Debugln("Not definition, lastLineIsBlankLine == false")
+		return false
+	}
+	nL := l.peekNextLine()
+	sCount := 0
+	for {
+		if sCount < len(nL) && isSpace(rune(nL[sCount])) {
+			sCount++
+		} else {
+			break
+		}
+	}
+	log.Debugln("sCount =", sCount)
+	if sCount >= 2 {
+		log.Debugln("Found definition term!")
+		return true
+	}
+	log.Debugln("Did not find definition term.")
+	log.Debugln("END")
+	return false
+}
+
+func isBlockquote(l *lexer) bool {
+	if !l.lastLineIsBlankLine() || l.lastItem.Type != itemSpace {
+		return false
+	}
+	if l.index != len(l.indentWidth) {
+		return true
+	}
+	return false
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are
 // called depending on the input. When this function returns nil, the lexing is
 // finished and run() will exit.
@@ -490,11 +567,16 @@ func lexStart(l *lexer) stateFn {
 		// l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 &&
 			!l.isEndOfLine() {
-
+			if l.index == 0 && l.mark != ' ' {
+				l.indentLevel = 0
+				l.indentWidth = ""
+			}
 			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
 				l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
+			} else if isBulletList(l) {
+				return lexBullet
 			} else if isEnumList(l) {
 				return lexEnumList
 			} else if isSection(l) {
@@ -503,18 +585,17 @@ func lexStart(l *lexer) stateFn {
 				return lexTransition
 			} else if isSpace(l.mark) {
 				return lexSpace
+			} else if isBlockquote(l) {
+				return lexBlockquote
+			} else if isDefinitionTerm(l) {
+				return lexDefinitionTerm
 			} else {
 				return lexParagraph
 			}
 
 		} else if l.isEndOfLine() {
 			log.Debugln("isEndOfLine == true")
-			if l.index > l.start {
-				l.emit(itemParagraph)
-				if l.mark == utf8.RuneError && l.isLastLine() {
-					break
-				}
-			} else if l.start == l.index {
+			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
 					log.Debugln("Found blank line")
 					l.emit(itemBlankLine)
@@ -540,10 +621,13 @@ func lexStart(l *lexer) stateFn {
 // itemSpace token.
 func lexSpace(l *lexer) stateFn {
 	log.Debugln("START")
+	log.Debugln("l.mark ==", l.mark)
 	for isSpace(l.mark) {
+		log.Debugln("isSpace ==", isSpace(l.mark))
 		if r := l.peek(); isSpace(r) {
 			l.next()
 		} else {
+			log.Debugln("Next mark is not space!")
 			l.next()
 			break
 		}
@@ -628,14 +712,6 @@ func lexTransition(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexComment(l *lexer) stateFn {
-	log.Debugln("START")
-	l.emit(itemComment)
-	l.nextLine()
-	log.Debugln("END")
-	return lexStart
-}
-
 func lexEnumList(l *lexer) stateFn {
 	log.Debugln("START")
 	if isArabic(l.mark) {
@@ -666,6 +742,71 @@ func lexParagraph(l *lexer) stateFn {
 		}
 	}
 	l.nextLine()
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexComment(l *lexer) stateFn {
+	log.Debugln("START")
+	for l.mark == '.' {
+		l.next()
+	}
+	l.emit(itemCommentMark)
+	if l.mark != utf8.RuneError {
+		l.next()
+		lexSpace(l)
+		lexParagraph(l)
+	}
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexBlockquote(l *lexer) stateFn {
+	log.Debugln("START")
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemBlockQuote)
+			break
+		}
+	}
+	l.nextLine()
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexDefinitionTerm(l *lexer) stateFn {
+	log.Debugln("START")
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemDefinitionTerm)
+			break
+		}
+	}
+	l.nextLine()
+	l.next()
+	log.Debugf("Current line: %q\n", l.currentLine())
+	lexSpace(l)
+	for {
+		l.next()
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			l.emit(itemParagraph)
+			break
+		}
+	}
+	log.Debugln("END")
+	return lexStart
+}
+
+func lexBullet(l *lexer) stateFn {
+	log.Debugln("START")
+	l.next()
+	l.emit(itemBullet)
+	lexSpace(l)
+	l.indentWidth += l.lastItem.Text + " "
+	lexParagraph(l)
+	l.indentLevel++
 	log.Debugln("END")
 	return lexStart
 }
