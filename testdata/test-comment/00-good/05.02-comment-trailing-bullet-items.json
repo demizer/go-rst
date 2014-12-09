@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "type": "itemBullet",
+        "text": "+",
+        "startPosition": 1,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 2,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "bullet paragraph 1",
+        "startPosition": 3,
+        "line": 1,
+        "length": 18
+    },
+    {
+        "id": 4,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "  ",
+        "startPosition": 1,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemCommentMark",
+        "text": "..",
+        "startPosition": 3,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 5,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "trailing comment",
+        "startPosition": 6,
+        "line": 3,
+        "length": 16
+    },
+    {
+        "id": 9,
+        "type": "itemEOF",
+        "startPosition": 22,
+        "line": 3
+    }
+]

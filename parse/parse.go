@@ -677,7 +677,8 @@ func (t *Tree) comment(i *item) Node {
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it
 		// to the NodeList before the systemMessage.
-		log.Debugln("Found warningExplicitMarkupWithUnIndent")
+		log.Debugln("Missing space after comment mark! " +
+			"(warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
 		return t.systemMessage(warningExplicitMarkupWithUnIndent)
@@ -698,8 +699,8 @@ func (t *Tree) comment(i *item) Node {
 				}
 			}
 			nPara.Length = len(nPara.Text)
-		} else if t.peek(1).Type != itemBlankLine &&
-			t.peek(1).Type != itemCommentMark {
+		} else if z := t.peek(1).Type; z != itemBlankLine &&
+			z != itemCommentMark && z != itemEOF {
 			// A valid comment contains a blank line after the
 			// comment block
 			log.Debugln("Found warningExplicitMarkupWithUnIndent")

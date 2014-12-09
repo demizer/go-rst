@@ -1,0 +1,3 @@
++ bullet paragraph 1
+
+  .. trailing comment

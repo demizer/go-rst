@@ -152,3 +152,12 @@ func TestParseCommentBetweenBulletsGood0501(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentTrailingBulletGood0502(t *testing.T) {
+	// A comment trailing a bullet list item
+	testPath := testPathFromName("05.02-comment-trailing-bullet")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

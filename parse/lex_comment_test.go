@@ -134,3 +134,11 @@ func TestLexCommentBetweenBulletsGood0501(t *testing.T) {
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
+
+func TestLexCommentTrailingBulletGood0502(t *testing.T) {
+	// A comment trailing a bullet list item
+	testPath := testPathFromName("05.02-comment-trailing-bullet")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
