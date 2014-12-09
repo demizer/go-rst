@@ -73,3 +73,10 @@ func TestDefinitionNodeType(t *testing.T) {
 		t.Error("n.Type != NodeDefinition")
 	}
 }
+
+func TestBulletListType(t *testing.T) {
+	n := &BulletListNode{Type: NodeBulletList}
+	if n.NodeType() != NodeBulletList {
+		t.Error("n.Type != NodeBulletList")
+	}
+}
