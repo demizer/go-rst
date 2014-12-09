@@ -143,3 +143,12 @@ func TestParseCommentBetweenBulletParagraphsGood0500(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func TestParseCommentBetweenBulletsGood0501(t *testing.T) {
+	// A comment between two ferns... I mean bullets.
+	testPath := testPathFromName("05.01-comment-between-bullets")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
