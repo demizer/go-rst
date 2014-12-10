@@ -26,7 +26,7 @@
         - item: indented-explicit-markup-blocks
           done: no
         - item: indented-bullet-list-paragraph
-          done: no
+          done: yes
         - item: indented-footnote-paragraph
           done: no
         - item: indented-line-after-field-list-marker
@@ -137,7 +137,7 @@
       done: no
       sub-items:
         - item: basic-unordered-bullet-list
-          progress: todo
+          done: no
         - item: bullet-list-item-body-text-is-relatively-left-aligned
           done: no
         - item: bullet-list-with-blankline-and-left-aligned-body-element
@@ -195,9 +195,9 @@
         - item: definition-term-inline-markup
           done: no
         - item: indented-definition-block
-          done: no
+          done: yes
         - item: indented-definition-block-with-body-elements
-          done: no
+          done: yes
         - item: definition-classifier
           done: no
         - item: definition-multiple-classifiers
@@ -333,7 +333,7 @@
         - item: block-quote
           done: yes
         - item: block-quote-with-body-elements
-          done: no
+          done: yes
         - item: block-quote-with-inline-markup
           done: no
         - item: block-quote-with-attribution
@@ -498,7 +498,7 @@
             - item: case-sensitive-matching
               done: no
         - item: comments
-          done: no
+          done: yes
 - item: implicit-hyperlink-targets
   done: no
   sub-items:
@@ -557,7 +557,7 @@
         - item: unescaped-back-slash-disables-markup
           done: no
     - item: recognition-order
-      progress: todo
+      done: no
     - item: character-level-inline-markup
       done: no
     - item: emphasis
