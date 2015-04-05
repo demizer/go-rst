@@ -326,18 +326,15 @@ func (t *Tree) startParse(lex *lexer) {
 // returned on success or failure. Users of the Parse package should use the
 // Top level Parse function.
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
-	log.Debugln("START")
 	t.startParse(lex(t.Name, text))
 	t.text = text
 	t.parse(treeSet)
-	log.Debugln("END")
 	return t
 }
 
 // parse is where items are retrieved from the parser and dispatched according
 // to the itemElement type.
 func (t *Tree) parse(tree *Tree) {
-	log.Debugln("START")
 
 	t.nodeTarget = &t.Nodes
 
@@ -426,7 +423,6 @@ func (t *Tree) parse(tree *Tree) {
 			t.nodeTarget = &n.(*BulletListItemNode).NodeList
 		}
 	}
-	log.Debugln("END")
 }
 
 // backup shifts the token buffer right one position.
@@ -527,7 +523,6 @@ func (t *Tree) clearTokens(begin, end int) {
 // returned from the parser. If there are errors parsing these elements, than a
 // systemMessage is generated and added to Tree.Nodes.
 func (t *Tree) section(i *item) Node {
-	log.Debugln("START")
 	var overAdorn, indent, title, underAdorn *item
 
 	pBack := t.peekBack(1)
@@ -660,7 +655,6 @@ func (t *Tree) section(i *item) Node {
 		m := warningShortUnderline
 		sec.NodeList = append(sec.NodeList, t.systemMessage(m))
 	}
-	log.Debugln("END")
 	return sec
 }
 
@@ -882,7 +876,6 @@ func (t *Tree) enumList(i *item) (n Node) {
 }
 
 func (t *Tree) paragraph(i *item) Node {
-	log.Debugln("START")
 
 	npItem := &item{
 		Text:          i.Text,
@@ -906,14 +899,11 @@ func (t *Tree) paragraph(i *item) Node {
 
 	sec := newParagraph(npItem, &t.id)
 
-	log.Debugln("END")
 	return sec
 }
 
 func (t *Tree) blockquote(i *item) Node {
-	log.Debugln("START")
 	log.Debugln("Got type", i.Type)
-
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case
@@ -959,7 +949,6 @@ func (t *Tree) blockquote(i *item) Node {
 			&t.id)
 	}
 
-	log.Debugln("END")
 	return sec
 }
 

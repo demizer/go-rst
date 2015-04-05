@@ -184,11 +184,9 @@ func lex(name, input string) *lexer {
 
 // run is the engine of the lexing process.
 func (l *lexer) run() {
-	log.Debugln("Start")
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
-	log.Debugln("End")
 }
 
 // emit passes an item back to the client.
@@ -369,7 +367,6 @@ func isArabic(r rune) bool {
 // returns false if there is a blank line between the positions or if there is
 // a rune mismatch between positions.
 func isSection(l *lexer) (found bool) {
-	log.Debugln("START")
 	var nLine string
 
 	checkLine := func(input string, skipSpace bool) (a bool) {
@@ -416,7 +413,6 @@ exit:
 	if !found {
 		log.Debugln("Section adornment not found")
 	}
-	log.Debugln("END")
 	return
 }
 
@@ -431,7 +427,6 @@ func isSectionAdornment(r rune) bool {
 }
 
 func isTransition(l *lexer) bool {
-	log.Debugln("START")
 	if r := l.peek(); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
 		log.Debugln("Transition not found")
 		return false
@@ -449,12 +444,10 @@ func isTransition(l *lexer) bool {
 		// return true
 	}
 	log.Debugln("Transition not found")
-	log.Debugln("END")
 	return false
 }
 
 func isComment(l *lexer) bool {
-	log.Debugln("START")
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
 		return false
 	}
@@ -468,12 +461,10 @@ func isComment(l *lexer) bool {
 		l.backup(1)
 	}
 	log.Debugln("Comment not found!")
-	log.Debugln("END")
 	return false
 }
 
 func isEnumList(l *lexer) (ret bool) {
-	log.Debugln("START")
 	bCount := 0
 	if isSection(l) {
 		goto exit
@@ -492,12 +483,10 @@ func isEnumList(l *lexer) (ret bool) {
 	}
 exit:
 	l.backup(bCount)
-	log.Debugln("END")
 	return
 }
 
 func isBulletList(l *lexer) bool {
-	log.Debugln("START")
 	var hazBullet bool
 	var ret bool
 	log.Debugf("l.mark == %s\n", string(l.mark))
@@ -516,12 +505,10 @@ func isBulletList(l *lexer) bool {
 		ret = true
 	}
 exit:
-	log.Debugln("END")
 	return ret
 }
 
 func isDefinitionTerm(l *lexer) bool {
-	log.Debugln("START")
 	// Definition terms are preceded by a blankline
 	if l.line != 0 && !l.lastLineIsBlankLine() {
 		log.Debugln("Not definition, lastLineIsBlankLine == false")
@@ -542,7 +529,6 @@ func isDefinitionTerm(l *lexer) bool {
 		return true
 	}
 	log.Debugln("Did not find definition term.")
-	log.Debugln("END")
 	return false
 }
 
@@ -560,7 +546,6 @@ func isBlockquote(l *lexer) bool {
 // called depending on the input. When this function returns nil, the lexing is
 // finished and run() will exit.
 func lexStart(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width:
 		// %d, l.line: %d\n", l.mark, l.index, l.start, l.width,
@@ -613,14 +598,12 @@ func lexStart(l *lexer) stateFn {
 
 	l.emit(itemEOF)
 	close(l.items)
-	log.Debugln("END")
 	return nil
 }
 
 // lexSpace consumes space characters (space and tab) in the input and emits a
 // itemSpace token.
 func lexSpace(l *lexer) stateFn {
-	log.Debugln("START")
 	log.Debugln("l.mark ==", l.mark)
 	for isSpace(l.mark) {
 		log.Debugln("isSpace ==", isSpace(l.mark))
@@ -636,7 +619,6 @@ func lexSpace(l *lexer) stateFn {
 	if l.start < l.index {
 		l.emit(itemSpace)
 	}
-	log.Debugln("END")
 	return lexStart
 }
 
@@ -644,7 +626,6 @@ func lexSpace(l *lexer) stateFn {
 // input are section.  From here, the lexTitle() and lexSectionAdornment() are
 // called based on the input.
 func lexSection(l *lexer) stateFn {
-	log.Debugln("START")
 	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " +
 	// "l.line: %d\n", l.mark, l.index, l.start, l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
@@ -659,7 +640,6 @@ func lexSection(l *lexer) stateFn {
 	} else if unicode.IsPrint(l.mark) {
 		return lexTitle
 	}
-	log.Debugln("END")
 	return lexStart
 }
 
@@ -668,7 +648,6 @@ func lexSection(l *lexer) stateFn {
 // Spaces after the title (and before newline) are ignored. On completion
 // control is returned to lexSection.
 func lexTitle(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		l.next()
 		if l.isEndOfLine() {
@@ -676,7 +655,6 @@ func lexTitle(l *lexer) stateFn {
 			break
 		}
 	}
-	log.Debugln("END")
 	return lexSection
 }
 
@@ -684,7 +662,6 @@ func lexTitle(l *lexer) stateFn {
 // emits a itemSectionAdornment token. Control is returned to lexSection() on
 // completion.
 func lexSectionAdornment(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		if l.isEndOfLine() {
 			l.emit(itemSectionAdornment)
@@ -694,12 +671,10 @@ func lexSectionAdornment(l *lexer) stateFn {
 		}
 		l.next()
 	}
-	log.Debugln("END")
 	return lexSection
 }
 
 func lexTransition(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		if len(l.lines[l.line]) == l.index {
 			break
@@ -708,12 +683,10 @@ func lexTransition(l *lexer) stateFn {
 	}
 	l.emit(itemTransition)
 	l.nextLine()
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexEnumList(l *lexer) stateFn {
-	log.Debugln("START")
 	if isArabic(l.mark) {
 		for {
 			if nMark, _ := l.next(); !isArabic(nMark) {
@@ -728,12 +701,10 @@ func lexEnumList(l *lexer) stateFn {
 			}
 		}
 	}
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexParagraph(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
@@ -742,12 +713,10 @@ func lexParagraph(l *lexer) stateFn {
 		}
 	}
 	l.nextLine()
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexComment(l *lexer) stateFn {
-	log.Debugln("START")
 	for l.mark == '.' {
 		l.next()
 	}
@@ -757,12 +726,10 @@ func lexComment(l *lexer) stateFn {
 		lexSpace(l)
 		lexParagraph(l)
 	}
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexBlockquote(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
@@ -771,12 +738,10 @@ func lexBlockquote(l *lexer) stateFn {
 		}
 	}
 	l.nextLine()
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexDefinitionTerm(l *lexer) stateFn {
-	log.Debugln("START")
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
@@ -795,18 +760,15 @@ func lexDefinitionTerm(l *lexer) stateFn {
 			break
 		}
 	}
-	log.Debugln("END")
 	return lexStart
 }
 
 func lexBullet(l *lexer) stateFn {
-	log.Debugln("START")
 	l.next()
 	l.emit(itemBullet)
 	lexSpace(l)
 	l.indentWidth += l.lastItem.Text + " "
 	lexParagraph(l)
 	l.indentLevel++
-	log.Debugln("END")
 	return lexStart
 }
