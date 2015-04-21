@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <substitution_reference refname="substitution reference">
+            substitution reference

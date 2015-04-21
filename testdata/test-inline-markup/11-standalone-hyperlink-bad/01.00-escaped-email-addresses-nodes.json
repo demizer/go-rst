@@ -1,0 +1,3 @@
+<document source="test data">
+    <paragraph>
+        Escaped email addresses are not recognized: test@example.org

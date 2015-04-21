@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        Valid URLs with escaped markup characters:
+    <paragraph>
+        <reference refuri="http://example.com/*content*/whatever">
+            http://example.com/*content*/whatever
+    <paragraph>
+        <reference refuri="http://example.com/*content*/whatever">
+            http://example.com/*content*/whatever

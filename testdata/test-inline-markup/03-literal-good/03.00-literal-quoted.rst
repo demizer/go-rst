@@ -1,0 +1,3 @@
+quoted '``literal``', quoted "``literal``",
+quoted \u2018``literal``\u2019, quoted \u201c``literal``\u201d,
+quoted \xab``literal``\xbb

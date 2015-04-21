@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineEmphasis",
+        "text": "emphasized",
+        "startPosition": 2,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 2,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 1
+    }
+]

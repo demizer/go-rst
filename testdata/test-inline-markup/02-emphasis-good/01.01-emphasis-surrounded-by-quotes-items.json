@@ -1,0 +1,576 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Quotes around inline markup:",
+        "startPosition": 1,
+        "line": 1,
+        "length": 28
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "'",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 3,
+        "line": 3,
+        "length": 8
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "' \"",
+        "startPosition": 12,
+        "line": 3,
+        "length": 3
+    },
+    {
+        "id": 6,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 16,
+        "line": 3,
+        "length": 8
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "\" Straight,",
+        "startPosition": 25,
+        "line": 3,
+        "length": 11
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "‘",
+        "startPosition": 1,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 4,
+        "length": 8
+    },
+    {
+        "id": 10,
+        "type": "itemParagraph",
+        "text": "’ “",
+        "startPosition": 14,
+        "line": 4,
+        "length": 3
+    },
+    {
+        "id": 11,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 4,
+        "length": 8
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": "” English, ...,",
+        "startPosition": 31,
+        "line": 4,
+        "length": 15
+    },
+    {
+        "id": 13,
+        "type": "itemParagraph",
+        "text": "«\u202f",
+        "startPosition": 1,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 14,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 7,
+        "line": 5,
+        "length": 8
+    },
+    {
+        "id": 15,
+        "type": "itemParagraph",
+        "text": "\u202f» ‹\u202f",
+        "startPosition": 16,
+        "line": 5,
+        "length": 5
+    },
+    {
+        "id": 16,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 29,
+        "line": 5,
+        "length": 8
+    },
+    {
+        "id": 17,
+        "type": "itemParagraph",
+        "text": "\u202f› «\u00a0",
+        "startPosition": 38,
+        "line": 5,
+        "length": 5
+    },
+    {
+        "id": 18,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 50,
+        "line": 5,
+        "length": 8
+    },
+    {
+        "id": 19,
+        "type": "itemParagraph",
+        "text": "\u00a0» ‹\u00a0",
+        "startPosition": 59,
+        "line": 5,
+        "length": 5
+    },
+    {
+        "id": 20,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 70,
+        "line": 5,
+        "length": 8
+    },
+    {
+        "id": 21,
+        "type": "itemParagraph",
+        "text": "\u00a0›",
+        "startPosition": 79,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 22,
+        "type": "itemParagraph",
+        "text": "«\u2005",
+        "startPosition": 1,
+        "line": 6,
+        "length": 2
+    },
+    {
+        "id": 23,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 7,
+        "line": 6,
+        "length": 8
+    },
+    {
+        "id": 24,
+        "type": "itemParagraph",
+        "text": "\u2005» ‹\u2005",
+        "startPosition": 16,
+        "line": 6,
+        "length": 5
+    },
+    {
+        "id": 25,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 29,
+        "line": 6,
+        "length": 8
+    },
+    {
+        "id": 26,
+        "type": "itemParagraph",
+        "text": "\u2005› French,",
+        "startPosition": 38,
+        "line": 6,
+        "length": 10
+    },
+    {
+        "id": 27,
+        "type": "itemParagraph",
+        "text": "„",
+        "startPosition": 1,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 28,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 7,
+        "length": 8
+    },
+    {
+        "id": 29,
+        "type": "itemParagraph",
+        "text": "“ ‚",
+        "startPosition": 14,
+        "line": 7,
+        "length": 3
+    },
+    {
+        "id": 30,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 7,
+        "length": 8
+    },
+    {
+        "id": 31,
+        "type": "itemParagraph",
+        "text": "‘ »",
+        "startPosition": 31,
+        "line": 7,
+        "length": 3
+    },
+    {
+        "id": 32,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 38,
+        "line": 7,
+        "length": 8
+    },
+    {
+        "id": 33,
+        "type": "itemParagraph",
+        "text": "« ›",
+        "startPosition": 47,
+        "line": 7,
+        "length": 3
+    },
+    {
+        "id": 34,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 54,
+        "line": 7,
+        "length": 8
+    },
+    {
+        "id": 35,
+        "type": "itemParagraph",
+        "text": "‹ German, Czech, ...,",
+        "startPosition": 63,
+        "line": 7,
+        "length": 21
+    },
+    {
+        "id": 36,
+        "type": "itemParagraph",
+        "text": "„",
+        "startPosition": 1,
+        "line": 8,
+        "length": 1
+    },
+    {
+        "id": 37,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 8,
+        "length": 8
+    },
+    {
+        "id": 38,
+        "type": "itemParagraph",
+        "text": "” «",
+        "startPosition": 14,
+        "line": 8,
+        "length": 3
+    },
+    {
+        "id": 39,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 21,
+        "line": 8,
+        "length": 8
+    },
+    {
+        "id": 40,
+        "type": "itemParagraph",
+        "text": "» Romanian,",
+        "startPosition": 30,
+        "line": 8,
+        "length": 11
+    },
+    {
+        "id": 41,
+        "type": "itemParagraph",
+        "text": "“",
+        "startPosition": 1,
+        "line": 9,
+        "length": 1
+    },
+    {
+        "id": 42,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 9,
+        "length": 8
+    },
+    {
+        "id": 43,
+        "type": "itemParagraph",
+        "text": "„ ‘",
+        "startPosition": 14,
+        "line": 9,
+        "length": 3
+    },
+    {
+        "id": 44,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 9,
+        "length": 8
+    },
+    {
+        "id": 45,
+        "type": "itemParagraph",
+        "text": "‚ Greek,",
+        "startPosition": 31,
+        "line": 9,
+        "length": 8
+    },
+    {
+        "id": 46,
+        "type": "itemParagraph",
+        "text": "「",
+        "startPosition": 1,
+        "line": 10,
+        "length": 1
+    },
+    {
+        "id": 47,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 10,
+        "length": 8
+    },
+    {
+        "id": 48,
+        "type": "itemParagraph",
+        "text": "」 『",
+        "startPosition": 14,
+        "line": 10,
+        "length": 3
+    },
+    {
+        "id": 49,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 10,
+        "length": 8
+    },
+    {
+        "id": 50,
+        "type": "itemParagraph",
+        "text": "』traditional Chinese,",
+        "startPosition": 31,
+        "line": 10,
+        "length": 21
+    },
+    {
+        "id": 51,
+        "type": "itemParagraph",
+        "text": "”",
+        "startPosition": 1,
+        "line": 11,
+        "length": 1
+    },
+    {
+        "id": 52,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 11,
+        "length": 8
+    },
+    {
+        "id": 53,
+        "type": "itemParagraph",
+        "text": "” ’",
+        "startPosition": 14,
+        "line": 11,
+        "length": 3
+    },
+    {
+        "id": 54,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 11,
+        "length": 8
+    },
+    {
+        "id": 55,
+        "type": "itemParagraph",
+        "text": "’ »",
+        "startPosition": 31,
+        "line": 11,
+        "length": 3
+    },
+    {
+        "id": 56,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 38,
+        "line": 11,
+        "length": 8
+    },
+    {
+        "id": 57,
+        "type": "itemParagraph",
+        "text": "» ›",
+        "startPosition": 47,
+        "line": 11,
+        "length": 3
+    },
+    {
+        "id": 58,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 54,
+        "line": 11,
+        "length": 8
+    },
+    {
+        "id": 59,
+        "type": "itemParagraph",
+        "text": "› Swedish, Finnish,",
+        "startPosition": 63,
+        "line": 11,
+        "length": 19
+    },
+    {
+        "id": 60,
+        "type": "itemParagraph",
+        "text": "„",
+        "startPosition": 1,
+        "line": 12,
+        "length": 1
+    },
+    {
+        "id": 61,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 12,
+        "length": 8
+    },
+    {
+        "id": 62,
+        "type": "itemParagraph",
+        "text": "” ‚",
+        "startPosition": 14,
+        "line": 12,
+        "length": 3
+    },
+    {
+        "id": 63,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 22,
+        "line": 12,
+        "length": 8
+    },
+    {
+        "id": 64,
+        "type": "itemParagraph",
+        "text": "’ Polish,",
+        "startPosition": 31,
+        "line": 12,
+        "length": 9
+    },
+    {
+        "id": 65,
+        "type": "itemParagraph",
+        "text": "„",
+        "startPosition": 1,
+        "line": 13,
+        "length": 1
+    },
+    {
+        "id": 66,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 5,
+        "line": 13,
+        "length": 8
+    },
+    {
+        "id": 67,
+        "type": "itemParagraph",
+        "text": "” »",
+        "startPosition": 14,
+        "line": 13,
+        "length": 3
+    },
+    {
+        "id": 68,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 21,
+        "line": 13,
+        "length": 8
+    },
+    {
+        "id": 69,
+        "type": "itemParagraph",
+        "text": "« ’",
+        "startPosition": 30,
+        "line": 13,
+        "length": 3
+    },
+    {
+        "id": 70,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 37,
+        "line": 13,
+        "length": 8
+    },
+    {
+        "id": 71,
+        "type": "itemParagraph",
+        "text": "’ Hungarian,",
+        "startPosition": 46,
+        "line": 13,
+        "length": 12
+    },
+    {
+        "id": 72,
+        "type": "itemEOF",
+        "startPosition": 60,
+        "line": 13
+    }
+]

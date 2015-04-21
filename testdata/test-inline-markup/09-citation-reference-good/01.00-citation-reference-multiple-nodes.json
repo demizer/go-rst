@@ -1,0 +1,14 @@
+<document source="test data">
+    <paragraph>
+        <citation_reference ids="id1" refname="citation">
+            citation
+         and \n\
+        <citation_reference ids="id2" refname="cit-ation">
+            cit-ation
+         and \n\
+        <citation_reference ids="id3" refname="cit.ation">
+            cit.ation
+         and \n\
+        <citation_reference ids="id4" refname="cit1">
+            CIT1
+         but not [CIT 1]_

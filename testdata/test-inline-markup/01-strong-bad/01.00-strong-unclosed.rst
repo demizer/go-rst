@@ -1,0 +1,1 @@
+**strong without closing asterisks

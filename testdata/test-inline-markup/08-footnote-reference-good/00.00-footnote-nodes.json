@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <footnote_reference ids="id1" refname="1">
+            1

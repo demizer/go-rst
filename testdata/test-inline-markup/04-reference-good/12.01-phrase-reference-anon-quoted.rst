@@ -1,0 +1,4 @@
+`'anonymous reference'`__ with quotes, `"anonymous reference"`__ with quotes,
+`\u2018anonymous reference\u2019`__ with quotes,
+`\u201canonymous reference\u201d`__ with quotes,
+`\xabanonymous reference\xbb`__ with quotes

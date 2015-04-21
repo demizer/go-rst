@@ -1,0 +1,1 @@
+Adjacent footnote refs are not possible: [*]_[#label]_ [#]_[2]_ [1]_[*]_

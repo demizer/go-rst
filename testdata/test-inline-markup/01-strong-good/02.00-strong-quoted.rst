@@ -1,0 +1,3 @@
+quoted '**strong**', quoted "**strong**",
+quoted \u2018**strong**\u2019, quoted \u201c**strong**\u201d,
+quoted \xab**strong**\xbb

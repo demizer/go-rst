@@ -1,0 +1,1 @@
+*emphasis without closing asterisk

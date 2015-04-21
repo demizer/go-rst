@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        <reference refname="subref">
+            <substitution_reference refname="subref">
+                subref
+         and \n\
+        <reference anonymous="1">
+            <substitution_reference refname="subref">
+                subref

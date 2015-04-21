@@ -1,0 +1,8 @@
+<document source="test data">
+    <paragraph>
+        <problematic ids="id2" refid="id1">
+            _`
+        inline target without closing backquote
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline target start-string without end-string.

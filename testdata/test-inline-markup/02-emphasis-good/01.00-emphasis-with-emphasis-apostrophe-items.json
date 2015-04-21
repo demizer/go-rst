@@ -1,0 +1,88 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "l'",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 4,
+        "line": 1,
+        "length": 8
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": " with the ",
+        "startPosition": 13,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 24,
+        "line": 1,
+        "length": 8
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "' apostrophe.",
+        "startPosition": 33,
+        "line": 1,
+        "length": 13
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "l\u2019",
+        "startPosition": 1,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 6,
+        "line": 2,
+        "length": 8
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": " with the ",
+        "startPosition": 15,
+        "line": 2,
+        "length": 10
+    },
+    {
+        "id": 9,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis",
+        "startPosition": 26,
+        "line": 2,
+        "length": 8
+    },
+    {
+        "id": 10,
+        "type": "itemParagraph",
+        "text": "\u2019 apostrophe.",
+        "startPosition": 35,
+        "line": 2,
+        "length": 13
+    },
+    {
+        "id": 11,
+        "type": "itemEOF",
+        "startPosition": 50,
+        "line": 2
+    }
+]

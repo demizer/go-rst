@@ -1,0 +1,1 @@
+This paragraph contains an *emphasized* word.

@@ -1,0 +1,18 @@
+<document source="test data">
+    <paragraph>
+        <reference name="ref" refname="ref">
+            ref
+        , \n\
+        <reference name="r" refname="r">
+            r
+        , \n\
+        <reference name="r_e-f" refname="r_e-f">
+            r_e-f
+        , -
+        <reference name="ref" refname="ref">
+            ref
+        , and \n\
+        <reference anonymous="1" name="anonymousref">
+            anonymousref
+        ,
+        but not _ref_ or __attr__ or object.__attr__

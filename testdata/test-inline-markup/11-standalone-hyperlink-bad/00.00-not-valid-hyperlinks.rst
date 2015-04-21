@@ -1,0 +1,2 @@
+None of these are standalone hyperlinks (their "schemes"
+are not recognized): signal:noise, a:b.

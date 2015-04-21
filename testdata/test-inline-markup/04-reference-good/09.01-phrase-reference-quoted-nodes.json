@@ -1,0 +1,17 @@
+<document source="test data">
+    <paragraph>
+        <reference name="'phrase reference'" refname="'phrase reference'">
+            'phrase reference'
+         with quotes, \n\
+        <reference name=""phrase reference"" refname=""phrase reference"">
+            "phrase reference"
+         with quotes,
+        <reference name="\u2018phrase reference\u2019" refname="\u2018phrase reference\u2019">
+            \u2018phrase reference\u2019
+         with quotes,
+        <reference name="\u201cphrase reference\u201d" refname="\u201cphrase reference\u201d">
+            \u201cphrase reference\u201d
+         with quotes,
+        <reference name="\xabphrase reference\xbb" refname="\xabphrase reference\xbb">
+            \xabphrase reference\xbb
+         with quotes

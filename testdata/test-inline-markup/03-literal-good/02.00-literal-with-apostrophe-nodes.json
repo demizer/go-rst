@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        l'
+        <literal>
+            literal
+         and l\u2019
+        <literal>
+            literal
+         with apostrophe

@@ -1,0 +1,3 @@
+quoted '_`target1`', quoted "_`target2`",
+quoted \u2018_`target3`\u2019, quoted \u201c_`target4`\u201d,
+quoted \xab_`target5`\xbb

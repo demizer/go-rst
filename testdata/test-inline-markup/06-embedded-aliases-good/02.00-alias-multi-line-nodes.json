@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <reference name="embedded alias on next line" refname="alias">
+            embedded alias on next line

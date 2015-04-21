@@ -1,0 +1,2 @@
+text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
+\u00bf*punctuation*? \u00a1*examples*!\u00a0*\u00a0no-break-space\u00a0*.

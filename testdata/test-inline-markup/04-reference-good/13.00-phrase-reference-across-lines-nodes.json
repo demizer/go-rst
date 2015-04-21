@@ -1,0 +1,5 @@
+<document source="test data">
+    <paragraph>
+        <reference name="phrase reference across lines" refname="phrase reference across lines">
+            phrase reference
+            across lines

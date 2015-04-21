@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "This paragraph contains an ",
+        "startPosition": 1,
+        "line": 1,
+        "length": 27
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasis",
+        "text": "emphasized",
+        "startPosition": 29,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": " word.",
+        "startPosition": 40,
+        "line": 1,
+        "length": 6
+    },
+    {
+        "id": 4,
+        "type": "itemEOF",
+        "startPosition": 46,
+        "line": 1
+    }
+]

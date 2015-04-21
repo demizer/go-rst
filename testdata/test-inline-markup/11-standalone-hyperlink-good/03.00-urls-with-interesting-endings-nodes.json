@@ -1,0 +1,6 @@
+<document source="test data">
+    <paragraph>
+        Valid URLs with interesting endings:
+    <paragraph>
+        <reference refuri="http://example.org/ends-with-pluses++">
+            http://example.org/ends-with-pluses++

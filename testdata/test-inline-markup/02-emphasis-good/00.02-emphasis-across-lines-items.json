@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineEmphasis",
+        "text": "emphasized sentence",
+        "startPosition": 2,
+        "line": 1,
+        "length": 19
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 21,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemInlineEmphasis",
+        "text": "across lines",
+        "startPosition": 1,
+        "line": 2,
+        "length": 12
+    },
+    {
+        "id": 4,
+        "type": "itemEOF",
+        "startPosition": 14,
+        "line": 2
+    }
+]

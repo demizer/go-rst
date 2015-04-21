@@ -1,0 +1,3 @@
+_`'target1'` with quotes, _`"target2"` with quotes,
+_`\u2018target3\u2019` with quotes, _`\u201ctarget4\u201d` with quotes,
+_`\xabtarget5\xbb` with quotes

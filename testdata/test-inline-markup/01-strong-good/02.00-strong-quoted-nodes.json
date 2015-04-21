@@ -1,0 +1,20 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <strong>
+            strong
+        ', quoted "
+        <strong>
+            strong
+        ",
+        quoted \u2018
+        <strong>
+            strong
+        \u2019, quoted \u201c
+        <strong>
+            strong
+        \u201d,
+        quoted \xab
+        <strong>
+            strong
+        \xbb

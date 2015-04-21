@@ -1,0 +1,22 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference name="ref" refname="ref">
+            ref
+        ', quoted "
+        <reference name="ref" refname="ref">
+            ref
+        ",
+        quoted \u2018
+        <reference name="ref" refname="ref">
+            ref
+        \u2019, quoted \u201c
+        <reference name="ref" refname="ref">
+            ref
+        \u201d,
+        quoted \xab
+        <reference name="ref" refname="ref">
+            ref
+        \xbb,
+        but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
+        \u201cref ref\u201d_, or \xabref ref\xbb_

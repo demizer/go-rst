@@ -1,0 +1,3 @@
+`embedded alias with too much whitespace < alias_ >`__
+
+`embedded alias with no preceding whitespace<alias_>`__

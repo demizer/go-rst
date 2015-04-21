@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        Emphasized asterisk: \n\
+        <emphasis>
+            *
+    <paragraph>
+        Emphasized double asterisk: \n\
+        <emphasis>
+            **

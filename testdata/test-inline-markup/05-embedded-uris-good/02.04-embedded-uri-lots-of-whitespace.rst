@@ -1,0 +1,11 @@
+`embedded URI with too much whitespace < http://example.com/
+long/path /and  /whitespace >`__
+
+`embedded URI with too much whitespace at end <http://example.com/
+long/path /and  /whitespace >`__
+
+`embedded URI with no preceding whitespace<http://example.com>`__
+
+`escaped URI \<http://example.com>`__
+
+See `HTML Anchors: \<a>`_.

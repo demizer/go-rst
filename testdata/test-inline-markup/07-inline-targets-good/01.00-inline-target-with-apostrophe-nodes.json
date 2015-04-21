@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        l'
+        <target ids="target1" names="target1">
+            target1
+         and l\u2019
+        <target ids="target2" names="target2">
+            target2
+         with apostrophe

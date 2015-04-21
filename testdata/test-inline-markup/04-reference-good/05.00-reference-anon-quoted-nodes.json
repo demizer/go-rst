@@ -1,0 +1,22 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference anonymous="1" name="ref">
+            ref
+        ', quoted "
+        <reference anonymous="1" name="ref">
+            ref
+        ",
+        quoted \u2018
+        <reference anonymous="1" name="ref">
+            ref
+        \u2019, quoted \u201c
+        <reference anonymous="1" name="ref">
+            ref
+        \u201d,
+        quoted \xab
+        <reference anonymous="1" name="ref">
+            ref
+        \xbb,
+        but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
+        \u201cref ref\u201d__, or \xabref ref\xbb__

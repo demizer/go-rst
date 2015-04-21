@@ -1,0 +1,21 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        ', quoted "
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        ",
+        quoted \u2018
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \u2019,
+        quoted \u201c
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \u201d,
+        quoted \xab
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \xbb

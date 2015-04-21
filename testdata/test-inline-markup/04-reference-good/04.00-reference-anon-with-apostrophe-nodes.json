@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        l'
+        <reference anonymous="1" name="ref">
+            ref
+         and l\u2019
+        <reference anonymous="1" name="ref">
+            ref
+         with apostrophe

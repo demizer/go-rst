@@ -1,0 +1,1 @@
+l'**strong** and l\u2019**strong** with apostrophe

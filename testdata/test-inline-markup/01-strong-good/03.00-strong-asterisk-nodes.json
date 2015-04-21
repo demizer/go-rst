@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        Strong asterisk: \n\
+        <strong>
+            *
+    <paragraph>
+        Strong double asterisk: \n\
+        <strong>
+            **

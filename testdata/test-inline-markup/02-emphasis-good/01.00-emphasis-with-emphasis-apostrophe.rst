@@ -1,0 +1,2 @@
+l'*emphasis* with the *emphasis*' apostrophe.
+l\u2019*emphasis* with the *emphasis*\u2019 apostrophe.

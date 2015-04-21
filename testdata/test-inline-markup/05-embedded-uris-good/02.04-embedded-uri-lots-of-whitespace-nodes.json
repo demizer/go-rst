@@ -1,0 +1,20 @@
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="embedded URI with too much whitespace < http://example.com/ long/path /and /whitespace >">
+            embedded URI with too much whitespace < http://example.com/
+            long/path /and  /whitespace >
+    <paragraph>
+        <reference anonymous="1" name="embedded URI with too much whitespace at end <http://example.com/ long/path /and /whitespace >">
+            embedded URI with too much whitespace at end <http://example.com/
+            long/path /and  /whitespace >
+    <paragraph>
+        <reference anonymous="1" name="embedded URI with no preceding whitespace<http://example.com>">
+            embedded URI with no preceding whitespace<http://example.com>
+    <paragraph>
+        <reference anonymous="1" name="escaped URI <http://example.com>">
+            escaped URI <http://example.com>
+    <paragraph>
+        See \n\
+        <reference name="HTML Anchors: <a>" refname="html anchors: <a>">
+            HTML Anchors: <a>
+        .

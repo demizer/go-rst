@@ -1,0 +1,21 @@
+<document source="test data">
+    <paragraph>
+        "Quoted" markup start-string (matched openers & closers) -> no markup:
+    <paragraph>
+        '*' "*" (*) <*> [*] {*}
+        ⁅*⁆
+    <paragraph>
+        Some international quoting styles:
+        ‘*’ “*” English, ...,
+        „*“ ‚*‘ »*« ›*‹ German, Czech, ...,
+        „*” «*» Romanian,
+        “*„ ‘*‚ Greek,
+        「*」 『*』traditional Chinese,
+        ”*” ’*’ »*» ›*› Swedish, Finnish,
+        „*” ‚*’ Polish,
+        „*” »*« ’*’ Hungarian,
+    <paragraph>
+        But this is „
+        <emphasis>
+            ’ emphasized »
+        ‹.

@@ -1,0 +1,20 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <target ids="target1" names="target1">
+            target1
+        ', quoted "
+        <target ids="target2" names="target2">
+            target2
+        ",
+        quoted \u2018
+        <target ids="target3" names="target3">
+            target3
+        \u2019, quoted \u201c
+        <target ids="target4" names="target4">
+            target4
+        \u201d,
+        quoted \xab
+        <target ids="target5" names="target5">
+            target5
+        \xbb

@@ -1,0 +1,5 @@
+quoted 'ref__', quoted "ref__",
+quoted \u2018ref__\u2019, quoted \u201cref__\u201d,
+quoted \xabref__\xbb,
+but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
+\u201cref ref\u201d__, or \xabref ref\xbb__

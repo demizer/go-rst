@@ -1,0 +1,21 @@
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        ', quoted "
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        ",
+        quoted \u2018
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \u2019,
+        quoted \u201c
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \u201d,
+        quoted \xab
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \xbb

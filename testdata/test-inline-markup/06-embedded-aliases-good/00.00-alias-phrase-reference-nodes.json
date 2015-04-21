@@ -1,0 +1,5 @@
+<document source="test data">
+    <paragraph>
+        <reference name="phrase reference" refname="alias">
+            phrase reference
+        <target names="phrase\ reference" refname="alias">

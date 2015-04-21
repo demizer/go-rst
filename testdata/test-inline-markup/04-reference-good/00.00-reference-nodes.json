@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <reference name="ref" refname="ref">
+            ref

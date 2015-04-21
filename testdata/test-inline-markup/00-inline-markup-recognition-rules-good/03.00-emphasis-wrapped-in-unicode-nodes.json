@@ -1,0 +1,77 @@
+<document source="test data">
+    <paragraph>
+        text separated by
+        <emphasis>
+            newline
+        \n\
+        or \n\
+        <emphasis>
+            space
+         or one of
+        \xa0
+        <emphasis>
+            NO-BREAK SPACE
+        \xa0,
+        \u1680
+        <emphasis>
+            OGHAM SPACE MARK
+        \u1680,
+        \u2000
+        <emphasis>
+            EN QUAD
+        \u2000,
+        \u2001
+        <emphasis>
+            EM QUAD
+        \u2001,
+        \u2002
+        <emphasis>
+            EN SPACE
+        \u2002,
+        \u2003
+        <emphasis>
+            EM SPACE
+        \u2003,
+        \u2004
+        <emphasis>
+            THREE-PER-EM SPACE
+        \u2004,
+        \u2005
+        <emphasis>
+            FOUR-PER-EM SPACE
+        \u2005,
+        \u2006
+        <emphasis>
+            SIX-PER-EM SPACE
+        \u2006,
+        \u2007
+        <emphasis>
+            FIGURE SPACE
+        \u2007,
+        \u2008
+        <emphasis>
+            PUNCTUATION SPACE
+        \u2008,
+        \u2009
+        <emphasis>
+            THIN SPACE
+        \u2009,
+        \u200a
+        <emphasis>
+            HAIR SPACE
+        \u200a,
+        \u202f
+        <emphasis>
+            NARROW NO-BREAK SPACE
+        \u202f,
+        \u205f
+        <emphasis>
+            MEDIUM MATHEMATICAL SPACE
+        \u205f,
+        \u3000
+        <emphasis>
+            IDEOGRAPHIC SPACE
+        \u3000,
+    <paragraph>
+        <emphasis>
+            LINE SEPARATOR

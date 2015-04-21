@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <reference name="anonymous reference" refuri="http://example.com">
+            anonymous reference

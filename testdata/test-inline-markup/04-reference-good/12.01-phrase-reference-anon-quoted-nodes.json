@@ -1,0 +1,17 @@
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="'anonymous reference'">
+            'anonymous reference'
+         with quotes, \n\
+        <reference anonymous="1" name=""anonymous reference"">
+            "anonymous reference"
+         with quotes,
+        <reference anonymous="1" name="\u2018anonymous reference\u2019">
+            \u2018anonymous reference\u2019
+         with quotes,
+        <reference anonymous="1" name="\u201canonymous reference\u201d">
+            \u201canonymous reference\u201d
+         with quotes,
+        <reference anonymous="1" name="\xabanonymous reference\xbb">
+            \xabanonymous reference\xbb
+         with quotes

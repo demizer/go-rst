@@ -1,0 +1,9 @@
+<document source="test data">
+    <paragraph>
+        l'
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+         and l\u2019
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+         with apostrophe

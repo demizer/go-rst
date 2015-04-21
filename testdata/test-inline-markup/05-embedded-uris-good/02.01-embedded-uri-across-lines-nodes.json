@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        <reference name="embedded URI across lines" refuri="http://example.com/long/path">
+            embedded URI across lines

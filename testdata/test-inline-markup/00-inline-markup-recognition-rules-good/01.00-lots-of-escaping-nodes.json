@@ -1,0 +1,13 @@
+<document source="test data">
+    <paragraph>
+        Character-level m
+        <emphasis>
+            a
+        <strong>
+            r
+        <literal>
+            k
+        <title_reference>
+            u
+        p
+        with backslash-escaped whitespace, including newlines.

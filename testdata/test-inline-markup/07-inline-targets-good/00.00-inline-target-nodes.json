@@ -1,0 +1,17 @@
+<document source="test data">
+    <paragraph>
+        <target ids="target" names="target">
+            target
+    <paragraph>
+        Here is \n\
+        <target ids="another-target" names="another\ target">
+            another target
+         in some text. And \n\
+        <target ids="yet-another-target" names="yet\ another\ target">
+            yet
+            another target
+        , spanning lines.
+    <paragraph>
+        <target ids="here-is-a-target" names="here\ is\ a\ target">
+            Here is  a    TaRgeT
+         with case and spacial difficulties.

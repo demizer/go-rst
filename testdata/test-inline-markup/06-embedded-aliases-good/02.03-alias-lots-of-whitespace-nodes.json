@@ -1,0 +1,7 @@
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="embedded alias with too much whitespace < alias_ >">
+            embedded alias with too much whitespace < alias_ >
+    <paragraph>
+        <reference anonymous="1" name="embedded alias with no preceding whitespace<alias_>">
+            embedded alias with no preceding whitespace<alias_>

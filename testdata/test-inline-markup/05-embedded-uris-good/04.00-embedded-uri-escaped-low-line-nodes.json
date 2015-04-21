@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        Escape trailing low-line char in URIs:
+    <paragraph>
+        <reference name="reference_" refuri="reference_">
+            reference_
+        <target ids="reference" names="reference_" refuri="reference_">
+    <paragraph>
+        <reference name="anonymous_" refuri="anonymous_">
+            anonymous_

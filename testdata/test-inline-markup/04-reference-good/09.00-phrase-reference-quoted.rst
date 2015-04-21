@@ -1,0 +1,4 @@
+quoted '`phrase reference`_', quoted "`phrase reference`_",
+quoted \u2018`phrase reference`_\u2019,
+quoted \u201c`phrase reference`_\u201d,
+quoted \xab`phrase reference`_\xbb

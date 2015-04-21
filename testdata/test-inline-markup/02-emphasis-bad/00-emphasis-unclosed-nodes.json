@@ -1,0 +1,8 @@
+<document source="test data">
+    <paragraph>
+        <problematic ids="id2" refid="id1">
+            *
+        emphasis without closing asterisk
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline emphasis start-string without end-string.

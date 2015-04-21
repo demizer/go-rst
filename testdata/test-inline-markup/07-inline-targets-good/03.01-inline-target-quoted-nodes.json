@@ -1,0 +1,17 @@
+<document source="test data">
+    <paragraph>
+        <target ids="target1" names="'target1'">
+            'target1'
+         with quotes, \n\
+        <target ids="target2" names=""target2"">
+            "target2"
+         with quotes,
+        <target ids="target3" names="\u2018target3\u2019">
+            \u2018target3\u2019
+         with quotes, \n\
+        <target ids="target4" names="\u201ctarget4\u201d">
+            \u201ctarget4\u201d
+         with quotes,
+        <target ids="target5" names="\xabtarget5\xbb">
+            \xabtarget5\xbb
+         with quotes
