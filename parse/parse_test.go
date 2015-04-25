@@ -39,7 +39,7 @@ func SetDebug() {
 	}
 
 	log.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
-		"{{if .Prefix}}{{.Prefix}} {{end}}" +
+		"{{if .Seperator}}{{.Seperator}} {{end}}" +
 		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
 		"{{if .Id}}{{.Id}} {{end}}" +
 		"{{if .Indent}}{{.Indent}}{{end}}" +
@@ -48,7 +48,8 @@ func SetDebug() {
 		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
 		"{{if .Text}}{{.Text}}{{end}}")
 
-	log.SetFlags(log.LdebugTreeFlags)
+	// log.SetFlags(log.LdebugTreeTrimFlags)
+	log.SetFlags(log.LdebugFlags)
 }
 
 // Contains a single test with data loaded from test files in the testdata

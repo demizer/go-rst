@@ -46,6 +46,21 @@ func equal(t *testing.T, expectItems []item, items []item) {
 	var pFieldVal, eFieldVal reflect.Value
 	var pFieldValS reflect.StructField
 
+	lLen := len(items)
+	eLen := len(expectItems)
+	if lLen != eLen {
+		// DO NOT REMOVE SPD CALLS
+		log.Criticalf("\n%d Actual Lex items \n\n", lLen)
+		spd.Dump(items)
+		log.Criticalf("\n%d Expected Lex items\n\n", eLen)
+		spd.Dump(expectItems)
+		fmt.Println()
+		// DO NOT REMOVE SPD CALLS
+		eTmp := "Number of expected Lex item values (len=%d) " +
+			"and lexed item values (len=%d) do not match"
+		t.Fatalf(eTmp, lLen, eLen)
+	}
+
 	dError := func() {
 		var got, exp string
 		switch r := pFieldVal.Interface().(type) {
