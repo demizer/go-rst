@@ -1,5 +1,5 @@
 // go-rst - A reStructuredText parser for Go
-// 2014 (c) The go-rst Authors
+// 2014,2015 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
 // To enable debug output when testing, use "go test -debug"
@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strconv"
@@ -48,8 +49,31 @@ func SetDebug() {
 		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
 		"{{if .Text}}{{.Text}}{{end}}")
 
-	// log.SetFlags(log.LdebugTreeTrimFlags)
-	log.SetFlags(log.LdebugFlags)
+	log.SetFlags(log.LdebugFlags | log.Lindent | log.LshowIndent)
+}
+
+func diffLexerItems(parsedItems, expectedItems string) (string, error) {
+	f, err := ioutil.TempFile("/tmp", "go-rst-parseditems-")
+	if err != nil {
+		return "", err
+	}
+	_, err = f.WriteString(parsedItems)
+	if err != nil {
+		return "", err
+	}
+	f2, err := ioutil.TempFile("/tmp", "go-rst-expectitems-")
+	if err != nil {
+		return "", err
+	}
+	_, err = f2.WriteString(expectedItems)
+	if err != nil {
+		return "", err
+	}
+	o, err := exec.Command("diff", "-u", f.Name(), f2.Name()).Output()
+	if err != nil {
+		return string(o), err
+	}
+	return string(o), nil
 }
 
 // Contains a single test with data loaded from test files in the testdata
