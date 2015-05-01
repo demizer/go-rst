@@ -1,5 +1,5 @@
 // go-rst - A reStructuredText parser for Go
-// 2014 (c) The go-rst Authors
+// 2014,2015 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
 // Package parse is a reStructuredText parser implemented in Go!
@@ -326,7 +326,7 @@ func (t *Tree) startParse(lex *lexer) {
 // returned on success or failure. Users of the Parse package should use the
 // Top level Parse function.
 func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
-	t.startParse(lex(t.Name, text))
+	t.startParse(lex(t.Name, []byte(text)))
 	t.text = text
 	t.parse(treeSet)
 	return t
@@ -342,7 +342,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n interface{}
 
 		token := t.next(1)
-		log.Infof("\nParser got token: %#+v\n\n", token)
+		log.Infof("Parser got token: %#+v\n", token)
 
 		// FIXME: Hackish. Need to find a better way...
 		if t.indentLevel > 0 && token.StartPosition == 1 &&

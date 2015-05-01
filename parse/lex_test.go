@@ -1,5 +1,5 @@
 // go-rst - A reStructuredText parser for Go
-// 2014 (c) The go-rst Authors
+// 2014,2015 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
 package parse
@@ -25,7 +25,7 @@ func lexTest(t *testing.T, test *Test) []item {
 	log.WithFlagsf(log.LdebugFlags, log.Debugf,
 		"Test Input:\n-----------\n%s\n----------\n", test.data)
 	var items []item
-	l := lex(test.path, test.data)
+	l := lex(test.path, []byte(test.data))
 	for {
 		item := l.nextItem()
 		items = append(items, *item)
@@ -49,13 +49,11 @@ func equal(t *testing.T, expectItems []item, items []item) {
 	lLen := len(items)
 	eLen := len(expectItems)
 	if lLen != eLen {
-		// DO NOT REMOVE SPD CALLS
-		log.Criticalf("\n%d Actual Lex items \n\n", lLen)
-		spd.Dump(items)
-		log.Criticalf("\n%d Expected Lex items\n\n", eLen)
-		spd.Dump(expectItems)
-		fmt.Println()
-		// DO NOT REMOVE SPD CALLS
+		o, err := diffLexerItems(spd.Sdump(items), spd.Sdump(expectItems))
+		if err != nil {
+			fmt.Println(o)
+			fmt.Println(err)
+		}
 		eTmp := "Number of expected Lex item values (len=%d) " +
 			"and lexed item values (len=%d) do not match"
 		t.Fatalf(eTmp, lLen, eLen)
@@ -160,7 +158,7 @@ var lexerTests = []struct {
 
 func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		if lex.index != tt.nIndex {
 			t.Errorf("Test: %q\n\t   "+
 				"Got: lexer.index == %d, Expect: %d\n\n",
@@ -210,7 +208,7 @@ var lexerGotoLocationTests = []struct {
 
 func TestLexerGotoLocation(t *testing.T) {
 	for _, tt := range lexerGotoLocationTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		if lex.index != tt.lIndex {
 			t.Errorf("Test: %q\n\t    "+
@@ -306,7 +304,7 @@ var lexerBackupTests = []struct {
 
 func TestLexerBackup(t *testing.T) {
 	for _, tt := range lexerBackupTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		lex.backup(tt.pos)
 		if lex.index != tt.lIndex {
@@ -400,7 +398,7 @@ var lexerNextTests = []struct {
 
 func TestLexerNext(t *testing.T) {
 	for _, tt := range lexerNextTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
 		if lex.index != tt.nIndex {
@@ -484,7 +482,7 @@ var lexerPeekTests = []struct {
 
 func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		r := lex.peek()
 		w := utf8.RuneLen(r)
@@ -518,21 +516,21 @@ func TestLexerPeek(t *testing.T) {
 
 func TestLexerIsLastLine(t *testing.T) {
 	input := "==============\nTitle\n=============="
-	lex := newLexer("isLastLine test 1", input)
+	lex := newLexer("isLastLine test 1", []byte(input))
 	lex.gotoLocation(0, 1)
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\t    "+
 			"Got: isLastLine == %t, Expect: %t\n\n",
 			lex.name, lex.isLastLine(), false)
 	}
-	lex = newLexer("isLastLine test 2", input)
+	lex = newLexer("isLastLine test 2", []byte(input))
 	lex.gotoLocation(0, 2)
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\t    "+
 			"Got: isLastLine == %t, Expect: %t\n\n",
 			lex.name, lex.isLastLine(), false)
 	}
-	lex = newLexer("isLastLine test 3", input)
+	lex = newLexer("isLastLine test 3", []byte(input))
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
 		t.Errorf("Test: %q\n\t    "+
@@ -584,7 +582,7 @@ var peekNextLineTests = []struct {
 
 func TestLexerPeekNextLine(t *testing.T) {
 	for _, tt := range peekNextLineTests {
-		lex := newLexer(tt.name, tt.input)
+		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		out := lex.peekNextLine()
 		if lex.index != tt.lIndex {

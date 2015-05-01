@@ -1,5 +1,5 @@
 // go-rst - A reStructuredText parser for Go
-// 2014 (c) The go-rst Authors
+// 2014,2015 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
 package parse
@@ -107,6 +107,17 @@ var sectionAdornments = []rune{'!', '"', '#', '$', '\'', '%', '&', '(', ')',
 	'*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[',
 	'\\', ']', '^', '_', '`', '{', '|', '}', '~'}
 
+// Runes that must precede inline markup. Includes whitespace and unicode
+// categories Pd, Po, Pi, Pf, and Ps. These are checked for in isInlineMarkup()
+var inlineMarkupStartStringOpeners = []rune{'-', ':', '/', '\'', '"', '<', '(',
+	'[', '{'}
+
+// Runes that must immediately follow inline markup end strings (if not at the
+// end of a text block). Includes whitespace and unicode categories Pd, Po, Pi,
+// Pf, and Pe. These categories are checked for in isInlineMarkupClosed()
+var inlineMarkupEndStringClosers = []rune{'-', '.', ',', ':', ';', '!', '?',
+	'\\', '/', '\'', '"', ')', ']', '}', '>'}
+
 var bullets = []rune{'*', '+', '-', '•', '‣', '⁃'}
 
 // Emitted by the lexer on End of File
@@ -144,24 +155,52 @@ type lexer struct {
 	indentWidth      string // For tracking indent width
 }
 
-func newLexer(name, input string) *lexer {
+// getu4 decodes \uXXXX from the beginning of s, returning the hex value,
+// or it returns -1.
+func getu4(s []byte) rune {
+	if len(s) < 6 || s[0] != '\\' || s[1] != 'u' {
+		return -1
+	}
+	r, err := strconv.ParseUint(string(s[2:6]), 16, 64)
+	if err != nil {
+		return -1
+	}
+	return rune(r)
+}
+
+func newLexer(name string, input []byte) *lexer {
 	if len(input) == 0 {
 		return nil
 	}
 
-	if !norm.NFC.IsNormalString(input) {
-		input = norm.NFC.String(input)
+	// Convert unicode literals to runes
+	var tInput []byte
+	r := 0
+	for r < len(input) {
+		if input[r] == '\\' && input[r+1] == 'u' {
+			tInput = append(tInput, []byte(string(getu4(input[r:])))...)
+			r += 6
+		} else {
+			tInput = append(tInput, input[r])
+			r++
+		}
 	}
 
-	lines := strings.Split(input, "\n")
+	var nInput []byte
+	if !norm.NFC.IsNormal(tInput) {
+		log.Infoln("Normalizing input")
+		nInput = norm.NFC.Bytes(tInput)
+		tInput = nInput
+	}
+
+	lines := strings.Split(string(tInput), "\n")
 
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-
 	log.Debugf("mark: %#U, index: %d, line: %d\n", mark, 0, 1)
 
 	return &lexer{
 		name:  name,
-		input: input,
+		input: string(tInput), // stored string is never altered
 		lines: lines,
 		items: make(chan item),
 		index: 0,
@@ -173,7 +212,7 @@ func newLexer(name, input string) *lexer {
 // lex is the entry point of the lexer. Name should be any name that signifies
 // the purporse of the lexer. It is mostly used to identify the lexing process
 // in debugging.
-func lex(name, input string) *lexer {
+func lex(name string, input []byte) *lexer {
 	l := newLexer(name, input)
 	if l == nil {
 		return nil
@@ -232,7 +271,8 @@ func (l *lexer) backup(pos int) {
 			l.index = len(l.lines[l.line]) + 1
 		}
 
-		l.index -= l.width
+		l.index -= 1
+
 		if l.index < 0 {
 			l.index = 0
 		} else if l.index > len(l.lines[l.line]) {
@@ -256,8 +296,20 @@ func (l *lexer) backup(pos int) {
 // peek looks ahead in the input by one position and returns the rune.
 func (l *lexer) peek() (r rune) {
 	r, _ = l.next()
+	log.Debugf("peek found %q at index %d\n", string(r), l.index)
 	l.backup(1)
 	return
+}
+
+func (l *lexer) peekBack() rune {
+	if l.start == l.index {
+		return utf8.RuneError
+	}
+	l.backup(1)
+	r := l.mark
+	log.Debugf("peekBack found %q at index %d\n", string(r), l.index)
+	l.next()
+	return r
 }
 
 func (l *lexer) peekNextLine() string {
@@ -307,6 +359,11 @@ func (l *lexer) nextItem() *item {
 
 }
 
+func (l *lexer) skip() {
+	l.next()
+	l.start = l.index
+}
+
 // gotoLine advances the lexer to a line and index within that line. Line
 // numbers start at 1.
 func (l *lexer) gotoLocation(start, line int) {
@@ -347,19 +404,13 @@ func (l *lexer) isEndOfLine() bool {
 
 // isSpace reports whether r is a space character.
 func isSpace(r rune) bool {
-	return r == ' ' || r == '\t' || r == '\n' || r == '\r'
+	return unicode.In(r, unicode.Zs)
 }
 
 // isArabic returns true if rune r is an Arabic numeral.
 func isArabic(r rune) bool {
 	return r > '0' && r < '9'
 }
-
-// func isInlineMarkup(r rune) bool {
-// // TODO: The check should include a peek for the matching rune markup and
-// // proper spacing.
-// return r == '*' || r == '`' || r == '_' || r == '|'
-// }
 
 // isSection compares a number of positions (skipping whitespace) to determine
 // if the runes are sectionAdornments and returns a true if the positions match
@@ -369,7 +420,10 @@ func isArabic(r rune) bool {
 func isSection(l *lexer) (found bool) {
 	var nLine string
 
-	checkLine := func(input string, skipSpace bool) (a bool) {
+	// Check two positions to see if the line contains a section adornment
+	checkLine := func(input string, skipSpace bool) bool {
+		var last rune
+		var aRune bool
 		end := 2
 		for j := 0; j < end; j++ {
 			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
@@ -378,12 +432,13 @@ func isSection(l *lexer) (found bool) {
 				end++
 				continue
 			}
-			a = isSectionAdornment(r)
-			if !a {
-				return
+			aRune = isSectionAdornment(r)
+			if (j == 1 && last != r) || !aRune {
+				return false
 			}
+			last = r
 		}
-		return
+		return true
 	}
 
 	log.Debugln("Checking for transition...")
@@ -439,9 +494,6 @@ func isTransition(l *lexer) bool {
 	} else if pBlankLine && nBlankLine {
 		log.Debugln("Found transition (surrounded by newlines)")
 		return true
-		// } else if pBlankLine && l.isLastLine() {
-		// log.Debugln("Found transition (opened by newline)")
-		// return true
 	}
 	log.Debugln("Transition not found")
 	return false
@@ -542,6 +594,64 @@ func isBlockquote(l *lexer) bool {
 	return false
 }
 
+func isInlineMarkup(l *lexer) bool {
+	log.Debugln("Checking for inline markup")
+	log.SetIndent(log.Indent() + 1)
+	ret := func(val bool) bool {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+		return val
+	}
+	isOpenerRune := func(r rune) bool {
+		for _, x := range inlineMarkupStartStringOpeners {
+			if x == r {
+				return ret(true)
+			}
+		}
+		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps) {
+			return ret(true)
+		}
+		return ret(false)
+	}
+	b := l.peekBack()
+	if l.mark == '*' {
+		if (isSpace(b) || isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek()) {
+			return ret(true)
+		}
+	}
+	return ret(false)
+}
+
+func isInlineMarkupClosed(l *lexer) bool {
+	log.Debugln("Checking for closed inline markup")
+	log.SetIndent(log.Indent() + 1)
+	ret := func(val bool) bool {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+		return val
+	}
+	if l.mark == '*' {
+		b := l.peekBack()
+		c := l.peek()
+		if b == '\\' || b == '*' {
+			return ret(false)
+		}
+		for _, x := range inlineMarkupEndStringClosers {
+			if c == x && isSpace(c) {
+				return ret(true)
+			}
+		}
+		if unicode.In(c, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf,
+			unicode.Pe, unicode.Ps) {
+			return ret(true)
+		}
+		if !isSpace(b) {
+			return ret(true)
+		}
+	}
+	return ret(false)
+}
+
 // lexStart is the first stateFn called by run(). From here other stateFn's are
 // called depending on the input. When this function returns nil, the lexing is
 // finished and run() will exit.
@@ -574,6 +684,8 @@ func lexStart(l *lexer) stateFn {
 				return lexBlockquote
 			} else if isDefinitionTerm(l) {
 				return lexDefinitionTerm
+			} else if isInlineMarkup(l) {
+				return lexInlineMarkup
 			} else {
 				return lexParagraph
 			}
@@ -705,11 +817,20 @@ func lexEnumList(l *lexer) stateFn {
 }
 
 func lexParagraph(l *lexer) stateFn {
+	log.Debugln("Lexing paragraph...")
 	for {
 		l.next()
-		if l.isEndOfLine() && l.mark == utf8.RuneError {
+		if isInlineMarkup(l) {
 			l.emit(itemParagraph)
-			break
+			lexInlineMarkup(l)
+		}
+		if l.isEndOfLine() && l.mark == utf8.RuneError {
+			if l.start == l.index {
+				return lexStart
+			} else {
+				l.emit(itemParagraph)
+				break
+			}
 		}
 	}
 	l.nextLine()
@@ -770,5 +891,44 @@ func lexBullet(l *lexer) stateFn {
 	l.indentWidth += l.lastItem.Text + " "
 	lexParagraph(l)
 	l.indentLevel++
+	return lexStart
+}
+
+func lexInlineMarkup(l *lexer) stateFn {
+	for {
+		if l.mark == '*' {
+			lexInlineEmphasis(l)
+			break
+		}
+	}
+	return lexStart
+}
+
+func lexInlineEmphasis(l *lexer) stateFn {
+	log.Debugln("lexing inline emphasis...")
+	log.SetIndent(log.Indent() + 1)
+	// skip the '*'
+	l.skip()
+	for {
+		l.next()
+		if l.mark == '*' && isInlineMarkupClosed(l) {
+			log.Debugln("Found emphasis close")
+			l.emit(itemInlineEmphasis)
+			break
+		} else if l.mark == '*' && l.peek() == utf8.RuneError {
+			log.Debugln("Found emphasis close at end-of-line")
+			l.emit(itemInlineEmphasis)
+			break
+		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+			log.Debugln("Found end-of-line")
+			l.emit(itemInlineEmphasis)
+			l.emit(itemBlankLine)
+			l.nextLine()
+		}
+	}
+	// skip the '*'
+	l.skip()
+	log.SetIndent(log.Indent() - 1)
+	log.Debugln("END")
 	return lexStart
 }
