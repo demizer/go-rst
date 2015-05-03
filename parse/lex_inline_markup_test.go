@@ -6,6 +6,13 @@ package parse
 
 import "testing"
 
+func TestLexInlineMarkupRecognitionRulesGood0000(t *testing.T) {
+	testPath := testPathFromName("00.00-double-underscore")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // A paragraph containing a single emphasized word
 func TestLexSingleEmphasisGood0000(t *testing.T) {
 	testPath := testPathFromName("00.00-simple-emphasis")

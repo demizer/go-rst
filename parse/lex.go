@@ -464,18 +464,20 @@ func isSection(l *lexer) bool {
 
 	// Check two positions to see if the line contains a section adornment
 	checkLine := func(input string, skipSpace bool) bool {
-		var last rune
-		var aRune bool
-		end := 2
-		for j := 0; j < end; j++ {
-			r, _ := utf8.DecodeRuneInString(input[l.start+j:])
+		var first, last rune
+		for j := l.start; j < len(input); j++ {
+			r, _ := utf8.DecodeRuneInString(input[j:])
 			if skipSpace && isSpace(r) {
 				log.Debugln("Skipping space rune")
-				end++
 				continue
 			}
-			aRune = isSectionAdornment(r)
-			if (j == 1 && last != r) || !aRune {
+			if j == l.start {
+				first = r
+				last = r
+			}
+			if !isSectionAdornment(r) || r != first || last != first {
+				log.Debugf("Section not found - first: %q, "+
+					"last: %q, current: %q, j: %d\n", first, last, r, j)
 				return false
 			}
 			last = r
