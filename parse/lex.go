@@ -458,6 +458,12 @@ func isArabic(r rune) bool {
 // a rune mismatch between positions.
 func isSection(l *lexer) (found bool) {
 	var nLine string
+	log.Debugln("START Checking for section...")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 
 	// Check two positions to see if the line contains a section adornment
 	checkLine := func(input string, skipSpace bool) bool {
@@ -480,34 +486,29 @@ func isSection(l *lexer) (found bool) {
 		return true
 	}
 
-	log.Debugln("Checking for transition...")
+	var nLine string
+
 	if isTransition(l) {
 		log.Debugln("Returning (found transition)")
-		found = false
-		goto exit
+		return false
 	}
 
 	if checkLine(l.currentLine(), false) {
 		log.Debugln("Found section adornment")
-		found = true
-		goto exit
+		return true
 	}
 
 	nLine = l.peekNextLine()
 	if nLine != "" {
 		if checkLine(nLine, true) {
-			log.Debugln("Found section adornment")
-			found = true
+			log.Debugln("Found section adornment (nextline)")
+			return true
 		}
 	} else {
 		log.Debugln(`l.peekNextLine() == ""`)
 	}
-
-exit:
-	if !found {
-		log.Debugln("Section adornment not found")
-	}
-	return
+	log.Debugln("Section not found")
+	return false
 }
 
 // isSectionAdornment returns true if r matches a section adornment.
@@ -521,6 +522,12 @@ func isSectionAdornment(r rune) bool {
 }
 
 func isTransition(l *lexer) bool {
+	log.Debugln("START Checking for transition...")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	if r := l.peek(4); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
 		log.Debugln("Transition not found")
 		return false
@@ -539,6 +546,12 @@ func isTransition(l *lexer) bool {
 }
 
 func isComment(l *lexer) bool {
+	log.Debugln("START Checking for comment...")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
 		return false
 	}
@@ -632,63 +645,60 @@ func isBlockquote(l *lexer) bool {
 }
 
 func isInlineMarkup(l *lexer) bool {
-	log.Debugln("Checking for inline markup")
-	log.SetIndent(log.Indent() + 1)
-	ret := func(val bool) bool {
-		log.SetIndent(log.Indent() - 1)
-		log.Debugln("END")
-		return val
-	}
 	isOpenerRune := func(r rune) bool {
 		for _, x := range inlineMarkupStartStringOpeners {
 			if x == r {
-				return ret(true)
+				return true
 			}
 		}
 		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps) {
-			return ret(true)
+			return true
 		}
-		return ret(false)
+		return false
 	}
-	b := l.peekBack()
 	if l.mark == '*' {
+		log.Debugln("START Checking for inline markup")
+		log.SetIndent(log.Indent() + 1)
+		defer func() {
+			log.SetIndent(log.Indent() - 1)
+			log.Debugln("END")
+		}()
 		b := l.peekBack()
 		if (isSpace(b) || isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek(1)) {
 			log.Debugln("Found inline markup!")
 			return true
 		}
 	}
-	return ret(false)
+	return false
 }
 
 func isInlineMarkupClosed(l *lexer) bool {
-	log.Debugln("Checking for closed inline markup")
+	log.Debugln("START Checking for closed inline markup")
 	log.SetIndent(log.Indent() + 1)
-	ret := func(val bool) bool {
+	defer func() {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
-		return val
-	}
+	}()
 	if l.mark == '*' {
 		b := l.peekBack()
 		c := l.peek(1)
 		if b == '\\' || b == '*' {
-			return ret(false)
+			return false
 		}
 		for _, x := range inlineMarkupEndStringClosers {
 			if c == x && isSpace(c) {
-				return ret(true)
+				return true
 			}
 		}
 		if unicode.In(c, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf,
 			unicode.Pe, unicode.Ps) {
-			return ret(true)
+			return true
 		}
 		if !isSpace(b) {
-			return ret(true)
+			return true
 		}
 	}
-	return ret(false)
+	return false
 }
 
 // lexStart is the first stateFn called by run(). From here other stateFn's are
@@ -754,6 +764,12 @@ func lexStart(l *lexer) stateFn {
 // lexSpace consumes space characters (space and tab) in the input and emits a
 // itemSpace token.
 func lexSpace(l *lexer) stateFn {
+	log.Debugln("START lexing space")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	log.Debugln("l.mark ==", l.mark)
 	for isSpace(l.mark) {
 		log.Debugln("isSpace ==", isSpace(l.mark))
@@ -776,6 +792,12 @@ func lexSpace(l *lexer) stateFn {
 // input are section.  From here, the lexTitle() and lexSectionAdornment() are
 // called based on the input.
 func lexSection(l *lexer) stateFn {
+	log.Debugln("START lexing section")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	// log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " +
 	// "l.line: %d\n", l.mark, l.index, l.start, l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
@@ -855,7 +877,12 @@ func lexEnumList(l *lexer) stateFn {
 }
 
 func lexParagraph(l *lexer) stateFn {
-	log.Debugln("Lexing paragraph...")
+	log.Debugln("START lexing paragraph")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	for {
 		l.next()
 		if isInlineMarkup(l) {
@@ -876,6 +903,12 @@ func lexParagraph(l *lexer) stateFn {
 }
 
 func lexComment(l *lexer) stateFn {
+	log.Debugln("START lexing comment")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	for l.mark == '.' {
 		l.next()
 	}
@@ -923,6 +956,12 @@ func lexDefinitionTerm(l *lexer) stateFn {
 }
 
 func lexBullet(l *lexer) stateFn {
+	log.Debugln("START lexing bullet")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	l.next()
 	l.emit(itemBullet)
 	lexSpace(l)
@@ -943,8 +982,12 @@ func lexInlineMarkup(l *lexer) stateFn {
 }
 
 func lexInlineEmphasis(l *lexer) stateFn {
-	log.Debugln("lexing inline emphasis...")
+	log.Debugln("START lexing inline emphasis...")
 	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	// skip the '*'
 	l.skip()
 	for {
@@ -966,7 +1009,5 @@ func lexInlineEmphasis(l *lexer) stateFn {
 	}
 	// skip the '*'
 	l.skip()
-	log.SetIndent(log.Indent() - 1)
-	log.Debugln("END")
 	return lexStart
 }

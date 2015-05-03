@@ -23,7 +23,7 @@ var (
 func lexTest(t *testing.T, test *Test) []item {
 	log.WithFlagsf(log.LdebugFlags, log.Debugf, "Test Path: %s\n", test.path)
 	log.WithFlagsf(log.LdebugFlags, log.Debugf,
-		"Test Input:\n-----------\n%s\n----------\n", test.data)
+		"Test Input:\n-----------\n%s\n-----------\n", test.data)
 	var items []item
 	l := lex(test.path, []byte(test.data))
 	for {
