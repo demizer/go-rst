@@ -359,21 +359,19 @@ func (l *lexer) peekNextLine() string {
 }
 
 // next advances the position of the lexer by one rune and returns that rune.
-func (l *lexer) next() (r rune, width int) {
+func (l *lexer) next() (rune, int) {
 	if l.isEndOfLine() && !l.isLastLine() {
 		log.Debugln("Getting next line")
 		l.nextLine()
 	}
-
 	l.index += l.width
-	r, width = utf8.DecodeRuneInString(l.currentLine()[l.index:])
+	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
-
 	log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n",
 		r, l.start, l.index, l.lineNumber())
 
-	return
+	return r, width
 }
 
 func (l *lexer) nextLine() string {
@@ -456,8 +454,7 @@ func isArabic(r rune) bool {
 // each other. Rune comparison begins at the current lexer position. isSection
 // returns false if there is a blank line between the positions or if there is
 // a rune mismatch between positions.
-func isSection(l *lexer) (found bool) {
-	var nLine string
+func isSection(l *lexer) bool {
 	log.Debugln("START Checking for section...")
 	log.SetIndent(log.Indent() + 1)
 	defer func() {
@@ -589,25 +586,20 @@ exit:
 }
 
 func isBulletList(l *lexer) bool {
-	var hazBullet bool
-	var ret bool
-	log.Debugf("l.mark == %s\n", string(l.mark))
+	log.Debugln("START Checking for bullet...")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
 	for _, x := range bullets {
-		if l.mark == x {
-			log.Debugln("hazBullet == true")
-			hazBullet = true
+		if l.mark == x && l.peek(1) == ' ' {
+			log.Debugln("A bullet was found")
+			return true
 		}
 	}
-	if !hazBullet {
-		log.Debugln("NO BULLET FOR YOU!")
-		goto exit
-	}
-	if l.peek() == ' ' {
-		log.Debugln("I haz bullet!")
-		ret = true
-	}
-exit:
-	return ret
+	log.Debugln("A bullet was not found")
+	return false
 }
 
 func isDefinitionTerm(l *lexer) bool {
@@ -715,8 +707,8 @@ func lexStart(l *lexer) stateFn {
 				l.indentLevel = 0
 				l.indentWidth = ""
 			}
-			log.Debugf("l.index: %d, l.width: %d, l.line: %d\n",
-				l.index, l.width, l.lineNumber())
+			log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d\n",
+				l.mark, l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
 			} else if isBulletList(l) {
