@@ -1,5 +1,5 @@
 // go-rst - A reStructuredText parser for Go
-// 2014 (c) The go-rst Authors
+// 2014,2015 (c) The go-rst Authors
 // MIT Licensed. See LICENSE for details.
 
 package parse
@@ -575,7 +575,7 @@ type DefinitionNode struct {
 	ID       `json:"id"`
 	Type     NodeType `json:"type"`
 	Line     `json:"line"`
-	NodeList  `json:"nodeList"`
+	NodeList `json:"nodeList"`
 }
 
 func (d DefinitionNode) NodeType() NodeType {

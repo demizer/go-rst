@@ -45,6 +45,32 @@ func (s StartPosition) Position() StartPosition { return s }
 // String implements Stringer and returns StartPosition converted to a string.
 func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
 
+type lexPosition struct {
+	index int
+	start int
+	line  int
+	mark  rune
+	width int
+}
+
+func saveLexerPosition(lexState *lexer) *lexPosition {
+	return &lexPosition{
+		index: lexState.index,
+		start: lexState.start,
+		line:  lexState.line,
+		mark:  lexState.mark,
+		width: lexState.width,
+	}
+}
+
+func (l *lexPosition) restore(lexState *lexer) {
+	lexState.index = l.index
+	lexState.start = l.start
+	lexState.line = l.line
+	lexState.mark = l.mark
+	lexState.width = l.width
+}
+
 // itemElement are the types that are emitted by the lexer.
 type itemElement int
 
@@ -259,6 +285,7 @@ func (l *lexer) emit(t itemElement) {
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
+	log.Infof("Position after EMIT: l.mark: %q, l.start: %d (%d) l.index: %d (%d) line: %d\n", l.mark, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 }
 
 // backup backs up the lexer position by a number of rune positions (pos).
@@ -293,12 +320,24 @@ func (l *lexer) backup(pos int) {
 	log.Debugln("l.mark backed up to:", string(l.mark))
 }
 
-// peek looks ahead in the input by one position and returns the rune.
-func (l *lexer) peek() (r rune) {
-	r, _ = l.next()
+// peek looks ahead in the input by a number of locations (locs) and returns
+// the rune at that location in the input. Peek works across lines.
+func (l *lexer) peek(locs int) rune {
+	pos := saveLexerPosition(l)
+	defer func() {
+		pos.restore(l)
+	}()
+	var r rune
+	x := 0
+	for x < locs {
+		l.next()
+		if x == locs-1 {
+			r = l.mark
+		}
+		x++
+	}
 	log.Debugf("peek found %q at index %d\n", string(r), l.index)
-	l.backup(1)
-	return
+	return r
 }
 
 func (l *lexer) peekBack() rune {
@@ -482,7 +521,7 @@ func isSectionAdornment(r rune) bool {
 }
 
 func isTransition(l *lexer) bool {
-	if r := l.peek(); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
+	if r := l.peek(4); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
 		log.Debugln("Transition not found")
 		return false
 	}
@@ -503,14 +542,12 @@ func isComment(l *lexer) bool {
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
 		return false
 	}
-	if nMark := l.peek(); l.mark == '.' && nMark == '.' {
-		l.next()
-		nMark2 := l.peek()
+	if nMark := l.peek(1); l.mark == '.' && nMark == '.' {
+		nMark2 := l.peek(2)
 		if isSpace(nMark2) || nMark2 == utf8.RuneError {
 			log.Debugln("Found comment!")
 			return true
 		}
-		l.backup(1)
 	}
 	log.Debugln("Comment not found!")
 	return false
@@ -615,8 +652,10 @@ func isInlineMarkup(l *lexer) bool {
 	}
 	b := l.peekBack()
 	if l.mark == '*' {
-		if (isSpace(b) || isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek()) {
-			return ret(true)
+		b := l.peekBack()
+		if (isSpace(b) || isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek(1)) {
+			log.Debugln("Found inline markup!")
+			return true
 		}
 	}
 	return ret(false)
@@ -632,7 +671,7 @@ func isInlineMarkupClosed(l *lexer) bool {
 	}
 	if l.mark == '*' {
 		b := l.peekBack()
-		c := l.peek()
+		c := l.peek(1)
 		if b == '\\' || b == '*' {
 			return ret(false)
 		}
@@ -689,7 +728,6 @@ func lexStart(l *lexer) stateFn {
 			} else {
 				return lexParagraph
 			}
-
 		} else if l.isEndOfLine() {
 			log.Debugln("isEndOfLine == true")
 			if l.start == l.index {
@@ -719,7 +757,7 @@ func lexSpace(l *lexer) stateFn {
 	log.Debugln("l.mark ==", l.mark)
 	for isSpace(l.mark) {
 		log.Debugln("isSpace ==", isSpace(l.mark))
-		if r := l.peek(); isSpace(r) {
+		if r := l.peek(1); isSpace(r) {
 			l.next()
 		} else {
 			log.Debugln("Next mark is not space!")
@@ -915,7 +953,7 @@ func lexInlineEmphasis(l *lexer) stateFn {
 			log.Debugln("Found emphasis close")
 			l.emit(itemInlineEmphasis)
 			break
-		} else if l.mark == '*' && l.peek() == utf8.RuneError {
+		} else if l.mark == '*' && l.peek(1) == utf8.RuneError {
 			log.Debugln("Found emphasis close at end-of-line")
 			l.emit(itemInlineEmphasis)
 			break

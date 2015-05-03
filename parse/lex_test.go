@@ -484,7 +484,7 @@ func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
 		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
-		r := lex.peek()
+		r := lex.peek(1)
 		w := utf8.RuneLen(r)
 		if lex.index != tt.lIndex {
 			t.Errorf("Test: %q\n\t    "+
