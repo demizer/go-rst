@@ -6,8 +6,17 @@ package parse
 
 import "testing"
 
+// Tests double underscore recognition
 func TestLexInlineMarkupRecognitionRulesGood0000(t *testing.T) {
 	testPath := testPathFromName("00.00-double-underscore")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Tests double underscore recognition
+func TestLexInlineMarkupRecognitionRulesEscapingGood0100(t *testing.T) {
+	testPath := testPathFromName("01.00-lots-of-escaping")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

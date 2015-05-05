@@ -1,0 +1,112 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Character-level m",
+        "startPosition": 1,
+        "line": 1,
+        "length": 17
+    },
+    {
+        "id": 2,
+        "type": "itemEscape",
+        "text": "\\ ",
+        "startPosition": 18,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 3,
+        "type": "itemInlineEmphasis",
+        "text": "a",
+        "startPosition": 21,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemEscape",
+        "text": "\\ ",
+        "startPosition": 23,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 5,
+        "type": "itemInlineStrong",
+        "text": "r",
+        "startPosition": 27,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemEscape",
+        "text": "\\ ",
+        "startPosition": 30,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemInlineLiteral",
+        "text": "k",
+        "startPosition": 34,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemEscape",
+        "text": "\\ ",
+        "startPosition": 37,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 9,
+        "type": "itemInlineInterpretedText",
+        "text": "u",
+        "startPosition": 40,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemInlineInterpretedTextRole",
+        "text": "title",
+        "startPosition": 43,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 11,
+        "type": "itemEscape",
+        "text": "\\p",
+        "startPosition": 49,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": "with backslash-escaped whitespace, including new",
+        "startPosition": 1,
+        "line": 2,
+        "length": 48
+    },
+    {
+        "id": 13,
+        "type": "itemParagraph",
+        "text": "lines. A literal backslash is \\.",
+        "startPosition": 1,
+        "line": 3,
+        "length": 32
+    },
+    {
+        "id": 14,
+        "type": "itemEOF",
+        "startPosition": 33,
+        "line": 3
+    }
+]
