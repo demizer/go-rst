@@ -202,6 +202,17 @@ func getu4(s []byte) rune {
 	return rune(r)
 }
 
+func getu2(s []byte) rune {
+	if len(s) < 6 || s[0] != '\\' || s[1] != 'x' {
+		return -1
+	}
+	r, err := strconv.ParseUint(string(s[2:4]), 16, 64)
+	if err != nil {
+		return -1
+	}
+	return rune(r)
+}
+
 func newLexer(name string, input []byte) *lexer {
 	if len(input) == 0 {
 		return nil
@@ -214,6 +225,9 @@ func newLexer(name string, input []byte) *lexer {
 		if input[r] == '\\' && input[r+1] == 'u' {
 			tInput = append(tInput, []byte(string(getu4(input[r:])))...)
 			r += 6
+		} else if input[r] == '\\' && input[r+1] == 'x' {
+			tInput = append(tInput, []byte(string(getu2(input[r:])))...)
+			r += 4
 		} else if input[r] == '\\' && (input[r+1] == '\\') {
 			tInput = append(tInput, '\\')
 			r += 2
@@ -460,7 +474,7 @@ func (l *lexer) isEndOfLine() bool {
 
 // isSpace reports whether r is a space character.
 func isSpace(r rune) bool {
-	return unicode.In(r, unicode.Zs)
+	return unicode.In(r, unicode.Zs, unicode.Zl)
 }
 
 // isArabic returns true if rune r is an Arabic numeral.
@@ -482,21 +496,19 @@ func isSection(l *lexer) bool {
 	}()
 
 	// Check two positions to see if the line contains a section adornment
-	checkLine := func(input string, skipSpace bool) bool {
+	checkLine := func(input string) bool {
 		var first, last rune
-		for j := l.start; j < len(input); j++ {
+		for j := 0; j < len(input); j++ {
 			r, _ := utf8.DecodeRuneInString(input[j:])
-			if skipSpace && isSpace(r) {
+			if isSpace(r) {
 				log.Debugln("Skipping space rune")
 				continue
 			}
-			if j == l.start {
+			if first == '\x00' {
 				first = r
 				last = r
 			}
-			log.Debugf("first: %q, last: %q, current: %q, j: %d\n", first, last, r, j)
-			log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d\n",
-				l.mark, l.index, l.width, l.lineNumber())
+			// log.Debugf("first: %q, last: %q, r: %q, j: %d\n", first, last, r, j)
 			if !isSectionAdornment(r) || (r != first && last != first) {
 				log.Debugln("Section not found")
 				return false
@@ -506,26 +518,25 @@ func isSection(l *lexer) bool {
 		return true
 	}
 
-	var nLine string
-
 	if isTransition(l) {
 		log.Debugln("Returning (found transition)")
 		return false
 	}
 
-	if checkLine(l.currentLine(), false) {
+	log.Debugln("Checking current line")
+	if checkLine(l.currentLine()) {
 		log.Debugln("Found section adornment")
 		return true
 	}
 
-	nLine = l.peekNextLine()
+	log.Debugln("Checking next line")
+
+	nLine := l.peekNextLine()
 	if nLine != "" {
-		if checkLine(nLine, true) {
+		if checkLine(nLine) {
 			log.Debugln("Found section adornment (nextline)")
 			return true
 		}
-	} else {
-		log.Debugln(`l.peekNextLine() == ""`)
 	}
 	log.Debugln("Section not found")
 	return false
@@ -666,7 +677,7 @@ func isInlineMarkup(l *lexer) bool {
 				return true
 			}
 		}
-		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs) {
+		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs, unicode.Zl) {
 			return true
 		}
 		return false

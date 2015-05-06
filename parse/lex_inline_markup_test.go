@@ -30,6 +30,13 @@ func TestLexInlineMarkupRecognitionRulesEscapingUnicodeLiteralsGood0200(t *testi
 	equal(t, test.expectItems(), items)
 }
 
+func TestLexInlineMarkupRecognitionEmphasisWrappedWithUnicodeLiteralsGood0300(t *testing.T) {
+	testPath := testPathFromName("03.00-emphasis-wrapped-in-unicode")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // A paragraph containing a single emphasized word
 func TestLexSingleEmphasisGood0000(t *testing.T) {
 	testPath := testPathFromName("00.00-simple-emphasis")
