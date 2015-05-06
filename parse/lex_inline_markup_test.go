@@ -22,6 +22,14 @@ func TestLexInlineMarkupRecognitionRulesEscapingGood0100(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
+// Tests escaping with unicode literals
+func TestLexInlineMarkupRecognitionRulesEscapingUnicodeLiteralsGood0200(t *testing.T) {
+	testPath := testPathFromName("02.00-lots-of-escaping-unicode")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // A paragraph containing a single emphasized word
 func TestLexSingleEmphasisGood0000(t *testing.T) {
 	testPath := testPathFromName("00.00-simple-emphasis")

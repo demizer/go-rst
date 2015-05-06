@@ -1,7 +1,7 @@
 =========================================
 The reStructuredText Test Data For GO-RST
 =========================================
-:Modified: Mon Apr 27 19:27 2015
+:Modified: Tue May 05 12:24 2015
 
 These test files have been transcoded from the docutils "pseudo xml" format
 into standard JSON.
@@ -97,3 +97,27 @@ Differing Tests
 
       <p>l'<em>emphasis</em> with the <em>emphasis</em>' apostrophe.
       lu2019*emphasis* with the <em>emphasis</em>u2019 apostrophe.</p>
+
+#. Test: test-inline-markup/00-inline-markup-recognition-rules-good/00.00-double-underscore.rst
+   From: http://repo.or.cz/w/docutils.git/blob/HEAD:/docutils/test/test_parsers/test_rst/test_inline_markup.py#l1594
+
+   The markup::
+
+     text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
+     \u00bf*punctuation*? \u00a1*examples*!\u00a0*\u00a0no-break-space\u00a0*.
+
+   Tests recognition rules with unicode literals. \u00a0 is "No Break Space".
+
+   Output from rst2html.py (docutils v0.12)::
+
+     <p>text-<em>separated</em>u2010*by*u2011*various*u2012*dashes*u2013*and*u2014*hyphens*.
+     u00bf*punctuation*? u00a1*examples*!u00a0*u00a0no-break-spaceu00a0*.</p>
+
+   According to the reStructuredText spec, whitespace after an inline markup
+   start string are not allowed, but this test clearly shows that it is. The
+   troublesome section is ``\u00a0*\u00a0no-break-space\u00a0*`` as the parser
+   cannot detect the '*' start string (based on the spec). As mentioned in the
+   previous trouble item, the docutils parser does not correctly use unicode
+   literals.
+
+   I have modified this test to remove the troublesome section.

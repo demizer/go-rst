@@ -666,7 +666,7 @@ func isInlineMarkup(l *lexer) bool {
 				return true
 			}
 		}
-		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps) {
+		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs) {
 			return true
 		}
 		return false
@@ -679,7 +679,7 @@ func isInlineMarkup(l *lexer) bool {
 			log.Debugln("END")
 		}()
 		b := l.peekBack(1)
-		if (isSpace(b) || isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek(1)) {
+		if (isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek(1)) {
 			log.Debugln("Found inline markup!")
 			return true
 		}

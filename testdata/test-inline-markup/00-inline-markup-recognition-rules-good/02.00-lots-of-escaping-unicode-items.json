@@ -1,0 +1,136 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "text-",
+        "startPosition": 1,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasis",
+        "text": "separated",
+        "startPosition": 7,
+        "line": 1,
+        "length": 9
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "\u2010",
+        "startPosition": 17,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasis",
+        "text": "by",
+        "startPosition": 21,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "\u2011",
+        "startPosition": 24,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemInlineEmphasis",
+        "text": "various",
+        "startPosition": 28,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "\u2012",
+        "startPosition": 36,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemInlineEmphasis",
+        "text": "dashes",
+        "startPosition": 40,
+        "line": 1,
+        "length": 6
+    },
+    {
+        "id": 9,
+        "type": "itemParagraph",
+        "text": "\u2013",
+        "startPosition": 47,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemInlineEmphasis",
+        "text": "and",
+        "startPosition": 51,
+        "line": 1,
+        "length": 3
+    },
+    {
+        "id": 11,
+        "type": "itemParagraph",
+        "text": "\u2014",
+        "startPosition": 55,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemInlineEmphasis",
+        "text": "hyphens",
+        "startPosition": 59,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 13,
+        "type": "itemParagraph",
+        "text": ".",
+        "startPosition": 67,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 14,
+        "type": "itemParagraph",
+        "text": "\u00bf",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemInlineEmphasis",
+        "text": "punctuation",
+        "startPosition": 4,
+        "line": 2,
+        "length": 11
+    },
+    {
+        "id": 16,
+        "type": "itemParagraph",
+        "text": "?",
+        "startPosition": 16,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 17,
+        "type": "itemEOF",
+        "startPosition": 17,
+        "line": 2
+    }
+]
