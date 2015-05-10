@@ -1,0 +1,136 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "\"Quoted\" markup start-string (matched openers & closers) -> no markup:",
+        "startPosition": 1,
+        "line": 1,
+        "length": 70
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "'*' \"*\" (*) <*> [*] {*}",
+        "startPosition": 1,
+        "line": 3,
+        "length": 23
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "⁅*⁆",
+        "startPosition": 1,
+        "line": 4,
+        "length": 3
+    },
+    {
+        "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "Some international quoting styles:",
+        "startPosition": 1,
+        "line": 6,
+        "length": 34
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "‘*’ “*” English, ...,",
+        "startPosition": 1,
+        "line": 7,
+        "length": 21
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": "„*“ ‚*‘ »*« ›*‹ German, Czech, ...,",
+        "startPosition": 1,
+        "line": 8,
+        "length": 35
+    },
+    {
+        "id": 9,
+        "type": "itemParagraph",
+        "text": "„*” «*» Romanian,",
+        "startPosition": 1,
+        "line": 9,
+        "length": 17
+    },
+    {
+        "id": 10,
+        "type": "itemParagraph",
+        "text": "“*„ ‘*‚ Greek,",
+        "startPosition": 1,
+        "line": 10,
+        "length": 14
+    },
+    {
+        "id": 11,
+        "type": "itemParagraph",
+        "text": "「*」 『*』traditional Chinese,",
+        "startPosition": 1,
+        "line": 11,
+        "length": 27
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": "”*” ’*’ »*» ›*› Swedish, Finnish,",
+        "startPosition": 1,
+        "line": 12,
+        "length": 33
+    },
+    {
+        "id": 13,
+        "type": "itemParagraph",
+        "text": "„*” ‚*’ Polish,",
+        "startPosition": 1,
+        "line": 13,
+        "length": 15
+    },
+    {
+        "id": 14,
+        "type": "itemParagraph",
+        "text": "„*” »*« ’*’ Hungarian,",
+        "startPosition": 1,
+        "line": 14,
+        "length": 22
+    },
+    {
+        "id": 15,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 15,
+        "length": 1
+    },
+    {
+        "id": 16,
+        "type": "itemParagraph",
+        "text": "But this is „*’ emphasized »*‹.",
+        "startPosition": 1,
+        "line": 16,
+        "length": 31
+    },
+    {
+        "id": 17,
+        "type": "itemEOF",
+        "startPosition": 39,
+        "line": 16
+    }
+]

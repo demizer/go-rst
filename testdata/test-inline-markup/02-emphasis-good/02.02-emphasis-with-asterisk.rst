@@ -1,0 +1,5 @@
+Emphasized *\** asterisk.
+
+Emphasized *\*** double asterisk.
+
+Emphasized *\*********************** asterisk gone to plaid.

@@ -1,0 +1,3 @@
+Emphasized *\*blah\** asterisk.
+
+Emphasized *\**blah\*** double asterisk.

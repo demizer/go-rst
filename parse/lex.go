@@ -189,27 +189,9 @@ type lexer struct {
 	indentWidth      string // For tracking indent width
 }
 
-// getu4 decodes \uXXXX from the beginning of s, returning the hex value,
-// or it returns -1.
-func getu4(s []byte) rune {
-	if len(s) < 6 || s[0] != '\\' || s[1] != 'u' {
-		return -1
-	}
-	r, err := strconv.ParseUint(string(s[2:6]), 16, 64)
-	if err != nil {
-		return -1
-	}
-	return rune(r)
-}
-
-func getu2(s []byte) rune {
-	if len(s) < 6 || s[0] != '\\' || s[1] != 'x' {
-		return -1
-	}
-	r, err := strconv.ParseUint(string(s[2:4]), 16, 64)
-	if err != nil {
-		return -1
-	}
+// getu4 decodes a unicode literal from s length q
+func getu4(s []byte, q int) rune {
+	r, _ := strconv.ParseUint(string(s[2:q]), 16, 64)
 	return rune(r)
 }
 
@@ -223,10 +205,10 @@ func newLexer(name string, input []byte) *lexer {
 	r := 0
 	for r < len(input) {
 		if input[r] == '\\' && input[r+1] == 'u' {
-			tInput = append(tInput, []byte(string(getu4(input[r:])))...)
+			tInput = append(tInput, []byte(string(getu4(input[r:], 6)))...)
 			r += 6
 		} else if input[r] == '\\' && input[r+1] == 'x' {
-			tInput = append(tInput, []byte(string(getu2(input[r:])))...)
+			tInput = append(tInput, []byte(string(getu4(input[r:], 4)))...)
 			r += 4
 		} else if input[r] == '\\' && (input[r+1] == '\\') {
 			tInput = append(tInput, '\\')
@@ -677,7 +659,36 @@ func isInlineMarkup(l *lexer) bool {
 				return true
 			}
 		}
-		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs, unicode.Zl) {
+		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf,
+			unicode.Ps, unicode.Zs, unicode.Zl) {
+			return true
+		}
+		return false
+	}
+	isSurrounded := func(back, front rune) bool {
+		if back == '\'' && front == '\'' {
+			return true
+		} else if back == '"' && front == '"' {
+			return true
+		} else if back == '<' && front == '>' {
+			return true
+		} else if back == '(' && front == ')' {
+			return true
+		} else if back == '[' && front == ']' {
+			return true
+		} else if back == '{' && front == '}' {
+			return true
+		} else if unicode.In(back, unicode.Ps) &&
+			unicode.In(front, unicode.Pe, unicode.Pf, unicode.Pi) {
+			return true
+		} else if unicode.In(back, unicode.Pi) &&
+			unicode.In(front, unicode.Pf, unicode.Ps) {
+			return true
+		} else if unicode.In(back, unicode.Pf) &&
+			unicode.In(front, unicode.Pf) {
+			return true
+		} else if unicode.In(back, unicode.Pf) &&
+			unicode.In(front, unicode.Pi) {
 			return true
 		}
 		return false
@@ -690,7 +701,8 @@ func isInlineMarkup(l *lexer) bool {
 			log.Debugln("END")
 		}()
 		b := l.peekBack(1)
-		if (isOpenerRune(b) || l.start == l.index) && !isSpace(l.peek(1)) {
+		f := l.peek(1)
+		if !isSurrounded(b, f) && (isOpenerRune(b) || l.start == l.index) && !isSpace(f) {
 			log.Debugln("Found inline markup!")
 			return true
 		}
@@ -698,32 +710,36 @@ func isInlineMarkup(l *lexer) bool {
 	return false
 }
 
-func isInlineMarkupClosed(l *lexer) bool {
-	if l.mark == '*' || l.mark == '`' {
-		log.Debugln("START Checking for closed inline markup")
-		log.SetIndent(log.Indent() + 1)
-		defer func() {
-			log.SetIndent(log.Indent() - 1)
-			log.Debugln("END")
-		}()
-		b := l.peekBack(1)
-		c := l.peek(1)
-		if b == '\\' || b == '*' {
-			return false
+func isInlineMarkupClosed(l *lexer, markup string) bool {
+	log.Debugln("START Checking for closed inline markup")
+	log.SetIndent(log.Indent() + 1)
+	defer func() {
+		log.SetIndent(log.Indent() - 1)
+		log.Debugln("END")
+	}()
+	isEndAscii := func(r rune) bool {
+		for _, x := range inlineMarkupEndStringClosers {
+			if x == r {
+				return true
+			}
 		}
-		// for _, x := range inlineMarkupEndStringClosers {
-		// if c == x && isSpace(c) {
-		// return true
-		// }
-		// }
-		if unicode.In(c, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf,
-			unicode.Pe, unicode.Ps) {
-			return true
-		}
-		if !isSpace(b) {
-			return true
-		}
+		return false
 	}
+	var a, b rune
+	b = l.peekBack(1)
+	a = l.peek(1)
+	if len(markup) > 1 {
+		a = l.peek(2)
+	}
+	if (b == '\\' || b == '*') && !isSpace(a) {
+		log.Debugln("Inline markup close not found (b == '\\' || b == '*')")
+		return false
+	}
+	if !isSpace(b) && (isSpace(a) || isEndAscii(a) || unicode.In(a, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps)) {
+		log.Debugln("Found inline markup close")
+		return true
+	}
+	log.Debugln("Inline markup close not found")
 	return false
 }
 
@@ -1055,7 +1071,7 @@ func lexInlineStrong(l *lexer) stateFn {
 	l.skip(2)
 	for {
 		l.next()
-		if l.mark == '*' && isInlineMarkupClosed(l) {
+		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "**") {
 			log.Debugln("Found strong close")
 			l.emit(itemInlineStrong)
 			break
@@ -1077,7 +1093,7 @@ func lexInlineEmphasis(l *lexer) stateFn {
 	l.skip(1)
 	for {
 		l.next()
-		if l.mark == '*' && isInlineMarkupClosed(l) {
+		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
 			log.Debugln("Found emphasis close")
 			l.emit(itemInlineEmphasis)
 			break
@@ -1127,7 +1143,7 @@ func lexInlineLiteral(l *lexer) stateFn {
 	l.skip(2)
 	for {
 		l.next()
-		if l.mark == '`' && isInlineMarkupClosed(l) {
+		if l.mark == '`' && isInlineMarkupClosed(l, "``") {
 			log.Debugln("Found literal close")
 			l.emit(itemInlineLiteral)
 			break
@@ -1149,7 +1165,7 @@ func lexInlineInterpretedText(l *lexer) stateFn {
 	l.skip(1)
 	for {
 		l.next()
-		if l.mark == '`' && isInlineMarkupClosed(l) {
+		if l.mark == '`' && isInlineMarkupClosed(l, "`") {
 			log.Debugln("Found literal close")
 			l.emit(itemInlineInterpretedText)
 			break
