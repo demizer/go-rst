@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "The bad portion is \u00a1",
+        "startPosition": 1,
+        "line": 1,
+        "length": 20
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 22,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemInlineEmphasis",
+        "text": "examples",
+        "startPosition": 23,
+        "line": 1,
+        "length": 8
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 31,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "!\u00a0*\u00a0no-break-space\u00a0",
+        "startPosition": 32,
+        "line": 1,
+        "length": 19
+    },
+    {
+        "id": 6,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 54,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemInlineEmphasis",
+        "text": ".",
+        "startPosition": 55,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 56,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemInlineEmphasis",
+        "text": "Surrounded by things!",
+        "startPosition": 1,
+        "line": 2,
+        "length": 21
+    },
+    {
+        "id": 10,
+        "type": "itemEOF",
+        "startPosition": 22,
+        "line": 2
+    }
+]

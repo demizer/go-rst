@@ -17,6 +17,14 @@
     },
     {
         "id": 3,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 20,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
         "type": "itemInlineEmphasis",
         "text": "a",
         "startPosition": 21,
@@ -24,18 +32,10 @@
         "length": 1
     },
     {
-        "id": 4,
-        "type": "itemEscape",
-        "text": "\\ ",
-        "startPosition": 23,
-        "line": 1,
-        "length": 2
-    },
-    {
         "id": 5,
-        "type": "itemInlineStrong",
-        "text": "r",
-        "startPosition": 27,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 22,
         "line": 1,
         "length": 1
     },
@@ -43,12 +43,52 @@
         "id": 6,
         "type": "itemEscape",
         "text": "\\ ",
-        "startPosition": 30,
+        "startPosition": 23,
         "line": 1,
         "length": 2
     },
     {
         "id": 7,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 25,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 8,
+        "type": "itemInlineStrong",
+        "text": "r",
+        "startPosition": 27,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 28,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemEscape",
+        "text": "\\ ",
+        "startPosition": 30,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 11,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 32,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 12,
         "type": "itemInlineLiteral",
         "text": "k",
         "startPosition": 34,
@@ -56,7 +96,15 @@
         "length": 1
     },
     {
-        "id": 8,
+        "id": 13,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 35,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 14,
         "type": "itemEscape",
         "text": "\\ ",
         "startPosition": 37,
@@ -64,7 +112,15 @@
         "length": 2
     },
     {
-        "id": 9,
+        "id": 15,
+        "type": "itemInlineInterpretedTextOpen",
+        "text": "`",
+        "startPosition": 39,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 16,
         "type": "itemInlineInterpretedText",
         "text": "u",
         "startPosition": 40,
@@ -72,7 +128,23 @@
         "length": 1
     },
     {
-        "id": 10,
+        "id": 17,
+        "type": "itemInlineInterpretedTextClose",
+        "text": "`",
+        "startPosition": 41,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 18,
+        "type": "itemInlineInterpretedTextRoleOpen",
+        "text": ":",
+        "startPosition": 42,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 19,
         "type": "itemInlineInterpretedTextRole",
         "text": "title",
         "startPosition": 43,
@@ -80,7 +152,15 @@
         "length": 5
     },
     {
-        "id": 11,
+        "id": 20,
+        "type": "itemInlineInterpretedTextRoleClose",
+        "text": ":",
+        "startPosition": 48,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 21,
         "type": "itemEscape",
         "text": "\\p",
         "startPosition": 49,
@@ -88,7 +168,7 @@
         "length": 2
     },
     {
-        "id": 12,
+        "id": 22,
         "type": "itemParagraph",
         "text": "with backslash-escaped whitespace, including new",
         "startPosition": 1,
@@ -96,7 +176,7 @@
         "length": 48
     },
     {
-        "id": 13,
+        "id": 23,
         "type": "itemParagraph",
         "text": "lines. A literal backslash is \\.",
         "startPosition": 1,
@@ -104,7 +184,7 @@
         "length": 32
     },
     {
-        "id": 14,
+        "id": 24,
         "type": "itemEOF",
         "startPosition": 33,
         "line": 3

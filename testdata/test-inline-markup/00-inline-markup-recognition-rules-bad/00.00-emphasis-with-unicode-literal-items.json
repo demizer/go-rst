@@ -1,0 +1,112 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "This test was originally part of test 02.00-lots-of-escaping-unicode.rst",
+        "startPosition": 1,
+        "line": 1,
+        "length": 72
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "According to the spec, whitespace is not allowed after the emphasis start",
+        "startPosition": 1,
+        "line": 3,
+        "length": 73
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "string. So this test should produce errors when parsed because of the unclosed",
+        "startPosition": 1,
+        "line": 4,
+        "length": 78
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "emphasis.",
+        "startPosition": 1,
+        "line": 5,
+        "length": 9
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "\u00a1",
+        "startPosition": 1,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 3,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemInlineEmphasis",
+        "text": "examples",
+        "startPosition": 4,
+        "line": 7,
+        "length": 8
+    },
+    {
+        "id": 10,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 12,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemParagraph",
+        "text": "!\u00a0*\u00a0no-break-space\u00a0",
+        "startPosition": 13,
+        "line": 7,
+        "length": 19
+    },
+    {
+        "id": 12,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 35,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 13,
+        "type": "itemInlineEmphasis",
+        "text": ".",
+        "startPosition": 36,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 14,
+        "type": "itemEOF",
+        "startPosition": 37,
+        "line": 7
+    }
+]

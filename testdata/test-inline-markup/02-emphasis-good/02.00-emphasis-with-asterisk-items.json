@@ -9,6 +9,14 @@
     },
     {
         "id": 2,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 22,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
         "type": "itemInlineEmphasis",
         "text": "\\*",
         "startPosition": 23,
@@ -16,7 +24,15 @@
         "length": 2
     },
     {
-        "id": 3,
+        "id": 4,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 25,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
         "type": "itemBlankLine",
         "text": "\n",
         "startPosition": 1,
@@ -24,7 +40,7 @@
         "length": 1
     },
     {
-        "id": 4,
+        "id": 6,
         "type": "itemParagraph",
         "text": "Emphasized double asterisk: ",
         "startPosition": 1,
@@ -32,7 +48,15 @@
         "length": 28
     },
     {
-        "id": 5,
+        "id": 7,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 29,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 8,
         "type": "itemInlineEmphasis",
         "text": "\\**",
         "startPosition": 30,
@@ -40,7 +64,15 @@
         "length": 3
     },
     {
-        "id": 6,
+        "id": 9,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 33,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 10,
         "type": "itemEOF",
         "startPosition": 34,
         "line": 3

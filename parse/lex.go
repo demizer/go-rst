@@ -89,11 +89,21 @@ const (
 	itemCommentMark
 	itemEnumListAffix
 	itemEnumListArabic
+	itemInlineStrongOpen
 	itemInlineStrong
+	itemInlineStrongClose
+	itemInlineEmphasisOpen
 	itemInlineEmphasis
+	itemInlineEmphasisClose
+	itemInlineLiteralOpen
 	itemInlineLiteral
+	itemInlineLiteralClose
+	itemInlineInterpretedTextOpen
 	itemInlineInterpretedText
+	itemInlineInterpretedTextClose
+	itemInlineInterpretedTextRoleOpen
 	itemInlineInterpretedTextRole
+	itemInlineInterpretedTextRoleClose
 	itemDefinitionTerm
 	itemBullet
 	itemEscape
@@ -114,11 +124,21 @@ var elements = [...]string{
 	"itemCommentMark",
 	"itemEnumListAffix",
 	"itemEnumListArabic",
+	"itemInlineStrongOpen",
 	"itemInlineStrong",
+	"itemInlineStrongClose",
+	"itemInlineEmphasisOpen",
 	"itemInlineEmphasis",
+	"itemInlineEmphasisClose",
+	"itemInlineLiteralOpen",
 	"itemInlineLiteral",
+	"itemInlineLiteralClose",
+	"itemInlineInterpretedTextOpen",
 	"itemInlineInterpretedText",
+	"itemInlineInterpretedTextClose",
+	"itemInlineInterpretedTextRoleOpen",
 	"itemInlineInterpretedTextRole",
+	"itemInlineInterpretedTextRoleClose",
 	"itemDefinitionTerm",
 	"itemBullet",
 	"itemEscape",
@@ -1067,8 +1087,9 @@ func lexInlineStrong(l *lexer) stateFn {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
 	}()
-	// skip the '*'
-	l.skip(2)
+	l.next()
+	l.next()
+	l.emit(itemInlineStrongOpen)
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "**") {
@@ -1077,8 +1098,9 @@ func lexInlineStrong(l *lexer) stateFn {
 			break
 		}
 	}
-	// skip the '*'
-	l.skip(2)
+	l.next()
+	l.next()
+	l.emit(itemInlineStrongClose)
 	return lexStart
 }
 
@@ -1089,8 +1111,8 @@ func lexInlineEmphasis(l *lexer) stateFn {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
 	}()
-	// skip the '*'
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineEmphasisOpen)
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
@@ -1102,14 +1124,19 @@ func lexInlineEmphasis(l *lexer) stateFn {
 			l.emit(itemInlineEmphasis)
 			break
 		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+			if l.peekNextLine() == "" {
+				log.Debugln("Found EOF (unclosed emphasis)")
+				l.emit(itemInlineEmphasis)
+				return lexStart
+			}
 			log.Debugln("Found end-of-line")
 			l.emit(itemInlineEmphasis)
 			l.emit(itemBlankLine)
 			l.nextLine()
 		}
 	}
-	// skip the '*'
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineEmphasisClose)
 	return lexStart
 }
 
@@ -1139,8 +1166,9 @@ func lexInlineLiteral(l *lexer) stateFn {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
 	}()
-	// skip the '`'
-	l.skip(2)
+	l.next()
+	l.next()
+	l.emit(itemInlineLiteralOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "``") {
@@ -1149,8 +1177,9 @@ func lexInlineLiteral(l *lexer) stateFn {
 			break
 		}
 	}
-	// skip the '`'
-	l.skip(2)
+	l.next()
+	l.next()
+	l.emit(itemInlineLiteralClose)
 	return lexStart
 }
 
@@ -1161,8 +1190,8 @@ func lexInlineInterpretedText(l *lexer) stateFn {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
 	}()
-	// skip the '`'
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineInterpretedTextOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "`") {
@@ -1171,8 +1200,8 @@ func lexInlineInterpretedText(l *lexer) stateFn {
 			break
 		}
 	}
-	// skip the '`'
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineInterpretedTextClose)
 	if l.mark == ':' {
 		lexInlineInterpretedTextRole(l)
 	}
@@ -1186,8 +1215,8 @@ func lexInlineInterpretedTextRole(l *lexer) stateFn {
 		log.SetIndent(log.Indent() - 1)
 		log.Debugln("END")
 	}()
-	// skip the :
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineInterpretedTextRoleOpen)
 	for {
 		l.next()
 		if l.mark == ':' {
@@ -1195,7 +1224,7 @@ func lexInlineInterpretedTextRole(l *lexer) stateFn {
 			break
 		}
 	}
-	// skip the :
-	l.skip(1)
+	l.next()
+	l.emit(itemInlineInterpretedTextRoleClose)
 	return lexStart
 }

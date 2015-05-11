@@ -1,0 +1,2 @@
+The bad portion is \u00a1*examples*!\u00a0*\u00a0no-break-space\u00a0*.
+Surrounded by things!

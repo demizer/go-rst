@@ -1,6 +1,14 @@
 [
     {
         "id": 1,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 1,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 2,
         "type": "itemInlineEmphasis",
         "text": "emphasized",
         "startPosition": 2,
@@ -8,7 +16,15 @@
         "length": 10
     },
     {
-        "id": 2,
+        "id": 3,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 12,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
         "type": "itemEOF",
         "startPosition": 13,
         "line": 1

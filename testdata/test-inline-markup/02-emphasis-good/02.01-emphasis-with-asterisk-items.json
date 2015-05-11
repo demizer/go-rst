@@ -9,6 +9,14 @@
     },
     {
         "id": 2,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 12,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
         "type": "itemInlineEmphasis",
         "text": "\\*blah\\*",
         "startPosition": 13,
@@ -16,7 +24,15 @@
         "length": 8
     },
     {
-        "id": 3,
+        "id": 4,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 21,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
         "type": "itemParagraph",
         "text": " asterisk.",
         "startPosition": 22,
@@ -24,7 +40,7 @@
         "length": 10
     },
     {
-        "id": 4,
+        "id": 6,
         "type": "itemBlankLine",
         "text": "\n",
         "startPosition": 1,
@@ -32,7 +48,7 @@
         "length": 1
     },
     {
-        "id": 5,
+        "id": 7,
         "type": "itemParagraph",
         "text": "Emphasized ",
         "startPosition": 1,
@@ -40,7 +56,15 @@
         "length": 11
     },
     {
-        "id": 6,
+        "id": 8,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 12,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 9,
         "type": "itemInlineEmphasis",
         "text": "\\**blah\\**",
         "startPosition": 13,
@@ -48,7 +72,15 @@
         "length": 10
     },
     {
-        "id": 7,
+        "id": 10,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 23,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 11,
         "type": "itemParagraph",
         "text": " double asterisk.",
         "startPosition": 24,
@@ -56,7 +88,7 @@
         "length": 17
     },
     {
-        "id": 8,
+        "id": 12,
         "type": "itemEOF",
         "startPosition": 41,
         "line": 3

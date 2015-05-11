@@ -9,6 +9,14 @@
     },
     {
         "id": 2,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 28,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
         "type": "itemInlineEmphasis",
         "text": "emphasized",
         "startPosition": 29,
@@ -16,7 +24,15 @@
         "length": 10
     },
     {
-        "id": 3,
+        "id": 4,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 39,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
         "type": "itemParagraph",
         "text": " word.",
         "startPosition": 40,
@@ -24,7 +40,7 @@
         "length": 6
     },
     {
-        "id": 4,
+        "id": 6,
         "type": "itemEOF",
         "startPosition": 46,
         "line": 1
