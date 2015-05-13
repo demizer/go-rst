@@ -764,11 +764,6 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 		a = l.peek(2)
 	}
 
-	if (b == '\\' || b == rune(markup[0])) && !isSpace(a) && len(markup) < 2 {
-		log.Debugln("Inline markup close not found (possible escaped close string)")
-		return false
-	}
-
 	// A valid end string is made up of one of the following items, notice
 	// unicode.Po is troublesome with '*' (emphasis and strong) runes. Special
 	// logic is needed in these cases (below).
@@ -780,10 +775,11 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 	// rune is not '*' and the rune after that is not '*'. The spec is
 	// completely silent on this, (and somewhat confusing), but it is clearly
 	// how the ref compiler works.
-	validNext := (len(markup) > 1 && l.mark == l.peek(1) && l.mark != l.peek(2))
+	validNext := (len(markup) == 1 && l.mark != l.peek(1) ||
+		len(markup) > 1 && l.mark == l.peek(1) && l.mark != l.peek(2))
 
 	// If the closing markup is one rune, then do nothing.
-	if validEnd && (len(markup) < 2 || validNext) {
+	if validEnd && validNext {
 		log.Debugln("Found inline markup close")
 		return true
 	}
@@ -1156,10 +1152,6 @@ func lexInlineEmphasis(l *lexer) stateFn {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
 			log.Debugln("Found emphasis close")
-			l.emit(itemInlineEmphasis)
-			break
-		} else if l.mark == '*' && l.peek(1) == utf8.RuneError {
-			log.Debugln("Found emphasis close at end-of-line")
 			l.emit(itemInlineEmphasis)
 			break
 		} else if l.isEndOfLine() && l.mark == utf8.RuneError {

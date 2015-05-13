@@ -1,0 +1,4 @@
+*emphasis without closing asterisk
+still emphasized on this line.
+
+Oh, but not on this new paragraph!

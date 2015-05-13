@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 1,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasis",
+        "text": "emphasis without closing asterisk",
+        "startPosition": 2,
+        "line": 1,
+        "length": 33
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 35,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasis",
+        "text": "still emphasized on this line.",
+        "startPosition": 1,
+        "line": 2,
+        "length": 30
+    },
+    {
+        "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "Oh, but not on this new paragraph!",
+        "startPosition": 1,
+        "line": 4,
+        "length": 34
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "startPosition": 35,
+        "line": 4
+    }
+]

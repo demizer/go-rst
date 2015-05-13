@@ -1,0 +1,1 @@
+'*args' will trigger a warning and may be problematic.

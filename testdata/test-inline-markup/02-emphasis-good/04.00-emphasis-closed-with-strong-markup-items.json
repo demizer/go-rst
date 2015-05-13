@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "what about ",
+        "startPosition": 1,
+        "line": 1,
+        "length": 11
+    },
+    {
+        "id": 2,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 12,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemInlineEmphasis",
+        "text": "this*",
+        "startPosition": 13,
+        "line": 1,
+        "length": 5
+    },
+    {
+        "id": 4,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 18,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "?",
+        "startPosition": 19,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "startPosition": 20,
+        "line": 1
+    }
+]

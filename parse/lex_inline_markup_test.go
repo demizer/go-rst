@@ -51,6 +51,13 @@ func TestLexInlineMarkupRecognitionRulesGood0401(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
+func TestLexInlineMarkupRecognitionRulesGood5000(t *testing.T) {
+	testPath := testPathFromName("05.00-emphasis-with-backwards-rule-5")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // Bad emphasis start string with unicode literal space after start string. The
 // text that is suppossed to close the emphasis is lexed as an emphasis start
 // string without a corresponding end string.
@@ -131,6 +138,43 @@ func TestLexEmphasizedAsteriskGood0201(t *testing.T) {
 // Emphasized asterisk
 func TestLexEmphasizedAsteriskGood0202(t *testing.T) {
 	testPath := testPathFromName("02.02-emphasis-with-asterisk")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+func TestLexEmphasisGood0300(t *testing.T) {
+	testPath := testPathFromName("03.00-emphasis-surrounded-by-markup")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+func TestLexEmphasisGood0400(t *testing.T) {
+	testPath := testPathFromName("04.00-emphasis-closed-with-strong-markup")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Unclosed emphasis
+func TestLexEmphasisUnclosedBad0000(t *testing.T) {
+	testPath := testPathFromName("00.00-emphasis-unclosed")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Unclosed emphasis on two lines with paragraphs and stuff.
+func TestLexEmphasisUnclosedBad0001(t *testing.T) {
+	testPath := testPathFromName("00.01-emphasis-unclosed")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+func TestLexEmphasisUnclosedBad0100(t *testing.T) {
+	testPath := testPathFromName("01.00-emphasis-unclosed-surrounded-by-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

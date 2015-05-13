@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": ")*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),",
+        "startPosition": 1,
+        "line": 1,
+        "length": 74
+    },
+    {
+        "id": 2,
+        "type": "itemParagraph",
+        "text": "(*), [*], '*' or '\"*\"' (\"quoted\" start-string),",
+        "startPosition": 1,
+        "line": 2,
+        "length": 47
+    },
+    {
+        "id": 3,
+        "type": "itemParagraph",
+        "text": "x*2* or 2*x* (alphanumeric char before),",
+        "startPosition": 1,
+        "line": 3,
+        "length": 40
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": "\\*args or * (escaped, whitespace behind start-string),",
+        "startPosition": 1,
+        "line": 4,
+        "length": 54
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": "or ",
+        "startPosition": 1,
+        "line": 5,
+        "length": 3
+    },
+    {
+        "id": 6,
+        "type": "itemInlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 4,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemInlineEmphasis",
+        "text": "the\\* *stars\\* *inside",
+        "startPosition": 5,
+        "line": 5,
+        "length": 22
+    },
+    {
+        "id": 8,
+        "type": "itemInlineEmphasisClose",
+        "text": "*",
+        "startPosition": 27,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemParagraph",
+        "text": " (escaped, whitespace before end-string).",
+        "startPosition": 28,
+        "line": 5,
+        "length": 41
+    },
+    {
+        "id": 10,
+        "type": "itemEOF",
+        "startPosition": 69,
+        "line": 5
+    }
+]
