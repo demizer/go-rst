@@ -44,6 +44,13 @@ func TestLexInlineMarkupRecognitionOpenersAndClosersGood0400(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
+func TestLexInlineMarkupRecognitionRulesGood0401(t *testing.T) {
+	testPath := testPathFromName("04.01-strong-and-kwargs")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // Bad emphasis start string with unicode literal space after start string. The
 // text that is suppossed to close the emphasis is lexed as an emphasis start
 // string without a corresponding end string.
@@ -124,6 +131,70 @@ func TestLexEmphasizedAsteriskGood0201(t *testing.T) {
 // Emphasized asterisk
 func TestLexEmphasizedAsteriskGood0202(t *testing.T) {
 	testPath := testPathFromName("02.02-emphasis-with-asterisk")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Single strong
+func TestLexStrongGood0000(t *testing.T) {
+	testPath := testPathFromName("00.00-strong")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Single strong with apostrophes
+func TestLexStrongGood0100(t *testing.T) {
+	testPath := testPathFromName("01.00-strong-with-apostrophe")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with unicode literal quotes
+func TestLexStrongGood0200(t *testing.T) {
+	testPath := testPathFromName("02.00-strong-quoted")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with asterisk and double asterisk
+func TestLexStrongGood0300(t *testing.T) {
+	testPath := testPathFromName("03.00-strong-asterisk")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with asterisk and double asterisk and strong asterisk gone to plaid!
+func TestLexStrongGood0301(t *testing.T) {
+	testPath := testPathFromName("03.01-strong-asterisk")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with bad kwargs
+func TestLexStrongBad0000(t *testing.T) {
+	testPath := testPathFromName("00.00-strong-kwargs")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with missing closing markup
+func TestLexStrongBad0100(t *testing.T) {
+	testPath := testPathFromName("01.00-strong-unclosed")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+// Strong with missing closing markup across three lines
+func TestLexStrongBad0101(t *testing.T) {
+	testPath := testPathFromName("01.01-strong-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

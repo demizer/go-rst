@@ -10,15 +10,23 @@
     {
         "id": 2,
         "type": "itemInlineStrong",
-        "text": "strong without closing asterisks",
+        "text": "strong",
         "startPosition": 3,
         "line": 1,
-        "length": 32
+        "length": 6
     },
     {
         "id": 3,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 9,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
         "type": "itemEOF",
-        "startPosition": 35,
+        "startPosition": 11,
         "line": 1
     }
 ]

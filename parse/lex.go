@@ -720,9 +720,20 @@ func isInlineMarkup(l *lexer) bool {
 			log.SetIndent(log.Indent() - 1)
 			log.Debugln("END")
 		}()
-		b := l.peekBack(1)
+		var b rune
+		for x := 1; x != 3; x++ {
+			b = l.peekBack(x)
+			if l.mark != b {
+				break
+			}
+		}
 		f := l.peek(1)
-		if !isSurrounded(b, f) && (isOpenerRune(b) || l.start == l.index) && !isSpace(f) {
+		if l.mark == f {
+			f = l.peek(2)
+		}
+		// log.Debugf("back: %q forward: %q\n", b, f)
+		if b != '\\' && (isOpenerRune(b) || l.start == l.index) &&
+			!isSurrounded(b, f) && !isSpace(f) && f != utf8.RuneError {
 			log.Debugln("Found inline markup!")
 			return true
 		}
@@ -745,20 +756,38 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 		}
 		return false
 	}
+
 	var a, b rune
 	b = l.peekBack(1)
 	a = l.peek(1)
 	if len(markup) > 1 {
 		a = l.peek(2)
 	}
-	if (b == '\\' || b == '*') && !isSpace(a) {
-		log.Debugln("Inline markup close not found (b == '\\' || b == '*')")
+
+	if (b == '\\' || b == rune(markup[0])) && !isSpace(a) && len(markup) < 2 {
+		log.Debugln("Inline markup close not found (possible escaped close string)")
 		return false
 	}
-	if !isSpace(b) && (isSpace(a) || isEndAscii(a) || unicode.In(a, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps)) {
+
+	// A valid end string is made up of one of the following items, notice
+	// unicode.Po is troublesome with '*' (emphasis and strong) runes. Special
+	// logic is needed in these cases (below).
+	validEnd := (!isSpace(b) && (isSpace(a) || isEndAscii(a) || unicode.In(a,
+		unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps) ||
+		a == utf8.RuneError))
+
+	// If the closing markup is two runes, such as '**', make sure the next
+	// rune is not '*' and the rune after that is not '*'. The spec is
+	// completely silent on this, (and somewhat confusing), but it is clearly
+	// how the ref compiler works.
+	validNext := (len(markup) > 1 && l.mark == l.peek(1) && l.mark != l.peek(2))
+
+	// If the closing markup is one rune, then do nothing.
+	if validEnd && (len(markup) < 2 || validNext) {
 		log.Debugln("Found inline markup close")
 		return true
 	}
+
 	log.Debugln("Inline markup close not found")
 	return false
 }
@@ -1096,6 +1125,16 @@ func lexInlineStrong(l *lexer) stateFn {
 			log.Debugln("Found strong close")
 			l.emit(itemInlineStrong)
 			break
+		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+			if l.peekNextLine() == "" {
+				log.Debugln("Found EOF (unclosed strong)")
+				l.emit(itemInlineStrong)
+				return lexStart
+			}
+			log.Debugln("Found end-of-line")
+			l.emit(itemInlineStrong)
+			l.emit(itemBlankLine)
+			l.nextLine()
 		}
 	}
 	l.next()

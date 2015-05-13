@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemInlineStrong",
+        "text": "strong without closing asterisks",
+        "startPosition": 3,
+        "line": 1,
+        "length": 32
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 35,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineStrong",
+        "text": "still unclosed on the second line.",
+        "startPosition": 1,
+        "line": 2,
+        "length": 34
+    },
+    {
+        "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "Oh look, a new paragraph!",
+        "startPosition": 1,
+        "line": 4,
+        "length": 25
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "startPosition": 26,
+        "line": 4
+    }
+]

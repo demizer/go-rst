@@ -1,0 +1,144 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Strong ",
+        "startPosition": 1,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 2,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 8,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 3,
+        "type": "itemInlineStrong",
+        "text": "*",
+        "startPosition": 10,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 11,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 5,
+        "type": "itemParagraph",
+        "text": " asterisk.",
+        "startPosition": 13,
+        "line": 1,
+        "length": 10
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemParagraph",
+        "text": "Strong ",
+        "startPosition": 1,
+        "line": 3,
+        "length": 7
+    },
+    {
+        "id": 8,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 8,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 9,
+        "type": "itemInlineStrong",
+        "text": "**",
+        "startPosition": 10,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 12,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 11,
+        "type": "itemParagraph",
+        "text": " double asterisk.",
+        "startPosition": 14,
+        "line": 3,
+        "length": 17
+    },
+    {
+        "id": 12,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 13,
+        "type": "itemParagraph",
+        "text": "Strong ",
+        "startPosition": 1,
+        "line": 5,
+        "length": 7
+    },
+    {
+        "id": 14,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 8,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 15,
+        "type": "itemInlineStrong",
+        "text": "********************",
+        "startPosition": 10,
+        "line": 5,
+        "length": 20
+    },
+    {
+        "id": 16,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 30,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 17,
+        "type": "itemParagraph",
+        "text": " asterisk gone to plaid!",
+        "startPosition": 32,
+        "line": 5,
+        "length": 24
+    },
+    {
+        "id": 18,
+        "type": "itemEOF",
+        "startPosition": 56,
+        "line": 5
+    }
+]

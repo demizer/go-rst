@@ -41,40 +41,8 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
-        "text": "\n",
-        "startPosition": 1,
-        "line": 2,
-        "length": 1
-    },
-    {
-        "id": 7,
-        "type": "itemParagraph",
-        "text": "(however, '",
-        "startPosition": 1,
-        "line": 3,
-        "length": 11
-    },
-    {
-        "id": 8,
-        "type": "itemInlineStrongOpen",
-        "text": "**",
-        "startPosition": 12,
-        "line": 3,
-        "length": 2
-    },
-    {
-        "id": 9,
-        "type": "itemInlineStrong",
-        "text": "kwargs' will trigger a warning and may be problematic)",
-        "startPosition": 14,
-        "line": 3,
-        "length": 54
-    },
-    {
-        "id": 10,
         "type": "itemEOF",
-        "startPosition": 68,
-        "line": 3
+        "startPosition": 63,
+        "line": 1
     }
 ]
