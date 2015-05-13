@@ -834,8 +834,6 @@ func lexStart(l *lexer) stateFn {
 				return lexBlockquote
 			} else if isDefinitionTerm(l) {
 				return lexDefinitionTerm
-			} else if isInlineMarkup(l) {
-				return lexInlineMarkup
 			} else {
 				return lexParagraph
 			}
@@ -1206,6 +1204,16 @@ func lexInlineLiteral(l *lexer) stateFn {
 			log.Debugln("Found literal close")
 			l.emit(itemInlineLiteral)
 			break
+		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+			if l.peekNextLine() == "" {
+				log.Debugln("Found EOF (unclosed inline literal)")
+				l.emit(itemInlineLiteral)
+				return lexStart
+			}
+			log.Debugln("Found end-of-line")
+			l.emit(itemInlineLiteral)
+			l.emit(itemBlankLine)
+			l.nextLine()
 		}
 	}
 	l.next()

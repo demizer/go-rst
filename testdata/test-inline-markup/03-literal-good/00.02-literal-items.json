@@ -10,23 +10,31 @@
     {
         "id": 2,
         "type": "itemInlineLiteral",
-        "text": "lite\\ral",
+        "text": "inline literal",
         "startPosition": 3,
         "line": 1,
-        "length": 8
+        "length": 14
     },
     {
         "id": 3,
         "type": "itemInlineLiteralClose",
         "text": "``",
-        "startPosition": 11,
+        "startPosition": 17,
         "line": 1,
         "length": 2
     },
     {
         "id": 4,
+        "type": "itemParagraph",
+        "text": " at the beginning of a paragraph.",
+        "startPosition": 19,
+        "line": 1,
+        "length": 33
+    },
+    {
+        "id": 5,
         "type": "itemEOF",
-        "startPosition": 13,
+        "startPosition": 52,
         "line": 1
     }
 ]

@@ -1,1 +1,4 @@
-``literal\``
+<document source="test data">
+    <paragraph>
+        <literal>
+            literal\\

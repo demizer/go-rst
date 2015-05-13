@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemParagraph",
+        "text": "Python ",
+        "startPosition": 1,
+        "line": 1,
+        "length": 7
+    },
+    {
+        "id": 2,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 8,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 3,
+        "type": "itemInlineLiteral",
+        "text": "list",
+        "startPosition": 10,
+        "line": 1,
+        "length": 4
+    },
+    {
+        "id": 4,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 14,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 5,
+        "type": "itemEscape",
+        "text": "\\s",
+        "startPosition": 16,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": " use square bracket syntax.",
+        "startPosition": 18,
+        "line": 1,
+        "length": 27
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "startPosition": 45,
+        "line": 1
+    }
+]

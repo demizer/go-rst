@@ -10,23 +10,31 @@
     {
         "id": 2,
         "type": "itemInlineLiteral",
-        "text": "lite\\ral",
+        "text": "literal ``TeX quotes'' & \\backslash",
         "startPosition": 3,
         "line": 1,
-        "length": 8
+        "length": 35
     },
     {
         "id": 3,
         "type": "itemInlineLiteralClose",
         "text": "``",
-        "startPosition": 11,
+        "startPosition": 38,
         "line": 1,
         "length": 2
     },
     {
         "id": 4,
+        "type": "itemParagraph",
+        "text": " but not \"``\" or ``",
+        "startPosition": 40,
+        "line": 1,
+        "length": 19
+    },
+    {
+        "id": 5,
         "type": "itemEOF",
-        "startPosition": 13,
+        "startPosition": 59,
         "line": 1
     }
 ]

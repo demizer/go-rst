@@ -1,4 +1,32 @@
-<document source="test data">
-    <paragraph>
-        <literal>
-            literal\\
+[
+    {
+        "id": 1,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemInlineLiteral",
+        "text": "literal\\",
+        "startPosition": 3,
+        "line": 1,
+        "length": 8
+    },
+    {
+        "id": 3,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 11,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemEOF",
+        "startPosition": 13,
+        "line": 1
+    }
+]

@@ -15,7 +15,7 @@ func TestLexInlineMarkupRecognitionRulesGood0000(t *testing.T) {
 }
 
 // Tests double underscore recognition
-func TestLexInlineMarkupRecognitionRulesEscapingGood0100(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesGood0100(t *testing.T) {
 	testPath := testPathFromName("01.00-lots-of-escaping")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -23,21 +23,21 @@ func TestLexInlineMarkupRecognitionRulesEscapingGood0100(t *testing.T) {
 }
 
 // Tests escaping with unicode literals
-func TestLexInlineMarkupRecognitionRulesEscapingUnicodeLiteralsGood0200(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesGood0200(t *testing.T) {
 	testPath := testPathFromName("02.00-lots-of-escaping-unicode")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
-func TestLexInlineMarkupRecognitionEmphasisWrappedWithUnicodeLiteralsGood0300(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesGood0300(t *testing.T) {
 	testPath := testPathFromName("03.00-emphasis-wrapped-in-unicode")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
-func TestLexInlineMarkupRecognitionOpenersAndClosersGood0400(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesGood0400(t *testing.T) {
 	testPath := testPathFromName("04.00-openers-and-closers")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -61,7 +61,7 @@ func TestLexInlineMarkupRecognitionRulesGood5000(t *testing.T) {
 // Bad emphasis start string with unicode literal space after start string. The
 // text that is suppossed to close the emphasis is lexed as an emphasis start
 // string without a corresponding end string.
-func TestLexInlineMarkupRecognitionOpenersAndClosersBad0000(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesBad0000(t *testing.T) {
 	testPath := testPathFromName("00.00-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -72,7 +72,7 @@ func TestLexInlineMarkupRecognitionOpenersAndClosersBad0000(t *testing.T) {
 // text that is suppossed to close the emphasis is lexed as an emphasis start
 // string without a corresponding end string. This test includes more text
 // around the incorrect emphasis.
-func TestLexInlineMarkupRecognitionOpenersAndClosersBad0001(t *testing.T) {
+func TestLexInlineMarkupRecognitionRulesBad0001(t *testing.T) {
 	testPath := testPathFromName("00.01-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -80,7 +80,7 @@ func TestLexInlineMarkupRecognitionOpenersAndClosersBad0001(t *testing.T) {
 }
 
 // A paragraph containing a single emphasized word
-func TestLexSingleEmphasisGood0000(t *testing.T) {
+func TestLexEmphasisGood0000(t *testing.T) {
 	testPath := testPathFromName("00.00-simple-emphasis")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -88,7 +88,7 @@ func TestLexSingleEmphasisGood0000(t *testing.T) {
 }
 
 // A document only containing an emphasized word
-func TestLexSingleEmphasisGood0001(t *testing.T) {
+func TestLexEmphasisGood0001(t *testing.T) {
 	testPath := testPathFromName("00.01-single-emphasis")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -96,7 +96,7 @@ func TestLexSingleEmphasisGood0001(t *testing.T) {
 }
 
 // Emphasis across two lines
-func TestLexEmphasisAcrossLinesGood0002(t *testing.T) {
+func TestLexEmphasisGood0002(t *testing.T) {
 	testPath := testPathFromName("00.02-emphasis-across-lines")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -104,7 +104,7 @@ func TestLexEmphasisAcrossLinesGood0002(t *testing.T) {
 }
 
 // Emphasis surrounded by apostrophe
-func TestLexEmphasisSurrondedByApostropheGood0100(t *testing.T) {
+func TestLexEmphasisGood0100(t *testing.T) {
 	testPath := testPathFromName("01.00-emphasis-with-emphasis-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -112,7 +112,7 @@ func TestLexEmphasisSurrondedByApostropheGood0100(t *testing.T) {
 }
 
 // Emphasis surrounded by quotes from many languages
-func TestLexEmphasisSurrondedByQuotesGood0101(t *testing.T) {
+func TestLexEmphasisGood0101(t *testing.T) {
 	testPath := testPathFromName("01.01-emphasis-surrounded-by-quotes")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -120,7 +120,7 @@ func TestLexEmphasisSurrondedByQuotesGood0101(t *testing.T) {
 }
 
 // Emphasized asterisk
-func TestLexEmphasizedAsteriskGood0200(t *testing.T) {
+func TestLexEmphasisGood0200(t *testing.T) {
 	testPath := testPathFromName("02.00-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -128,7 +128,7 @@ func TestLexEmphasizedAsteriskGood0200(t *testing.T) {
 }
 
 // Emphasized asterisk
-func TestLexEmphasizedAsteriskGood0201(t *testing.T) {
+func TestLexEmphasisGood0201(t *testing.T) {
 	testPath := testPathFromName("02.01-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -136,7 +136,7 @@ func TestLexEmphasizedAsteriskGood0201(t *testing.T) {
 }
 
 // Emphasized asterisk
-func TestLexEmphasizedAsteriskGood0202(t *testing.T) {
+func TestLexEmphasisGood0202(t *testing.T) {
 	testPath := testPathFromName("02.02-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -158,7 +158,7 @@ func TestLexEmphasisGood0400(t *testing.T) {
 }
 
 // Unclosed emphasis
-func TestLexEmphasisUnclosedBad0000(t *testing.T) {
+func TestLexEmphasisBad0000(t *testing.T) {
 	testPath := testPathFromName("00.00-emphasis-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -166,14 +166,14 @@ func TestLexEmphasisUnclosedBad0000(t *testing.T) {
 }
 
 // Unclosed emphasis on two lines with paragraphs and stuff.
-func TestLexEmphasisUnclosedBad0001(t *testing.T) {
+func TestLexEmphasisBad0001(t *testing.T) {
 	testPath := testPathFromName("00.01-emphasis-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
-func TestLexEmphasisUnclosedBad0100(t *testing.T) {
+func TestLexEmphasisBad0100(t *testing.T) {
 	testPath := testPathFromName("01.00-emphasis-unclosed-surrounded-by-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)

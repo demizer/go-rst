@@ -1,0 +1,168 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemInlineLiteral",
+        "text": "'literal'",
+        "startPosition": 3,
+        "line": 1,
+        "length": 9
+    },
+    {
+        "id": 3,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 12,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemParagraph",
+        "text": " with quotes, ",
+        "startPosition": 14,
+        "line": 1,
+        "length": 14
+    },
+    {
+        "id": 5,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 28,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemInlineLiteral",
+        "text": "\"literal\"",
+        "startPosition": 30,
+        "line": 1,
+        "length": 9
+    },
+    {
+        "id": 7,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 39,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 8,
+        "type": "itemParagraph",
+        "text": " with quotes,",
+        "startPosition": 41,
+        "line": 1,
+        "length": 13
+    },
+    {
+        "id": 9,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 1,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemInlineLiteral",
+        "text": "\u2018literal\u2019",
+        "startPosition": 3,
+        "line": 2,
+        "length": 9
+    },
+    {
+        "id": 11,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 16,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 12,
+        "type": "itemParagraph",
+        "text": " with quotes, ",
+        "startPosition": 18,
+        "line": 2,
+        "length": 14
+    },
+    {
+        "id": 13,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 32,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 14,
+        "type": "itemInlineLiteral",
+        "text": "\u201cliteral\u201d",
+        "startPosition": 34,
+        "line": 2,
+        "length": 9
+    },
+    {
+        "id": 15,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 47,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 16,
+        "type": "itemParagraph",
+        "text": " with quotes,",
+        "startPosition": 49,
+        "line": 2,
+        "length": 13
+    },
+    {
+        "id": 17,
+        "type": "itemInlineLiteralOpen",
+        "text": "``",
+        "startPosition": 1,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 18,
+        "type": "itemInlineLiteral",
+        "text": "«literal»",
+        "startPosition": 3,
+        "line": 3,
+        "length": 9
+    },
+    {
+        "id": 19,
+        "type": "itemInlineLiteralClose",
+        "text": "``",
+        "startPosition": 14,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 20,
+        "type": "itemParagraph",
+        "text": " with quotes.",
+        "startPosition": 16,
+        "line": 3,
+        "length": 13
+    },
+    {
+        "id": 21,
+        "type": "itemEOF",
+        "startPosition": 29,
+        "line": 3
+    }
+]

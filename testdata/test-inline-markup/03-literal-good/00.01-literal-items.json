@@ -2,47 +2,47 @@
     {
         "id": 1,
         "type": "itemParagraph",
-        "text": "Find the ",
+        "text": "Inline literal ",
         "startPosition": 1,
         "line": 1,
-        "length": 9
+        "length": 15
     },
     {
         "id": 2,
         "type": "itemInlineLiteralOpen",
         "text": "``",
-        "startPosition": 10,
+        "startPosition": 16,
         "line": 1,
         "length": 2
     },
     {
         "id": 3,
         "type": "itemInlineLiteral",
-        "text": "`interpreted text`",
-        "startPosition": 12,
+        "text": "in",
+        "startPosition": 18,
         "line": 1,
-        "length": 18
+        "length": 2
     },
     {
         "id": 4,
         "type": "itemInlineLiteralClose",
         "text": "``",
-        "startPosition": 30,
+        "startPosition": 20,
         "line": 1,
         "length": 2
     },
     {
         "id": 5,
         "type": "itemParagraph",
-        "text": " in this paragraph!",
-        "startPosition": 32,
+        "text": " the middle of a paragraph.",
+        "startPosition": 22,
         "line": 1,
-        "length": 19
+        "length": 27
     },
     {
         "id": 6,
         "type": "itemEOF",
-        "startPosition": 51,
+        "startPosition": 49,
         "line": 1
     }
 ]

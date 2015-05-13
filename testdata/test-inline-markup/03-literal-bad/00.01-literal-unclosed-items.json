@@ -10,31 +10,47 @@
     {
         "id": 2,
         "type": "itemInlineLiteral",
-        "text": "standalone TeX quotes'' will trigger a warning",
+        "text": "literal without closing backquotes",
         "startPosition": 3,
         "line": 1,
-        "length": 46
+        "length": 34
     },
     {
         "id": 3,
         "type": "itemBlankLine",
         "text": "\n",
-        "startPosition": 49,
+        "startPosition": 37,
         "line": 1,
         "length": 1
     },
     {
         "id": 4,
         "type": "itemInlineLiteral",
-        "text": "and may be problematic)",
+        "text": "a second line.",
         "startPosition": 1,
         "line": 2,
-        "length": 23
+        "length": 14
     },
     {
         "id": 5,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemParagraph",
+        "text": "Oh a new paragraph!",
+        "startPosition": 1,
+        "line": 4,
+        "length": 19
+    },
+    {
+        "id": 7,
         "type": "itemEOF",
-        "startPosition": 24,
-        "line": 2
+        "startPosition": 20,
+        "line": 4
     }
 ]
