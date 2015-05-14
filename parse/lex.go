@@ -474,11 +474,6 @@ func (l *lexer) isEndOfLine() bool {
 	return len(l.lines[l.line]) == l.index
 }
 
-// isSpace reports whether r is a space character.
-func isSpace(r rune) bool {
-	return unicode.In(r, unicode.Zs, unicode.Zl)
-}
-
 // isArabic returns true if rune r is an Arabic numeral.
 func isArabic(r rune) bool {
 	return r > '0' && r < '9'
@@ -502,7 +497,7 @@ func isSection(l *lexer) bool {
 		var first, last rune
 		for j := 0; j < len(input); j++ {
 			r, _ := utf8.DecodeRuneInString(input[j:])
-			if isSpace(r) {
+			if unicode.IsSpace(r) {
 				log.Debugln("Skipping space rune")
 				continue
 			}
@@ -590,7 +585,7 @@ func isComment(l *lexer) bool {
 	}
 	if nMark := l.peek(1); l.mark == '.' && nMark == '.' {
 		nMark2 := l.peek(2)
-		if isSpace(nMark2) || nMark2 == utf8.RuneError {
+		if unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError {
 			log.Debugln("Found comment!")
 			return true
 		}
@@ -647,7 +642,7 @@ func isDefinitionTerm(l *lexer) bool {
 	nL := l.peekNextLine()
 	sCount := 0
 	for {
-		if sCount < len(nL) && isSpace(rune(nL[sCount])) {
+		if sCount < len(nL) && unicode.IsSpace(rune(nL[sCount])) {
 			sCount++
 		} else {
 			break
@@ -733,7 +728,7 @@ func isInlineMarkup(l *lexer) bool {
 		}
 		// log.Debugf("back: %q forward: %q\n", b, f)
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) &&
-			!isSurrounded(b, f) && !isSpace(f) && f != utf8.RuneError {
+			!isSurrounded(b, f) && !unicode.IsSpace(f) && f != utf8.RuneError {
 			log.Debugln("Found inline markup!")
 			return true
 		}
@@ -767,7 +762,7 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 	// A valid end string is made up of one of the following items, notice
 	// unicode.Po is troublesome with '*' (emphasis and strong) runes. Special
 	// logic is needed in these cases (below).
-	validEnd := (!isSpace(b) && (isSpace(a) || isEndAscii(a) || unicode.In(a,
+	validEnd := (!unicode.IsSpace(b) && (unicode.IsSpace(a) || isEndAscii(a) || unicode.In(a,
 		unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps) ||
 		a == utf8.RuneError))
 
@@ -828,7 +823,7 @@ func lexStart(l *lexer) stateFn {
 				return lexSection
 			} else if isTransition(l) {
 				return lexTransition
-			} else if isSpace(l.mark) {
+			} else if unicode.IsSpace(l.mark) {
 				return lexSpace
 			} else if isBlockquote(l) {
 				return lexBlockquote
@@ -870,9 +865,9 @@ func lexSpace(l *lexer) stateFn {
 		log.Debugln("END")
 	}()
 	log.Debugln("l.mark ==", l.mark)
-	for isSpace(l.mark) {
-		log.Debugln("isSpace ==", isSpace(l.mark))
-		if r := l.peek(1); isSpace(r) {
+	for unicode.IsSpace(l.mark) {
+		log.Debugln("unicode.IsSpace ==", unicode.IsSpace(l.mark))
+		if r := l.peek(1); unicode.IsSpace(r) {
 			l.next()
 		} else {
 			log.Debugln("Next mark is not space!")
@@ -904,7 +899,7 @@ func lexSection(l *lexer) stateFn {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
-	} else if isSpace(l.mark) {
+	} else if unicode.IsSpace(l.mark) {
 		return lexSpace
 	} else if l.mark == utf8.RuneError {
 		l.next()
