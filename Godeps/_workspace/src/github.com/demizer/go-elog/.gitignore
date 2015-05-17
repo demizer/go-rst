@@ -1,7 +1,0 @@
-!*
-*.test
-*.bak
-tags
-c.out
-example/example
-_vendor/

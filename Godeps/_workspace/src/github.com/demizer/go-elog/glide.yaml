@@ -1,7 +1,0 @@
-package: main
-
-import:
-    - package: github.com/aybabtme/rgbterm
-      repo: https://github.com/aybabtme/rgbterm.git
-      ref: 9e3d038e
-      vcs: git

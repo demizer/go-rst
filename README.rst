@@ -1,17 +1,16 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Tue Dec 09 21:41 2014
+:Modified: Wed May 13 22:48 2015
 
-.. image:: https://travis-ci.org/demizer/go-rst.png?branch=master
-    :target: https://travis-ci.org/demizer/go-rst
-.. image:: https://drone.io/github.com/demizer/go-rst/status.png
-    :target: https://drone.io/github.com/demizer/go-rst/latest
-.. image:: https://coveralls.io/repos/demizer/go-rst/badge.png?branch=master
-    :target: https://coveralls.io/r/demizer/go-rst?branch=master
+.. .. image:: https://travis-ci.org/demizer/go-rst.png?branch=master
+    .. :target: https://travis-ci.org/demizer/go-rst
+.. .. image:: https://drone.io/github.com/demizer/go-rst/status.png
+    .. :target: https://drone.io/github.com/demizer/go-rst/latest
+.. .. image:: https://coveralls.io/repos/demizer/go-rst/badge.png?branch=master
+    .. :target: https://coveralls.io/r/demizer/go-rst?branch=master
 .. image:: https://godoc.org/github.com/demizer/go-rst?status.svg
     :target: http://godoc.org/github.com/demizer/go-rst
-|
 
 A reStructuredText parser for and implemented in the Go programming language.
 
