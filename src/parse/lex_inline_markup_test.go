@@ -54,9 +54,8 @@ func TestLexInlineMarkupRecognitionRulesGood5000(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-// Bad emphasis start string with unicode literal space after start string. The
-// text that is suppossed to close the emphasis is lexed as an emphasis start
-// string without a corresponding end string.
+// Bad emphasis start string with unicode literal space after start string. The text that is suppossed to close the emphasis
+// is lexed as an emphasis start string without a corresponding end string.
 func TestLexInlineMarkupRecognitionRulesBad0000(t *testing.T) {
 	testPath := testPathFromName("00.00-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)
@@ -64,10 +63,9 @@ func TestLexInlineMarkupRecognitionRulesBad0000(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-// Bad emphasis start string with unicode literal space after start string. The
-// text that is suppossed to close the emphasis is lexed as an emphasis start
-// string without a corresponding end string. This test includes more text
-// around the incorrect emphasis.
+// Bad emphasis start string with unicode literal space after start string. The text that is suppossed to close the emphasis
+// is lexed as an emphasis start string without a corresponding end string. This test includes more text around the incorrect
+// emphasis.
 func TestLexInlineMarkupRecognitionRulesBad0001(t *testing.T) {
 	testPath := testPathFromName("00.01-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)

@@ -27,9 +27,8 @@ func lexTest(t *testing.T, test *Test) []item {
 	return items
 }
 
-// Test equality between items and expected items from unmarshalled json data,
-// field by field.  Returns error in case of error during json unmarshalling,
-// or mismatch between items and the expected output.
+// Test equality between items and expected items from unmarshalled json data, field by field.  Returns error in case of
+// error during json unmarshalling, or mismatch between items and the expected output.
 func equal(t *testing.T, expectItems []item, items []item) {
 	var id int
 	var found bool
@@ -72,10 +71,9 @@ func equal(t *testing.T, expectItems []item, items []item) {
 			got = pFieldVal.Interface().(string)
 			exp = eFieldVal.Interface().(string)
 		default:
-			panic(fmt.Errorf("%T is not implemented!", r))
+			panic(fmt.Sprintf("%T is not implemented!", r))
 		}
-		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q\n", id,
-			pFieldName, got, eFieldName, exp)
+		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q\n", id, pFieldName, got, eFieldName, exp)
 	}
 
 	check := func() {
@@ -92,10 +90,8 @@ func equal(t *testing.T, expectItems []item, items []item) {
 			eFieldVal = reflect.ValueOf(normalized)
 		case "StartPosition":
 			if pFieldVal.Interface().(StartPosition) == 1 {
-				// Ignore StartPositions that begin at 1 from
-				// the parsed output items. This allows
-				// startPosition to be excluded from the
-				// expected items tests (*_items.json).
+				// Ignore StartPositions that begin at 1 from the parsed output items. This allows
+				// startPosition to be excluded from the expected items tests (*_items.json).
 				return
 			}
 		}
@@ -151,24 +147,16 @@ func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
 		lex := newLexer(tt.name, []byte(tt.input))
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %q\n\t   "+
-				"Got: lexer.index == %d, Expect: %d\n\n",
-				lex.name, lex.index, tt.nIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d\n\n", lex.name, lex.index, tt.nIndex)
 		}
 		if lex.mark != tt.nMark {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.mark == %#U, Expect: %#U\n\n",
-				lex.name, lex.mark, tt.nMark)
+			t.Errorf("Test: %q\n\tGot: lexer.mark == %#U, Expect: %#U\n\n", lex.name, lex.mark, tt.nMark)
 		}
 		if len(lex.lines) != tt.nLines {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.lineNumber == %d, Expect: %d\n\n",
-				lex.name, lex.lineNumber(), tt.nLines)
+			t.Errorf("Test: %q\n\tGot: lexer.lineNumber == %d, Expect: %d\n\n", lex.name, lex.lineNumber(), tt.nLines)
 		}
 		if lex.width != tt.nWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.width == %d, Expect: %d\n\n",
-				lex.name, lex.width, tt.nWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d\n\n", lex.name, lex.width, tt.nWidth)
 		}
 	}
 }
@@ -202,24 +190,16 @@ func TestLexerGotoLocation(t *testing.T) {
 		lex := newLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.index == %d, Expect: %d\n\n",
-				tt.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lex.index == %d, Expect: %d\n\n", tt.name, lex.index, tt.lIndex)
 		}
 		if lex.mark != tt.lMark {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.mark == %#U, Expect: %#U\n\n",
-				tt.name, lex.mark, tt.lMark)
+			t.Errorf("Test: %q\n\tGot: lex.mark == %#U, Expect: %#U\n\n", tt.name, lex.mark, tt.lMark)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.width == %d, Expect: %d\n\n",
-				tt.name, lex.width, tt.lWidth)
+			t.Errorf("Test: %q\n\tGot: lex.width == %d, Expect: %d\n\n", tt.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.line = %d, Expect: %d\n\n",
-				tt.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lex.line = %d, Expect: %d\n\n", tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
 }
@@ -299,24 +279,16 @@ func TestLexerBackup(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		lex.backup(tt.pos)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.index == %d, Expect: %d\n\n",
-				tt.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lex.index == %d, Expect: %d\n\n", tt.name, lex.index, tt.lIndex)
 		}
 		if lex.mark != tt.lMark {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.mark == %#U, Expect: %#U\n\n",
-				tt.name, lex.mark, tt.lMark)
+			t.Errorf("Test: %q\n\tGot: lex.mark == %#U, Expect: %#U\n\n", tt.name, lex.mark, tt.lMark)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.width == %d, Expect: %d\n\n",
-				tt.name, lex.width, tt.lWidth)
+			t.Errorf("Test: %q\n\tGot: lex.width == %d, Expect: %d\n\n", tt.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lex.line = %d, Expect: %d\n\n",
-				tt.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lex.line = %d, Expect: %d\n\n", tt.name, lex.lineNumber(), tt.lLine)
 		}
 	}
 }
@@ -393,24 +365,16 @@ func TestLexerNext(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.index = %d, Expect: %d\n\n",
-				lex.name, lex.index, tt.nIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index = %d, Expect: %d\n\n", lex.name, lex.index, tt.nIndex)
 		}
 		if r != tt.nMark {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.mark = %#U, Expect: %#U\n\n",
-				lex.name, r, tt.nMark)
+			t.Errorf("Test: %q\n\tGot: lexer.mark = %#U, Expect: %#U\n\n", lex.name, r, tt.nMark)
 		}
 		if w != tt.nWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.width = %d, Expect: %d\n\n",
-				lex.name, w, tt.nWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width = %d, Expect: %d\n\n", lex.name, w, tt.nWidth)
 		}
 		if lex.lineNumber() != tt.nLine {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.line = %d, Expect: %d\n\n",
-				lex.name, lex.lineNumber(), tt.nLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d\n\n", lex.name, lex.lineNumber(), tt.nLine)
 		}
 	}
 }
@@ -478,29 +442,19 @@ func TestLexerPeek(t *testing.T) {
 		r := lex.peek(1)
 		w := utf8.RuneLen(r)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.index == %d, Expect: %d\n\n",
-				lex.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d\n\n", lex.name, lex.index, tt.lIndex)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.width == %d, Expect: %d\n\n",
-				lex.name, lex.width, tt.lWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d\n\n", lex.name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.line = %d, Expect: %d\n\n",
-				lex.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d\n\n", lex.name, lex.lineNumber(), tt.lLine)
 		}
 		if r != tt.pMark {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: peek().rune  == %q, Expect: %q\n\n",
-				lex.name, r, tt.pMark)
+			t.Errorf("Test: %q\n\tGot: peek().rune  == %q, Expect: %q\n\n", lex.name, r, tt.pMark)
 		}
 		if w != tt.pWidth {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: peek().width == %d, Expect: %d\n\n",
-				lex.name, w, tt.pWidth)
+			t.Errorf("Test: %q\n\tGot: peek().width == %d, Expect: %d\n\n", lex.name, w, tt.pWidth)
 		}
 	}
 }
@@ -510,23 +464,17 @@ func TestLexerIsLastLine(t *testing.T) {
 	lex := newLexer("isLastLine test 1", []byte(input))
 	lex.gotoLocation(0, 1)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), false)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t\n\n", lex.name, lex.isLastLine(), false)
 	}
 	lex = newLexer("isLastLine test 2", []byte(input))
 	lex.gotoLocation(0, 2)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), false)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t\n\n", lex.name, lex.isLastLine(), false)
 	}
 	lex = newLexer("isLastLine test 3", []byte(input))
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: isLastLine == %t, Expect: %t\n\n",
-			lex.name, lex.isLastLine(), true)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t\n\n", lex.name, lex.isLastLine(), true)
 	}
 }
 
@@ -577,19 +525,13 @@ func TestLexerPeekNextLine(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		out := lex.peekNextLine()
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.index == %d, Expect: %d\n\n",
-				lex.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d\n\n", lex.name, lex.index, tt.lIndex)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: lexer.line = %d, Expect: %d\n\n",
-				lex.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d\n\n", lex.name, lex.lineNumber(), tt.lLine)
 		}
 		if out != tt.nText {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: text == %s, Expect: %s\n\n",
-				lex.name, out, tt.nText)
+			t.Errorf("Test: %q\n\tGot: text == %s, Expect: %s\n\n", lex.name, out, tt.nText)
 		}
 	}
 }

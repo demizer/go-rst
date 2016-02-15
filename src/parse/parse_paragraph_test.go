@@ -2,8 +2,8 @@ package parse
 
 import "testing"
 
+// A single paragraph
 func TestParseParagraphGood0000(t *testing.T) {
-	// A single paragraph
 	testPath := testPathFromName("00.00-paragraph")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -11,8 +11,8 @@ func TestParseParagraphGood0000(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+// Parse a single paragraph with a line break in the middle
 func TestParseParagraphWithLineBreakGood0001(t *testing.T) {
-	// Parse a single paragraph with a line break in the middle
 	testPath := testPathFromName("00.01-para-with-line-break")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -20,8 +20,8 @@ func TestParseParagraphWithLineBreakGood0001(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+// Parse a paragraph that is three lines long.
 func TestParseParagraphThreeLinesGood0002(t *testing.T) {
-	// Parse a paragraph that is three lines long.
 	testPath := testPathFromName("00.02-three-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -29,8 +29,8 @@ func TestParseParagraphThreeLinesGood0002(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+// Parse two paragraps separated by a line
 func TestParseTwoParagraphs0100(t *testing.T) {
-	// Parse two paragraps separated by a line
 	testPath := testPathFromName("01.00-two-paragraphs")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -38,9 +38,8 @@ func TestParseTwoParagraphs0100(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+// Parse two paragraps separated by a line. Each paragraph is three lines.
 func TestParseTwoParagraphsWithThreeLinesEach0101(t *testing.T) {
-	// Parse two paragraps separated by a line. Each paragraph is three
-	// lines.
 	testPath := testPathFromName("01.01-two-para-three-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)

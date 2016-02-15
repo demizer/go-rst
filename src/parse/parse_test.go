@@ -24,10 +24,8 @@ func init() { SetDebug() }
 // binary and also sets the template for logging output.
 func SetDebug() {
 	var debug bool
-
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
-
 	if debug {
 		Log.Out = os.Stdout
 		Log.Level = logrus.DebugLevel
@@ -85,7 +83,7 @@ func (l Test) expectItems() (lexItems []item) {
 }
 
 // Contains absolute file paths for the test data
-var TESTDATA_FILES []string
+var TestDataFiles []string
 
 // testPathsFromDirectory walks through the file tree in the testdata directory containing all of the tests and returns a
 // string slice of all the discovered paths.
@@ -108,16 +106,16 @@ func testPathsFromDirectory(dir string) ([]string, error) {
 	return paths, nil
 }
 
-// testPathFromName loops through TESTDATA_FILES until name is matched.
+// testPathFromName loops through TestDataFiles until name is matched.
 func testPathFromName(name string) string {
 	var err error
-	if len(TESTDATA_FILES) < 1 {
-		TESTDATA_FILES, err = testPathsFromDirectory("../../testdata")
+	if len(TestDataFiles) < 1 {
+		TestDataFiles, err = testPathsFromDirectory("../../testdata")
 		if err != nil {
 			panic(err)
 		}
 	}
-	for _, p := range TESTDATA_FILES {
+	for _, p := range TestDataFiles {
 		if len(p)-len(name) > 0 {
 			if p[len(p)-len(name):] == name {
 				return p
@@ -290,8 +288,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		_, in := pNodeVal.Type().FieldByName(sfName)
 		if !in {
 			nName := reflect.TypeOf(pNode)
-			return fmt.Errorf("Node (%s) missing field %q\n",
-				nName, sfName)
+			return fmt.Errorf("Node (%s) missing field %q\n", nName, sfName)
 		}
 	}
 	// Compare pNode against eNodes
@@ -311,8 +308,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		case "startPosition":
 			// Most nodes begin at position one in the line, therefore we can ignore them if it hasn't been
 			// specified in the expected nodes.
-			if pVal.(StartPosition).Position() == 0 ||
-				pVal.(StartPosition).Position() == 1 {
+			if pVal.(StartPosition).Position() == 0 || pVal.(StartPosition).Position() == 1 {
 				continue
 			}
 		case "line":
@@ -322,8 +318,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 			}
 		case "overLine":
 			// Some sections don't have overlines
-			if eFields[pName] == nil &&
-				pVal.(*AdornmentNode) == nil {
+			if eFields[pName] == nil && pVal.(*AdornmentNode) == nil {
 				continue
 			}
 		case "nodeList":
@@ -343,9 +338,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		}
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
-			tmp := "Node ID=%.0f missing field %q\n\t   " +
-				"Parser got: %q == %v\n"
-			return fmt.Errorf(tmp, eNode["id"], pName,
+			return fmt.Errorf("Node ID=%.0f missing field %q\n\tParser got: %q == %v\n", eNode["id"], pName,
 				pName, pVal)
 		}
 	}
@@ -414,10 +407,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				spd.Dump(eNodes)
 				fmt.Println()
 				// DO NOT REMOVE SPD CALLS
-				eTmp := "Expected NodeList values (len=%d) " +
-					"and parsed NodeList values (len=%d) " +
-					"do not match beginning at item ID: %d"
-				c.t.Fatalf(eTmp, len1, len2, id)
+				c.t.Fatalf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
+					"do not match beginning at item ID: %d", len1, len2, id)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
 				// Store and reset the parser value, otherwise a panic will occur on the next iteration
@@ -570,25 +561,17 @@ func TestTreeBackup(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] == %#+v, Expect: nil\n\n",
-				tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].ID != val.ID {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].ID = %d, Expect: %d\n\n",
-				tr.Name, tName, tr.token[tPos].Type, val.ID)
+			t.Errorf("Test: %q\n\tGot: token[%s].ID = %d, Expect: %d\n\n", tr.Name, tName, tr.token[tPos].Type, val.ID)
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Type = %q, Expect: %q\n\n",
-				tr.Name, tName, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Text = %q, Expect: %q\n\n",
-				tr.Name, tName, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeBackupTests {
@@ -715,20 +698,14 @@ func TestTreeNext(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] == %#+v, Expect: nil\n\n",
-				tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Type = %q, Expect: %q\n\n",
-				tr.Name, tPos, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Text = %q, Expect: %q\n\n",
-				tr.Name, tPos, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeNextTests {
@@ -811,20 +788,14 @@ func TestTreePeek(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] == %#+v, Expect: nil\n\n",
-				tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Type = %q, Expect: %q\n\n",
-				tr.Name, tName, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s].Text = %q, Expect: %q\n\n",
-				tr.Name, tName, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treePeekTests {
@@ -888,9 +859,7 @@ func TestTreeClearTokens(t *testing.T) {
 	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
 		val := tExp.Interface().(*item)
 		if tr.token[tPos] != nil && val == nil {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: token[%s] == %#+v, Expect: nil\n\n",
-				tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
 		}
 	}
 	for _, tt := range testTreeClearTokensTests {
@@ -1075,47 +1044,29 @@ func testSectionLevelsAddCheckEqual(t *testing.T, testName string,
 	pos int, pLvl, eLvl *sectionLevel) {
 
 	if eLvl.level != pLvl.level {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: sectionLevel.Level = %d, "+
-			"Expect: %d\n\n",
-			testName, pLvl.level, eLvl.level)
+		t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, "+"Expect: %d\n\n", testName, pLvl.level, eLvl.level)
 	}
 	if eLvl.rChar != pLvl.rChar {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: sectionLevel.rChar = %#U, "+
-			"Expect: %#U\n\n",
-			testName, pLvl.rChar, eLvl.rChar)
+		t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, "+"Expect: %#U\n\n", testName, pLvl.rChar, eLvl.rChar)
 	}
 	if eLvl.overLine != pLvl.overLine {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: sectionLevel.overLine = %t, "+
-			"Expect: %t\n\n",
-			testName, pLvl.overLine, eLvl.overLine)
+		t.Errorf("Test: %q\n\tGot: sectionLevel.overLine = %t, "+"Expect: %t\n\n", testName, pLvl.overLine,
+			eLvl.overLine)
 	}
 	for eNum, eSec := range eLvl.sections {
 		if eSec.ID != pLvl.sections[eNum].ID {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: level[%d].sections[%d].ID = %d, "+
-				"Expect: %d\n\n",
-				testName, pos, eNum,
+			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].ID = %d, "+"Expect: %d\n\n", testName, pos, eNum,
 				pLvl.sections[eNum].ID, eSec.ID)
 		}
 		if eSec.Level != pLvl.sections[eNum].Level {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: level[%d].sections[%d].Level = %d, "+
-				"Expect: %d\n\n",
-				testName, pos, eNum,
-				pLvl.sections[eNum].Level, eSec.Level)
+			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].Level = %d, "+"Expect: %d\n\n", testName, pos,
+				eNum, pLvl.sections[eNum].Level, eSec.Level)
 		}
 		eRune := eSec.UnderLine.Rune
 		pRune := pLvl.sections[eNum].UnderLine.Rune
 		if eRune != pRune {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: level[%d].section[%d].Rune = %#U, "+
-				"Expect: %#U\n\n",
-				testName, pos, eNum,
-				pLvl.sections[eNum].UnderLine.Rune,
-				eSec.UnderLine.Rune)
+			t.Errorf("Test: %q\n\tGot: level[%d].section[%d].Rune = %#U, "+"Expect: %#U\n\n", testName, pos,
+				eNum, pLvl.sections[eNum].UnderLine.Rune, eSec.UnderLine.Rune)
 		}
 	}
 }
@@ -1132,8 +1083,7 @@ func TestSectionLevelsAdd(t *testing.T) {
 		}
 		msg := pSecLvls.Add(n)
 		if msg > parserMessageNil && msg != s.eMessage {
-			t.Fatalf("Test: %q\n\t    Got: parserMessage = %q, "+
-				"Expect: %q\n\n", testName, msg, s.eMessage)
+			t.Fatalf("Test: %q\n\tGot: parserMessage = %q, "+"Expect: %q\n\n", testName, msg, s.eMessage)
 		}
 	}
 
@@ -1183,20 +1133,15 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level two",
 		tLevel: 2,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"},
-				UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '-', level: 2,
 			sections: []*SectionNode{
-				{Level: 2, Title: &TitleNode{Text: "Title 4"},
-					UnderLine: &AdornmentNode{Rune: '~'}},
+				{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '~'}},
 			},
 		},
 	},
@@ -1204,20 +1149,15 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level one",
 		tLevel: 1,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"},
-				UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '=', level: 1,
 			sections: []*SectionNode{
-				{Level: 1, Title: &TitleNode{Text: "Title 1"},
-					UnderLine: &AdornmentNode{Rune: '='}},
+				{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
 			},
 		},
 	},
@@ -1225,22 +1165,16 @@ var testSectionLevelsLast = []struct {
 		name:   "Test last section level three",
 		tLevel: 3,
 		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"},
-				UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"},
-				UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 3, Title: &TitleNode{Text: "Title 5"},
-				UnderLine: &AdornmentNode{Rune: '+'}},
+			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
+			{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '+', level: 3,
 			sections: []*SectionNode{
-				{Level: 3, Title: &TitleNode{Text: "Title 5"},
-					UnderLine: &AdornmentNode{Rune: '+'}},
+				{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
 			},
 		},
 	},
@@ -1256,28 +1190,21 @@ func TestSectionLevelsLast(t *testing.T) {
 		var pSec *SectionNode
 		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: sectionLevel.Level = %d, Expect: %d\n\n",
-				tt.name, tt.eLevel.level, pSec.Level)
+			t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, Expect: %d\n\n", tt.name, tt.eLevel.level,
+				pSec.Level)
 		}
 		if tt.eLevel.rChar != pSec.UnderLine.Rune {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: sectionLevel.rChar = %#U, Expect: %#U\n\n",
-				tt.name, tt.eLevel.rChar, pSec.UnderLine.Rune)
+			t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, Expect: %#U\n\n", tt.name, tt.eLevel.rChar,
+				pSec.UnderLine.Rune)
 		}
 		// There can be only one
 		if tt.eLevel.sections[0].ID != pSec.ID {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: level[0].sections[0].ID = %d, "+
-				"Expect: %d\n\n",
-				tt.name, pSec.ID, tt.eLevel.sections[0].ID)
+			t.Errorf("Test: %q\n\tGot: level[0].sections[0].ID = %d, "+"Expect: %d\n\n", tt.name, pSec.ID,
+				tt.eLevel.sections[0].ID)
 		}
 		if tt.eLevel.sections[0].Title.Text != pSec.Title.Text {
-			t.Errorf("Test: %q\n\t    "+
-				"Got: level[0].sections[0].Title.Text = %q, "+
-				"Expect: %q\n\n",
-				tt.name, pSec.Title.Text,
-				tt.eLevel.sections[0].Title.Text)
+			t.Errorf("Test: %q\n\tGot: level[0].sections[0].Title.Text = %q, "+"Expect: %q\n\n", tt.name,
+				pSec.Title.Text, tt.eLevel.sections[0].Title.Text)
 		}
 	}
 }
@@ -1286,20 +1213,17 @@ func TestSystemMessageLevelFrom(t *testing.T) {
 	name := "Test systemMessageLevel with levelInfo"
 	test0 := ""
 	if -1 != systemMessageLevelFromString(test0) {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: systemMessageLevel = %q, Expect: %q\n\n",
-			name, systemMessageLevelFromString(test0), -1)
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+			systemMessageLevelFromString(test0), -1)
 	}
 	test1 := "INFO"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: systemMessageLevel = %q, Expect: %q\n\n",
-			name, systemMessageLevelFromString(test1), levelInfo)
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+			systemMessageLevelFromString(test1), levelInfo)
 	}
 	test2 := "SEVERE"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\t    "+
-			"Got: systemMessageLevel = %q, Expect: %q\n\n",
-			name, systemMessageLevelFromString(test2), levelSevere)
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+			systemMessageLevelFromString(test2), levelSevere)
 	}
 }
