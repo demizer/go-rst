@@ -1,7 +1,6 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Sun Feb 14 23:22 2016
 
 .. image:: https://drone.io/github.com/demizer/go-rst/status.png
     :target: https://drone.io/github.com/demizer/go-rst/latest
