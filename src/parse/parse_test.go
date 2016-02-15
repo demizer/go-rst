@@ -280,7 +280,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	eFields := eNodes.(map[string]interface{})
 	pNodeVal := reflect.Indirect(reflect.ValueOf(pNode))
 	// Check expected node to parsed node
-	for eName, _ := range eFields {
+	for eName := range eFields {
 		var sfName string
 		if eName == "id" {
 			sfName = "ID"
