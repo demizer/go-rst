@@ -3,3 +3,4 @@
 c.out
 pkg/
 bin/go-rst2html
+.cover/
