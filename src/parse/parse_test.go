@@ -20,9 +20,8 @@ import (
 
 func init() { SetDebug() }
 
-// SetDebug is typically called from the init() function in a test file.
-// SetDebug parses debug flags passed to the test binary and also sets the
-// template for logging output.
+// SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test
+// binary and also sets the template for logging output.
 func SetDebug() {
 	var debug bool
 
@@ -59,8 +58,7 @@ func diffLexerItems(parsedItems, expectedItems string) (string, error) {
 	return string(o), nil
 }
 
-// Contains a single test with data loaded from test files in the testdata
-// directory
+// Contains a single test with data loaded from test files in the testdata directory
 type Test struct {
 	path     string // The path including directory and basename
 	data     string // The input data to be parsed
@@ -68,9 +66,8 @@ type Test struct {
 	nodeData string // The expected parse nodes in json
 }
 
-// expectNodes returns the expected parse_tree values from the tests as
-// unmarshaled JSON. A panic occurs if there is an error unmarshaling the JSON
-// data.
+// expectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic occurs if there is an error
+// unmarshaling the JSON data.
 func (l Test) expectNodes() (nl []interface{}) {
 	if err := json.Unmarshal([]byte(l.nodeData), &nl); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
@@ -78,8 +75,8 @@ func (l Test) expectNodes() (nl []interface{}) {
 	return
 }
 
-// expectItems unmarshals the expected lex_items into a silce of items. A panic
-// occurs if there is an error decoding the JSON data.
+// expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is an error decoding the JSON
+// data.
 func (l Test) expectItems() (lexItems []item) {
 	if err := json.Unmarshal([]byte(l.itemData), &lexItems); err != nil {
 		panic(fmt.Errorf("JSON error: ", err))
@@ -90,9 +87,8 @@ func (l Test) expectItems() (lexItems []item) {
 // Contains absolute file paths for the test data
 var TESTDATA_FILES []string
 
-// testPathsFromDirectory walks through the file tree in the testdata directory
-// containing all of the tests and returns a string slice of all the discovered
-// paths.
+// testPathsFromDirectory walks through the file tree in the testdata directory containing all of the tests and returns a
+// string slice of all the discovered paths.
 func testPathsFromDirectory(dir string) ([]string, error) {
 	var paths []string
 	wFunc := func(p string, info os.FileInfo, err error) error {
@@ -273,9 +269,8 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 	return true
 }
 
-// checkMatchingFields compares the expected node output retrieved from the
-// nodes.json file and the actual parser NodeList output. Returns an error if
-// a mismatch is found.
+// checkMatchingFields compares the expected node output retrieved from the nodes.json file and the actual parser NodeList
+// output. Returns an error if a mismatch is found.
 func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	if eNodes == nil || pNode == nil {
 		panic("arguments must not be nil!")
@@ -314,16 +309,14 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 				continue
 			}
 		case "startPosition":
-			// Most nodes begin at position one in the line,
-			// therefore we can ignore them if it hasn't been
+			// Most nodes begin at position one in the line, therefore we can ignore them if it hasn't been
 			// specified in the expected nodes.
 			if pVal.(StartPosition).Position() == 0 ||
 				pVal.(StartPosition).Position() == 1 {
 				continue
 			}
 		case "line":
-			// zero, then we ignore it.  systemMessage literal
-			// block nodes have no line position.
+			// zero, then we ignore it.  systemMessage literal block nodes have no line position.
 			if pVal.(Line).LineNumber() == 0 {
 				continue
 			}
@@ -359,9 +352,8 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	return nil
 }
 
-// checkFields is a recursive function that compares the expected node output
-// to the parser output comparing the two objects field by field. eNodes is
-// unmarshaled json input and pNode is the parser node to check.
+// checkFields is a recursive function that compares the expected node output to the parser output comparing the two objects
+// field by field. eNodes is unmarshaled json input and pNode is the parser node to check.
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 	if eNodes == nil || pNode == nil {
 		panic("arguments cannot be nil!")
@@ -428,8 +420,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.t.Fatalf(eTmp, len1, len2, id)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
-				// Store and reset the parser value, otherwise
-				// a panic will occur on the next iteration
+				// Store and reset the parser value, otherwise a panic will occur on the next iteration
 				pFieldVal := c.pFieldVal
 				c.checkFields(node, c.pFieldVal.(NodeList)[num])
 				c.pFieldVal = pFieldVal
@@ -462,8 +453,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 
 }
 
-// checkParseNodes compares the expected parser output (*_nodes.json) against
-// the actual parser output node by node.
+// checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output node by node.
 func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	testPath string) {
 
@@ -494,12 +484,11 @@ func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	return
 }
 
-// tokEqualChecker compares the lexed tokens and the expected tokens and
-// reports failures.
+// tokEqualChecker compares the lexed tokens and the expected tokens and reports failures.
 type tokEqualChecker func(*Tree, reflect.Value, int, string)
 
-// checkTokens checks the lexed tokens against the expected tokens and uses
-// isEqual to perform the actual checks and report errors.
+// checkTokens checks the lexed tokens against the expected tokens and uses isEqual to perform the actual checks and report
+// errors.
 func checkTokens(tr *Tree, trExp interface{}, isEqual tokEqualChecker) {
 	for i := 0; i < len(tr.token); i++ {
 		tokenPos := i - zed
@@ -705,8 +694,7 @@ var treeNextTests = []struct {
 		name:    "Three next() on one line of input; Test channel close.",
 		input:   "Test",
 		nextNum: 3,
-		// The channel should be closed on the second next(), otherwise
-		// a deadlock would occur.
+		// The channel should be closed on the second next(), otherwise a deadlock would occur.
 		Back2Tok: &item{Type: itemParagraph, Text: "Test"},
 		Back1Tok: &item{Type: itemEOF},
 	},
@@ -714,8 +702,7 @@ var treeNextTests = []struct {
 		name:    "Four next() on one line of input; Test channel close.",
 		input:   "Test",
 		nextNum: 4,
-		// The channel should be closed on the second next(), otherwise
-		// a deadlock would occur.
+		// The channel should be closed on the second next(), otherwise a deadlock would occur.
 		Back3Tok: &item{Type: itemParagraph, Text: "Test"},
 		Back2Tok: &item{Type: itemEOF},
 	},
