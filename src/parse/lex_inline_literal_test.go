@@ -26,7 +26,7 @@ func TestLexInlineLiteralGood0002(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-// Inline literal begining with a backslash
+// Inline literal beginning with a backslash
 func TestLexInlineLiteralGood0100(t *testing.T) {
 	testPath := testPathFromName("01.00-literal-with-backslash")
 	test := LoadLexTest(t, testPath)
