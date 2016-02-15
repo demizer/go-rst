@@ -1,3 +1,5 @@
 * Sun Feb 14 22:34 2016: Remove LICENCE header from every file
 
 * Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst<Paste>
+
+* Sun Feb 14 23:17 2016: Move status to a different area, but keep percentage in README.rst
