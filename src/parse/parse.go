@@ -1,7 +1,3 @@
-// go-rst - A reStructuredText parser for Go
-// 2014,2015 (c) The go-rst Authors
-// MIT Licensed. See LICENSE for details.
-
 // Package parse is a reStructuredText parser implemented in Go!
 //
 // This package is only meant for lexing and parsing reStructuredText. See the
@@ -10,13 +6,25 @@
 package parse
 
 import (
+	"io/ioutil"
+
+	"github.com/Sirupsen/logrus"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/demizer/go-logs/src/logs"
+	"github.com/demizer/go-my-logfmt"
 	"golang.org/x/text/unicode/norm"
 )
 
 // Used for debugging only
 var spd = spew.ConfigState{Indent: "\t"} //, DisableMethods: true}
+
+// Log is the default logging object. By default, all output is discarded. Set Log.Out to std.Stdout to enable output. The
+// level of the log output can also be set in this manner. See the documentation of the logrus package for other options.
+var Log = &logrus.Logger{
+	Out:       ioutil.Discard,
+	Formatter: new(logfmt.TextFormatter),
+	Hooks:     make(logrus.LevelHooks),
+	Level:     logrus.InfoLevel,
+}
 
 // systemMessageLevel implements four levels for messages and is used in
 // conjunction with the parserMessage type.
@@ -193,7 +201,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		logs.Debugln("Creating new sectionLevel:", level)
+		Log.Debugln("Creating new sectionLevel:", level)
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,
@@ -228,7 +236,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 			level = len(s.levels) + 1
 			newSectionLevel()
 		} else {
-			logs.Debugln("Using sectionLevel:", secLvl.level)
+			Log.Debugln("Using sectionLevel:", secLvl.level)
 			level = secLvl.level
 		}
 	}
@@ -259,7 +267,7 @@ exit:
 		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
 			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
-				logs.Debugln("Found sectionLevel:", sec.Level)
+				Log.Debugln("Found sectionLevel:", sec.Level)
 				break exit
 			}
 		}
@@ -342,7 +350,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n interface{}
 
 		token := t.next(1)
-		logs.Infof("Parser got token: %#+v\n", token)
+		Log.Infof("Parser got token: %#+v\n", token)
 
 		// FIXME: Hackish. Need to find a better way...
 		if t.indentLevel > 0 && token.StartPosition == 1 &&
@@ -461,13 +469,13 @@ func (t *Tree) peek(pos int) *item {
 	for i := 1; i <= pos; i++ {
 		if t.token[zed+i] != nil {
 			nItem = t.token[zed+i]
-			logs.Debugf("Using %#+v\n", nItem)
+			Log.Debugf("Using %#+v\n", nItem)
 			continue
 		} else {
 			if t.lex == nil {
 				continue
 			}
-			logs.Debugln("Getting next item")
+			Log.Debugln("Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
 		}
@@ -617,18 +625,18 @@ func (t *Tree) section(i *item) Node {
 	// t.Nodes
 	undoID := t.id
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
-	logs.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
+	Log.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
-		logs.Debugln("Found inconsistent section level!")
+		Log.Debugln("Found inconsistent section level!")
 		t.id = undoID
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 
 	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
-		logs.Debugln("Setting nodeTarget to Tree.Nodes!")
+		Log.Debugln("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = &t.Nodes
 	} else {
 		lSec := t.sectionLevels.lastSectionNode
@@ -636,7 +644,7 @@ func (t *Tree) section(i *item) Node {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
 		t.nodeTarget = &lSec.NodeList
-		logs.Debugln("Setting nodeTarget to section ID",
+		Log.Debugln("Setting nodeTarget to section ID",
 			lSec.ID.String())
 	}
 
@@ -661,7 +669,7 @@ func (t *Tree) section(i *item) Node {
 func (t *Tree) comment(i *item) Node {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		logs.Debugln("Found empty comment block")
+		Log.Debugln("Found empty comment block")
 		return newComment(&item{
 			StartPosition: i.StartPosition,
 			Line:          i.Line,
@@ -671,7 +679,7 @@ func (t *Tree) comment(i *item) Node {
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it
 		// to the NodeList before the systemMessage.
-		logs.Debugln("Missing space after comment mark! " +
+		Log.Debugln("Missing space after comment mark! " +
 			"(warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
@@ -681,7 +689,7 @@ func (t *Tree) comment(i *item) Node {
 	if nPara != nil && nPara.Type == itemParagraph {
 		t.next(2)
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
-			logs.Debugln("Found NodeComment block")
+			Log.Debugln("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -697,12 +705,12 @@ func (t *Tree) comment(i *item) Node {
 			z != itemCommentMark && z != itemEOF {
 			// A valid comment contains a blank line after the
 			// comment block
-			logs.Debugln("Found warningExplicitMarkupWithUnIndent")
+			Log.Debugln("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara, &t.id)
 			t.nodeTarget.append(n)
 			return t.systemMessage(warningExplicitMarkupWithUnIndent)
 		} else {
-			logs.Debugln("Found NodeComment")
+			Log.Debugln("Found NodeComment")
 		}
 		n = newComment(nPara, &t.id)
 	}
@@ -728,7 +736,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 	s.NodeList = append(s.NodeList, msg)
 
-	logs.Debugln("FOUND", err)
+	Log.Debugln("FOUND", err)
 	// if t.token[zed].Line == 9 {
 	// spd.Dump(t.token)
 	// os.Exit(1)
@@ -903,7 +911,7 @@ func (t *Tree) paragraph(i *item) Node {
 }
 
 func (t *Tree) blockquote(i *item) Node {
-	logs.Debugln("Got type", i.Type)
+	Log.Debugln("Got type", i.Type)
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case
@@ -913,7 +921,7 @@ func (t *Tree) blockquote(i *item) Node {
 	}
 	level := s.Length / t.indentWidth
 
-	logs.Debugf("t.indentLevel == level :: %d == %d\n", t.indentLevel, level)
+	Log.Debugf("t.indentLevel == level :: %d == %d\n", t.indentLevel, level)
 	if t.indentLevel == level {
 		i.Type = itemParagraph
 		return newParagraph(i, &t.id)
@@ -926,13 +934,13 @@ func (t *Tree) blockquote(i *item) Node {
 				&item{Type: itemBlockQuote, Line: i.Line},
 				level, &t.id)
 		}
-		logs.Debugln("Next item is itemBlockQuote")
+		Log.Debugln("Next item is itemBlockQuote")
 		return nil
 	}
 
 	levelChanged := false
 	if t.indentLevel != level {
-		logs.Debugln("Setting indentLevel to ", level)
+		Log.Debugln("Setting indentLevel to ", level)
 		t.indentLevel = level
 		levelChanged = true
 	}

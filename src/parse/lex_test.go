@@ -12,8 +12,6 @@ import (
 	"unicode/utf8"
 
 	"golang.org/x/text/unicode/norm"
-
-	"github.com/demizer/go-logs/src/logs"
 )
 
 var (
@@ -21,9 +19,6 @@ var (
 )
 
 func lexTest(t *testing.T, test *Test) []item {
-	logs.WithFlagsf(logs.LdebugFlags, logs.Debugf, "Test Path: %s\n", test.path)
-	logs.WithFlagsf(logs.LdebugFlags, logs.Debugf,
-		"Test Input:\n-----------\n%s\n-----------\n", test.data)
 	var items []item
 	l := lex(test.path, []byte(test.data))
 	for {

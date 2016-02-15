@@ -1,9 +1,3 @@
-// go-rst - A reStructuredText parser for Go
-// 2014,2015 (c) The go-rst Authors
-// MIT Licensed. See LICENSE for details.
-
-// To enable debug output when testing, use "go test -debug"
-
 package parse
 
 import (
@@ -20,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/demizer/go-logs/src/logs"
+	"github.com/Sirupsen/logrus"
 	"golang.org/x/text/unicode/norm"
 )
 
@@ -36,20 +30,9 @@ func SetDebug() {
 	flag.Parse()
 
 	if debug {
-		logs.SetLevel(logs.LEVEL_DEBUG)
+		Log.Out = os.Stdout
+		Log.Level = logrus.DebugLevel
 	}
-
-	logs.SetTemplate("{{if .Date}}{{.Date}} {{end}}" +
-		"{{if .Seperator}}{{.Seperator}} {{end}}" +
-		"{{if .LogLabel}}{{.LogLabel}} {{end}}" +
-		"{{if .Id}}{{.Id}} {{end}}" +
-		"{{if .Indent}}{{.Indent}}{{end}}" +
-		"{{if .FileName}}{{.FileName}}: {{end}}" +
-		"{{if .FunctionName}}{{.FunctionName}}{{end}}" +
-		"{{if .LineNumber}}#{{.LineNumber}}: {{end}}" +
-		"{{if .Text}}{{.Text}}{{end}}")
-
-	logs.SetFlags(logs.LdebugFlags | logs.Lindent | logs.LshowIndent)
 }
 
 func diffLexerItems(parsedItems, expectedItems string) (string, error) {
@@ -320,9 +303,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
 		if pName == "" {
-			logs.SetFlags(logs.LstdFlags)
-			logs.Criticalf("pName == nil; Check struct tags!\n", pName)
-			os.Exit(1)
+			Log.Fatalf("pName == nil; Check struct tags!\n", pName)
 		}
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
@@ -432,13 +413,12 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
-				logs.SetFlags(logs.LstdFlags)
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
 				// DO NOT REMOVE SPD CALLS
-				logs.Criticalf("\n%d Parse NodeList Nodes\n\n", len2)
+				Log.Errorf("\n%d Parse NodeList Nodes\n\n", len2)
 				spd.Dump(pNode)
-				logs.Criticalf("\n%d Expected NodeList Nodes\n\n", len1)
+				Log.Errorf("\n%d Expected NodeList Nodes\n\n", len1)
 				spd.Dump(eNodes)
 				fmt.Println()
 				// DO NOT REMOVE SPD CALLS
@@ -490,13 +470,12 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	state := &checkNode{t: t, testPath: testPath}
 
 	if len(pNodes) != len(eTree) {
-		logs.SetFlags(logs.LstdFlags)
-		logs.Criticalf("\n%d Parse Nodes\n\n", len(pNodes))
+		Log.Errorf("\n%d Parse Nodes\n\n", len(pNodes))
 		spd.Dump(pNodes)
-		logs.Criticalf("\n%d Expected Nodes\n\n", len(eTree))
+		Log.Errorf("\n%d Expected Nodes\n\n", len(eTree))
 		spd.Dump(eTree)
 		fmt.Println("\n")
-		logs.Criticalln("The number of parsed nodes does not match expected nodes!")
+		Log.Errorln("The number of parsed nodes does not match expected nodes!")
 		os.Exit(1)
 	}
 
@@ -509,8 +488,8 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *Test) (tree *Tree) {
-	logs.Debugf("Test path: %s\n", test.path)
-	logs.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+	Log.Debugf("Test path: %s\n", test.path)
+	Log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
 	tree, _ = Parse(test.path, test.data)
 	return
 }
@@ -624,7 +603,7 @@ func TestTreeBackup(t *testing.T) {
 		}
 	}
 	for _, tt := range treeBackupTests {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
@@ -766,7 +745,7 @@ func TestTreeNext(t *testing.T) {
 		}
 	}
 	for _, tt := range treeNextTests {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
@@ -862,7 +841,7 @@ func TestTreePeek(t *testing.T) {
 		}
 	}
 	for _, tt := range treePeekTests {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
@@ -928,7 +907,7 @@ func TestTreeClearTokens(t *testing.T) {
 		}
 	}
 	for _, tt := range testTreeClearTokensTests {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		tr := New(tt.name, tt.input)
 		tr.lex = lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
@@ -1172,7 +1151,7 @@ func TestSectionLevelsAdd(t *testing.T) {
 	}
 
 	for _, tt := range testSectionLevelsAdd {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		pSecLvls = *new(sectionLevels)
 		eSecLvls = *new(sectionLevels)
 		testName = tt.name
@@ -1282,7 +1261,7 @@ var testSectionLevelsLast = []struct {
 
 func TestSectionLevelsLast(t *testing.T) {
 	for _, tt := range testSectionLevelsLast {
-		logs.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
+		Log.Debugf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name)
 		secLvls := new(sectionLevels)
 		for _, secNode := range tt.tSections {
 			secLvls.Add(secNode)
