@@ -1,12 +1,12 @@
 ================================
 go-rst - reStructuredText for Go
 ================================
-:Modified: Sun Feb 14 23:15 2016
+:Modified: Sun Feb 14 23:22 2016
 
 .. image:: https://drone.io/github.com/demizer/go-rst/status.png
     :target: https://drone.io/github.com/demizer/go-rst/latest
-.. image:: https://coveralls.io/repos/demizer/go-rst/badge.png?branch=master
-    :target: https://coveralls.io/r/demizer/go-rst?branch=master
+.. image:: https://coveralls.io/repos/github/demizer/go-rst/badge.svg?branch=master
+    :target: https://coveralls.io/github/demizer/go-rst?branch=master
 .. image:: https://goreportcard.com/badge/github.com/demizer/go-rst
     :target: https://goreportcard.com/report/github.com/demizer/go-rst
 .. image:: https://godoc.org/github.com/demizer/go-rst?status.svg
