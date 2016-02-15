@@ -34,7 +34,7 @@ show_cover_report() {
 
 push_to_coveralls() {
     echo "Pushing coverage statistics to coveralls.io"
-    goveralls -coverprofile="$profile" -service drone.io
+    env GOPATH=$PROJECT:$PROJECT/vendor goveralls -coverprofile="$profile" -service drone.io
 }
 
 generate_cover_data parse
