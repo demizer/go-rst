@@ -1,7 +1,3 @@
-// go-rst - A reStructuredText parser for Go
-// 2015 (c) The go-rst Authors
-// MIT Licensed. See LICENSE for details.
-
 package parse
 
 import "testing"

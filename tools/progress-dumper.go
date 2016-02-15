@@ -1,7 +1,5 @@
 // progress-dump -- Dumps progress.yml to a reStructuredText Grid Table
-// 2014 (c) The go-rst Authors
-// MIT Licensed. See LICENSE for details.
-
+//
 // progress-dump is used to output a grid table using progress.yml for inclusion
 // into README.rst It gives prospective users an idea of how specification
 // complete go-rst is compared to the reference docutils parser.
