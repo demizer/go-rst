@@ -1,3 +1,14 @@
 <document source="test data">
     <paragraph>
         __This__ should be left alone.
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "__This__ should be left alone.",
+        "startPosition": 1,
+        "line": 1,
+        "length": 0
+    },
+    
+]
