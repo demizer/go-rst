@@ -3,6 +3,11 @@
 // progress-dump is used to output a grid table using progress.yml for inclusion
 // into README.rst It gives prospective users an idea of how specification
 // complete go-rst is compared to the reference docutils parser.
+//
+// This script is meant to be called from the project root, like so:
+//
+// go run progress-dump
+//
 package main
 
 import (
@@ -14,21 +19,20 @@ import (
 
 	"github.com/aybabtme/rgbterm"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/demizer/go-elog"
 	"github.com/docopt/docopt-go"
 	"gopkg.in/yaml.v2"
 )
 
-var APP_NAME = rgbterm.String("progress-dump", 255, 255, 135)
-var APP_DESC = rgbterm.String("Dumps progress output", 0, 215, 95)
-var APP_USAGE = APP_NAME + " - " + APP_DESC + `
+var AppName = rgbterm.String("progress-dump", 255, 255, 135, 0, 0, 0)
+var AppDesc = rgbterm.String("Dumps progress output", 0, 215, 95, 0, 0, 0)
+var AppUsage = AppName + " - " + AppDesc + `
 
 Usage:
   progress-dump [--progress-yml <PATH>] [-h | --help]
 
 Options:
   -h --help                        Show the help message.
-  --progress-yml <PATH>  The path to progress.yml [default: ../../progress.yml]
+  --progress-yml <PATH>  The path to progress.yml [default: tools/progress.yml]
   --readme <PATH>        The path to README.rst
 `
 
@@ -68,8 +72,7 @@ func (t *Table) Dump() {
 	// The table sections are in reverse order due to the recursion.
 	sort.Sort(t)
 
-	// The addition numbers here compensate for the ascii chars that make
-	// up the frame of the ascii table.
+	// The addition numbers here compensate for the ascii chars that make up the frame of the ascii table.
 	// 1 == space
 	// 3 == 2x space and "+"
 	tWidth := 1 + t.MaxCol1Chars + 3 + t.MaxCol2Chars + 3 + t.MaxCol3Chars + 1
@@ -81,26 +84,24 @@ func (t *Table) Dump() {
 		"**Item**"+strings.Repeat(" ", t.MaxCol2Chars-8),
 		"**Note**"+strings.Repeat(" ", t.MaxCol3Chars-8))
 
-	sepWithPoints := fmt.Sprintf("+-%s-+-%s-+-%s-+", "--------",
-		strings.Repeat("-", t.MaxCol2Chars),
+	fmt.Printf("\nREADME_STATUS:go-rst implements **%0.0f%%** of the official specification (%d of %d Items)\n\n",
+		t.OverAllPerc, t.TotalDone, t.TotalItems)
+
+	sepWithPoints := fmt.Sprintf("+-%s-+-%s-+-%s-+", "--------", strings.Repeat("-", t.MaxCol2Chars),
 		strings.Repeat("-", t.MaxCol3Chars))
 
 	fmt.Println(topWithEndPoints)
 
-	totalDoneHdr := fmt.Sprintf("**The go-rst Library Implements "+
-		"%0.0f%% of the Official Specification (%d of %d Items)**",
+	totalDoneHdr := fmt.Sprintf("**The go-rst Library Implements %0.0f%% of the Official Specification (%d of %d Items)**",
 		t.OverAllPerc, t.TotalDone, t.TotalItems)
 
-	fmt.Printf("| %s |\n", totalDoneHdr+strings.Repeat(" ",
-		tWidth-len(totalDoneHdr)-2))
+	fmt.Printf("| %s |\n", totalDoneHdr+strings.Repeat(" ", tWidth-len(totalDoneHdr)-2))
 
 	fmt.Println(sepWithPoints)
 
 	for x, y := range t.Sections {
-		secTitle := fmt.Sprintf("**%0.0f%% Complete -- %s**",
-			y.Header.DonePerc, y.Header.Name)
-		fmt.Printf("| %s |\n",
-			secTitle+strings.Repeat(" ", tWidth-len(secTitle)-2))
+		secTitle := fmt.Sprintf("**%0.0f%% Complete -- %s**", y.Header.DonePerc, y.Header.Name)
+		fmt.Printf("| %s |\n", secTitle+strings.Repeat(" ", tWidth-len(secTitle)-2))
 		if x == 0 {
 			fmt.Println(sepWithPoints)
 			fmt.Println(fakeHdr)
@@ -110,12 +111,9 @@ func (t *Table) Dump() {
 		}
 		for _, z := range y.Rows {
 			fmt.Printf("| %s | %s | %s |\n",
-				z.Done+strings.Repeat(" ",
-					t.MaxCol1Chars-len(z.Done)),
-				z.Item+strings.Repeat(" ",
-					t.MaxCol2Chars-len(z.Item)),
-				z.Note+strings.Repeat(" ",
-					t.MaxCol3Chars-len(z.Note)))
+				z.Done+strings.Repeat(" ", t.MaxCol1Chars-len(z.Done)),
+				z.Item+strings.Repeat(" ", t.MaxCol2Chars-len(z.Item)),
+				z.Note+strings.Repeat(" ", t.MaxCol3Chars-len(z.Note)))
 			fmt.Println(sepWithPoints)
 		}
 	}
@@ -158,12 +156,12 @@ func NewState() *State {
 func (s *State) ReadProgressFile(path string) {
 	f, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Criticalln(err)
+		fmt.Println("ERROR:", err)
 		os.Exit(1)
 	}
 	err = yaml.Unmarshal(f, &s.Items)
 	if err != nil {
-		log.Criticalln(err)
+		fmt.Println("ERROR:", err)
 		os.Exit(1)
 	}
 }
@@ -179,9 +177,8 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 		if depth == 0 {
 			s.Id++
 			sec = &TableSection{
-				Header: &TableSectionHeader{Name: x.Item,
-					Done: x.Done},
-				Id: s.Id,
+				Header: &TableSectionHeader{Name: x.Item, Done: x.Done},
+				Id:     s.Id,
 			}
 		}
 		if x.SubItems != nil {
@@ -191,9 +188,8 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 				name = sec.Header.Name + " :: " + x.Item
 			}
 			subSec := &TableSection{
-				Header: &TableSectionHeader{Name: name,
-					Done: x.Done},
-				Id: s.Id,
+				Header: &TableSectionHeader{Name: name, Done: x.Done},
+				Id:     s.Id,
 			}
 			depth++
 			s.Walk(x.SubItems, subSec, depth)
@@ -234,17 +230,13 @@ func (s *State) CalcPercentages() {
 			x.Header.DonePerc = (sDone / float64(len(x.Rows)+1)) * 100
 		}
 	}
-	s.Table.OverAllPerc = (float64(s.Table.TotalDone) /
-		float64(s.Table.TotalItems)) * 100
+	s.Table.OverAllPerc = (float64(s.Table.TotalDone) / float64(s.Table.TotalItems)) * 100
 }
 
 func main() {
-	log.SetFlags(0)
-	log.SetLevel(log.LEVEL_DEBUG)
-
-	args, err := docopt.Parse(APP_USAGE, nil, true, "progress-dump", false)
+	args, err := docopt.Parse(AppUsage, nil, true, "progress-dump", false)
 	if err != nil {
-		log.Criticalln(err)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
