@@ -68,7 +68,7 @@ type Test struct {
 // unmarshaling the JSON data.
 func (l Test) expectNodes() (nl []interface{}) {
 	if err := json.Unmarshal([]byte(l.nodeData), &nl); err != nil {
-		panic(fmt.Errorf("JSON error: ", err))
+		panic(fmt.Sprintln("JSON error: ", err))
 	}
 	return
 }
@@ -77,7 +77,7 @@ func (l Test) expectNodes() (nl []interface{}) {
 // data.
 func (l Test) expectItems() (lexItems []item) {
 	if err := json.Unmarshal([]byte(l.itemData), &lexItems); err != nil {
-		panic(fmt.Errorf("JSON error: ", err))
+		panic(fmt.Sprintln("JSON error: ", err))
 	}
 	return
 }
@@ -295,7 +295,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
 		if pName == "" {
-			Log.Fatalf("pName == nil; Check struct tags!\n", pName)
+			Log.Fatal("pName == nil; Check struct tags!\n", pName)
 		}
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
@@ -455,7 +455,7 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 		spd.Dump(pNodes)
 		Log.Errorf("\n%d Expected Nodes\n\n", len(eTree))
 		spd.Dump(eTree)
-		fmt.Println("\n")
+		fmt.Println()
 		Log.Errorln("The number of parsed nodes does not match expected nodes!")
 		os.Exit(1)
 	}
@@ -702,10 +702,10 @@ func TestTreeNext(t *testing.T) {
 			return
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%d].Type = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%d].Text = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeNextTests {
