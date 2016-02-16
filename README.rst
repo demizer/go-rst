@@ -29,21 +29,21 @@ See https://github.com/demizer/go-rst/tree/master/doc/README.rst for complete de
 Current Work
 ------------
 
-* Translating the docutils tests from psuedo xml into JSON.
-* Inline markup parsing
+* **Translating the docutils tests from psuedo xml into JSON.**
+* **Inline markup parsing**
 
 TODO
 ----
 
 See TODO.txt (or issues) for current active work. The following list is in order of importance, but not yet in progress:
 
-* Integration with Hugo
+* **Integration with Hugo**
 
   Need to finish inline-markup parsing to have something worth while for Hugo. See https://github.com/spf13/hugo/issues/1436
 
-* rst2html conversion tool
+* **rst2html conversion tool**
 
-* rst2confluence import/conversion tool
+* **rst2confluence import/conversion tool**
 
   Confluence is garbage, it would be so nice to be able to alleviate the pain using reStructuredText. This has the lowest
   priority.
