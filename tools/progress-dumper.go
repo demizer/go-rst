@@ -23,9 +23,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var AppName = rgbterm.String("progress-dump", 255, 255, 135, 0, 0, 0)
-var AppDesc = rgbterm.String("Dumps progress output", 0, 215, 95, 0, 0, 0)
-var AppUsage = AppName + " - " + AppDesc + `
+var appName = rgbterm.String("progress-dump", 255, 255, 135, 0, 0, 0)
+var appDesc = rgbterm.String("Dumps progress output", 0, 215, 95, 0, 0, 0)
+var appUsage = appName + " - " + appDesc + `
 
 Usage:
   progress-dump [--progress-yml <PATH>] [-h | --help]
@@ -36,18 +36,18 @@ Options:
   --readme <PATH>        The path to README.rst
 `
 
-type Item struct {
+type item struct {
 	Item      string
 	Done      string
 	Note      string
 	Completed string
-	SubItems  []Item `yaml:"sub-items"`
+	SubItems  []item `yaml:"sub-items"`
 }
 
 var spd = spew.ConfigState{Indent: "\t", DisableMethods: true}
 
-type Table struct {
-	Sections     []*TableSection
+type table struct {
+	Sections     []*tableSection
 	TotalItems   int
 	TotalDone    int
 	OverAllPerc  float64
@@ -56,19 +56,19 @@ type Table struct {
 	MaxCol3Chars int
 }
 
-func (t *Table) Len() int {
+func (t *table) Len() int {
 	return len(t.Sections)
 }
 
-func (t *Table) Swap(i, j int) {
+func (t *table) Swap(i, j int) {
 	t.Sections[i], t.Sections[j] = t.Sections[j], t.Sections[i]
 }
 
-func (t *Table) Less(i, j int) bool {
-	return t.Sections[i].Id < t.Sections[j].Id
+func (t *table) Less(i, j int) bool {
+	return t.Sections[i].ID < t.Sections[j].ID
 }
 
-func (t *Table) Dump() {
+func (t *table) Dump() {
 	// The table sections are in reverse order due to the recursion.
 	sort.Sort(t)
 
@@ -119,41 +119,41 @@ func (t *Table) Dump() {
 	}
 }
 
-type TableSection struct {
-	Header *TableSectionHeader
-	Rows   []*TableRow
-	Id     int
+type tableSection struct {
+	Header *tableSectionHeader
+	Rows   []*tableRow
+	ID     int
 }
 
-type TableSectionHeader struct {
+type tableSectionHeader struct {
 	Name     string
 	Done     string
 	DonePerc float64
 }
 
-type TableRow struct {
+type tableRow struct {
 	Done string
 	Item string
 	Note string
 }
 
-type State struct {
-	Table *Table
-	Id    int
-	Items []Item
+type state struct {
+	Table *table
+	ID    int
+	Items []item
 }
 
-func NewState() *State {
-	return &State{
-		Table: &Table{
-			Sections:     make([]*TableSection, 0),
+func newState() *state {
+	return &state{
+		Table: &table{
+			Sections:     make([]*tableSection, 0),
 			MaxCol1Chars: 8, // Col1 will always be **Done**
 		},
-		Id: 0,
+		ID: 0,
 	}
 }
 
-func (s *State) ReadProgressFile(path string) {
+func (s *state) ReadProgressFile(path string) {
 	f, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Println("ERROR:", err)
@@ -166,30 +166,30 @@ func (s *State) ReadProgressFile(path string) {
 	}
 }
 
-func (s *State) DumpTable() {
+func (s *state) DumpTable() {
 	s.Walk(s.Items, nil, 0)
 	s.CalcPercentages()
 	s.Table.Dump()
 }
 
-func (s *State) Walk(z []Item, sec *TableSection, depth int) {
+func (s *state) Walk(z []item, sec *tableSection, depth int) {
 	for _, x := range z {
 		if depth == 0 {
-			s.Id++
-			sec = &TableSection{
-				Header: &TableSectionHeader{Name: x.Item, Done: x.Done},
-				Id:     s.Id,
+			s.ID++
+			sec = &tableSection{
+				Header: &tableSectionHeader{Name: x.Item, Done: x.Done},
+				ID:     s.ID,
 			}
 		}
 		if x.SubItems != nil {
 			name := x.Item
 			if depth > 0 {
-				s.Id++
+				s.ID++
 				name = sec.Header.Name + " :: " + x.Item
 			}
-			subSec := &TableSection{
-				Header: &TableSectionHeader{Name: name, Done: x.Done},
-				Id:     s.Id,
+			subSec := &tableSection{
+				Header: &tableSectionHeader{Name: name, Done: x.Done},
+				ID:     s.ID,
 			}
 			depth++
 			s.Walk(x.SubItems, subSec, depth)
@@ -203,7 +203,7 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 		if len(x.Note) > s.Table.MaxCol3Chars {
 			s.Table.MaxCol3Chars = len(x.Note)
 		}
-		nRow := &TableRow{x.Done, x.Item, x.Note}
+		nRow := &tableRow{x.Done, x.Item, x.Note}
 		sec.Rows = append(sec.Rows, nRow)
 		if depth == 0 {
 			s.Table.Sections = append(s.Table.Sections, sec)
@@ -211,7 +211,7 @@ func (s *State) Walk(z []Item, sec *TableSection, depth int) {
 	}
 }
 
-func (s *State) CalcPercentages() {
+func (s *state) CalcPercentages() {
 	for _, x := range s.Table.Sections {
 		sDone := 0.0
 		s.Table.TotalItems++
@@ -234,13 +234,13 @@ func (s *State) CalcPercentages() {
 }
 
 func main() {
-	args, err := docopt.Parse(AppUsage, nil, true, "progress-dump", false)
+	args, err := docopt.Parse(appUsage, nil, true, "progress-dump", false)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	s := NewState()
+	s := newState()
 	s.ReadProgressFile(args["--progress-yml"].(string))
 	s.DumpTable()
 }
