@@ -238,7 +238,7 @@ func newLexer(name string, input []byte) *lexer {
 	lines := strings.Split(string(tInput), "\n")
 
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	Log.Debugf("mark: %#U, index: %d, line: %d\n", mark, 0, 1)
+	Log.Debugf("mark: %#U, index: %d, line: %d", mark, 0, 1)
 
 	return &lexer{
 		name:  name,
@@ -281,7 +281,7 @@ func (l *lexer) emit(t itemElement) {
 		tok = l.lines[l.line][l.start:l.index]
 	}
 
-	Log.Infof("[ID: %d]: %s: %q l.start: %d (%d) l.index: %d (%d) line: %d\n",
+	Log.Infof("[ID: %d]: %s: %q l.start: %d (%d) l.index: %d (%d) line: %d",
 		ID(l.id)+1, t, tok, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 
 	l.id++
@@ -300,7 +300,7 @@ func (l *lexer) emit(t itemElement) {
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
-	Log.Infof("Position after EMIT: l.mark: %q, l.start: %d (%d) l.index: %d (%d) line: %d\n",
+	Log.Infof("Position after EMIT: l.mark: %q, l.start: %d (%d) l.index: %d (%d) line: %d",
 		l.mark, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
 }
 
@@ -325,7 +325,7 @@ func (l *lexer) backup(pos int) {
 			l.backup(1)
 		}
 	}
-	Log.Debugf("l.mark backed up to: %q\n", l.mark)
+	Log.Debugf("l.mark backed up to: %q", l.mark)
 }
 
 // peek looks ahead in the input by a number of locations (locs) and returns the rune at that location in the input. Peek
@@ -344,7 +344,7 @@ func (l *lexer) peek(locs int) rune {
 		}
 		x++
 	}
-	Log.Debugf("peek() found %q at index %d\n", r, l.index)
+	Log.Debugf("peek() found %q at index %d", r, l.index)
 	return r
 }
 
@@ -363,7 +363,7 @@ func (l *lexer) peekBack(locs int) rune {
 		r = l.mark
 		x--
 	}
-	Log.Debugf("peekBack found %q at index %d\n", string(r), l.index)
+	Log.Debugf("peekBack found %q at index %d", string(r), l.index)
 	return r
 }
 
@@ -384,7 +384,7 @@ func (l *lexer) next() (rune, int) {
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
-	Log.Debugf("mark: %#U, start: %d, index: %d, line: %d\n", r, l.start, l.index, l.lineNumber())
+	Log.Debugf("mark: %#U, start: %d, index: %d, line: %d", r, l.start, l.index, l.lineNumber())
 	return r, width
 }
 
@@ -476,7 +476,7 @@ func isSection(l *lexer) bool {
 				first = r
 				last = r
 			}
-			// Log.Debugf("first: %q, last: %q, r: %q, j: %d\n", first, last, r, j)
+			// Log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
 			if !isSectionAdornment(r) || (r != first && last != first) {
 				Log.Debugln("Section not found")
 				return false
@@ -672,7 +672,7 @@ func isInlineMarkup(l *lexer) bool {
 		if l.mark == f {
 			f = l.peek(2)
 		}
-		// Log.Debugf("back: %q forward: %q\n", b, f)
+		// Log.Debugf("back: %q forward: %q", b, f)
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) && !isSurrounded(b, f) &&
 			!unicode.IsSpace(f) && f != utf8.RuneError {
 			Log.Debugln("Found inline markup!")
@@ -721,7 +721,7 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 }
 
 func isEscaped(l *lexer) bool {
-	// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d\n", l.mark, l.index, l.width, l.lineNumber())
+	// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 	return (l.mark == '\\' && (unicode.In(l.peek(1), unicode.Zs, unicode.Cc, unicode.Lu, unicode.Ll) || l.peek(1) ==
 		utf8.RuneError))
 }
@@ -730,7 +730,7 @@ func isEscaped(l *lexer) bool {
 // function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
 	for {
-		// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d\n", l.mark, l.index, l.start,
+		// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d", l.mark, l.index, l.start,
 		// l.width, l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 &&
 			!l.isEndOfLine() {
@@ -738,7 +738,7 @@ func lexStart(l *lexer) stateFn {
 				l.indentLevel = 0
 				l.indentWidth = ""
 			}
-			Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d\n", l.mark, l.index, l.width, l.lineNumber())
+			Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 			if isComment(l) {
 				return lexComment
 			} else if isBulletList(l) {
@@ -794,7 +794,7 @@ func lexSpace(l *lexer) stateFn {
 			break
 		}
 	}
-	Log.Debugf("l.start: %d, l.index: %d\n", l.index, l.start)
+	Log.Debugf("l.start: %d, l.index: %d", l.index, l.start)
 	if l.start < l.index {
 		l.emit(itemSpace)
 	}
@@ -804,7 +804,7 @@ func lexSpace(l *lexer) stateFn {
 // lexSection is used after isSection() has determined that the next runes of input are section.  From here, the lexTitle()
 // and lexSectionAdornment() are called based on the input.
 func lexSection(l *lexer) stateFn {
-	// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d\n", l.mark, l.index, l.start,
+	// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
 	// l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {
@@ -882,7 +882,7 @@ func lexEnumList(l *lexer) stateFn {
 
 func lexParagraph(l *lexer) stateFn {
 	for {
-		// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d\n", l.mark, l.index, l.width, l.lineNumber())
+		// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 		if isEscaped(l) {
 			l.emit(itemParagraph)
 			lexEscape(l)
@@ -945,7 +945,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	}
 	l.nextLine()
 	l.next()
-	Log.Debugf("Current line: %q\n", l.currentLine())
+	Log.Debugf("Current line: %q", l.currentLine())
 	lexSpace(l)
 	for {
 		l.next()
@@ -969,7 +969,7 @@ func lexBullet(l *lexer) stateFn {
 
 func lexInlineMarkup(l *lexer) stateFn {
 	for {
-		Log.Debugf("l.mark: %q l.start: %d l.index: %d l.width: %d l.line: %d\n", l.mark, l.start, l.index, l.width,
+		Log.Debugf("l.mark: %q l.start: %d l.index: %d l.width: %d l.line: %d", l.mark, l.start, l.index, l.width,
 			l.lineNumber())
 		if l.mark == '*' && l.peek(1) == '*' {
 			lexInlineStrong(l)

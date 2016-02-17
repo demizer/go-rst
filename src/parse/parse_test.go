@@ -227,8 +227,7 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	eTemp := "(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q\n\n"
-	c.t.Errorf(eTemp, c.id, c.pFieldName, got, c.eFieldName, exp)
+	c.t.Errorf("(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q", c.id, c.pFieldName, got, c.eFieldName, exp)
 }
 
 func (c *checkNode) updateState(eKey string, eVal interface{},
@@ -288,7 +287,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		_, in := pNodeVal.Type().FieldByName(sfName)
 		if !in {
 			nName := reflect.TypeOf(pNode)
-			return fmt.Errorf("Node (%s) missing field %q\n", nName, sfName)
+			return fmt.Errorf("Node (%s) missing field %q", nName, sfName)
 		}
 	}
 	// Compare pNode against eNodes
@@ -338,8 +337,8 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		}
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
-			return fmt.Errorf("Node ID=%.0f missing field %q\n\tParser got: %q == %v\n", eNode["id"], pName,
-				pName, pVal)
+			return fmt.Errorf("Node ID=%.0f missing field %q\n\tParser got: %q == %v", eNode["id"], pName, pName,
+				pVal)
 		}
 	}
 	return nil
@@ -401,9 +400,9 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
 				// DO NOT REMOVE SPD CALLS
-				Log.Errorf("\n%d Parse NodeList Nodes\n\n", len2)
+				Log.Errorf("\n%d Parse NodeList Nodes", len2)
 				spd.Dump(pNode)
-				Log.Errorf("\n%d Expected NodeList Nodes\n\n", len1)
+				Log.Errorf("\n%d Expected NodeList Nodes", len1)
 				spd.Dump(eNodes)
 				fmt.Println()
 				// DO NOT REMOVE SPD CALLS
@@ -451,9 +450,9 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	state := &checkNode{t: t, testPath: testPath}
 
 	if len(pNodes) != len(eTree) {
-		Log.Errorf("\n%d Parse Nodes\n\n", len(pNodes))
+		Log.Errorf("\n%d Parse Nodes", len(pNodes))
 		spd.Dump(pNodes)
-		Log.Errorf("\n%d Expected Nodes\n\n", len(eTree))
+		Log.Errorf("\n%d Expected Nodes", len(eTree))
 		spd.Dump(eTree)
 		fmt.Println()
 		Log.Errorln("The number of parsed nodes does not match expected nodes!")
@@ -469,8 +468,8 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *Test) (tree *Tree) {
-	Log.Debugf("Test path: %s\n", test.path)
-	Log.Debugf("Test Input:\n-----------\n%s\n----------\n", test.data)
+	Log.Debugf("Test path: %s", test.path)
+	Log.Debugf("Test Input:\n-----------\n%s\n----------", test.data)
 	tree, _ = Parse(test.path, test.data)
 	return
 }
@@ -561,17 +560,17 @@ func TestTreeBackup(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].ID != val.ID {
-			t.Errorf("Test: %q\n\tGot: token[%s].ID = %d, Expect: %d\n\n", tr.Name, tName, tr.token[tPos].Type, val.ID)
+			t.Errorf("Test: %q\n\tGot: token[%s].ID = %d, Expect: %d", tr.Name, tName, tr.token[tPos].Type, val.ID)
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeBackupTests {
@@ -698,14 +697,14 @@ func TestTreeNext(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\tGot: token[%d].Type = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%d].Type = %q, Expect: %q", tr.Name, tPos, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\tGot: token[%d].Text = %q, Expect: %q\n\n", tr.Name, tPos, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%d].Text = %q, Expect: %q", tr.Name, tPos, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treeNextTests {
@@ -788,14 +787,14 @@ func TestTreePeek(t *testing.T) {
 			return
 		}
 		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
 			return
 		}
 		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Type, val.Type)
+			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Type, val.Type)
 		}
 		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q\n\n", tr.Name, tName, tr.token[tPos].Text, val.Text)
+			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
 	for _, tt := range treePeekTests {
@@ -859,7 +858,7 @@ func TestTreeClearTokens(t *testing.T) {
 	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
 		val := tExp.Interface().(*item)
 		if tr.token[tPos] != nil && val == nil {
-			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil\n\n", tr.Name, tName, tr.token[tPos])
+			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
 		}
 	}
 	for _, tt := range testTreeClearTokensTests {
@@ -1044,28 +1043,28 @@ func testSectionLevelsAddCheckEqual(t *testing.T, testName string,
 	pos int, pLvl, eLvl *sectionLevel) {
 
 	if eLvl.level != pLvl.level {
-		t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, "+"Expect: %d\n\n", testName, pLvl.level, eLvl.level)
+		t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, "+"Expect: %d", testName, pLvl.level, eLvl.level)
 	}
 	if eLvl.rChar != pLvl.rChar {
-		t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, "+"Expect: %#U\n\n", testName, pLvl.rChar, eLvl.rChar)
+		t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, "+"Expect: %#U", testName, pLvl.rChar, eLvl.rChar)
 	}
 	if eLvl.overLine != pLvl.overLine {
-		t.Errorf("Test: %q\n\tGot: sectionLevel.overLine = %t, "+"Expect: %t\n\n", testName, pLvl.overLine,
+		t.Errorf("Test: %q\n\tGot: sectionLevel.overLine = %t, "+"Expect: %t", testName, pLvl.overLine,
 			eLvl.overLine)
 	}
 	for eNum, eSec := range eLvl.sections {
 		if eSec.ID != pLvl.sections[eNum].ID {
-			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].ID = %d, "+"Expect: %d\n\n", testName, pos, eNum,
+			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].ID = %d, "+"Expect: %d", testName, pos, eNum,
 				pLvl.sections[eNum].ID, eSec.ID)
 		}
 		if eSec.Level != pLvl.sections[eNum].Level {
-			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].Level = %d, "+"Expect: %d\n\n", testName, pos,
+			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].Level = %d, "+"Expect: %d", testName, pos,
 				eNum, pLvl.sections[eNum].Level, eSec.Level)
 		}
 		eRune := eSec.UnderLine.Rune
 		pRune := pLvl.sections[eNum].UnderLine.Rune
 		if eRune != pRune {
-			t.Errorf("Test: %q\n\tGot: level[%d].section[%d].Rune = %#U, "+"Expect: %#U\n\n", testName, pos,
+			t.Errorf("Test: %q\n\tGot: level[%d].section[%d].Rune = %#U, "+"Expect: %#U", testName, pos,
 				eNum, pLvl.sections[eNum].UnderLine.Rune, eSec.UnderLine.Rune)
 		}
 	}
@@ -1083,7 +1082,7 @@ func TestSectionLevelsAdd(t *testing.T) {
 		}
 		msg := pSecLvls.Add(n)
 		if msg > parserMessageNil && msg != s.eMessage {
-			t.Fatalf("Test: %q\n\tGot: parserMessage = %q, "+"Expect: %q\n\n", testName, msg, s.eMessage)
+			t.Fatalf("Test: %q\n\tGot: parserMessage = %q, "+"Expect: %q", testName, msg, s.eMessage)
 		}
 	}
 
@@ -1190,20 +1189,20 @@ func TestSectionLevelsLast(t *testing.T) {
 		var pSec *SectionNode
 		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
-			t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, Expect: %d\n\n", tt.name, tt.eLevel.level,
+			t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, Expect: %d", tt.name, tt.eLevel.level,
 				pSec.Level)
 		}
 		if tt.eLevel.rChar != pSec.UnderLine.Rune {
-			t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, Expect: %#U\n\n", tt.name, tt.eLevel.rChar,
+			t.Errorf("Test: %q\n\tGot: sectionLevel.rChar = %#U, Expect: %#U", tt.name, tt.eLevel.rChar,
 				pSec.UnderLine.Rune)
 		}
 		// There can be only one
 		if tt.eLevel.sections[0].ID != pSec.ID {
-			t.Errorf("Test: %q\n\tGot: level[0].sections[0].ID = %d, "+"Expect: %d\n\n", tt.name, pSec.ID,
+			t.Errorf("Test: %q\n\tGot: level[0].sections[0].ID = %d, "+"Expect: %d", tt.name, pSec.ID,
 				tt.eLevel.sections[0].ID)
 		}
 		if tt.eLevel.sections[0].Title.Text != pSec.Title.Text {
-			t.Errorf("Test: %q\n\tGot: level[0].sections[0].Title.Text = %q, "+"Expect: %q\n\n", tt.name,
+			t.Errorf("Test: %q\n\tGot: level[0].sections[0].Title.Text = %q, "+"Expect: %q", tt.name,
 				pSec.Title.Text, tt.eLevel.sections[0].Title.Text)
 		}
 	}
@@ -1213,17 +1212,17 @@ func TestSystemMessageLevelFrom(t *testing.T) {
 	name := "Test systemMessageLevel with levelInfo"
 	test0 := ""
 	if -1 != systemMessageLevelFromString(test0) {
-		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
 			systemMessageLevelFromString(test0), -1)
 	}
 	test1 := "INFO"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
 			systemMessageLevelFromString(test1), levelInfo)
 	}
 	test2 := "SEVERE"
 	if levelInfo != systemMessageLevelFromString(test1) {
-		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q\n\n", name,
+		t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
 			systemMessageLevelFromString(test2), levelSevere)
 	}
 }

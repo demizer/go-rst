@@ -104,22 +104,17 @@ func (p parserMessage) String() string {
 func (p parserMessage) Message() (s string) {
 	switch p {
 	case infoOverlineTooShortForTitle:
-		s = "Possible incomplete section title.\n" +
-			"Treating the overline as ordinary text because " +
-			"it's so short."
+		s = "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short."
 	case infoUnexpectedTitleOverlineOrTransition:
-		s = "Unexpected possible title overline or transition.\n" +
-			"Treating it as ordinary text because it's so short."
+		s = "Unexpected possible title overline or transition.\nTreating it as ordinary text because it's so short."
 	case infoUnderlineTooShortForTitle:
-		s = "Possible title underline, too short for the title.\n" +
-			"Treating it as ordinary text because it's so short."
+		s = "Possible title underline, too short for the title.\nTreating it as ordinary text because it's so short."
 	case warningShortOverline:
 		s = "Title overline too short."
 	case warningShortUnderline:
 		s = "Title underline too short."
 	case warningExplicitMarkupWithUnIndent:
-		s = "Explicit markup ends without a blank line; " +
-			"unexpected unindent."
+		s = "Explicit markup ends without a blank line; unexpected unindent."
 	case errorInvalidSectionOrTransitionMarker:
 		s = "Invalid section title or transition marker."
 	case severeUnexpectedSectionTitle:
@@ -334,7 +329,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n interface{}
 
 		token := t.next(1)
-		Log.Infof("Parser got token: %#+v\n", token)
+		Log.Infof("Parser got token: %#+v", token)
 
 		// FIXME: Hackish. Need to find a better way...
 		if t.indentLevel > 0 && token.StartPosition == 1 && token.Type != itemSpace && token.Type != itemBlankLine &&
@@ -444,7 +439,7 @@ func (t *Tree) peek(pos int) *item {
 	for i := 1; i <= pos; i++ {
 		if t.token[zed+i] != nil {
 			nItem = t.token[zed+i]
-			Log.Debugf("Using %#+v\n", nItem)
+			Log.Debugf("Using %#+v", nItem)
 			continue
 		} else {
 			if t.lex == nil {
@@ -591,7 +586,7 @@ func (t *Tree) section(i *item) Node {
 	// Determine the level of the section and where to append it to in t.Nodes
 	undoID := t.id
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
-	Log.Debugf("Adding  %#U to sectionLevels\n", sec.UnderLine.Rune)
+	Log.Debugf("Adding  %#U to sectionLevels", sec.UnderLine.Rune)
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
@@ -853,7 +848,7 @@ func (t *Tree) blockquote(i *item) Node {
 	}
 
 	level := s.Length / t.indentWidth
-	Log.Debugf("t.indentLevel == level :: %d == %d\n", t.indentLevel, level)
+	Log.Debugf("t.indentLevel == level :: %d == %d", t.indentLevel, level)
 	if t.indentLevel == level {
 		i.Type = itemParagraph
 		return newParagraph(i, &t.id)
