@@ -389,6 +389,9 @@ func (t *Tree) parse(tree *Tree) {
 			n = t.bulletListItem(token)
 			t.nodeTarget = t.openBulletList
 			t.indentLevel++
+		default:
+			Log.Errorf("Token type: %s is not yet supported in the parser", token.Type.String())
+			continue
 		}
 
 		t.nodeTarget.append(n.(Node))
