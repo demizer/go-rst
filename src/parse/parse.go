@@ -5,11 +5,11 @@
 package parse
 
 import (
-	"io/ioutil"
+	"os"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/apex/log"
+	"github.com/apex/log/handlers/text"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/demizer/go-my-logfmt"
 	"golang.org/x/text/unicode/norm"
 )
 
@@ -18,11 +18,9 @@ var spd = spew.ConfigState{Indent: "\t"} //, DisableMethods: true}
 
 // Log is the default logging object. By default, all output is discarded. Set Log.Out to std.Stdout to enable output. The
 // level of the log output can also be set in this manner. See the documentation of the logrus package for other options.
-var Log = &logrus.Logger{
-	Out:       ioutil.Discard,
-	Formatter: new(logfmt.TextFormatter),
-	Hooks:     make(logrus.LevelHooks),
-	Level:     logrus.InfoLevel,
+var Log = &log.Logger{
+	Handler: text.New(os.Stdout),
+	Level:   log.InfoLevel,
 }
 
 // systemMessageLevel implements four levels for messages and is used in conjunction with the parserMessage type.
@@ -189,7 +187,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		Log.Debugln("Creating new sectionLevel:", level)
+		Log.WithField("level", level).Debug("newSectionLevel: Creating new sectionLevel")
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,
@@ -220,7 +218,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 			level = len(s.levels) + 1
 			newSectionLevel()
 		} else {
-			Log.Debugln("Using sectionLevel:", secLvl.level)
+			Log.WithField("sectionLevel", secLvl.level).Debug("add: using sectionLevel")
 			level = secLvl.level
 		}
 	}
@@ -250,7 +248,7 @@ exit:
 		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
 			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
-				Log.Debugln("Found sectionLevel:", sec.Level)
+				Log.WithField("sectionLevel", sec.Level).Debug("LastSectionByLevel: found sectionLevel")
 				break exit
 			}
 		}
@@ -448,7 +446,7 @@ func (t *Tree) peek(pos int) *item {
 			if t.lex == nil {
 				continue
 			}
-			Log.Debugln("Getting next item")
+			Log.Debug("Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
 		}
@@ -593,14 +591,14 @@ func (t *Tree) section(i *item) Node {
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
-		Log.Debugln("Found inconsistent section level!")
+		Log.Debug("Found inconsistent section level!")
 		t.id = undoID
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 
 	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
-		Log.Debugln("Setting nodeTarget to Tree.Nodes!")
+		Log.Debug("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = &t.Nodes
 	} else {
 		lSec := t.sectionLevels.lastSectionNode
@@ -608,7 +606,7 @@ func (t *Tree) section(i *item) Node {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
 		t.nodeTarget = &lSec.NodeList
-		Log.Debugln("Setting nodeTarget to section ID", lSec.ID.String())
+		Log.WithField("nodeTarget", lSec.ID.String()).Debug("section: Setting nodeTarget to section ID")
 	}
 
 	// The following checks have to be made after the SectionNode has been initialized so that any parserMessages can be
@@ -631,13 +629,13 @@ func (t *Tree) section(i *item) Node {
 func (t *Tree) comment(i *item) Node {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		Log.Debugln("Found empty comment block")
+		Log.Debug("Found empty comment block")
 		return newComment(&item{StartPosition: i.StartPosition, Line: i.Line}, &t.id)
 	}
 	nSpace := t.peek(1)
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		Log.Debugln("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		Log.Debug("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
 		return t.systemMessage(warningExplicitMarkupWithUnIndent)
@@ -646,7 +644,7 @@ func (t *Tree) comment(i *item) Node {
 	if nPara != nil && nPara.Type == itemParagraph {
 		t.next(2)
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
-			Log.Debugln("Found NodeComment block")
+			Log.Debug("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -659,12 +657,12 @@ func (t *Tree) comment(i *item) Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1).Type; z != itemBlankLine && z != itemCommentMark && z != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			Log.Debugln("Found warningExplicitMarkupWithUnIndent")
+			Log.Debug("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara, &t.id)
 			t.nodeTarget.append(n)
 			return t.systemMessage(warningExplicitMarkupWithUnIndent)
 		} else {
-			Log.Debugln("Found NodeComment")
+			Log.Debug("Found NodeComment")
 		}
 		n = newComment(nPara, &t.id)
 	}
@@ -685,7 +683,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 	s.NodeList = append(s.NodeList, msg)
 
-	Log.Debugln("FOUND", err)
+	Log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
 	// if t.token[zed].Line == 9 {
 	// spd.Dump(t.token)
 	// os.Exit(1)
@@ -842,7 +840,7 @@ func (t *Tree) paragraph(i *item) Node {
 }
 
 func (t *Tree) blockquote(i *item) Node {
-	Log.Debugln("Got type", i.Type)
+	Log.WithField("type", i.Type).Debug("blockquote: have type")
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case we will get the last itemSpace token found to
@@ -864,13 +862,13 @@ func (t *Tree) blockquote(i *item) Node {
 				&item{Type: itemBlockQuote, Line: i.Line},
 				level, &t.id)
 		}
-		Log.Debugln("Next item is itemBlockQuote")
+		Log.Debug("Next item is itemBlockQuote")
 		return nil
 	}
 
 	levelChanged := false
 	if t.indentLevel != level {
-		Log.Debugln("Setting indentLevel to ", level)
+		Log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel")
 		t.indentLevel = level
 		levelChanged = true
 	}

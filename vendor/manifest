@@ -2,10 +2,52 @@
 	"version": 0,
 	"dependencies": [
 		{
-			"importpath": "github.com/Sirupsen/logrus",
-			"repository": "https://github.com/Sirupsen/logrus",
-			"revision": "3455d89ac9652295c85db2a98ea32f1d61c380bc",
+			"importpath": "github.com/apex/log",
+			"repository": "https://github.com/apex/log",
+			"revision": "81a19e5c0054c0c0e546333bfc4eed40b5b9592f",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/aws",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/aws"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/private/endpoints",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/private/endpoints"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/private/protocol",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/private/protocol"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/private/signer/v4",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/private/signer/v4"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/private/waiter",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/private/waiter"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/service/kinesis",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "d17da62685915c25ab5b429b1d1e5b67faa98ac2",
+			"branch": "master",
+			"path": "/service/kinesis"
 		},
 		{
 			"importpath": "github.com/davecgh/go-spew/spew",
@@ -15,9 +57,39 @@
 			"path": "/spew"
 		},
 		{
-			"importpath": "github.com/demizer/go-my-logfmt",
-			"repository": "https://github.com/demizer/go-my-logfmt",
-			"revision": "ba87049e8bd9b4ae79eadd6ad5cc36e3ea119ef5",
+			"importpath": "github.com/go-ini/ini",
+			"repository": "https://github.com/go-ini/ini",
+			"revision": "193d1ecb466bf97aae8b454a5cfc192941c64809",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/go-logfmt/logfmt",
+			"repository": "https://github.com/go-logfmt/logfmt",
+			"revision": "c50dc9aa845e681529d8e49d3dc11ec0195aacac",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/jmespath/go-jmespath",
+			"repository": "https://github.com/jmespath/go-jmespath",
+			"revision": "0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/jpillora/backoff",
+			"repository": "https://github.com/jpillora/backoff",
+			"revision": "2ff7c4694083b5dbd71b21fd7cb7577477a74b31",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/rogpeppe/fastuuid",
+			"repository": "https://github.com/rogpeppe/fastuuid",
+			"revision": "6724a57986aff9bff1a1770e9347036def7c89f6",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/tj/go-kinesis",
+			"repository": "https://github.com/tj/go-kinesis",
+			"revision": "677d118cb62c634d6d8dc7c49e979c4d40fac58b",
 			"branch": "master"
 		},
 		{
@@ -38,12 +110,6 @@
 			"importpath": "gopkg.in/airbrake/gobrake.v2",
 			"repository": "https://gopkg.in/airbrake/gobrake.v2",
 			"revision": "c9d51adc624b5cc4c1bf8de730a09af4878ffe2d",
-			"branch": "master"
-		},
-		{
-			"importpath": "gopkg.in/gemnasium/logrus-airbrake-hook.v2",
-			"repository": "https://gopkg.in/gemnasium/logrus-airbrake-hook.v2",
-			"revision": "31e6fd4bd5a98d8ee7673d24bc54ec73c31810dd",
 			"branch": "master"
 		}
 	]

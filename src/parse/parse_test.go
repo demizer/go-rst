@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/apex/log"
 	"golang.org/x/text/unicode/norm"
 )
 
@@ -27,8 +27,7 @@ func SetDebug() {
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
 	if debug {
-		Log.Out = os.Stdout
-		Log.Level = logrus.DebugLevel
+		Log.Level = log.DebugLevel
 	}
 }
 
@@ -294,7 +293,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
 		if pName == "" {
-			Log.Fatal("pName == nil; Check struct tags!\n", pName)
+			Log.WithField("pName", pName).Fatal("Check struct tags!")
 		}
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
@@ -400,9 +399,9 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
 				// DO NOT REMOVE SPD CALLS
-				Log.Errorf("\n%d Parse NodeList Nodes", len2)
+				Log.Errorf("%d Parse NodeList Nodes", len2)
 				spd.Dump(pNode)
-				Log.Errorf("\n%d Expected NodeList Nodes", len1)
+				Log.Errorf("%d Expected NodeList Nodes", len1)
 				spd.Dump(eNodes)
 				fmt.Println()
 				// DO NOT REMOVE SPD CALLS
@@ -450,12 +449,12 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	state := &checkNode{t: t, testPath: testPath}
 
 	if len(pNodes) != len(eTree) {
-		Log.Errorf("\n%d Parse Nodes", len(pNodes))
+		Log.Errorf("%d Parse Nodes", len(pNodes))
 		spd.Dump(pNodes)
-		Log.Errorf("\n%d Expected Nodes", len(eTree))
+		Log.Errorf("%d Expected Nodes", len(eTree))
 		spd.Dump(eTree)
 		fmt.Println()
-		Log.Errorln("The number of parsed nodes does not match expected nodes!")
+		Log.Error("The number of parsed nodes does not match expected nodes!")
 		os.Exit(1)
 	}
 
