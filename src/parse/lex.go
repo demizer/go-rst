@@ -1,11 +1,13 @@
 package parse
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/apex/log"
 	"golang.org/x/text/unicode/norm"
 )
 
@@ -196,6 +198,7 @@ type lexer struct {
 	mark             rune   // The current lexed rune
 	indentLevel      int    // For tracking indentation with indentable items
 	indentWidth      string // For tracking indent width
+	log              *log.Entry
 }
 
 // getu4 decodes a unicode literal from s length q
@@ -208,7 +211,7 @@ func newLexer(name string, input []byte) *lexer {
 	if len(input) == 0 {
 		return nil
 	}
-
+	l := &lexer{name: name, log: log.NewEntry(Log).WithField("unit", "lexer")}
 	// Convert unicode literals to runes and strip escaped whitespace
 	var tInput []byte
 	r := 0
@@ -227,10 +230,9 @@ func newLexer(name string, input []byte) *lexer {
 			r++
 		}
 	}
-
 	var nInput []byte
 	if !norm.NFC.IsNormal(tInput) {
-		Log.Info("Normalizing input")
+		l.log.Info("nexLexer: Normalizing input")
 		nInput = norm.NFC.Bytes(tInput)
 		tInput = nInput
 	}
@@ -238,17 +240,15 @@ func newLexer(name string, input []byte) *lexer {
 	lines := strings.Split(string(tInput), "\n")
 
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	Log.Debugf("mark: %#U, index: %d, line: %d", mark, 0, 1)
+	l.log.WithFields(log.Fields{"mark": mark, "index": 0, "line": 1}).Debug("nexLexer: mark")
 
-	return &lexer{
-		name:  name,
-		input: string(tInput), // stored string is never altered
-		lines: lines,
-		items: make(chan item),
-		index: 0,
-		mark:  mark,
-		width: width,
-	}
+	l.input = string(tInput) // stored string is never altered
+	l.lines = lines
+	l.items = make(chan item)
+	l.index = 0
+	l.mark = mark
+	l.width = width
+	return l
 }
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
@@ -344,7 +344,7 @@ func (l *lexer) peek(locs int) rune {
 		}
 		x++
 	}
-	Log.Debugf("peek() found %q at index %d", r, l.index)
+	l.log.WithFields(log.Fields{"mark": string(r), "index": l.index}).Debugf("peek: mark")
 	return r
 }
 
@@ -363,7 +363,7 @@ func (l *lexer) peekBack(locs int) rune {
 		r = l.mark
 		x--
 	}
-	Log.Debugf("peekBack found %q at index %d", string(r), l.index)
+	l.log.WithFields(log.Fields{"mark": string(r), "index": l.index}).Debugf("peekBack: mark")
 	return r
 }
 
@@ -377,14 +377,16 @@ func (l *lexer) peekNextLine() string {
 // next advances the position of the lexer by one rune and returns that rune.
 func (l *lexer) next() (rune, int) {
 	if l.isEndOfLine() && !l.isLastLine() {
-		Log.Debug("Getting next line")
+		l.log.Debug("next: Getting next line")
 		l.nextLine()
 	}
 	l.index += l.width
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
-	Log.Debugf("mark: %#U, start: %d, index: %d, line: %d", r, l.start, l.index, l.lineNumber())
+	// Log.Debugf("mark: %#U, start: %d, index: %d, line: %d", r, l.start, l.index, l.lineNumber())
+	l.log.WithFields(log.Fields{"mark": fmt.Sprintf("%#U", r),
+		"start": l.start, "index": l.index, "line": l.lineNumber()}).Debug("next: mark")
 	return r, width
 }
 
@@ -469,7 +471,7 @@ func isSection(l *lexer) bool {
 		for j := 0; j < len(input); j++ {
 			r, _ := utf8.DecodeRuneInString(input[j:])
 			if unicode.IsSpace(r) {
-				Log.Debug("Skipping space rune")
+				l.log.Debug("isSeciton: Skipping space rune")
 				continue
 			}
 			if first == '\x00' {
@@ -478,7 +480,7 @@ func isSection(l *lexer) bool {
 			}
 			// Log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
 			if !isSectionAdornment(r) || (r != first && last != first) {
-				Log.Debug("Section not found")
+				l.log.Debug("isSeciton: Section not found")
 				return false
 			}
 			last = r
@@ -487,26 +489,26 @@ func isSection(l *lexer) bool {
 	}
 
 	if isTransition(l) {
-		Log.Debug("Returning (found transition)")
+		l.log.Debug("isSeciton: Returning (found transition)")
 		return false
 	}
 
-	Log.Debug("Checking current line")
+	l.log.Debug("isSeciton: Checking current line")
 	if checkLine(l.currentLine()) {
-		Log.Debug("Found section adornment")
+		l.log.Debug("isSeciton: Found section adornment")
 		return true
 	}
 
-	Log.Debug("Checking next line")
+	l.log.Debug("isSeciton: Checking next line")
 
 	nLine := l.peekNextLine()
 	if nLine != "" {
 		if checkLine(nLine) {
-			Log.Debug("Found section adornment (nextline)")
+			l.log.Debug("isSeciton: Found section adornment (nextline)")
 			return true
 		}
 	}
-	Log.Debug("Section not found")
+	l.log.Debug("isSeciton: Section not found")
 	return false
 }
 
@@ -522,19 +524,19 @@ func isSectionAdornment(r rune) bool {
 
 func isTransition(l *lexer) bool {
 	if r := l.peek(4); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {
-		Log.Debug("Transition not found")
+		l.log.Debug("isTransition: Transition not found")
 		return false
 	}
 	pBlankLine := l.lastItem != nil && l.lastItem.Type == itemBlankLine
 	nBlankLine := l.peekNextLine() == ""
 	if l.line == 0 && nBlankLine {
-		Log.Debug("Found transition (followed by newline)")
+		l.log.Debug("isTransition: Found transition (followed by newline)")
 		return true
 	} else if pBlankLine && nBlankLine {
-		Log.Debug("Found transition (surrounded by newlines)")
+		l.log.Debug("isTransition: Found transition (surrounded by newlines)")
 		return true
 	}
-	Log.Debug("Transition not found")
+	l.log.Debug("isTransition: Transition not found")
 	return false
 }
 
@@ -545,11 +547,11 @@ func isComment(l *lexer) bool {
 	if nMark := l.peek(1); l.mark == '.' && nMark == '.' {
 		nMark2 := l.peek(2)
 		if unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError {
-			Log.Debug("Found comment!")
+			l.log.Debug("isComment: Found comment!")
 			return true
 		}
 	}
-	Log.Debug("Comment not found!")
+	l.log.Debug("isComment: Comment not found!")
 	return false
 }
 
@@ -563,7 +565,7 @@ func isEnumList(l *lexer) (ret bool) {
 			bCount++
 			if nMark, _ := l.next(); !isArabic(nMark) {
 				if nMark == '.' || nMark == ' ' {
-					Log.Debug("Found arabic enum list!")
+					l.log.Debug("isComment: Found arabic enum list!")
 					ret = true
 					goto exit
 				}
@@ -578,18 +580,18 @@ exit:
 func isBulletList(l *lexer) bool {
 	for _, x := range bullets {
 		if l.mark == x && l.peek(1) == ' ' {
-			Log.Debug("A bullet was found")
+			l.log.Debug("isBulletList: A bullet was found")
 			return true
 		}
 	}
-	Log.Debug("A bullet was not found")
+	l.log.Debug("isBulletList: A bullet was not found")
 	return false
 }
 
 func isDefinitionTerm(l *lexer) bool {
 	// Definition terms are preceded by a blankline
 	if l.line != 0 && !l.lastLineIsBlankLine() {
-		Log.Debug("Not definition, lastLineIsBlankLine == false")
+		l.log.Debug("isDefinitionTerm: Not definition, lastLineIsBlankLine == false")
 		return false
 	}
 	nL := l.peekNextLine()
@@ -601,12 +603,12 @@ func isDefinitionTerm(l *lexer) bool {
 			break
 		}
 	}
-	Log.WithField("sCount", sCount).Debug("isDefinitionTerm: section count")
+	l.log.WithField("sCount", sCount).Debug("isDefinitionTerm: section count")
 	if sCount >= 2 {
-		Log.Debug("Found definition term!")
+		l.log.Debug("isDefinitionTerm: Found definition term!")
 		return true
 	}
-	Log.Debug("Did not find definition term.")
+	l.log.Debug("isDefinitionTerm: Did not find definition term.")
 	return false
 }
 
@@ -672,10 +674,10 @@ func isInlineMarkup(l *lexer) bool {
 		if l.mark == f {
 			f = l.peek(2)
 		}
-		// Log.Debugf("back: %q forward: %q", b, f)
+		// l.log.Debugf("back: %q forward: %q", b, f)
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) && !isSurrounded(b, f) &&
 			!unicode.IsSpace(f) && f != utf8.RuneError {
-			Log.Debug("Found inline markup!")
+			l.log.Debug("isInlineMarkup: Found inline markup!")
 			return true
 		}
 	}
@@ -712,16 +714,16 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 
 	// If the closing markup is one rune, then do nothing.
 	if validEnd && validNext {
-		Log.Debug("Found inline markup close")
+		l.log.Debug("isInlineMarkupClosed: Found inline markup close")
 		return true
 	}
 
-	Log.Debug("Inline markup close not found")
+	l.log.Debug("isInlineMarkupClosed: Inline markup close not found")
 	return false
 }
 
 func isEscaped(l *lexer) bool {
-	// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
+	// l.log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 	return (l.mark == '\\' && (unicode.In(l.peek(1), unicode.Zs, unicode.Cc, unicode.Lu, unicode.Ll) || l.peek(1) ==
 		utf8.RuneError))
 }
@@ -730,7 +732,7 @@ func isEscaped(l *lexer) bool {
 // function returns nil, the lexing is finished and run() will exit.
 func lexStart(l *lexer) stateFn {
 	for {
-		// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d", l.mark, l.index, l.start,
+		// l.log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d", l.mark, l.index, l.start,
 		// l.width, l.lineNumber())
 		if l.index-l.start <= l.width && l.width > 0 &&
 			!l.isEndOfLine() {
@@ -738,7 +740,8 @@ func lexStart(l *lexer) stateFn {
 				l.indentLevel = 0
 				l.indentWidth = ""
 			}
-			Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
+			l.log.WithFields(log.Fields{"mark": fmt.Sprintf("%#U", l.mark), "start": l.start, "index": l.index,
+				"width": l.width, "line": l.lineNumber()}).Debug("lexStart: mark")
 			if isComment(l) {
 				return lexComment
 			} else if isBulletList(l) {
@@ -759,16 +762,16 @@ func lexStart(l *lexer) stateFn {
 				return lexParagraph
 			}
 		} else if l.isEndOfLine() {
-			Log.Debug("isEndOfLine == true")
+			l.log.Debug("lexStart: isEndOfLine == true")
 			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
-					Log.Debug("Found blank line")
+					l.log.Debug("lexStart: Found blank line")
 					l.emit(itemBlankLine)
 					if l.isLastLine() {
 						break
 					}
 				} else if l.isLastLine() {
-					Log.Debug("Found end of last line")
+					l.log.Debug("lexStart: Found end of last line")
 					break
 				}
 			}
@@ -783,18 +786,18 @@ func lexStart(l *lexer) stateFn {
 
 // lexSpace consumes space characters (space and tab) in the input and emits a itemSpace token.
 func lexSpace(l *lexer) stateFn {
-	Log.WithField("l.mark", l.mark).Debug("lexSpace: mark")
+	l.log.WithField("l.mark", l.mark).Debug("lexSpace: mark")
 	for unicode.IsSpace(l.mark) {
-		Log.WithField("isSpace", unicode.IsSpace(l.mark)).Debug("lexSpace: found space rune")
+		l.log.WithField("isSpace", unicode.IsSpace(l.mark)).Debug("lexSpace: found space rune")
 		if r := l.peek(1); unicode.IsSpace(r) {
 			l.next()
 		} else {
-			Log.Debug("Next mark is not space!")
+			l.log.Debug("lexSpace: Next mark is not space!")
 			l.next()
 			break
 		}
 	}
-	Log.Debugf("l.start: %d, l.index: %d", l.index, l.start)
+	l.log.WithFields(log.Fields{"start": l.start, "index": l.index}).Debugf("lexSpace")
 	if l.start < l.index {
 		l.emit(itemSpace)
 	}
@@ -804,7 +807,7 @@ func lexSpace(l *lexer) stateFn {
 // lexSection is used after isSection() has determined that the next runes of input are section.  From here, the lexTitle()
 // and lexSectionAdornment() are called based on the input.
 func lexSection(l *lexer) stateFn {
-	// Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
+	// l.log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
 	// l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != itemTitle {
@@ -882,7 +885,7 @@ func lexEnumList(l *lexer) stateFn {
 
 func lexParagraph(l *lexer) stateFn {
 	for {
-		// Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
+		// l.log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 		if isEscaped(l) {
 			l.emit(itemParagraph)
 			lexEscape(l)
@@ -945,7 +948,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	}
 	l.nextLine()
 	l.next()
-	Log.Debugf("Current line: %q", l.currentLine())
+	l.log.WithField("line", l.currentLine()).Debugf("lexDefinitionTerm: current line")
 	lexSpace(l)
 	for {
 		l.next()
@@ -969,8 +972,8 @@ func lexBullet(l *lexer) stateFn {
 
 func lexInlineMarkup(l *lexer) stateFn {
 	for {
-		Log.Debugf("l.mark: %q l.start: %d l.index: %d l.width: %d l.line: %d", l.mark, l.start, l.index, l.width,
-			l.lineNumber())
+		l.log.WithFields(log.Fields{"mark": fmt.Sprintf("%#U", l.mark), "start": l.start, "index": l.index,
+			"width": l.width, "line": l.lineNumber()}).Debug("lexInlineMarkup: mark")
 		if l.mark == '*' && l.peek(1) == '*' {
 			lexInlineStrong(l)
 			break
@@ -995,16 +998,16 @@ func lexInlineStrong(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "**") {
-			Log.Debug("Found strong close")
+			l.log.Debug("lexInlineStrong: Found strong close")
 			l.emit(itemInlineStrong)
 			break
 		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
 			if l.peekNextLine() == "" {
-				Log.Debug("Found EOF (unclosed strong)")
+				l.log.Debug("lexInlineStrong: Found EOF (unclosed strong)")
 				l.emit(itemInlineStrong)
 				return lexStart
 			}
-			Log.Debug("Found end-of-line")
+			l.log.Debug("lexInlineStrong: Found end-of-line")
 			l.emit(itemInlineStrong)
 			l.emit(itemBlankLine)
 			l.nextLine()
@@ -1022,16 +1025,16 @@ func lexInlineEmphasis(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
-			Log.Debug("Found emphasis close")
+			l.log.Debug("lexInlineEmphasis: Found emphasis close")
 			l.emit(itemInlineEmphasis)
 			break
 		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
 			if l.peekNextLine() == "" {
-				Log.Debug("Found EOF (unclosed emphasis)")
+				l.log.Debug("lexInlineEmphasis: Found EOF (unclosed emphasis)")
 				l.emit(itemInlineEmphasis)
 				return lexStart
 			}
-			Log.Debug("Found end-of-line")
+			l.log.Debug("lexInlineEmphasis: Found end-of-line")
 			l.emit(itemInlineEmphasis)
 			l.emit(itemBlankLine)
 			l.nextLine()
@@ -1045,7 +1048,7 @@ func lexInlineEmphasis(l *lexer) stateFn {
 func lexEscape(l *lexer) stateFn {
 	if l.peek(1) == utf8.RuneError {
 		// Ignore escape sequences at the end of a line
-		Log.Debug("Found escape at end of line, ignoring")
+		l.log.Debug("lexEscape: Found escape at end of line, ignoring")
 		l.skip(2)
 		return lexStart
 	}
@@ -1062,16 +1065,16 @@ func lexInlineLiteral(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "``") {
-			Log.Debug("Found literal close")
+			l.log.Debug("lexInlineLiteral: Found literal close")
 			l.emit(itemInlineLiteral)
 			break
 		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
 			if l.peekNextLine() == "" {
-				Log.Debug("Found EOF (unclosed inline literal)")
+				l.log.Debug("lexInlineLiteral: Found EOF (unclosed inline literal)")
 				l.emit(itemInlineLiteral)
 				return lexStart
 			}
-			Log.Debug("Found end-of-line")
+			l.log.Debug("lexInlineLiteral: Found end-of-line")
 			l.emit(itemInlineLiteral)
 			l.emit(itemBlankLine)
 			l.nextLine()
@@ -1089,7 +1092,7 @@ func lexInlineInterpretedText(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "`") {
-			Log.Debug("Found literal close")
+			l.log.Debug("lexInlineInterpretedText: Found literal close")
 			l.emit(itemInlineInterpretedText)
 			break
 		}
