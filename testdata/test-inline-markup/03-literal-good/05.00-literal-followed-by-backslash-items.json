@@ -34,18 +34,18 @@
     {
         "id": 5,
         "type": "itemEscape",
-        "text": "\\s",
+        "text": "\\",
         "startPosition": 16,
         "line": 1,
-        "length": 2
+        "length": 1
     },
     {
         "id": 6,
         "type": "itemParagraph",
-        "text": " use square bracket syntax.",
-        "startPosition": 18,
+        "text": "s use square bracket syntax.",
+        "startPosition": 17,
         "line": 1,
-        "length": 27
+        "length": 28
     },
     {
         "id": 7,

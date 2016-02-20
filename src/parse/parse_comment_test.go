@@ -93,7 +93,7 @@ func TestParseCommentNotCitationGood0005(t *testing.T) {
 }
 
 // A comment block with substitution definition syntax in the text
-func TestParseCommentNotSubstitutionDefinitionGood0005(t *testing.T) {
+func TestParseCommentNotSubstitutionDefinitionGood0006(t *testing.T) {
 	testPath := testPathFromName("00.06-comment-not-subs-def")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)

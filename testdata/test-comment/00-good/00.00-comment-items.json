@@ -4,7 +4,8 @@
         "type": "itemCommentMark",
         "text": "..",
         "line": 1,
-        "length": 2
+        "length": 2,
+        "startPosition": 1
     },
     {
         "id": 2,

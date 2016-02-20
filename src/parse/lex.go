@@ -275,14 +275,14 @@ func (l *lexer) emit(t itemElement) {
 
 	if t == itemBlankLine {
 		tok = "\n"
+	} else if t == itemSpace && l.start == l.index {
+		// For linebreaks and vertical tabs at the end of the line in a paragraph
+		tok = " "
 	} else if t == itemEOF {
 		tok = ""
 	} else {
 		tok = l.lines[l.line][l.start:l.index]
 	}
-
-	l.log.WithFields(log.Fields{"ID": ID(l.id) + 1, t.String(): fmt.Sprintf("%q", tok), "l.start": l.start,
-		"l.index": l.index, "line": l.lineNumber()}).Debug("emit: token")
 
 	l.id++
 	length := utf8.RuneCountInString(tok)
@@ -297,10 +297,13 @@ func (l *lexer) emit(t itemElement) {
 		Length:        length,
 	}
 
+	l.log.WithFields(log.Fields{"ID": ID(l.id) + 1, t.String(): fmt.Sprintf("%q", tok), "l.start+1": l.start + 1,
+		"l.index": l.index, "line": l.lineNumber()}).Debug("emit: token")
+
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
-	l.log.WithFields(log.Fields{"l.mark": string(l.mark), "l.start": l.start, "l.index": l.index,
+	l.log.WithFields(log.Fields{"l.mark": fmt.Sprintf("%q", l.mark), "l.start": l.start, "l.index": l.index,
 		"line": l.lineNumber()}).Info("Position after EMIT")
 }
 
@@ -344,7 +347,7 @@ func (l *lexer) peek(locs int) rune {
 		}
 		x++
 	}
-	l.log.WithFields(log.Fields{"mark": string(r), "index": l.index}).Debugf("peek: mark")
+	l.log.WithFields(log.Fields{"mark": fmt.Sprintf("%#v", r), "index": l.index}).Debugf("peek: mark")
 	return r
 }
 
@@ -734,8 +737,7 @@ func lexStart(l *lexer) stateFn {
 	for {
 		// l.log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, l.line: %d", l.mark, l.index, l.start,
 		// l.width, l.lineNumber())
-		if l.index-l.start <= l.width && l.width > 0 &&
-			!l.isEndOfLine() {
+		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			if l.index == 0 && l.mark != ' ' {
 				l.indentLevel = 0
 				l.indentWidth = ""
@@ -905,6 +907,9 @@ func lexParagraph(l *lexer) stateFn {
 				return lexStart
 			}
 			l.emit(itemParagraph)
+			// if !l.isLastLine() {
+			// l.emit(itemSpace) // We hit a "newline", which is converted to a space when in a paragraph
+			// }
 			break
 		}
 		l.next()
@@ -1046,15 +1051,11 @@ func lexInlineEmphasis(l *lexer) stateFn {
 }
 
 func lexEscape(l *lexer) stateFn {
-	if l.peek(1) == utf8.RuneError {
-		// Ignore escape sequences at the end of a line
-		l.log.Debug("lexEscape: Found escape at end of line, ignoring")
-		l.skip(2)
-		return lexStart
-	}
-	l.next()
 	l.next()
 	l.emit(itemEscape)
+	if unicode.IsSpace(l.mark) {
+		lexSpace(l)
+	}
 	return lexStart
 }
 

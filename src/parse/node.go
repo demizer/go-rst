@@ -52,6 +52,21 @@ const (
 
 	// NodeDefinition is a definition element
 	NodeDefinition
+
+	// NodeInlineEmphasis is the italicized text element
+	NodeInlineEmphasis
+
+	// NodeInlineStrong is the bold text element
+	NodeInlineStrong
+
+	// NodeInlineLiteral defines inline literal markup
+	NodeInlineLiteral
+
+	// NodeInlineInterpretedText is part of an interpreted text role
+	NodeInlineInterpretedText
+
+	// NodeInlineInterpretedTextRole is the role of the interpreted text
+	NodeInlineInterpretedTextRole
 )
 
 var nodeTypes = [...]string{
@@ -71,6 +86,11 @@ var nodeTypes = [...]string{
 	"NodeDefinitionListItem",
 	"NodeDefinitionTerm",
 	"NodeDefinition",
+	"NodeInlineEmphasis",
+	"NodeInlineStrong",
+	"NodeInlineLiteral",
+	"NodeInlineInterpretedText",
+	"NodeInlineInterpretedTextRole",
 }
 
 // Type returns the type of a node element.
@@ -254,6 +274,8 @@ type ParagraphNode struct {
 	Length        int      `json:"length"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
+	// NodeList contains Nodes parsed as children of the ParagraphNode, even other ParagraphNodes!
+	NodeList `json:"nodeList"`
 }
 
 func newParagraph(i *item, id *int) *ParagraphNode {
@@ -271,6 +293,143 @@ func newParagraph(i *item, id *int) *ParagraphNode {
 // NodeType returns the Node type of the ParagraphNode.
 func (p ParagraphNode) NodeType() NodeType {
 	return p.Type
+}
+
+// InlineEmphasisNode is parsed inline italicized text.
+type InlineEmphasisNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newInlineEmphasis(i *item, id *int) *InlineEmphasisNode {
+	*id++
+	return &InlineEmphasisNode{
+		ID:            ID(*id),
+		Type:          NodeInlineEmphasis,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the InlineEmphasisNode.
+func (e InlineEmphasisNode) NodeType() NodeType {
+	return e.Type
+}
+
+// InlineStrongNode is a parsed inline bold text.
+type InlineStrongNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newInlineStrong(i *item, id *int) *InlineStrongNode {
+	*id++
+	return &InlineStrongNode{
+		ID:            ID(*id),
+		Type:          NodeInlineStrong,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the InlineStrongNode.
+func (s InlineStrongNode) NodeType() NodeType {
+	return s.Type
+}
+
+// InlineLiteralNode is a parsed inline literal node.
+type InlineLiteralNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newInlineLiteral(i *item, id *int) *InlineLiteralNode {
+	*id++
+	return &InlineLiteralNode{
+		ID:            ID(*id),
+		Type:          NodeInlineLiteral,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the InlineStrongNode.
+func (l InlineLiteralNode) NodeType() NodeType {
+	return l.Type
+}
+
+// InlineInterpretedText is a parsed interpreted text role.
+type InlineInterpretedText struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
+	NodeList `json:"nodeList"`
+}
+
+func newInlineInterpretedText(i *item, id *int) *InlineInterpretedText {
+	*id++
+	return &InlineInterpretedText{
+		ID:            ID(*id),
+		Type:          NodeInlineInterpretedText,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the InlineInterpretedText.
+func (i InlineInterpretedText) NodeType() NodeType {
+	return i.Type
+}
+
+// InlineInterpretedTextRole is a parsed interpreted text role.
+type InlineInterpretedTextRole struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
+	Text          string   `json:"text"`
+	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newInlineInterpretedTextRole(i *item, id *int) *InlineInterpretedTextRole {
+	*id++
+	return &InlineInterpretedTextRole{
+		ID:            ID(*id),
+		Type:          NodeInlineInterpretedTextRole,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the InlineInterpretedTextRole
+func (i InlineInterpretedTextRole) NodeType() NodeType {
+	return i.Type
 }
 
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.

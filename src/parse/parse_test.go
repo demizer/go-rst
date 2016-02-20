@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/apex/log"
 	"golang.org/x/text/unicode/norm"
@@ -24,6 +25,7 @@ func init() { SetDebug() }
 // binary and also sets the template for logging output.
 func SetDebug() {
 	var debug bool
+	Log.Level = log.WarnLevel
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
 	if debug {
@@ -449,6 +451,8 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 	state := &checkNode{t: t, testPath: testPath}
 
 	if len(pNodes) != len(eTree) {
+		// Give all other output time to print
+		time.Sleep(time.Second / 2)
 		Log.Errorf("%d Parse Nodes", len(pNodes))
 		spd.Dump(pNodes)
 		Log.Errorf("%d Expected Nodes", len(eTree))

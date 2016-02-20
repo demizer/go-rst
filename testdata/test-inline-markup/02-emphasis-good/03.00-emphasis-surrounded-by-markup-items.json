@@ -370,13 +370,21 @@
     {
         "id": 47,
         "type": "itemEscape",
-        "text": "\\ ",
+        "text": "\\",
         "startPosition": 54,
         "line": 4,
-        "length": 2
+        "length": 1
     },
     {
         "id": 48,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 55,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 49,
         "type": "itemParagraph",
         "text": "(closing delimiters).",
         "startPosition": 56,
@@ -384,7 +392,7 @@
         "length": 21
     },
     {
-        "id": 49,
+        "id": 50,
         "type": "itemEOF",
         "startPosition": 77,
         "line": 4

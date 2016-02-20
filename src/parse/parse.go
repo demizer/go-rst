@@ -343,6 +343,16 @@ func (t *Tree) parse(tree *Tree) {
 		switch token.Type {
 		case itemParagraph:
 			n = t.paragraph(token)
+		case itemInlineEmphasisOpen:
+			n = t.inlineEmphasis(token)
+		case itemInlineStrongOpen:
+			n = t.inlineStrong(token)
+		case itemInlineLiteralOpen:
+			n = t.inlineLiteral(token)
+		case itemInlineInterpretedTextOpen:
+			n = t.inlineInterpretedText(token)
+		case itemInlineInterpretedTextRoleOpen:
+			n = t.inlineInterpretedTextRole(token)
 		case itemTransition:
 			n = newTransition(token, &t.id)
 		case itemCommentMark:
@@ -365,7 +375,7 @@ func (t *Tree) parse(tree *Tree) {
 				// added to the NodeList using the nodeTarget below.
 				continue
 			}
-		case itemTitle, itemBlankLine:
+		case itemTitle, itemBlankLine, itemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
 		case itemBlockQuote:
@@ -391,7 +401,7 @@ func (t *Tree) parse(tree *Tree) {
 			t.nodeTarget = t.openBulletList
 			t.indentLevel++
 		default:
-			err := fmt.Errorf("Token type: %s is not yet supported in the parser", token.Type.String())
+			err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
 			t.log.WithError(err).Error("Invalid token type")
 			continue
 		}
@@ -829,22 +839,77 @@ func (t *Tree) paragraph(i *item) Node {
 		StartPosition: i.StartPosition,
 	}
 	// Get all the paragraphs. If the paragraphs are not separted by blank lines, then add a newline between the previous
-	// paragraph and the current.
+	// paragraph and the current. Unless the newline is escaped, then the space is removed.
 	for {
 		nItem := t.next(1)
-		if nItem.Type != itemParagraph {
+		if nItem.Type == itemEscape {
+			for {
+				nItem = t.next(1)
+				if nItem.Type != itemSpace {
+					break
+				}
+			}
+		}
+		if nItem.Type != itemParagraph && nItem.Type != itemSpace {
+			t.log.Debug("have " + nItem.Type.String())
 			t.backup()
 			break
 		}
-		npItem.Text += "\n" + nItem.Text
+		temp := "%s\n%s"
+		// Do not add space if the the newline is escaped. When a newline is escaped, the escape item is the last
+		// element of that line.
+		if t.peekBack(1).Type == itemEscape && nItem.Type == itemParagraph && t.peekBack(1).Line < nItem.Line {
+			temp = "%s%s"
+		}
+		npItem.Text = fmt.Sprintf(temp, npItem.Text, nItem.Text)
 	}
 	npItem.Length = len(npItem.Text)
 	sec := newParagraph(npItem, &t.id)
 	return sec
 }
 
+func (t *Tree) inlineEmphasis(i *item) Node {
+	t.next(1)
+	t.log.Debug(spd.Sdump(t.token))
+	n := newInlineEmphasis(t.token[zed], &t.id)
+	t.next(1)
+	return n
+}
+
+func (t *Tree) inlineStrong(i *item) Node {
+	t.next(1)
+	n := newInlineStrong(t.token[zed], &t.id)
+	t.next(1)
+	return n
+}
+
+func (t *Tree) inlineLiteral(i *item) Node {
+	t.next(1)
+	n := newInlineLiteral(t.token[zed], &t.id)
+	t.next(1)
+	return n
+}
+
+func (t *Tree) inlineInterpretedText(i *item) Node {
+	t.next(1)
+	n := newInlineInterpretedText(t.token[zed], &t.id)
+	t.next(1)
+	if t.peek(1).Type == itemInlineInterpretedTextRoleOpen {
+		t.next(2)
+		n.NodeList.append(newInlineInterpretedTextRole(t.token[zed], &t.id))
+		t.next(1)
+	}
+	return n
+}
+
+func (t *Tree) inlineInterpretedTextRole(i *item) Node {
+	t.next(1)
+	n := newInlineInterpretedTextRole(t.token[zed], &t.id)
+	t.next(1)
+	return n
+}
+
 func (t *Tree) blockquote(i *item) Node {
-	t.log.WithField("type", i.Type).Debug("blockquote: have type")
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case we will get the last itemSpace token found to

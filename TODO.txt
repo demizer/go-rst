@@ -1,1 +1,24 @@
 * Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst
+
+* Fri Feb 19 23:32 2016: Turn "8" into a string
+
+  INFO[0000] Parser got token          token=&parse.item{ID:3, Type:8, Text:" ", Line:1, StartPosition:19, Length:1} unit=parser
+
+* Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
+
+* Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
+
+  From the spec:
+
+  Other whitespace characters (form feeds [chr(12)] and vertical tabs [chr(11)]) are converted to single spaces before processing.
+
+* Sun Feb 28 08:59 2016: Need to give each test a serial number. It's hard to find a test that is broken from the gb test -v
+  output...
+
+* Sun Feb 28 09:00 2016: renumber-items.sh should only take the test name, it should intelligently find the test and
+  renumber.
+
+* Sun Feb 28 09:21 2016: If I run a lex test directly then "startPosition" is set to 0. It should always be specified in the
+  items.
+
+* Sun Feb 28 09:26 2016: Refactor parse.go Tree, move it's really big.

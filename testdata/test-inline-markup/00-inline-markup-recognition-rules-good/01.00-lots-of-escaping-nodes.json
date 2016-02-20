@@ -1,13 +1,60 @@
-<document source="test data">
-    <paragraph>
-        Character-level m
-        <emphasis>
-            a
-        <strong>
-            r
-        <literal>
-            k
-        <title_reference>
-            u
-        p
-        with backslash-escaped whitespace, including newlines.
+[
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "text": "Character-level m",
+        "startPosition": 1,
+        "line": 1,
+        "length": 17
+    },
+    {
+        "id": 2,
+        "type": "NodeInlineEmphasis",
+        "text": "a",
+        "startPosition": 21,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "NodeInlineStrong",
+        "text": "r",
+        "startPosition": 27,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "NodeInlineLiteral",
+        "text": "k",
+        "startPosition": 34,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "NodeInlineInterpretedText",
+        "text": "u",
+        "startPosition": 40,
+        "line": 1,
+        "length": 1,
+        "nodeList": [
+            {
+                "id": 6,
+                "type": "NodeInlineInterpretedTextRole",
+                "text": "title",
+                "startPosition": 43,
+                "line": 1,
+                "length": 5
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "type": "NodeParagraph",
+        "text": "p\nwith backslash-escaped whitespace, including newlines. A literal backslash is \\.",
+        "startPosition": 50,
+        "line": 1,
+        "length": 82
+    }
+]
