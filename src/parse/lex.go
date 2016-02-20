@@ -281,8 +281,8 @@ func (l *lexer) emit(t itemElement) {
 		tok = l.lines[l.line][l.start:l.index]
 	}
 
-	Log.Infof("[ID: %d]: %s: %q l.start: %d (%d) l.index: %d (%d) line: %d",
-		ID(l.id)+1, t, tok, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
+	l.log.WithFields(log.Fields{"ID": ID(l.id) + 1, t.String(): fmt.Sprintf("%q", tok), "l.start": l.start,
+		"l.index": l.index, "line": l.lineNumber()}).Debug("emit: token")
 
 	l.id++
 	length := utf8.RuneCountInString(tok)
@@ -300,8 +300,8 @@ func (l *lexer) emit(t itemElement) {
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
-	Log.Infof("Position after EMIT: l.mark: %q, l.start: %d (%d) l.index: %d (%d) line: %d",
-		l.mark, l.start, l.start+1, l.index, l.index+1, l.lineNumber())
+	l.log.WithFields(log.Fields{"l.mark": string(l.mark), "l.start": l.start, "l.index": l.index,
+		"line": l.lineNumber()}).Info("Position after EMIT")
 }
 
 // backup backs up the lexer position by a number of rune positions (pos).  backup cannot backup off the input, in that case
@@ -325,7 +325,7 @@ func (l *lexer) backup(pos int) {
 			l.backup(1)
 		}
 	}
-	Log.Debugf("l.mark backed up to: %q", l.mark)
+	l.log.WithFields(log.Fields{"mark": l.mark}).Debug("backup")
 }
 
 // peek looks ahead in the input by a number of locations (locs) and returns the rune at that location in the input. Peek
@@ -384,7 +384,7 @@ func (l *lexer) next() (rune, int) {
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
-	// Log.Debugf("mark: %#U, start: %d, index: %d, line: %d", r, l.start, l.index, l.lineNumber())
+	// l.log.Debugf("mark: %#U, start: %d, index: %d, line: %d", r, l.start, l.index, l.lineNumber())
 	l.log.WithFields(log.Fields{"mark": fmt.Sprintf("%#U", r),
 		"start": l.start, "index": l.index, "line": l.lineNumber()}).Debug("next: mark")
 	return r, width
@@ -478,7 +478,7 @@ func isSection(l *lexer) bool {
 				first = r
 				last = r
 			}
-			// Log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
+			// l.log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
 			if !isSectionAdornment(r) || (r != first && last != first) {
 				l.log.Debug("isSeciton: Section not found")
 				return false

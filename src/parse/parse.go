@@ -5,6 +5,7 @@
 package parse
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/apex/log"
@@ -274,6 +275,7 @@ func New(name, text string) *Tree {
 		text:          text,
 		sectionLevels: new(sectionLevels),
 		indentWidth:   indentWidth,
+		log:           log.NewEntry(Log).WithField("unit", "parser"),
 	}
 }
 
@@ -302,6 +304,7 @@ type Tree struct {
 	indentLevel        int
 	openDefinitionList *NodeList
 	openBulletList     *NodeList
+	log                *log.Entry
 }
 
 // startParse initializes the parser, using the lexer.
@@ -327,7 +330,7 @@ func (t *Tree) parse(tree *Tree) {
 		var n interface{}
 
 		token := t.next(1)
-		Log.Infof("Parser got token: %#+v", token)
+		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", token)}).Info("Parser got token")
 
 		// FIXME: Hackish. Need to find a better way...
 		if t.indentLevel > 0 && token.StartPosition == 1 && token.Type != itemSpace && token.Type != itemBlankLine &&
@@ -388,7 +391,8 @@ func (t *Tree) parse(tree *Tree) {
 			t.nodeTarget = t.openBulletList
 			t.indentLevel++
 		default:
-			Log.Errorf("Token type: %s is not yet supported in the parser", token.Type.String())
+			err := fmt.Errorf("Token type: %s is not yet supported in the parser", token.Type.String())
+			t.log.WithError(err).Error("Invalid token type")
 			continue
 		}
 
@@ -440,13 +444,13 @@ func (t *Tree) peek(pos int) *item {
 	for i := 1; i <= pos; i++ {
 		if t.token[zed+i] != nil {
 			nItem = t.token[zed+i]
-			Log.Debugf("Using %#+v", nItem)
+			t.log.WithFields(log.Fields{"node": fmt.Sprintf("%+#v", nItem)}).Debug("peek: Have node")
 			continue
 		} else {
 			if t.lex == nil {
 				continue
 			}
-			Log.Debug("Getting next item")
+			t.log.Debug("peek: Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
 		}
@@ -587,18 +591,18 @@ func (t *Tree) section(i *item) Node {
 	// Determine the level of the section and where to append it to in t.Nodes
 	undoID := t.id
 	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
-	Log.Debugf("Adding  %#U to sectionLevels", sec.UnderLine.Rune)
+	t.log.WithFields(log.Fields{"sectionLevel": sec.UnderLine.Rune}).Debug("section: Adding sectionLevel")
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
-		Log.Debug("Found inconsistent section level!")
+		t.log.Debug("Found inconsistent section level!")
 		t.id = undoID
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 
 	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
-		Log.Debug("Setting nodeTarget to Tree.Nodes!")
+		t.log.Debug("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = &t.Nodes
 	} else {
 		lSec := t.sectionLevels.lastSectionNode
@@ -606,7 +610,7 @@ func (t *Tree) section(i *item) Node {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
 		t.nodeTarget = &lSec.NodeList
-		Log.WithField("nodeTarget", lSec.ID.String()).Debug("section: Setting nodeTarget to section ID")
+		t.log.WithField("nodeTarget", lSec.ID.String()).Debug("section: Setting nodeTarget to section ID")
 	}
 
 	// The following checks have to be made after the SectionNode has been initialized so that any parserMessages can be
@@ -629,13 +633,13 @@ func (t *Tree) section(i *item) Node {
 func (t *Tree) comment(i *item) Node {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		Log.Debug("Found empty comment block")
+		t.log.Debug("Found empty comment block")
 		return newComment(&item{StartPosition: i.StartPosition, Line: i.Line}, &t.id)
 	}
 	nSpace := t.peek(1)
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		Log.Debug("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.log.Debug("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
 		return t.systemMessage(warningExplicitMarkupWithUnIndent)
@@ -644,7 +648,7 @@ func (t *Tree) comment(i *item) Node {
 	if nPara != nil && nPara.Type == itemParagraph {
 		t.next(2)
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
-			Log.Debug("Found NodeComment block")
+			t.log.Debug("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -657,12 +661,12 @@ func (t *Tree) comment(i *item) Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1).Type; z != itemBlankLine && z != itemCommentMark && z != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			Log.Debug("Found warningExplicitMarkupWithUnIndent")
+			t.log.Debug("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara, &t.id)
 			t.nodeTarget.append(n)
 			return t.systemMessage(warningExplicitMarkupWithUnIndent)
 		} else {
-			Log.Debug("Found NodeComment")
+			t.log.Debug("Found NodeComment")
 		}
 		n = newComment(nPara, &t.id)
 	}
@@ -683,7 +687,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}, &t.id)
 	s.NodeList = append(s.NodeList, msg)
 
-	Log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
+	t.log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
 	// if t.token[zed].Line == 9 {
 	// spd.Dump(t.token)
 	// os.Exit(1)
@@ -840,7 +844,7 @@ func (t *Tree) paragraph(i *item) Node {
 }
 
 func (t *Tree) blockquote(i *item) Node {
-	Log.WithField("type", i.Type).Debug("blockquote: have type")
+	t.log.WithField("type", i.Type).Debug("blockquote: have type")
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case we will get the last itemSpace token found to
@@ -849,7 +853,7 @@ func (t *Tree) blockquote(i *item) Node {
 	}
 
 	level := s.Length / t.indentWidth
-	Log.Debugf("t.indentLevel == level :: %d == %d", t.indentLevel, level)
+	t.log.WithFields(log.Fields{"indentLevel": t.indentLevel, "level": level}).Debugf("blockquote: indent level")
 	if t.indentLevel == level {
 		i.Type = itemParagraph
 		return newParagraph(i, &t.id)
@@ -862,13 +866,13 @@ func (t *Tree) blockquote(i *item) Node {
 				&item{Type: itemBlockQuote, Line: i.Line},
 				level, &t.id)
 		}
-		Log.Debug("Next item is itemBlockQuote")
+		t.log.Debug("Next item is itemBlockQuote")
 		return nil
 	}
 
 	levelChanged := false
 	if t.indentLevel != level {
-		Log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel")
+		t.log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel")
 		t.indentLevel = level
 		levelChanged = true
 	}
