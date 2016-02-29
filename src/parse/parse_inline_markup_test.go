@@ -3,16 +3,16 @@ package parse
 import "testing"
 
 // Basic title, underline, blankline, and paragraph test
-func TestParseInlineMarkupGoodDoubleUnderScore0000(t *testing.T) {
-	testPath := testPathFromName("00.00-double-underscore")
+func Test_02_00_00_00_ParseInlineMarkupGoodDoubleUnderScore(t *testing.T) {
+	testPath := testPathFromName("02.00.00.00-imrr-good-double-underscore")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func TestParseInlineMarkupGoodEscaping0100(t *testing.T) {
-	testPath := testPathFromName("01.00-lots-of-escaping")
+func Test_02_00_01_00_ParseInlineMarkupGoodEscaping(t *testing.T) {
+	testPath := testPathFromName("02.00.01.00-imrr-good-lots-of-escaping")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()

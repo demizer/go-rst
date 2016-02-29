@@ -22,3 +22,9 @@
   items.
 
 * Sun Feb 28 09:26 2016: Refactor parse.go Tree, move it's really big.
+
+* Mon Feb 29 13:49 2016: Need a tool to detect tests that are not implemented in the testdata
+
+* Mon Feb 29 13:52 2016: Implement test 03.04.00.00 after inline markup
+
+* Mon Feb 29 13:59 2016: Implement blockquote tests
