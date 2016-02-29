@@ -3,8 +3,8 @@ package parse
 import "testing"
 
 // A single paragraph
-func TestParseParagraphGood0000(t *testing.T) {
-	testPath := testPathFromName("00.00-paragraph")
+func Test_01_00_00_00_ParseParagraphGood(t *testing.T) {
+	testPath := testPathFromName("01.00.00.00-paragraph-good-paragraph")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -12,8 +12,8 @@ func TestParseParagraphGood0000(t *testing.T) {
 }
 
 // Parse a single paragraph with a line break in the middle
-func TestParseParagraphWithLineBreakGood0001(t *testing.T) {
-	testPath := testPathFromName("00.01-para-with-line-break")
+func Test_01_00_00_01_ParseParagraphWithLineBreakGood(t *testing.T) {
+	testPath := testPathFromName("01.00.00.01-paragraph-good-with-line-break")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -21,8 +21,8 @@ func TestParseParagraphWithLineBreakGood0001(t *testing.T) {
 }
 
 // Parse a paragraph that is three lines long.
-func TestParseParagraphThreeLinesGood0002(t *testing.T) {
-	testPath := testPathFromName("00.02-three-lines")
+func Test_01_00_00_02_ParseParagraphThreeLinesGood(t *testing.T) {
+	testPath := testPathFromName("01.00.00.02-paragraph-good-three-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -30,8 +30,8 @@ func TestParseParagraphThreeLinesGood0002(t *testing.T) {
 }
 
 // Parse two paragraps separated by a line
-func TestParseTwoParagraphs0100(t *testing.T) {
-	testPath := testPathFromName("01.00-two-paragraphs")
+func Test_01_00_01_00_ParseTwoParagraphs(t *testing.T) {
+	testPath := testPathFromName("01.00.01.00-paragraph-good-two-paragraphs")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -39,8 +39,8 @@ func TestParseTwoParagraphs0100(t *testing.T) {
 }
 
 // Parse two paragraps separated by a line. Each paragraph is three lines.
-func TestParseTwoParagraphsWithThreeLinesEach0101(t *testing.T) {
-	testPath := testPathFromName("01.01-two-para-three-lines")
+func Test_01_00_01_01_ParseTwoParagraphsWithThreeLinesEach(t *testing.T) {
+	testPath := testPathFromName("01.00.01.01-paragraph-good-two-paragraphs-three-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
