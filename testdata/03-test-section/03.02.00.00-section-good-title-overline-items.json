@@ -29,7 +29,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test overline title.",
         "line": 5,
         "length": 20

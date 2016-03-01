@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "A comment.",
         "line": 1,
         "length": 10,
@@ -32,7 +32,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph.",
         "line": 3,
         "length": 10

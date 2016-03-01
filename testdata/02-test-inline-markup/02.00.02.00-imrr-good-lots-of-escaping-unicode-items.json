@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "text-",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2010",
         "startPosition": 17,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2011",
         "startPosition": 24,
         "line": 1,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2012",
         "startPosition": 36,
         "line": 1,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2013",
         "startPosition": 47,
         "line": 1,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2014",
         "startPosition": 55,
         "line": 1,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": ".",
         "startPosition": 67,
         "line": 1,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u00bf",
         "startPosition": 1,
         "line": 2,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "?",
         "startPosition": 16,
         "line": 2,

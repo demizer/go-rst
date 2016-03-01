@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test paragraph section header and paragraph.",
         "line": 1,
         "length": 44
@@ -36,7 +36,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph.",
         "line": 6,
         "length": 10

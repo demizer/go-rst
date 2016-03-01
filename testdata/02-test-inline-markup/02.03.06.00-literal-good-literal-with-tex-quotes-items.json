@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " but not \"``\" or ``",
         "startPosition": 40,
         "line": 1,

@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "_comment: http://example.org",
         "startPosition": 4,
         "line": 2,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "The extra newline before the comment text prevents",
         "startPosition": 1,
         "line": 4,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "the parser from recognizing a hyperlink target.",
         "startPosition": 1,
         "line": 5,

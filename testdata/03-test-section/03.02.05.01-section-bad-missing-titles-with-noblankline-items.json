@@ -22,7 +22,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test missing titles; nothing in-between.",
         "line": 4,
         "length": 40

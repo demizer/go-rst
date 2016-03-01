@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "text separated by",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "or ",
         "startPosition": 1,
         "line": 3,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " or one of",
         "startPosition": 11,
         "line": 3,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u00a0,",
         "startPosition": 19,
         "line": 4,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u1680,",
         "startPosition": 22,
         "line": 5,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2000,",
         "startPosition": 13,
         "line": 6,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2001,",
         "startPosition": 13,
         "line": 7,
@@ -265,7 +265,7 @@
     },
     {
         "id": 34,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2002,",
         "startPosition": 14,
         "line": 8,
@@ -305,7 +305,7 @@
     },
     {
         "id": 39,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2003,",
         "startPosition": 14,
         "line": 9,
@@ -345,7 +345,7 @@
     },
     {
         "id": 44,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2004,",
         "startPosition": 24,
         "line": 10,
@@ -385,7 +385,7 @@
     },
     {
         "id": 49,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2005,",
         "startPosition": 23,
         "line": 11,
@@ -425,7 +425,7 @@
     },
     {
         "id": 54,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2006,",
         "startPosition": 22,
         "line": 12,
@@ -465,7 +465,7 @@
     },
     {
         "id": 59,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2007,",
         "startPosition": 18,
         "line": 13,
@@ -505,7 +505,7 @@
     },
     {
         "id": 64,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2008,",
         "startPosition": 23,
         "line": 14,
@@ -545,7 +545,7 @@
     },
     {
         "id": 69,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2009,",
         "startPosition": 16,
         "line": 15,
@@ -585,7 +585,7 @@
     },
     {
         "id": 74,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u200a,",
         "startPosition": 16,
         "line": 16,
@@ -625,7 +625,7 @@
     },
     {
         "id": 79,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u202f,",
         "startPosition": 27,
         "line": 17,
@@ -665,7 +665,7 @@
     },
     {
         "id": 84,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u205f,",
         "startPosition": 31,
         "line": 18,
@@ -705,7 +705,7 @@
     },
     {
         "id": 89,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u3000,",
         "startPosition": 23,
         "line": 19,
@@ -745,7 +745,7 @@
     },
     {
         "id": 94,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2028",
         "startPosition": 20,
         "line": 20,

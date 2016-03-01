@@ -22,7 +22,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Do not count combining chars in title column width.",
         "line": 4,
         "length": 51

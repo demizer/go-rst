@@ -341,7 +341,7 @@ func (t *Tree) parse(tree *Tree) {
 		}
 
 		switch token.Type {
-		case itemParagraph:
+		case itemText:
 			n = t.paragraph(token)
 		case itemInlineEmphasisOpen:
 			n = t.inlineEmphasis(token)
@@ -573,9 +573,9 @@ func (t *Tree) section(i *item) Node {
 		title = t.peekBack(1)
 		underAdorn = i
 
-	} else if pFor != nil && pFor.Type == itemParagraph {
-		// If a section contains an itemParagraph, it is because the underline is missing, therefore we generate an
-		// error based on what follows the itemParagraph.
+	} else if pFor != nil && pFor.Type == itemText {
+		// If a section contains an itemText, it is because the underline is missing, therefore we generate an
+		// error based on what follows the itemText.
 		t.next(2) // Move the token buffer past the error tokens
 		if tZedLen < 3 && tZedLen != pFor.Length {
 			t.backup()
@@ -655,14 +655,14 @@ func (t *Tree) comment(i *item) Node {
 		return t.systemMessage(warningExplicitMarkupWithUnIndent)
 	}
 	nPara := t.peek(2)
-	if nPara != nil && nPara.Type == itemParagraph {
+	if nPara != nil && nPara.Type == itemText {
 		t.next(2)
-		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
+		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
 			t.log.Debug("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
-				if t.peek(1).Type == itemSpace && t.peek(2).Type == itemParagraph {
+				if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
 					t.next(2)
 				} else {
 					break
@@ -716,10 +716,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 			s.Line = t.token[zed-1].Line
 		}
 		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a itemParagraph then backup the token buffer so the
+		// Modify the token buffer to change the current token to a itemText then backup the token buffer so the
 		// next loop gets the new paragraph
 		t.token[zed-1] = nil
-		t.token[zed].Type = itemParagraph
+		t.token[zed].Type = itemText
 		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
@@ -732,9 +732,9 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		s.Line = oLin.Line
 		t.clearTokens(zed-4, zed-1)
 		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a itemParagraph then backup the token buffer so the
+		// Modify the token buffer to change the current token to a itemText then backup the token buffer so the
 		// next loop gets the new paragraph
-		t.token[zed].Type = itemParagraph
+		t.token[zed].Type = itemText
 		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
@@ -744,10 +744,10 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		inText := t.token[zed-1].Text + "\n" + t.token[zed].Text
 		infoTextLen := len(inText)
 		s.Line = t.token[zed-1].Line
-		// Modify the token buffer to change the current token to a itemParagraph then backup the token buffer so the
+		// Modify the token buffer to change the current token to a itemText then backup the token buffer so the
 		// next loop gets the new paragraph
 		t.token[zed-1] = nil
-		t.token[zed].Type = itemParagraph
+		t.token[zed].Type = itemText
 		t.token[zed].Text = inText
 		t.token[zed].Length = infoTextLen
 		t.token[zed].Line = s.Line
@@ -850,7 +850,7 @@ func (t *Tree) paragraph(i *item) Node {
 				}
 			}
 		}
-		if nItem.Type != itemParagraph && nItem.Type != itemSpace {
+		if nItem.Type != itemText && nItem.Type != itemSpace {
 			t.log.Debug("have " + nItem.Type.String())
 			t.backup()
 			break
@@ -858,7 +858,7 @@ func (t *Tree) paragraph(i *item) Node {
 		temp := "%s\n%s"
 		// Do not add space if the the newline is escaped. When a newline is escaped, the escape item is the last
 		// element of that line.
-		if t.peekBack(1).Type == itemEscape && nItem.Type == itemParagraph && t.peekBack(1).Line < nItem.Line {
+		if t.peekBack(1).Type == itemEscape && nItem.Type == itemText && t.peekBack(1).Line < nItem.Line {
 			temp = "%s%s"
 		}
 		npItem.Text = fmt.Sprintf(temp, npItem.Text, nItem.Text)
@@ -920,7 +920,7 @@ func (t *Tree) blockquote(i *item) Node {
 	level := s.Length / t.indentWidth
 	t.log.WithFields(log.Fields{"indentLevel": t.indentLevel, "level": level}).Debugf("blockquote: indent level")
 	if t.indentLevel == level {
-		i.Type = itemParagraph
+		i.Type = itemText
 		return newParagraph(i, &t.id)
 	}
 

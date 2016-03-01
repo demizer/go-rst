@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Python ",
         "startPosition": 1,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "s use square bracket syntax.",
         "startPosition": 17,
         "line": 1,

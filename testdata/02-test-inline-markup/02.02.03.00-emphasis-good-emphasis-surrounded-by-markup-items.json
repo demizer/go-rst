@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "some punctuation is allowed around inline markup, e.g.",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "/",
         "startPosition": 1,
         "line": 2,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "/, -",
         "startPosition": 12,
         "line": 2,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "-, and :",
         "startPosition": 26,
         "line": 2,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": ": (delimiters),",
         "startPosition": 44,
         "line": 2,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "(",
         "startPosition": 1,
         "line": 3,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "), [",
         "startPosition": 12,
         "line": 3,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "], <",
         "startPosition": 26,
         "line": 3,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": ">, {",
         "startPosition": 40,
         "line": 3,
@@ -241,7 +241,7 @@
     },
     {
         "id": 31,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "} (open/close pairs),",
         "startPosition": 54,
         "line": 3,
@@ -273,7 +273,7 @@
     },
     {
         "id": 35,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "., ",
         "startPosition": 11,
         "line": 4,
@@ -305,7 +305,7 @@
     },
     {
         "id": 39,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": ",, ",
         "startPosition": 24,
         "line": 4,
@@ -337,7 +337,7 @@
     },
     {
         "id": 43,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "!, and ",
         "startPosition": 37,
         "line": 4,
@@ -385,7 +385,7 @@
     },
     {
         "id": 49,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "(closing delimiters).",
         "startPosition": 56,
         "line": 4,

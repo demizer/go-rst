@@ -29,7 +29,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Over & underline too short.",
         "line": 5,
         "length": 27

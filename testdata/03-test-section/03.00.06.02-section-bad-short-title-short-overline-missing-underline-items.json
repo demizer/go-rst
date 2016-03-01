@@ -8,7 +8,7 @@
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "ABC",
         "line": 2,
         "length": 3
@@ -22,7 +22,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Overline too short, no underline.",
         "line": 4,
         "length": 33

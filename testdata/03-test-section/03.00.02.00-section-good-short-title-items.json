@@ -22,7 +22,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Short title.",
         "line": 4,
         "length": 12

@@ -22,7 +22,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "This is a section level one paragraph.",
         "line": 4,
         "length": 38
@@ -64,7 +64,7 @@
     },
     {
         "id": 10,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "This is a section level two paragraph.",
         "line": 10,
         "length": 38

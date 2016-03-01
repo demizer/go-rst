@@ -8,7 +8,7 @@
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "ABC",
         "line": 2,
         "length": 3

@@ -15,7 +15,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test Missing Underline",
         "startPosition": 2,
         "line": 2,

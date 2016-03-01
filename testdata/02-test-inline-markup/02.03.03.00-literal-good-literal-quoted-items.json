@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "quoted '",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "', quoted \"",
         "startPosition": 20,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\",",
         "startPosition": 42,
         "line": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "quoted \u2018",
         "startPosition": 1,
         "line": 2,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2019, quoted \u201c",
         "startPosition": 22,
         "line": 2,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u201d,",
         "startPosition": 48,
         "line": 2,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "quoted «",
         "startPosition": 1,
         "line": 3,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "»",
         "startPosition": 21,
         "line": 3,

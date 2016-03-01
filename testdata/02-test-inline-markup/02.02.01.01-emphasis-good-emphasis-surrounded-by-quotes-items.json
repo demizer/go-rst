@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Quotes around inline markup:",
         "startPosition": 1,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "'",
         "startPosition": 1,
         "line": 3,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "' \"",
         "startPosition": 12,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\" Straight,",
         "startPosition": 25,
         "line": 3,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "‘",
         "startPosition": 1,
         "line": 4,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "’ “",
         "startPosition": 14,
         "line": 4,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "” English, ...,",
         "startPosition": 31,
         "line": 4,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "«\u202f",
         "startPosition": 1,
         "line": 5,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u202f» ‹\u202f",
         "startPosition": 16,
         "line": 5,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u202f› «\u00a0",
         "startPosition": 38,
         "line": 5,
@@ -257,7 +257,7 @@
     },
     {
         "id": 33,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u00a0» ‹\u00a0",
         "startPosition": 59,
         "line": 5,
@@ -289,7 +289,7 @@
     },
     {
         "id": 37,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u00a0›",
         "startPosition": 79,
         "line": 5,
@@ -297,7 +297,7 @@
     },
     {
         "id": 38,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "«\u2005",
         "startPosition": 1,
         "line": 6,
@@ -329,7 +329,7 @@
     },
     {
         "id": 42,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2005» ‹\u2005",
         "startPosition": 16,
         "line": 6,
@@ -361,7 +361,7 @@
     },
     {
         "id": 46,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2005› French,",
         "startPosition": 38,
         "line": 6,
@@ -369,7 +369,7 @@
     },
     {
         "id": 47,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "„",
         "startPosition": 1,
         "line": 7,
@@ -401,7 +401,7 @@
     },
     {
         "id": 51,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "“ ‚",
         "startPosition": 14,
         "line": 7,
@@ -433,7 +433,7 @@
     },
     {
         "id": 55,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "‘ »",
         "startPosition": 31,
         "line": 7,
@@ -465,7 +465,7 @@
     },
     {
         "id": 59,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "« ›",
         "startPosition": 47,
         "line": 7,
@@ -497,7 +497,7 @@
     },
     {
         "id": 63,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "‹ German, Czech, ...,",
         "startPosition": 63,
         "line": 7,
@@ -505,7 +505,7 @@
     },
     {
         "id": 64,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "„",
         "startPosition": 1,
         "line": 8,
@@ -537,7 +537,7 @@
     },
     {
         "id": 68,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "” «",
         "startPosition": 14,
         "line": 8,
@@ -569,7 +569,7 @@
     },
     {
         "id": 72,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "» Romanian,",
         "startPosition": 30,
         "line": 8,
@@ -577,7 +577,7 @@
     },
     {
         "id": 73,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "“",
         "startPosition": 1,
         "line": 9,
@@ -609,7 +609,7 @@
     },
     {
         "id": 77,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "„ ‘",
         "startPosition": 14,
         "line": 9,
@@ -641,7 +641,7 @@
     },
     {
         "id": 81,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "‚ Greek,",
         "startPosition": 31,
         "line": 9,
@@ -649,7 +649,7 @@
     },
     {
         "id": 82,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "「",
         "startPosition": 1,
         "line": 10,
@@ -681,7 +681,7 @@
     },
     {
         "id": 86,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "」 『",
         "startPosition": 14,
         "line": 10,
@@ -713,7 +713,7 @@
     },
     {
         "id": 90,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "』traditional Chinese,",
         "startPosition": 31,
         "line": 10,
@@ -721,7 +721,7 @@
     },
     {
         "id": 91,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "”",
         "startPosition": 1,
         "line": 11,
@@ -753,7 +753,7 @@
     },
     {
         "id": 95,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "” ’",
         "startPosition": 14,
         "line": 11,
@@ -785,7 +785,7 @@
     },
     {
         "id": 99,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "’ »",
         "startPosition": 31,
         "line": 11,
@@ -817,7 +817,7 @@
     },
     {
         "id": 103,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "» ›",
         "startPosition": 47,
         "line": 11,
@@ -849,7 +849,7 @@
     },
     {
         "id": 107,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "› Swedish, Finnish,",
         "startPosition": 63,
         "line": 11,
@@ -857,7 +857,7 @@
     },
     {
         "id": 108,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "„",
         "startPosition": 1,
         "line": 12,
@@ -889,7 +889,7 @@
     },
     {
         "id": 112,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "” ‚",
         "startPosition": 14,
         "line": 12,
@@ -921,7 +921,7 @@
     },
     {
         "id": 116,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "’ Polish,",
         "startPosition": 31,
         "line": 12,
@@ -929,7 +929,7 @@
     },
     {
         "id": 117,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "„",
         "startPosition": 1,
         "line": 13,
@@ -961,7 +961,7 @@
     },
     {
         "id": 121,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "” »",
         "startPosition": 14,
         "line": 13,
@@ -993,7 +993,7 @@
     },
     {
         "id": 125,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "« ’",
         "startPosition": 30,
         "line": 13,
@@ -1025,7 +1025,7 @@
     },
     {
         "id": 129,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "’ Hungarian,",
         "startPosition": 46,
         "line": 13,

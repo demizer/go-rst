@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test return to existing, highest-level section (Title 3, with overlines).",
         "line": 1,
         "length": 73
@@ -36,7 +36,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 1.",
         "line": 6,
         "length": 12
@@ -71,7 +71,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 2.",
         "line": 11,
         "length": 12
@@ -106,7 +106,7 @@
     },
     {
         "id": 16,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 3.",
         "line": 16,
         "length": 12
@@ -141,7 +141,7 @@
     },
     {
         "id": 21,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 4.",
         "line": 21,
         "length": 12

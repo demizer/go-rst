@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "definition 1",
         "startPosition": 3,
         "line": 2,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "a comment",
         "startPosition": 4,
         "line": 4,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "definition 2",
         "startPosition": 3,
         "line": 7,

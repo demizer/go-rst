@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "The bad portion is \u00a1",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "!\u00a0*\u00a0no-break-space\u00a0",
         "startPosition": 32,
         "line": 1,

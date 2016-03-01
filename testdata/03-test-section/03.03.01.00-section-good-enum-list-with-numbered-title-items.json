@@ -24,7 +24,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Item 1.",
         "startPosition": 4,
         "line": 1,
@@ -55,7 +55,7 @@
     },
     {
         "id": 8,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Item 2.",
         "startPosition": 4,
         "line": 2,
@@ -84,7 +84,7 @@
     },
     {
         "id": 12,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph.",
         "line": 6,
         "length": 10

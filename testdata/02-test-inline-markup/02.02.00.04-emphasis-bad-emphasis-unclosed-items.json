@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Oh, but not on this new paragraph!",
         "startPosition": 1,
         "line": 4,

@@ -1,14 +1,14 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "A paragraph with a line",
         "line": 1,
         "length": 23
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "break.",
         "line": 2,
         "length": 6

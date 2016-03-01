@@ -37,7 +37,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph.",
         "line": 5,
         "length": 10

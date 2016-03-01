@@ -549,9 +549,9 @@ var treeBackupTests = []struct {
 		input:   "Title\n=====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
 		nextNum: 13, backupNum: 4,
 		// Back tokens 4 - 1 and ZedToken are nil
-		Peek1Tok: &item{ID: 10, Type: itemParagraph, Text: "Four"},
+		Peek1Tok: &item{ID: 10, Type: itemText, Text: "Four"},
 		Peek2Tok: &item{ID: 11, Type: itemBlankLine, Text: "\n"},
-		Peek3Tok: &item{ID: 12, Type: itemParagraph, Text: "Five"},
+		Peek3Tok: &item{ID: 12, Type: itemText, Text: "Five"},
 		Peek4Tok: &item{ID: 13, Type: itemEOF},
 	},
 }
@@ -636,7 +636,7 @@ var treeNextTests = []struct {
 		Back3Tok: &item{Type: itemTitle, Text: "Test"},
 		Back2Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		ZedToken: &item{Type: itemParagraph, Text: "Paragraph."},
+		ZedToken: &item{Type: itemText, Text: "Paragraph."},
 	},
 	{
 		name:     "Quintuple next",
@@ -645,7 +645,7 @@ var treeNextTests = []struct {
 		Back4Tok: &item{Type: itemTitle, Text: "Test"},
 		Back3Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		Back2Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back1Tok: &item{Type: itemParagraph, Text: "Paragraph."},
+		Back1Tok: &item{Type: itemText, Text: "Paragraph."},
 		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
 	},
 	{
@@ -654,7 +654,7 @@ var treeNextTests = []struct {
 		nextNum:  6,
 		Back4Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		Back3Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back2Tok: &item{Type: itemParagraph, Text: "Paragraph."},
+		Back2Tok: &item{Type: itemText, Text: "Paragraph."},
 		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
 		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
 	},
@@ -663,7 +663,7 @@ var treeNextTests = []struct {
 		input:    "Test\n=====\n\nParagraph.\n\n",
 		nextNum:  7,
 		Back4Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back3Tok: &item{Type: itemParagraph, Text: "Paragraph."},
+		Back3Tok: &item{Type: itemText, Text: "Paragraph."},
 		Back2Tok: &item{Type: itemBlankLine, Text: "\n"},
 		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
 		ZedToken: &item{Type: itemEOF},
@@ -672,7 +672,7 @@ var treeNextTests = []struct {
 		name:     "Two next() on one line of input",
 		input:    "Test",
 		nextNum:  2,
-		Back1Tok: &item{Type: itemParagraph, Text: "Test"},
+		Back1Tok: &item{Type: itemText, Text: "Test"},
 		ZedToken: &item{Type: itemEOF},
 	},
 	{
@@ -680,7 +680,7 @@ var treeNextTests = []struct {
 		input:   "Test",
 		nextNum: 3,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
-		Back2Tok: &item{Type: itemParagraph, Text: "Test"},
+		Back2Tok: &item{Type: itemText, Text: "Test"},
 		Back1Tok: &item{Type: itemEOF},
 	},
 	{
@@ -688,7 +688,7 @@ var treeNextTests = []struct {
 		input:   "Test",
 		nextNum: 4,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
-		Back3Tok: &item{Type: itemParagraph, Text: "Test"},
+		Back3Tok: &item{Type: itemText, Text: "Test"},
 		Back2Tok: &item{Type: itemEOF},
 	},
 }
@@ -762,7 +762,7 @@ var treePeekTests = []struct {
 		Back1Tok: &item{Type: itemTitle, Text: "Test"},
 		ZedToken: &item{Type: itemSectionAdornment, Text: "====="},
 		Peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Peek2Tok: &item{Type: itemParagraph, Text: "One"},
+		Peek2Tok: &item{Type: itemText, Text: "One"},
 		Peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
 	},
 	{
@@ -772,7 +772,7 @@ var treePeekTests = []struct {
 		Back2Tok: &item{Type: itemTitle, Text: "Test"},
 		Back1Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
-		Peek1Tok: &item{Type: itemParagraph, Text: "One"},
+		Peek1Tok: &item{Type: itemText, Text: "One"},
 		Peek2Tok: &item{Type: itemTitle, Text: "Test 2"},
 		Peek3Tok: &item{Type: itemSectionAdornment, Text: "====="},
 		Peek4Tok: &item{Type: itemBlankLine, Text: "\n"},

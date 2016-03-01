@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "bullet paragraph 1",
         "startPosition": 3,
         "line": 1,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "trailing comment",
         "startPosition": 6,
         "line": 3,

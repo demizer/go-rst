@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Character-level m",
         "startPosition": 1,
         "line": 1,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "p",
         "startPosition": 50,
         "line": 1,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "with backslash-escaped whitespace, including new",
         "startPosition": 1,
         "line": 2,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "lines. A literal backslash is \\.",
         "startPosition": 1,
         "line": 3,

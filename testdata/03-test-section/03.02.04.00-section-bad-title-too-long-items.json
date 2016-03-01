@@ -37,7 +37,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test long title and space normalization.",
         "line": 5,
         "length": 40

@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Two paragraphs test.",
         "line": 1,
         "length": 20
@@ -15,7 +15,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 2.",
         "line": 3,
         "length": 12

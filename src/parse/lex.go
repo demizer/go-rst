@@ -74,7 +74,7 @@ const (
 	itemError
 	itemTitle
 	itemSectionAdornment
-	itemParagraph
+	itemText
 	itemBlockQuote
 	itemLiteralBlock
 	itemSystemMessage
@@ -109,7 +109,7 @@ var elements = [...]string{
 	"itemError",
 	"itemTitle",
 	"itemSectionAdornment",
-	"itemParagraph",
+	"itemText",
 	"itemBlockQuote",
 	"itemLiteralBlock",
 	"itemSystemMessage",
@@ -761,7 +761,7 @@ func lexStart(l *lexer) stateFn {
 			} else if isDefinitionTerm(l) {
 				return lexDefinitionTerm
 			} else {
-				return lexParagraph
+				return lexText
 			}
 		} else if l.isEndOfLine() {
 			l.log.Debug("lexStart: isEndOfLine == true")
@@ -885,16 +885,16 @@ func lexEnumList(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexParagraph(l *lexer) stateFn {
+func lexText(l *lexer) stateFn {
 	for {
 		// l.log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 		if isEscaped(l) {
-			l.emit(itemParagraph)
+			l.emit(itemText)
 			lexEscape(l)
 		}
 		if isInlineMarkup(l) {
 			if l.index > l.start {
-				l.emit(itemParagraph)
+				l.emit(itemText)
 			}
 			lexInlineMarkup(l)
 			if isEscaped(l) {
@@ -906,7 +906,7 @@ func lexParagraph(l *lexer) stateFn {
 			if l.start == l.index {
 				return lexStart
 			}
-			l.emit(itemParagraph)
+			l.emit(itemText)
 			// if !l.isLastLine() {
 			// l.emit(itemSpace) // We hit a "newline", which is converted to a space when in a paragraph
 			// }
@@ -926,7 +926,7 @@ func lexComment(l *lexer) stateFn {
 	if l.mark != utf8.RuneError {
 		l.next()
 		lexSpace(l)
-		lexParagraph(l)
+		lexText(l)
 	}
 	return lexStart
 }
@@ -958,7 +958,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
-			l.emit(itemParagraph)
+			l.emit(itemText)
 			break
 		}
 	}
@@ -970,7 +970,7 @@ func lexBullet(l *lexer) stateFn {
 	l.emit(itemBullet)
 	lexSpace(l)
 	l.indentWidth += l.lastItem.Text + " "
-	lexParagraph(l)
+	lexText(l)
 	l.indentLevel++
 	return lexStart
 }

@@ -1,21 +1,21 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 1: Two paragraphs with three lines each.",
         "line": 1,
         "length": 45
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 2.",
         "line": 2,
         "length": 7
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 3.",
         "line": 3,
         "length": 7
@@ -29,21 +29,21 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 2, Line 1.",
         "line": 5,
         "length": 20
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 2.",
         "line": 6,
         "length": 7
     },
     {
         "id": 7,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 3.",
         "line": 7,
         "length": 7

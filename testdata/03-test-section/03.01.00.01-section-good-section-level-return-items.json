@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test return to existing, highest-level section (Title 3).",
         "line": 1,
         "length": 57
@@ -29,7 +29,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 1.",
         "line": 5,
         "length": 12
@@ -57,7 +57,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 2.",
         "line": 9,
         "length": 12
@@ -85,7 +85,7 @@
     },
     {
         "id": 13,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 3.",
         "line": 13,
         "length": 12
@@ -113,7 +113,7 @@
     },
     {
         "id": 17,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Paragraph 4.",
         "line": 17,
         "length": 12

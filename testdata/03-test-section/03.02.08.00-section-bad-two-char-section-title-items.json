@@ -57,7 +57,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Ho",
         "line": 9,
         "length": 2

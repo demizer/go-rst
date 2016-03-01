@@ -1,21 +1,21 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 1: A paragraph with three lines.",
         "line": 1,
         "length": 37
     },
     {
         "id": 2,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 2.",
         "line": 2,
         "length": 7
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Line 3.",
         "line": 3,
         "length": 7

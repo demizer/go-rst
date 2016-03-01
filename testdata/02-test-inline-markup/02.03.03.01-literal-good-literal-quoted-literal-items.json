@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with quotes, ",
         "startPosition": 14,
         "line": 1,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with quotes,",
         "startPosition": 41,
         "line": 1,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with quotes, ",
         "startPosition": 18,
         "line": 2,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with quotes,",
         "startPosition": 49,
         "line": 2,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with quotes.",
         "startPosition": 16,
         "line": 3,

@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Strong ",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " asterisk.",
         "startPosition": 13,
         "line": 1,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Strong ",
         "startPosition": 1,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " double asterisk.",
         "startPosition": 14,
         "line": 3,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Strong ",
         "startPosition": 1,
         "line": 5,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " asterisk gone to plaid!",
         "startPosition": 32,
         "line": 5,

@@ -15,7 +15,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Title",
         "startPosition": 2,
         "line": 2,
@@ -30,7 +30,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test missing underline, with paragraph.",
         "line": 4,
         "length": 39

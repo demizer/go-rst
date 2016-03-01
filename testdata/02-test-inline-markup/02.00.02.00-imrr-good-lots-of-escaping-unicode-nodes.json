@@ -1,31 +1,6 @@
-<document source="test data">
-    <paragraph>
-        text-
-        <emphasis>
-            separated
-        \u2010
-        <emphasis>
-            by
-        \u2011
-        <emphasis>
-            various
-        \u2012
-        <emphasis>
-            dashes
-        \u2013
-        <emphasis>
-            and
-        \u2014
-        <emphasis>
-            hyphens
-        .
-        \xbf
-        <emphasis>
-            punctuation
-        ? \xa1
-        <emphasis>
-            examples
-        !\xa0
-        <emphasis>
-            \u00a0no-break-space\u00a0
-        .
+[
+    Rename itemParagraph to itemText
+    
+    A paragraph in go-rst is a text container. Text becomes paragraphs in
+    the parser.    
+]

@@ -15,7 +15,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Test section header no blank line.",
         "line": 3,
         "length": 34

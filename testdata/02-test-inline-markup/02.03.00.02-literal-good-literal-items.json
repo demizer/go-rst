@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " at the beginning of a paragraph.",
         "startPosition": 19,
         "line": 1,

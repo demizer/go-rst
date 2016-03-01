@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "l'",
         "startPosition": 1,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with the ",
         "startPosition": 13,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "' apostrophe.",
         "startPosition": 33,
         "line": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "l\u2019",
         "startPosition": 1,
         "line": 2,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": " with the ",
         "startPosition": 15,
         "line": 2,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "\u2019 apostrophe.",
         "startPosition": 35,
         "line": 2,

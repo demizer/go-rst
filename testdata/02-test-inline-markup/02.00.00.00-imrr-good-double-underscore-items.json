@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "__This__ should be left alone.",
         "startPosition": 1,
         "line": 1,

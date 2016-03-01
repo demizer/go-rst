@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "Next is an empty comment, which serves to end this comment and",
         "startPosition": 4,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "prevents the following block quote being swallowed up.",
         "startPosition": 4,
         "line": 2,

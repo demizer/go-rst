@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "bullet paragraph 1",
         "startPosition": 3,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "bullet paragraph 2",
         "startPosition": 3,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "comment between bullet paragraphs 2 and 3",
         "startPosition": 6,
         "line": 5,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemParagraph",
+        "type": "itemText",
         "text": "bullet paragraph 3",
         "startPosition": 3,
         "line": 7,
