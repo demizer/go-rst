@@ -24,7 +24,7 @@
         "nodeList": [
             {
                 "id": 4,
-                "type": "NodeParagraph",
+                "type": "NodeText",
                 "text": "Explicit markup ends without a blank line; unexpected unindent.",
                 "length": 63
             }
@@ -33,17 +33,31 @@
     {
         "id": 5,
         "type": "NodeParagraph",
-        "text": "no blank line",
-        "startPosition": 1,
         "line": 3,
-        "length": 13
+        "nodeList": [
+            {
+                "id": 6,
+                "type": "NodeText",
+                "text": "no blank line",
+                "startPosition": 1,
+                "line": 3,
+                "length": 13
+            }
+        ]
     },
     {
-        "id": 6,
+        "id": 7,
         "type": "NodeParagraph",
-        "text": "A paragraph.",
-        "startPosition": 1,
         "line": 5,
-        "length": 12
+        "nodeList": [
+            {
+                "id": 8,
+                "type": "NodeText",
+                "text": "A paragraph.",
+                "startPosition": 1,
+                "line": 5,
+                "length": 12
+            }
+        ]
     }
 ]

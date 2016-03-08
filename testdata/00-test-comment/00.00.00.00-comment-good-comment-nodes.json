@@ -10,8 +10,15 @@
     {
         "id": 2,
         "type": "NodeParagraph",
-        "text": "Paragraph.",
         "line": 3,
-        "length": 10
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeText",
+                "text": "Paragraph.",
+                "line": 3,
+                "length": 10
+            }
+        ]
     }
 ]

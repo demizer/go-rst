@@ -18,9 +18,16 @@
     {
         "id": 3,
         "type": "NodeParagraph",
-        "text": "A paragraph.",
-        "startPosition": 1,
         "line": 4,
-        "length": 12
+        "nodeList": [
+            {
+                "id": 4,
+                "type": "NodeText",
+                "text": "A paragraph.",
+                "startPosition": 1,
+                "line": 4,
+                "length": 12
+            }
+        ]
     }
 ]

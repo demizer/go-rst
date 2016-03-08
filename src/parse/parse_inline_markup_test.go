@@ -11,7 +11,7 @@ func Test_02_00_00_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func Test_02_00_01_00_ParseInlineMarkupGoodEscaping(t *testing.T) {
+func Test_02_00_01_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	testPath := testPathFromName("02.00.01.00-imrr-good-lots-of-escaping")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)

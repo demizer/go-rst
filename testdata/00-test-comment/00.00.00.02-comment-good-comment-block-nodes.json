@@ -10,9 +10,16 @@
     {
         "id": 2,
         "type": "NodeParagraph",
-        "text": "Paragraph.",
-        "startPosition": 1,
         "line": 4,
-        "length": 10
+        "nodeList": [
+            {
+                "id": 3,
+                "type": "NodeText",
+                "text": "Paragraph.",
+                "startPosition": 1,
+                "line": 4,
+                "length": 10
+            }
+        ]
     }
 ]

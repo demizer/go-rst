@@ -23,10 +23,18 @@
             {
                 "id": 4,
                 "type": "NodeParagraph",
-                "text": "A block quote.",
                 "startPosition": 5,
                 "line": 6,
-                "length": 14
+                "nodeList": [
+                    {
+                        "id": 5,
+                        "type": "NodeText",
+                        "text": "A block quote.",
+                        "startPosition": 5,
+                        "line": 6,
+                        "length": 14
+                    }
+                ]
             }
         ]
     }
