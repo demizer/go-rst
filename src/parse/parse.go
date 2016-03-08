@@ -375,8 +375,12 @@ func (t *Tree) parse(tree *Tree) {
 				// added to the NodeList using the nodeTarget below.
 				continue
 			}
-		case itemTitle, itemBlankLine, itemEscape:
+		case itemTitle, itemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
+			continue
+		case itemBlankLine:
+			t.log.Debug("Resetting nodeTarget to Tree.Nodes!")
+			t.nodeTarget = &t.Nodes
 			continue
 		case itemBlockQuote:
 			n = t.blockquote(token)
@@ -410,13 +414,20 @@ func (t *Tree) parse(tree *Tree) {
 		// Set the loop to append items to the NodeList of the new section
 		switch n.(Node).NodeType() {
 		case NodeSection:
+			t.log.Debug("Setting nodeTarget to Section NodeList!")
 			t.nodeTarget = &n.(*SectionNode).NodeList
 		case NodeBlockQuote:
+			t.log.Debug("Setting nodeTarget to Blockquote NodeList!")
 			t.nodeTarget = &n.(*BlockQuoteNode).NodeList
 		case NodeDefinitionListItem:
+			t.log.Debug("Setting nodeTarget to Definition List Item NodeList!")
 			t.nodeTarget = &n.(*DefinitionListItemNode).Definition.NodeList
 		case NodeBulletListItem:
+			t.log.Debug("Setting nodeTarget to Bullet List Item NodeList!")
 			t.nodeTarget = &n.(*BulletListItemNode).NodeList
+		case NodeParagraph:
+			t.log.Debug("Setting nodeTarget to Paragraph NodeList!")
+			t.nodeTarget = &n.(*ParagraphNode).NodeList
 		}
 	}
 }
@@ -691,7 +702,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	var backToken int
 
 	s := newSystemMessage(&item{Type: itemSystemMessage, Line: t.token[zed].Line}, err, &t.id)
-	msg := newParagraph(&item{
+	msg := newText(&item{
 		Text:   err.Message(),
 		Length: len(err.Message()),
 	}, &t.id)

@@ -7,7 +7,10 @@ const (
 	// NodeSection is a section element.
 	NodeSection NodeType = iota
 
-	// NodeParagraph is a paragraph element.
+	// NodeText is ordinary text.
+	NodeText
+
+	// NodeParagraph is a paragraph container that contains text and inline markup.
 	NodeParagraph
 
 	// NodeAdornment is the overline or underline of a section.
@@ -71,6 +74,7 @@ const (
 
 var nodeTypes = [...]string{
 	"NodeSection",
+	"NodeText",
 	"NodeParagraph",
 	"NodeAdornment",
 	"NodeBlockQuote",
@@ -266,12 +270,37 @@ func (a AdornmentNode) NodeType() NodeType {
 	return a.Type
 }
 
-// ParagraphNode is a parsed paragraph.
-type ParagraphNode struct {
+// TextNode is ordinary text. Typically added to the nodelist of parapgraphs.
+type TextNode struct {
 	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
+	Line          `json:"line"`
+	StartPosition `json:"startPosition"`
+}
+
+func newText(i *item, id *int) *TextNode {
+	*id++
+	return &TextNode{
+		ID:            ID(*id),
+		Type:          NodeText,
+		Text:          i.Text,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+}
+
+// NodeType returns the Node type of the TextNode.
+func (p TextNode) NodeType() NodeType {
+	return p.Type
+}
+
+// ParagraphNode is a parsed paragraph.
+type ParagraphNode struct {
+	ID            `json:"id"`
+	Type          NodeType `json:"type"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the ParagraphNode, even other ParagraphNodes!
@@ -280,14 +309,14 @@ type ParagraphNode struct {
 
 func newParagraph(i *item, id *int) *ParagraphNode {
 	*id++
-	return &ParagraphNode{
+	pn := &ParagraphNode{
 		ID:            ID(*id),
 		Type:          NodeParagraph,
-		Text:          i.Text,
-		Length:        i.Length,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
+	pn.append(newText(i, id))
+	return pn
 }
 
 // NodeType returns the Node type of the ParagraphNode.

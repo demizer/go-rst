@@ -12,9 +12,6 @@
 
   Other whitespace characters (form feeds [chr(12)] and vertical tabs [chr(11)]) are converted to single spaces before processing.
 
-* Sun Feb 28 08:59 2016: Need to give each test a serial number. It's hard to find a test that is broken from the gb test -v
-  output...
-
 * Sun Feb 28 09:00 2016: renumber-items.sh should only take the test name, it should intelligently find the test and
   renumber.
 
