@@ -342,21 +342,21 @@ func (t *Tree) parse(tree *Tree) {
 		case itemText:
 			t.paragraph(token)
 		case itemInlineEmphasisOpen:
-			n = t.inlineEmphasis(token)
+			t.inlineEmphasis(token)
 		case itemInlineStrongOpen:
-			n = t.inlineStrong(token)
+			t.inlineStrong(token)
 		case itemInlineLiteralOpen:
-			n = t.inlineLiteral(token)
+			t.inlineLiteral(token)
 		case itemInlineInterpretedTextOpen:
-			n = t.inlineInterpretedText(token)
+			t.inlineInterpretedText(token)
 		case itemInlineInterpretedTextRoleOpen:
-			n = t.inlineInterpretedTextRole(token)
+			t.inlineInterpretedTextRole(token)
 		case itemTransition:
-			n = newTransition(token, &t.id)
+			newTransition(token, &t.id)
 		case itemCommentMark:
-			n = t.comment(token)
+			t.comment(token)
 		case itemSectionAdornment:
-			n = t.section(token)
+			t.section(token)
 		case itemEnumListArabic:
 			n = t.enumList(token)
 			// FIXME: This is only until enumerated list are properly implemented.
@@ -375,11 +375,11 @@ func (t *Tree) parse(tree *Tree) {
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
 		case itemBlockQuote:
-			n = t.blockquote(token)
+			t.blockquote(token)
 		case itemDefinitionTerm:
 			t.definitionTerm(token)
 		case itemBullet:
-			n = t.bulletListItem(token)
+			t.bulletListItem(token)
 		default:
 			err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
 			t.log.WithError(err).Error("Invalid token type")
@@ -641,21 +641,22 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) comment(i *item) Node {
+func (t *Tree) comment(i *item) {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
 		t.log.Debug("Found empty comment block")
 		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line}, &t.id)
 		t.nodeTarget.append(n)
-		return n
+		return
 	}
 	nSpace := t.peek(1)
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		t.log.Debug("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.log.Warn("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line}, &t.id)
-		t.nodeTarget.append(n)
-		return t.systemMessage(warningExplicitMarkupWithUnIndent)
+		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
+		t.nodeTarget.append(n, sm)
+		return
 	}
 	nPara := t.peek(2)
 	if nPara != nil && nPara.Type == itemText {
@@ -676,15 +677,16 @@ func (t *Tree) comment(i *item) Node {
 			// A valid comment contains a blank line after the comment block
 			t.log.Debug("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara, &t.id)
-			t.nodeTarget.append(n)
-			return t.systemMessage(warningExplicitMarkupWithUnIndent)
+			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
+			t.nodeTarget.append(n, sm)
+			return
 		} else {
 			t.log.Debug("Found NodeComment")
 		}
 		n = newComment(nPara, &t.id)
 	}
 	t.nodeTarget.append(n)
-	return n
+	return
 }
 
 // systemMessage generates a Node based on the passed parserMessage. The generated message is returned as a
@@ -699,9 +701,11 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		Text:   err.Message(),
 		Length: len(err.Message()),
 	}, &t.id)
-	s.NodeList = append(s.NodeList, msg)
 
 	t.log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
+	t.log.Debug("systemMessage: Adding to NodeList")
+	s.NodeList.append(msg)
+
 	var overLine, indent, title, underLine, newLine string
 
 	switch err {

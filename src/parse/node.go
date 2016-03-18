@@ -121,12 +121,15 @@ type Node interface {
 // NodeList is a list of parser nodes that implement Node.
 type NodeList []Node
 
-func (l *NodeList) append(n Node) {
-	Log.WithFields(log.Fields{
-		"node":       fmt.Sprintf("%p", n),
-		"nodeTarget": fmt.Sprintf("%p", l),
-	}).Debug("Adding node")
-	*l = append(*l, n)
+func (l *NodeList) append(n ...Node) {
+	for _, node := range n {
+		Log.WithFields(log.Fields{
+			"nodePointer":     fmt.Sprintf("%p", node),
+			"nodeType":        fmt.Sprintf("%s", node.NodeType()),
+			"nodeListPointer": fmt.Sprintf("%p", l),
+		}).Debug("Adding node")
+		*l = append(*l, node)
+	}
 }
 
 // EnumListType identifies the type of the enumeration list element
