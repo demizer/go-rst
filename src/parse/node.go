@@ -1,5 +1,11 @@
 package parse
 
+import (
+	"fmt"
+
+	"github.com/apex/log"
+)
+
 // NodeType identifies the type of a parse tree node.
 type NodeType int
 
@@ -116,6 +122,10 @@ type Node interface {
 type NodeList []Node
 
 func (l *NodeList) append(n Node) {
+	Log.WithFields(log.Fields{
+		"node":       fmt.Sprintf("%p", n),
+		"nodeTarget": fmt.Sprintf("%p", l),
+	}).Debug("Adding node")
 	*l = append(*l, n)
 }
 

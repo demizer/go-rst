@@ -25,3 +25,5 @@
 * Mon Feb 29 13:52 2016: Implement test 03.04.00.00 after inline markup
 
 * Mon Feb 29 13:59 2016: Implement blockquote tests
+
+* Tue Mar 08 02:40 2016: renumber-items.sh should not un-indent id when modifying number in nodes.json

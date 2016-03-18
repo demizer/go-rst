@@ -18,3 +18,11 @@ func Test_02_00_01_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_00_02_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
+	testPath := testPathFromName("02.00.02.00-imrr-good-lots-of-escaping-unicode")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

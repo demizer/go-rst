@@ -24,13 +24,21 @@
                         {
                             "id": 5,
                             "type": "NodeParagraph",
-                            "text": "definition 1",
                             "startPosition": 3,
                             "line": 2,
-                            "length": 12
+                            "nodeList": [
+                                {
+                                    "id": 6,
+                                    "type": "NodeText",
+                                    "text": "definition 1",
+                                    "startPosition": 3,
+                                    "line": 2,
+                                    "length": 12
+                                }
+                            ]
                         },
                         {
-                            "id": 6,
+                            "id": 7,
                             "type": "NodeComment",
                             "text": "a comment",
                             "startPosition": 6,
@@ -41,11 +49,11 @@
                 }
             },
             {
-                "id": 7,
+                "id": 8,
                 "type": "NodeDefinitionListItem",
                 "line": 6,
                 "term": {
-                    "id": 8,
+                    "id": 9,
                     "type": "NodeDefinitionTerm",
                     "text": "term 2",
                     "startPosition": 1,
@@ -53,17 +61,25 @@
                     "length": 6
                 },
                 "definition": {
-                    "id": 9,
+                    "id": 10,
                     "type": "NodeDefinition",
                     "line": 7,
                     "nodeList": [
                         {
-                            "id": 10,
+                            "id": 11,
                             "type": "NodeParagraph",
-                            "text": "definition 2",
                             "startPosition": 3,
                             "line": 7,
-                            "length": 12
+                            "nodeList": [
+                                {
+                                    "id": 12,
+                                    "type": "NodeText",
+                                    "text": "definition 2",
+                                    "startPosition": 3,
+                                    "line": 7,
+                                    "length": 12
+                                }
+                            ]
                         }
                     ]
                 }

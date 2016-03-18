@@ -401,6 +401,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				iVal := c.eFieldVal.([]interface{})[0]
 				id := iVal.(map[string]interface{})["id"]
 				// DO NOT REMOVE SPD CALLS
+				time.Sleep(time.Second / 3) // Give the lexer time to finish printing
 				Log.Errorf("%d Parse NodeList Nodes", len2)
 				spd.Dump(pNode)
 				Log.Errorf("%d Expected NodeList Nodes", len1)

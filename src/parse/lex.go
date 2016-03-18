@@ -100,6 +100,7 @@ const (
 	itemInlineInterpretedTextRole
 	itemInlineInterpretedTextRoleClose
 	itemDefinitionTerm
+	itemDefinitionText
 	itemBullet
 	itemEscape
 )
@@ -135,6 +136,7 @@ var elements = [...]string{
 	"itemInlineInterpretedTextRole",
 	"itemInlineInterpretedTextRoleClose",
 	"itemDefinitionTerm",
+	"itemDefinitionText",
 	"itemBullet",
 	"itemEscape",
 }
@@ -958,7 +960,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
-			l.emit(itemText)
+			l.emit(itemDefinitionText)
 			break
 		}
 	}

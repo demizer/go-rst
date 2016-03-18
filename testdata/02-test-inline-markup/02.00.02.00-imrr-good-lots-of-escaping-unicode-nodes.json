@@ -1,6 +1,136 @@
 [
-    Rename itemParagraph to itemText
-    
-    A paragraph in go-rst is a text container. Text becomes paragraphs in
-    the parser.    
+    {
+        "id": 1,
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "id": 2,
+                "type": "NodeText",
+                "text": "text-",
+                "startPosition": 1,
+                "line": 1,
+                "length": 5
+            },
+            {
+                "id": 3,
+                "type": "NodeEmphasis",
+                "text": "separated",
+                "startPosition": 7,
+                "line": 1,
+                "length": 9
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u2010",
+                "startPosition": 17,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "by",
+                "startPosition": 23,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u2011",
+                "startPosition": 27,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "various",
+                "startPosition": 33,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u2012",
+                "startPosition": 42,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "dashes",
+                "startPosition": 49,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u2013",
+                "startPosition": 56,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "and",
+                "startPosition": 31,
+                "line": 1,
+                "length": 3
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u2014",
+                "startPosition": 67,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "hyphens",
+                "startPosition": 73,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": ".",
+                "startPosition": 46,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "\u00bf",
+                "startPosition": 1,
+                "line": 2,
+                "length": 1
+            },
+            {
+                "id": 0,
+                "type": "NodeEmphasis",
+                "text": "punctuation",
+                "startPosition": 7,
+                "line": 2,
+                "length": 7
+            },
+            {
+                "id": 1,
+                "type": "NodeText",
+                "text": "?",
+                "startPosition": 20,
+                "line": 2,
+                "length": 1
+            }
+        ]
+    }
 ]
