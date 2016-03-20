@@ -487,13 +487,15 @@ type BlockQuoteNode struct {
 
 func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
 	*id++
-	return &BlockQuoteNode{
+	bq := &BlockQuoteNode{
 		ID:            ID(*id),
 		Type:          NodeBlockQuote,
 		Level:         indentLevel,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
+	bq.NodeList.append(newParagraph(i, id))
+	return bq
 }
 
 // NodeType returns the Node type of the BlockQuoteNode.

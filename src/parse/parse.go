@@ -365,7 +365,10 @@ func (t *Tree) parse(tree *Tree) {
 			}
 		case itemSpace:
 			if t.peekBack(1).Type == itemBlankLine && t.indentLevel == 0 {
-				n = t.blockquote(token)
+				//
+				//  FIXME: Blockquote parsing is NOT fully implemented.
+				//
+				t.blockquote(token)
 			}
 			if n == nil {
 				// The calculated indent level was the same as the current indent level.
@@ -913,51 +916,54 @@ func (t *Tree) inlineInterpretedTextRole(i *item) Node {
 	return n
 }
 
-func (t *Tree) blockquote(i *item) Node {
+func (t *Tree) blockquote(i *item) {
+	//
+	//  FIXME: Blockquote parsing is NOT fully implemented.
+	//
 	s := i
 	if i.Type != itemSpace {
 		// If i is not itemSpace, it is a itemBlockQuote. In that case we will get the last itemSpace token found to
 		// use for the indent level calculation.
 		s = t.peekBackTo(itemSpace)
 	}
-
 	level := s.Length / t.indentWidth
-	t.log.WithFields(log.Fields{"indentLevel": t.indentLevel, "level": level}).Debugf("blockquote: indent level")
+	t.log.WithFields(log.Fields{"t.indentLevel": t.indentLevel, "level": level}).Debugf("blockquote: indent level")
+
 	if t.indentLevel == level {
+		t.log.Debug("blockquote: t.indentLevel == level")
 		i.Type = itemText
-		return newParagraph(i, &t.id)
+		t.Nodes.append(newParagraph(i, &t.id))
+		return
 	}
 
 	if i.Type == itemSpace {
 		if t.peek(1).Type != itemBlockQuote {
+			t.log.Debug("blockquote: t.peek(1) != itemBlockQuote")
 			t.indentLevel = level
-			return newBlockQuote(
-				&item{Type: itemBlockQuote, Line: i.Line},
-				level, &t.id)
+			nnb := newBlockQuote(i, level, &t.id)
+			t.Nodes.append(nnb)
+			t.nodeTarget = &nnb.NodeList
 		}
 		t.log.Debug("Next item is itemBlockQuote")
-		return nil
+		return
 	}
 
 	levelChanged := false
 	if t.indentLevel != level {
-		t.log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel")
+		t.log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel (t.indentLevel != level)")
 		t.indentLevel = level
 		levelChanged = true
 	}
 
 	var sec Node
 	n := *i
-
 	if levelChanged {
-		// FIXME: Code a token ring insertion API
 		t.token[zed+1] = &n
 		t.indentLevel = level
-		sec = newBlockQuote(&item{Type: itemBlockQuote, Line: i.Line, StartPosition: i.StartPosition,
-			Length: i.Length}, level, &t.id)
+		sec = newBlockQuote(i, level, &t.id)
+		t.next(1)
 	}
-
-	return sec
+	t.Nodes.append(sec)
 }
 
 func (t *Tree) definitionTerm(i *item) Node {
