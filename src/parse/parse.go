@@ -303,6 +303,7 @@ type Tree struct {
 	sectionLevels *sectionLevels // Encountered section levels
 	sections      []*SectionNode // Pointers to encountered sections
 
+	openBulletList *BulletListNode     // Open Bullet list
 	definitionList *DefinitionListNode // Open definition list
 
 	id          int // Consecutive id of the node in the tree
@@ -364,16 +365,16 @@ func (t *Tree) parse(tree *Tree) {
 				continue
 			}
 		case itemSpace:
-			if t.peekBack(1).Type == itemBlankLine && t.indentLevel == 0 {
-				//
-				//  FIXME: Blockquote parsing is NOT fully implemented.
-				//
-				t.blockquote(token)
-			}
-			if n == nil {
-				// The calculated indent level was the same as the current indent level.
-				continue
-			}
+			// //
+			// //  FIXME: Blockquote parsing is NOT fully implemented.
+			// //
+			// if t.peekBack(1).Type == itemBlankLine && t.indentLevel == 0 {
+			// t.blockquote(token)
+			// }
+			// if n == nil {
+			// // The calculated indent level was the same as the current indent level.
+			// continue
+			// }
 		case itemBlankLine, itemTitle, itemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
@@ -382,7 +383,7 @@ func (t *Tree) parse(tree *Tree) {
 		case itemDefinitionTerm:
 			t.definitionTerm(token)
 		case itemBullet:
-			t.bulletListItem(token)
+			t.bulletList(token)
 		default:
 			err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
 			t.log.WithError(err).Error("Invalid token type")
@@ -391,6 +392,7 @@ func (t *Tree) parse(tree *Tree) {
 }
 
 func (t *Tree) subParseBodyElements(token *item) {
+	t.log.WithFields(log.Fields{"tokenType": token.Type, "tokenText": token.Text}).Debug("subParseBodyElements: Have token")
 	switch token.Type {
 	case itemText:
 		t.paragraph(token)
@@ -417,8 +419,8 @@ func (t *Tree) subParseBodyElements(token *item) {
 		t.blockquote(token)
 	case itemDefinitionTerm:
 		t.definitionTerm(token)
-	case itemBullet:
-		t.bulletListItem(token)
+	// case itemBullet:
+	// t.bulletListItem(token)
 	default:
 		err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
 		t.log.WithError(err).Error("Invalid token type")
@@ -869,6 +871,7 @@ func (t *Tree) paragraph(i *item) Node {
 	}
 	npItem.Length = len(npItem.Text)
 	sec := newParagraph(npItem)
+	t.log.Debug("newParagraph: Appending NodeParagraph to nodeTarget")
 	t.nodeTarget.append(sec)
 	return sec
 }
@@ -1014,10 +1017,37 @@ func (t *Tree) definitionTerm(i *item) Node {
 	return sec
 }
 
-func (t *Tree) bulletList(i *item) Node {
-	return newBulletListNode(i)
-}
-
-func (t *Tree) bulletListItem(i *item) Node {
-	return newBulletListItemNode(i)
+func (t *Tree) bulletList(i *item) {
+	//
+	// FIXME: Bullet List Parsing is NOT fully implemented
+	//
+	bl := t.openBulletList
+	if bl == nil {
+		bl = newBulletListNode(i)
+		t.openBulletList = bl
+		t.nodeTarget.append(bl)
+		t.next(1)
+	}
+	t.nodeTarget = &bl.NodeList
+	bli := newBulletListItemNode(i)
+	t.nodeTarget.append(bli)
+	t.nodeTarget = &bli.NodeList
+	for {
+		ni := t.next(1)
+		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("bulletList: Have token")
+		if ni == nil {
+			break
+		} else if ni.Type == itemSpace {
+			// Ignore SPACE until we properly implement bullit list parsing
+			continue
+		}
+		if ni.Type == itemEOF {
+			break
+		}
+		t.subParseBodyElements(ni)
+		// if ni.Text == "bullet paragraph 3" {
+		// t.log.Debug(spd.Sdump(t.Nodes))
+		// os.Exit(1)
+		// }
+	}
 }

@@ -4,6 +4,10 @@
 
   ID support for nodes provide more work than benefit
 
+* Sun Mar 20 12:38 2016: Type:31 should be Type:itemBullit
+
+  INFO[0000] Parser got token          token=&parse.item{ID:1, Type:31, Text:"+", Line:1, StartPosition:1, Length:1} unit=parser
+
 * Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Fri Feb 19 23:32 2016: Turn "8" into a string
