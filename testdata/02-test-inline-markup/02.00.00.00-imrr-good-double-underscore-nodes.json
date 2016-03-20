@@ -1,10 +1,14 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "__This__ should be left alone.",
-        "startPosition": 1,
-        "line": 1,
-        "length": 30
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "__This__ should be left alone.",
+                "startPosition": 1,
+                "line": 1,
+                "length": 30
+            }
+        ]
     }
 ]

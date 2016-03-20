@@ -1,25 +1,24 @@
 [
     {
-        "id": 1,
         "type": "NodeBulletList",
         "bullet": "+",
-        "line": 1,
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeBulletListItem",
-                "line": 1,
                 "nodeList": [
                     {
-                        "id": 3,
                         "type": "NodeParagraph",
-                        "text": "bullet paragraph 1",
-                        "startPosition": 3,
-                        "line": 1,
-                        "length": 18
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "bullet paragraph 1",
+                                "startPosition": 3,
+                                "line": 1,
+                                "length": 18
+                            }
+                        ]
                     },
                     {
-                        "id": 4,
                         "type": "NodeComment",
                         "text": "trailing comment",
                         "startPosition": 6,

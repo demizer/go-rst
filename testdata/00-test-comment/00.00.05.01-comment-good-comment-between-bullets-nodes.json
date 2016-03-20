@@ -1,25 +1,24 @@
 [
     {
-        "id": 1,
         "type": "NodeBulletList",
         "bullet": "+",
-        "line": 1,
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeBulletListItem",
-                "line": 1,
                 "nodeList": [
                     {
-                        "id": 3,
                         "type": "NodeParagraph",
-                        "text": "bullet paragraph 1",
-                        "startPosition": 3,
-                        "line": 1,
-                        "length": 18
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "bullet paragraph 1",
+                                "startPosition": 3,
+                                "line": 1,
+                                "length": 18
+                            }
+                        ]
                     },
                     {
-                        "id": 4,
                         "type": "NodeComment",
                         "text": "comment between bullet paragraphs 1 (leader) and 2",
                         "startPosition": 6,
@@ -27,12 +26,16 @@
                         "length": 50
                     },
                     {
-                        "id": 5,
                         "type": "NodeParagraph",
-                        "text": "bullet paragraph 2",
-                        "startPosition": 3,
-                        "line": 5,
-                        "length": 18
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "bullet paragraph 2",
+                                "startPosition": 3,
+                                "line": 5,
+                                "length": 18
+                            }
+                        ]
                     }
                 ]
             }

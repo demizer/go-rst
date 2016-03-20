@@ -651,8 +651,7 @@ func (t *Tree) comment(i *item) {
 		t.nodeTarget.append(n)
 		return
 	}
-	nSpace := t.peek(1)
-	if nSpace != nil && nSpace.Type != itemSpace {
+	if nSpace := t.peek(1); nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
 		t.log.Warn("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line})
@@ -675,12 +674,13 @@ func (t *Tree) comment(i *item) {
 				}
 			}
 			nPara.Length = len(nPara.Text)
-		} else if z := t.peek(1).Type; z != itemBlankLine && z != itemCommentMark && z != itemEOF {
+		} else if z := t.peek(1); z != nil && z.Type != itemBlankLine && z.Type != itemCommentMark && z.Type != itemEOF {
 			// A valid comment contains a blank line after the comment block
 			t.log.Debug("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara)
 			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
-			t.nodeTarget.append(n, sm)
+			t.nodeTarget.append(n)
+			t.nodeTarget.append(sm)
 			return
 		} else {
 			t.log.Debug("Found NodeComment")
@@ -705,7 +705,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	})
 
 	t.log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
-	t.log.Debug("systemMessage: Adding to NodeList")
+	t.log.Debug("systemMessage: Adding msg to system message NodeList")
 	s.NodeList.append(msg)
 
 	var overLine, indent, title, underLine, newLine string
@@ -838,82 +838,110 @@ func (t *Tree) enumList(i *item) (n Node) {
 	return eNode
 }
 
-func (t *Tree) paragraph(i *item) Node {
-	npItem := &item{
-		Text:          i.Text,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
-	// Get all the paragraphs. If the paragraphs are not separted by blank lines, then add a newline between the previous
-	// paragraph and the current. Unless the newline is escaped, then the space is removed.
+func (t *Tree) paragraph(i *item) {
+	np := newParagraph(i)
+	t.nodeTarget.append(np)
+	t.nodeTarget = &np.NodeList
+outer:
 	for {
-		nItem := t.next(1)
-		if nItem.Type == itemEscape {
-			for {
-				nItem = t.next(1)
-				if nItem.Type != itemSpace {
-					break
-				}
-			}
-		}
-		if nItem.Type != itemText && nItem.Type != itemSpace {
-			t.log.Debug("have " + nItem.Type.String())
-			t.backup()
+		ni := t.next(1)
+		if ni == nil {
+			t.log.Debug("t.paragraph: ni == nil, breaking")
 			break
 		}
-		temp := "%s\n%s"
-		// Do not add space if the the newline is escaped. When a newline is escaped, the escape item is the last
-		// element of that line.
-		if t.peekBack(1).Type == itemEscape && nItem.Type == itemText && t.peekBack(1).Line < nItem.Line {
-			temp = "%s%s"
+		if ni.Type == itemText {
+			switch pn := t.nodeTarget.lastNode().(type) {
+			case *TextNode:
+				// Merge current itemText  with previous TextNode that has already been inserted into the
+				// NodeList.
+				pn.Text += "\n" + ni.Text
+				pn.Length = len(pn.Text)
+				continue
+			default:
+				// The previous node is not of type TextNode, this will start a new TextNode
+			}
 		}
-		npItem.Text = fmt.Sprintf(temp, npItem.Text, nItem.Text)
+		switch ni.Type {
+		case itemText:
+			nt := newText(ni)
+			for {
+				// Loop merging itemText into a single NodeText
+				ni := t.next(1)
+				if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
+					break
+				}
+				if ni.Type == itemEscape {
+					continue
+				}
+				if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
+					// Next item is itemEscape
+					if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
+						// Next item is escaped newline, merge text with current and add explicit
+						// '\n'
+						ni.Text += "\n" + ni.Text
+					}
+				} else {
+					nt.Text += ni.Text
+				}
+			}
+			nt.Length = len(nt.Text)
+			t.nodeTarget.append(nt)
+		case itemInlineEmphasisOpen:
+			t.inlineEmphasis(ni)
+		case itemInlineStrongOpen:
+			t.inlineStrong(ni)
+		case itemInlineLiteralOpen:
+			t.inlineLiteral(ni)
+		case itemInlineInterpretedTextOpen:
+			t.inlineInterpretedText(ni)
+		case itemInlineInterpretedTextRoleOpen:
+			t.inlineInterpretedTextRole(ni)
+		case itemCommentMark:
+			t.comment(ni)
+		case itemEnumListArabic:
+			t.enumList(ni)
+		case itemBlankLine:
+			t.log.Debug("Found newline, closing paragraph")
+			break outer
+		}
 	}
-	npItem.Length = len(npItem.Text)
-	sec := newParagraph(npItem)
-	t.log.Debug("newParagraph: Appending NodeParagraph to nodeTarget")
-	t.nodeTarget.append(sec)
-	return sec
+	t.nodeTarget = &t.Nodes
 }
 
-func (t *Tree) inlineEmphasis(i *item) Node {
+func (t *Tree) inlineEmphasis(i *item) {
 	t.next(1)
-	n := newInlineEmphasis(t.token[zed])
+	t.nodeTarget.append(newInlineEmphasis(t.token[zed]))
 	t.next(1)
-	return n
 }
 
-func (t *Tree) inlineStrong(i *item) Node {
+func (t *Tree) inlineStrong(i *item) {
 	t.next(1)
-	n := newInlineStrong(t.token[zed])
+	t.nodeTarget.append(newInlineStrong(t.token[zed]))
 	t.next(1)
-	return n
 }
 
-func (t *Tree) inlineLiteral(i *item) Node {
+func (t *Tree) inlineLiteral(i *item) {
 	t.next(1)
-	n := newInlineLiteral(t.token[zed])
+	t.nodeTarget.append(newInlineLiteral(t.token[zed]))
 	t.next(1)
-	return n
 }
 
-func (t *Tree) inlineInterpretedText(i *item) Node {
+func (t *Tree) inlineInterpretedText(i *item) {
 	t.next(1)
 	n := newInlineInterpretedText(t.token[zed])
+	t.nodeTarget.append(n)
 	t.next(1)
 	if t.peek(1).Type == itemInlineInterpretedTextRoleOpen {
 		t.next(2)
 		n.NodeList.append(newInlineInterpretedTextRole(t.token[zed]))
 		t.next(1)
 	}
-	return n
 }
 
-func (t *Tree) inlineInterpretedTextRole(i *item) Node {
+func (t *Tree) inlineInterpretedTextRole(i *item) {
 	t.next(1)
-	n := newInlineInterpretedTextRole(t.token[zed])
+	t.nodeTarget.append(newInlineInterpretedTextRole(t.token[zed]))
 	t.next(1)
-	return n
 }
 
 func (t *Tree) blockquote(i *item) {
@@ -1038,16 +1066,12 @@ func (t *Tree) bulletList(i *item) {
 		if ni == nil {
 			break
 		} else if ni.Type == itemSpace {
-			// Ignore SPACE until we properly implement bullit list parsing
+			// Ignore SPACE until we properly implement bullet list parsing
 			continue
 		}
 		if ni.Type == itemEOF {
 			break
 		}
 		t.subParseBodyElements(ni)
-		// if ni.Text == "bullet paragraph 3" {
-		// t.log.Debug(spd.Sdump(t.Nodes))
-		// os.Exit(1)
-		// }
 	}
 }

@@ -127,6 +127,9 @@ func (l *NodeList) append(n ...Node) {
 	}
 }
 
+// last returns the last item added to the slice
+func (l *NodeList) lastNode(n ...Node) Node { return (*l)[len(*l)-1] }
+
 // EnumListType identifies the type of the enumeration list element
 type EnumListType int
 
@@ -442,6 +445,7 @@ type SystemMessageNode struct {
 }
 
 func newSystemMessage(i *item, m parserMessage) *SystemMessageNode {
+	// Log.Debug(spd.Sdump(i))
 	return &SystemMessageNode{
 		Type:        NodeSystemMessage,
 		MessageType: m,
