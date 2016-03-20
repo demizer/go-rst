@@ -1,3 +1,9 @@
+* Sun Mar 20 01:13 2016: REMOVE ID from NODE tests
+
+  IDS make it easy to identify a node that is having trouble, but don't really help fix with structural problems.
+
+  ID support for nodes provide more work than benefit
+
 * Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Fri Feb 19 23:32 2016: Turn "8" into a string

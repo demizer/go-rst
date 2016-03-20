@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "type": "NodeComment",
         "text": "A comment.",
         "startPosition": 4,
@@ -8,7 +7,6 @@
         "length": 10
     },
     {
-        "id": 2,
         "type": "NodeComment",
         "text": "Another.",
         "startPosition": 4,
@@ -16,12 +14,9 @@
         "length": 8
     },
     {
-        "id": 3,
         "type": "NodeParagraph",
-        "line": 4,
         "nodeList": [
             {
-                "id": 4,
                 "type": "NodeText",
                 "text": "A paragraph.",
                 "startPosition": 1,

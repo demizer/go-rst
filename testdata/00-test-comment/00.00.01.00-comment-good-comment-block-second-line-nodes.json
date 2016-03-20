@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "type": "NodeComment",
         "text": "A comment consisting of multiple lines\nstarting on the line after the\nexplicit markup start.",
         "startPosition": 4,
@@ -8,12 +7,9 @@
         "length": 92
     },
     {
-        "id": 2,
         "type": "NodeParagraph",
-        "line": 6,
         "nodeList": [
             {
-                "id": 3,
                 "type": "NodeText",
                 "text": "A paragraph.",
                 "startPosition": 1,

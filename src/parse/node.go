@@ -104,17 +104,12 @@ var nodeTypes = [...]string{
 }
 
 // Type returns the type of a node element.
-func (n NodeType) Type() NodeType {
-	return n
-}
+func (n NodeType) Type() NodeType { return n }
 
-func (n NodeType) String() string {
-	return nodeTypes[n]
-}
+func (n NodeType) String() string { return nodeTypes[n] }
 
 // Node is the interface used to implement parser nodes.
 type Node interface {
-	IDNumber() ID
 	NodeType() NodeType
 }
 
@@ -153,9 +148,7 @@ var enumListTypes = [...]string{
 	"enumListAuto",
 }
 
-func (e EnumListType) String() string {
-	return enumListTypes[e]
-}
+func (e EnumListType) String() string { return enumListTypes[e] }
 
 // EnumAffixType identifies the type of affix for the Enumerated list element
 type EnumAffixType int
@@ -180,7 +173,6 @@ func (a EnumAffixType) String() string {
 // SectionNode is a a single section node. It contains overline, title, and underline nodes. NodeList contains nodes that are
 // children of the section.
 type SectionNode struct {
-	ID   `json:"id"`
 	Type NodeType `json:"type"`
 
 	// Level is the hierarchical level of the section. The first level is level 1, any further sections encountered after
@@ -201,22 +193,13 @@ func (s *SectionNode) NodeType() NodeType {
 	return s.Type
 }
 
-func newSection(title *item, overSec *item, underSec *item,
-	indent *item, id *int) *SectionNode {
-
-	*id++
-	n := &SectionNode{
-		ID:   ID(*id),
-		Type: NodeSection,
-	}
-
-	*id++
+func newSection(title *item, overSec *item, underSec *item, indent *item) *SectionNode {
 	var indentLen int
+	n := &SectionNode{Type: NodeSection}
 	if indent != nil {
 		indentLen = indent.Length
 	}
 	n.Title = &TitleNode{
-		ID:            ID(*id),
 		Type:          NodeTitle,
 		Text:          title.Text,
 		StartPosition: title.StartPosition,
@@ -224,12 +207,9 @@ func newSection(title *item, overSec *item, underSec *item,
 		Length:        title.Length,
 		Line:          title.Line,
 	}
-
 	if overSec != nil && overSec.Text != "" {
-		*id++
 		Rune := rune(overSec.Text[0])
 		n.OverLine = &AdornmentNode{
-			ID:            ID(*id),
 			Type:          NodeAdornment,
 			Rune:          Rune,
 			StartPosition: overSec.StartPosition,
@@ -237,11 +217,8 @@ func newSection(title *item, overSec *item, underSec *item,
 			Length:        overSec.Length,
 		}
 	}
-
-	*id++
 	Rune := rune(underSec.Text[0])
 	n.UnderLine = &AdornmentNode{
-		ID:            ID(*id),
 		Rune:          Rune,
 		Type:          NodeAdornment,
 		StartPosition: underSec.StartPosition,
@@ -254,7 +231,6 @@ func newSection(title *item, overSec *item, underSec *item,
 
 // TitleNode contains the parsed data for a section titles.
 type TitleNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	IndentLength  int      `json:"indentLength"`
@@ -270,7 +246,6 @@ func (t TitleNode) NodeType() NodeType {
 
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune"`
 	Length        int      `json:"length"`
@@ -285,7 +260,6 @@ func (a AdornmentNode) NodeType() NodeType {
 
 // TextNode is ordinary text. Typically added to the nodelist of parapgraphs.
 type TextNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -293,10 +267,8 @@ type TextNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newText(i *item, id *int) *TextNode {
-	*id++
+func newText(i *item) *TextNode {
 	return &TextNode{
-		ID:            ID(*id),
 		Type:          NodeText,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -306,40 +278,25 @@ func newText(i *item, id *int) *TextNode {
 }
 
 // NodeType returns the Node type of the TextNode.
-func (p TextNode) NodeType() NodeType {
-	return p.Type
-}
+func (p TextNode) NodeType() NodeType { return p.Type }
 
 // ParagraphNode is a parsed paragraph.
 type ParagraphNode struct {
-	ID            `json:"id"`
-	Type          NodeType `json:"type"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
-	// NodeList contains Nodes parsed as children of the ParagraphNode, even other ParagraphNodes!
-	NodeList `json:"nodeList"`
+	Type     NodeType          `json:"type"`
+	NodeList `json:"nodeList"` // NodeList contains children of the ParagraphNode, even other ParagraphNodes!
 }
 
-func newParagraph(i *item, id *int) *ParagraphNode {
-	*id++
-	pn := &ParagraphNode{
-		ID:            ID(*id),
-		Type:          NodeParagraph,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
-	pn.append(newText(i, id))
+func newParagraph(i *item) *ParagraphNode {
+	pn := &ParagraphNode{Type: NodeParagraph}
+	pn.append(newText(i))
 	return pn
 }
 
 // NodeType returns the Node type of the ParagraphNode.
-func (p ParagraphNode) NodeType() NodeType {
-	return p.Type
-}
+func (p ParagraphNode) NodeType() NodeType { return p.Type }
 
 // InlineEmphasisNode is parsed inline italicized text.
 type InlineEmphasisNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -347,10 +304,8 @@ type InlineEmphasisNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineEmphasis(i *item, id *int) *InlineEmphasisNode {
-	*id++
+func newInlineEmphasis(i *item) *InlineEmphasisNode {
 	return &InlineEmphasisNode{
-		ID:            ID(*id),
 		Type:          NodeInlineEmphasis,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -366,7 +321,6 @@ func (e InlineEmphasisNode) NodeType() NodeType {
 
 // InlineStrongNode is a parsed inline bold text.
 type InlineStrongNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -374,10 +328,8 @@ type InlineStrongNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineStrong(i *item, id *int) *InlineStrongNode {
-	*id++
+func newInlineStrong(i *item) *InlineStrongNode {
 	return &InlineStrongNode{
-		ID:            ID(*id),
 		Type:          NodeInlineStrong,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -393,7 +345,6 @@ func (s InlineStrongNode) NodeType() NodeType {
 
 // InlineLiteralNode is a parsed inline literal node.
 type InlineLiteralNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -401,10 +352,8 @@ type InlineLiteralNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineLiteral(i *item, id *int) *InlineLiteralNode {
-	*id++
+func newInlineLiteral(i *item) *InlineLiteralNode {
 	return &InlineLiteralNode{
-		ID:            ID(*id),
 		Type:          NodeInlineLiteral,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -420,7 +369,6 @@ func (l InlineLiteralNode) NodeType() NodeType {
 
 // InlineInterpretedText is a parsed interpreted text role.
 type InlineInterpretedText struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -430,10 +378,8 @@ type InlineInterpretedText struct {
 	NodeList `json:"nodeList"`
 }
 
-func newInlineInterpretedText(i *item, id *int) *InlineInterpretedText {
-	*id++
+func newInlineInterpretedText(i *item) *InlineInterpretedText {
 	return &InlineInterpretedText{
-		ID:            ID(*id),
 		Type:          NodeInlineInterpretedText,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -449,7 +395,6 @@ func (i InlineInterpretedText) NodeType() NodeType {
 
 // InlineInterpretedTextRole is a parsed interpreted text role.
 type InlineInterpretedTextRole struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -457,10 +402,8 @@ type InlineInterpretedTextRole struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineInterpretedTextRole(i *item, id *int) *InlineInterpretedTextRole {
-	*id++
+func newInlineInterpretedTextRole(i *item) *InlineInterpretedTextRole {
 	return &InlineInterpretedTextRole{
-		ID:            ID(*id),
 		Type:          NodeInlineInterpretedTextRole,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -476,7 +419,6 @@ func (i InlineInterpretedTextRole) NodeType() NodeType {
 
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.
 type BlockQuoteNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Level         int      `json:"level"`
 	Line          `json:"line"`
@@ -485,16 +427,14 @@ type BlockQuoteNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newBlockQuote(i *item, indentLevel int, id *int) *BlockQuoteNode {
-	*id++
+func newBlockQuote(i *item, indentLevel int) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
-		ID:            ID(*id),
 		Type:          NodeBlockQuote,
 		Level:         indentLevel,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
-	bq.NodeList.append(newParagraph(i, id))
+	bq.NodeList.append(newParagraph(i))
 	return bq
 }
 
@@ -506,7 +446,6 @@ func (b BlockQuoteNode) NodeType() NodeType {
 // SystemMessageNode are messages generated by the parser. System messages are leveled by severity and can be one of either
 // Warning, Error, Info, and Severe.
 type SystemMessageNode struct {
-	ID   `json:"id"`
 	Type NodeType `json:"type"`
 	Line `json:"line"`
 
@@ -522,10 +461,8 @@ type SystemMessageNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, m parserMessage, id *int) *SystemMessageNode {
-	*id++
+func newSystemMessage(i *item, m parserMessage) *SystemMessageNode {
 	return &SystemMessageNode{
-		ID:          ID(*id),
 		Type:        NodeSystemMessage,
 		MessageType: m,
 		Severity:    m.Level(),
@@ -540,7 +477,6 @@ func (s SystemMessageNode) NodeType() NodeType {
 
 // LiteralBlockNode is a parsed literal block element.
 type LiteralBlockNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -548,10 +484,8 @@ type LiteralBlockNode struct {
 	Line          `json:"line"`
 }
 
-func newLiteralBlock(i *item, id *int) *LiteralBlockNode {
-	*id++
+func newLiteralBlock(i *item) *LiteralBlockNode {
 	return &LiteralBlockNode{
-		ID:            ID(*id),
 		Type:          NodeLiteralBlock,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -567,7 +501,6 @@ func (l LiteralBlockNode) NodeType() NodeType {
 
 // TransitionNode is a parsed transition element. Transition elements are very similar to AdornmentNodes.
 type TransitionNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -575,10 +508,8 @@ type TransitionNode struct {
 	Line          `json:"line"`
 }
 
-func newTransition(i *item, id *int) *TransitionNode {
-	*id++
+func newTransition(i *item) *TransitionNode {
 	return &TransitionNode{
-		ID:            ID(*id),
 		Type:          NodeTransition,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -594,7 +525,6 @@ func (t TransitionNode) NodeType() NodeType {
 
 // CommentNode is a parsed comment element. Comment elements do not appear as visible elements in document transformations.
 type CommentNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -602,10 +532,8 @@ type CommentNode struct {
 	Line          `json:"line"`
 }
 
-func newComment(i *item, id *int) *CommentNode {
-	*id++
+func newComment(i *item) *CommentNode {
 	return &CommentNode{
-		ID:            ID(*id),
 		Type:          NodeComment,
 		Text:          i.Text,
 		Length:        i.Length,
@@ -621,7 +549,6 @@ func (t CommentNode) NodeType() NodeType {
 
 // BulletListNode defines a bullet list element.
 type BulletListNode struct {
-	ID       `json:"id"`
 	Type     NodeType `json:"type"`
 	Bullet   string   `json:"bullet"`
 	Line     `json:"line"`
@@ -629,10 +556,8 @@ type BulletListNode struct {
 }
 
 // newEnumListNode initializes a new EnumListNode.
-func newBulletListNode(i *item, id *int) *BulletListNode {
-	*id++
+func newBulletListNode(i *item) *BulletListNode {
 	return &BulletListNode{
-		ID:     ID(*id),
 		Type:   NodeBulletList,
 		Bullet: i.Text,
 		Line:   i.Line,
@@ -646,17 +571,14 @@ func (b BulletListNode) NodeType() NodeType {
 
 // BulletListItemNode defines a Bullet List Item element.
 type BulletListItemNode struct {
-	ID       `json:"id"`
 	Type     NodeType `json:"type"`
 	Line     `json:"line"`
 	NodeList `json:"nodeList"`
 }
 
 // newEnumListNode initializes a new EnumListNode.
-func newBulletListItemNode(i *item, id *int) *BulletListItemNode {
-	*id++
+func newBulletListItemNode(i *item) *BulletListItemNode {
 	return &BulletListItemNode{
-		ID:   ID(*id),
 		Type: NodeBulletListItem,
 		Line: i.Line,
 	}
@@ -669,7 +591,6 @@ func (b BulletListItemNode) NodeType() NodeType {
 
 // EnumListNode defines an enumerated list element.
 type EnumListNode struct {
-	ID       `json:"id"`
 	Type     NodeType      `json:"type"`
 	EnumType EnumListType  `json:"enumType"`
 	Affix    EnumAffixType `json:"affix"`
@@ -677,8 +598,7 @@ type EnumListNode struct {
 }
 
 // newEnumListNode initializes a new EnumListNode.
-func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
-	*id++
+func newEnumListNode(enumList *item, affix *item) *EnumListNode {
 	var enType EnumListType
 	switch enumList.Type {
 	case itemEnumListArabic:
@@ -696,7 +616,6 @@ func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
 	}
 
 	return &EnumListNode{
-		ID:       ID(*id),
 		Type:     NodeEnumList,
 		EnumType: enType,
 		Affix:    afType,
@@ -704,76 +623,48 @@ func newEnumListNode(enumList *item, affix *item, id *int) *EnumListNode {
 }
 
 // NodeType returns the Node type of the EnumListNode.
-func (e EnumListNode) NodeType() NodeType {
-	return e.Type
-}
+func (e EnumListNode) NodeType() NodeType { return e.Type }
 
 // DefinitionListNode defines a definition list element.
 type DefinitionListNode struct {
-	ID       `json:"id"`
 	Type     NodeType `json:"type"`
-	Line     `json:"line"`
 	NodeList `json:"nodeList"`
 }
 
-func newDefinitionList(i *item, id *int) *DefinitionListNode {
-	*id++
-	return &DefinitionListNode{
-		ID:   ID(*id),
-		Type: NodeDefinitionList,
-		Line: i.Line,
-	}
+func newDefinitionList(i *item) *DefinitionListNode {
+	return &DefinitionListNode{Type: NodeDefinitionList}
 }
 
 // NodeType returns the Node type of DefinitionListNode.
-func (d DefinitionListNode) NodeType() NodeType {
-	return d.Type
-}
+func (d DefinitionListNode) NodeType() NodeType { return d.Type }
 
 // DefinitionListItemNode defines a definition list item element.
 type DefinitionListItemNode struct {
-	ID         `json:"id"`
-	Type       NodeType `json:"type"`
-	Line       `json:"line"`
+	Type       NodeType            `json:"type"`
 	Term       *DefinitionTermNode `json:"term"`
 	Definition *DefinitionNode     `json:"definition"`
 }
 
-func newDefinitionListItem(defTerm *item, def *item, id *int) *DefinitionListItemNode {
-	*id++
-	n := &DefinitionListItemNode{
-		ID:   ID(*id),
-		Type: NodeDefinitionListItem,
-		Line: defTerm.Line,
-	}
-	*id++
+func newDefinitionListItem(defTerm *item, def *item) *DefinitionListItemNode {
+	n := &DefinitionListItemNode{Type: NodeDefinitionListItem}
 	ndt := &DefinitionTermNode{
-		ID:            ID(*id),
 		Type:          NodeDefinitionTerm,
 		Text:          defTerm.Text,
 		Length:        defTerm.Length,
 		StartPosition: defTerm.StartPosition,
 		Line:          defTerm.Line,
 	}
-	*id++
-	nd := &DefinitionNode{
-		ID:   ID(*id),
-		Type: NodeDefinition,
-		Line: def.Line,
-	}
+	nd := &DefinitionNode{Type: NodeDefinition}
 	n.Term = ndt
 	n.Definition = nd
 	return n
 }
 
 // NodeType returns the Node type of DefinitionListItemNode.
-func (d DefinitionListItemNode) NodeType() NodeType {
-	return d.Type
-}
+func (d DefinitionListItemNode) NodeType() NodeType { return d.Type }
 
 // DefinitionTermNode defines a definition list term element.
 type DefinitionTermNode struct {
-	ID            `json:"id"`
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
@@ -782,19 +673,14 @@ type DefinitionTermNode struct {
 }
 
 // NodeType returns the Node type of DefinitionTermNode.
-func (d DefinitionTermNode) NodeType() NodeType {
-	return d.Type
-}
+func (d DefinitionTermNode) NodeType() NodeType { return d.Type }
 
 // DefinitionNode defines a difinition element.
 type DefinitionNode struct {
-	ID       `json:"id"`
 	Type     NodeType `json:"type"`
 	Line     `json:"line"`
 	NodeList `json:"nodeList"`
 }
 
 // NodeType returns the Node type of DefinitionNode.
-func (d DefinitionNode) NodeType() NodeType {
-	return d.Type
-}
+func (d DefinitionNode) NodeType() NodeType { return d.Type }

@@ -352,7 +352,7 @@ func (t *Tree) parse(tree *Tree) {
 		case itemInlineInterpretedTextRoleOpen:
 			t.inlineInterpretedTextRole(token)
 		case itemTransition:
-			newTransition(token, &t.id)
+			newTransition(token)
 		case itemCommentMark:
 			t.comment(token)
 		case itemSectionAdornment:
@@ -603,14 +603,12 @@ func (t *Tree) section(i *item) Node {
 	}
 
 	// Determine the level of the section and where to append it to in t.Nodes
-	undoID := t.id
-	sec := newSection(title, overAdorn, underAdorn, indent, &t.id)
+	sec := newSection(title, overAdorn, underAdorn, indent)
 	t.log.WithFields(log.Fields{"sectionLevel": sec.UnderLine.Rune}).Debug("section: Adding sectionLevel")
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
 		t.log.Debug("Found inconsistent section level!")
-		t.id = undoID
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 
@@ -624,7 +622,6 @@ func (t *Tree) section(i *item) Node {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
 		t.nodeTarget = &lSec.NodeList
-		t.log.WithField("nodeTarget", lSec.ID.String()).Debug("section: Setting nodeTarget to section ID")
 	}
 
 	// The following checks have to be made after the SectionNode has been initialized so that any parserMessages can be
@@ -648,7 +645,7 @@ func (t *Tree) comment(i *item) {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
 		t.log.Debug("Found empty comment block")
-		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line}, &t.id)
+		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line})
 		t.nodeTarget.append(n)
 		return
 	}
@@ -656,7 +653,7 @@ func (t *Tree) comment(i *item) {
 	if nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
 		t.log.Warn("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
-		n = newComment(&item{Line: i.Line}, &t.id)
+		n = newComment(&item{Line: i.Line})
 		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 		t.nodeTarget.append(n, sm)
 		return
@@ -679,14 +676,14 @@ func (t *Tree) comment(i *item) {
 		} else if z := t.peek(1).Type; z != itemBlankLine && z != itemCommentMark && z != itemEOF {
 			// A valid comment contains a blank line after the comment block
 			t.log.Debug("Found warningExplicitMarkupWithUnIndent")
-			n = newComment(nPara, &t.id)
+			n = newComment(nPara)
 			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 			t.nodeTarget.append(n, sm)
 			return
 		} else {
 			t.log.Debug("Found NodeComment")
 		}
-		n = newComment(nPara, &t.id)
+		n = newComment(nPara)
 	}
 	t.nodeTarget.append(n)
 	return
@@ -699,11 +696,11 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	var lbTextLen int
 	var backToken int
 
-	s := newSystemMessage(&item{Type: itemSystemMessage, Line: t.token[zed].Line}, err, &t.id)
+	s := newSystemMessage(&item{Type: itemSystemMessage, Line: t.token[zed].Line}, err)
 	msg := newText(&item{
 		Text:   err.Message(),
 		Length: len(err.Message()),
-	}, &t.id)
+	})
 
 	t.log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
 	t.log.Debug("systemMessage: Adding to NodeList")
@@ -808,7 +805,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	}
 
 	if lbTextLen > 0 {
-		lb := newLiteralBlock(&item{Type: itemLiteralBlock, Text: lbText, Length: lbTextLen}, &t.id)
+		lb := newLiteralBlock(&item{Type: itemLiteralBlock, Text: lbText, Length: lbTextLen})
 		s.NodeList = append(s.NodeList, lb)
 	}
 
@@ -827,12 +824,12 @@ func (t *Tree) enumList(i *item) (n Node) {
 		t.next(1)
 		affix = t.token[zed]
 		t.next(1)
-		eNode = newEnumListNode(i, affix, &t.id)
+		eNode = newEnumListNode(i, affix)
 		t.next(1)
-		eNode.NodeList.append(newParagraph(t.token[zed], &t.id))
+		eNode.NodeList.append(newParagraph(t.token[zed]))
 	} else {
 		t.next(3)
-		lastEnum.NodeList.append(newParagraph(t.token[zed], &t.id))
+		lastEnum.NodeList.append(newParagraph(t.token[zed]))
 		return nil
 	}
 	lastEnum = eNode
@@ -871,39 +868,39 @@ func (t *Tree) paragraph(i *item) Node {
 		npItem.Text = fmt.Sprintf(temp, npItem.Text, nItem.Text)
 	}
 	npItem.Length = len(npItem.Text)
-	sec := newParagraph(npItem, &t.id)
+	sec := newParagraph(npItem)
 	t.nodeTarget.append(sec)
 	return sec
 }
 
 func (t *Tree) inlineEmphasis(i *item) Node {
 	t.next(1)
-	n := newInlineEmphasis(t.token[zed], &t.id)
+	n := newInlineEmphasis(t.token[zed])
 	t.next(1)
 	return n
 }
 
 func (t *Tree) inlineStrong(i *item) Node {
 	t.next(1)
-	n := newInlineStrong(t.token[zed], &t.id)
+	n := newInlineStrong(t.token[zed])
 	t.next(1)
 	return n
 }
 
 func (t *Tree) inlineLiteral(i *item) Node {
 	t.next(1)
-	n := newInlineLiteral(t.token[zed], &t.id)
+	n := newInlineLiteral(t.token[zed])
 	t.next(1)
 	return n
 }
 
 func (t *Tree) inlineInterpretedText(i *item) Node {
 	t.next(1)
-	n := newInlineInterpretedText(t.token[zed], &t.id)
+	n := newInlineInterpretedText(t.token[zed])
 	t.next(1)
 	if t.peek(1).Type == itemInlineInterpretedTextRoleOpen {
 		t.next(2)
-		n.NodeList.append(newInlineInterpretedTextRole(t.token[zed], &t.id))
+		n.NodeList.append(newInlineInterpretedTextRole(t.token[zed]))
 		t.next(1)
 	}
 	return n
@@ -911,7 +908,7 @@ func (t *Tree) inlineInterpretedText(i *item) Node {
 
 func (t *Tree) inlineInterpretedTextRole(i *item) Node {
 	t.next(1)
-	n := newInlineInterpretedTextRole(t.token[zed], &t.id)
+	n := newInlineInterpretedTextRole(t.token[zed])
 	t.next(1)
 	return n
 }
@@ -932,7 +929,7 @@ func (t *Tree) blockquote(i *item) {
 	if t.indentLevel == level {
 		t.log.Debug("blockquote: t.indentLevel == level")
 		i.Type = itemText
-		t.Nodes.append(newParagraph(i, &t.id))
+		t.Nodes.append(newParagraph(i))
 		return
 	}
 
@@ -940,7 +937,7 @@ func (t *Tree) blockquote(i *item) {
 		if t.peek(1).Type != itemBlockQuote {
 			t.log.Debug("blockquote: t.peek(1) != itemBlockQuote")
 			t.indentLevel = level
-			nnb := newBlockQuote(i, level, &t.id)
+			nnb := newBlockQuote(i, level)
 			t.Nodes.append(nnb)
 			t.nodeTarget = &nnb.NodeList
 		}
@@ -960,7 +957,7 @@ func (t *Tree) blockquote(i *item) {
 	if levelChanged {
 		t.token[zed+1] = &n
 		t.indentLevel = level
-		sec = newBlockQuote(i, level, &t.id)
+		sec = newBlockQuote(i, level)
 		t.next(1)
 	}
 	t.Nodes.append(sec)
@@ -969,7 +966,7 @@ func (t *Tree) blockquote(i *item) {
 func (t *Tree) definitionTerm(i *item) Node {
 	sec := t.definitionList
 	if sec == nil {
-		sec = newDefinitionList(&item{Line: i.Line}, &t.id)
+		sec = newDefinitionList(&item{Line: i.Line})
 		t.definitionList = sec
 		t.nodeTarget.append(sec)
 		t.next(1)
@@ -977,7 +974,7 @@ func (t *Tree) definitionTerm(i *item) Node {
 	t.nodeTarget = &sec.NodeList
 
 	// Container for definition items
-	dli := newDefinitionListItem(i, t.peek(1), &t.id)
+	dli := newDefinitionListItem(i, t.peek(1))
 	t.nodeTarget.append(dli)
 	t.nodeTarget = &dli.Definition.NodeList
 
@@ -987,10 +984,17 @@ func (t *Tree) definitionTerm(i *item) Node {
 		if ni == nil {
 			break
 		}
+		pb := t.peekBack(1)
 		if ni.Type == itemSpace {
 			continue
+		} else if ni.Type == itemCommentMark && (pb != nil && pb.Type != itemSpace) {
+			// Comment at start of the line breaks current definition list
+			t.nodeTarget = &t.Nodes
+			t.backup()
+			t.definitionList = nil
+			break
 		} else if ni.Type == itemDefinitionText {
-			np := newParagraph(ni, &t.id)
+			np := newParagraph(ni)
 			dli.Definition.NodeList.append(np)
 			t.nodeTarget = &np.NodeList
 			t.next(1)
@@ -1011,9 +1015,9 @@ func (t *Tree) definitionTerm(i *item) Node {
 }
 
 func (t *Tree) bulletList(i *item) Node {
-	return newBulletListNode(i, &t.id)
+	return newBulletListNode(i)
 }
 
 func (t *Tree) bulletListItem(i *item) Node {
-	return newBulletListItemNode(i, &t.id)
+	return newBulletListItemNode(i)
 }

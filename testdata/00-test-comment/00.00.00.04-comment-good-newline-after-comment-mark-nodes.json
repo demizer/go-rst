@@ -1,6 +1,5 @@
 [
     {
-        "id": 1,
         "type": "NodeComment",
         "text": "comment::",
         "startPosition": 4,
@@ -8,12 +7,9 @@
         "length": 9
     },
     {
-        "id": 2,
         "type": "NodeParagraph",
-        "line": 4,
         "nodeList": [
             {
-                "id": 3,
                 "type": "NodeText",
                 "text": "The extra newline before the comment text prevent\nthe parser from recognizing a directive.",
                 "startPosition": 1,

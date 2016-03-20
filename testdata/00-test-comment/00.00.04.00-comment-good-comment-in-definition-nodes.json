@@ -1,15 +1,10 @@
 [
     {
-        "id": 1,
         "type": "NodeDefinitionList",
-        "line": 1,
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeDefinitionListItem",
-                "line": 1,
                 "term": {
-                    "id": 3,
                     "type": "NodeDefinitionTerm",
                     "text": "term 1",
                     "startPosition": 1,
@@ -17,18 +12,12 @@
                     "length": 6
                 },
                 "definition": {
-                    "id": 4,
                     "type": "NodeDefinition",
-                    "line": 2,
                     "nodeList": [
                         {
-                            "id": 5,
                             "type": "NodeParagraph",
-                            "startPosition": 3,
-                            "line": 2,
                             "nodeList": [
                                 {
-                                    "id": 6,
                                     "type": "NodeText",
                                     "text": "definition 1",
                                     "startPosition": 3,
@@ -38,7 +27,6 @@
                             ]
                         },
                         {
-                            "id": 7,
                             "type": "NodeComment",
                             "text": "a comment",
                             "startPosition": 6,
@@ -49,11 +37,8 @@
                 }
             },
             {
-                "id": 8,
                 "type": "NodeDefinitionListItem",
-                "line": 6,
                 "term": {
-                    "id": 9,
                     "type": "NodeDefinitionTerm",
                     "text": "term 2",
                     "startPosition": 1,
@@ -61,18 +46,12 @@
                     "length": 6
                 },
                 "definition": {
-                    "id": 10,
                     "type": "NodeDefinition",
-                    "line": 7,
                     "nodeList": [
                         {
-                            "id": 11,
                             "type": "NodeParagraph",
-                            "startPosition": 3,
-                            "line": 7,
                             "nodeList": [
                                 {
-                                    "id": 12,
                                     "type": "NodeText",
                                     "text": "definition 2",
                                     "startPosition": 3,

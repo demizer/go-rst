@@ -199,9 +199,6 @@ func (c *checkNode) dError() {
 	var got, exp string
 
 	switch c.pFieldVal.(type) {
-	case ID:
-		got = c.pFieldVal.(ID).String()
-		exp = strconv.Itoa(int(c.eFieldVal.(float64)))
 	case NodeType:
 		got = c.pFieldVal.(NodeType).String()
 		exp = c.eFieldVal.(string)
@@ -228,7 +225,7 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("(ID: %2d) Got: %s = %q\n\t\t Expect: %s = %q", c.id, c.pFieldName, got, c.eFieldName, exp)
+	c.t.Errorf("Got %s = %q -- Expect %s = %q", c.pFieldName, got, c.eFieldName, exp)
 }
 
 func (c *checkNode) updateState(eKey string, eVal interface{},
@@ -273,22 +270,16 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	if eNodes == nil || pNode == nil {
 		panic("arguments must not be nil!")
 	}
-	// If the value is missing in eNodes and nil in pNode than we can
-	// exclude it.
+	// If the value is missing in eNodes and nil in pNode than we can exclude it.
 	eFields := eNodes.(map[string]interface{})
 	pNodeVal := reflect.Indirect(reflect.ValueOf(pNode))
 	// Check expected node to parsed node
 	for eName := range eFields {
 		var sfName string
-		if eName == "id" {
-			sfName = "ID"
-		} else {
-			sfName = strings.ToUpper(eName[0:1]) + eName[1:]
-		}
-		_, in := pNodeVal.Type().FieldByName(sfName)
-		if !in {
-			nName := reflect.TypeOf(pNode)
-			return fmt.Errorf("Node (%s) missing field %q", nName, sfName)
+		sfName = strings.ToUpper(eName[0:1]) + eName[1:]
+		if _, in := pNodeVal.Type().FieldByName(sfName); !in {
+			return fmt.Errorf("Parse Node missing field %q:\nParseNode:\n%sExpectNode:\n%s",
+				sfName, spd.Sdump(pNode), spd.Sdump(eFields))
 		}
 	}
 	// Compare pNode against eNodes
@@ -300,6 +291,9 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
 		switch pName {
+		case "id":
+			// Ignore ID, this will be completely removed in the future
+			continue
 		case "indentLength":
 			// Some title nodes aren't indented.
 			if pVal == 0 {
@@ -338,8 +332,8 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		}
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
-			return fmt.Errorf("Node ID=%.0f missing field %q\n\tParser got: %q == %v", eNode["id"], pName, pName,
-				pVal)
+			return fmt.Errorf("NodeType: %q Missing field %q -- Parser got: %q == %v -- ExpectNode:\n%s\n",
+				eNode["type"], pName, pName, pVal, spd.Sdump(eNode))
 		}
 	}
 	return nil
@@ -351,7 +345,6 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 	if eNodes == nil || pNode == nil {
 		panic("arguments cannot be nil!")
 	}
-	c.id = int(eNodes.(map[string]interface{})["id"].(float64))
 	if err := c.checkMatchingFields(eNodes, pNode); err != nil {
 		c.t.Error(err)
 	}
@@ -1057,10 +1050,6 @@ func testSectionLevelsAddCheckEqual(t *testing.T, testName string,
 			eLvl.overLine)
 	}
 	for eNum, eSec := range eLvl.sections {
-		if eSec.ID != pLvl.sections[eNum].ID {
-			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].ID = %d, "+"Expect: %d", testName, pos, eNum,
-				pLvl.sections[eNum].ID, eSec.ID)
-		}
 		if eSec.Level != pLvl.sections[eNum].Level {
 			t.Errorf("Test: %q\n\tGot: level[%d].sections[%d].Level = %d, "+"Expect: %d", testName, pos,
 				eNum, pLvl.sections[eNum].Level, eSec.Level)
@@ -1107,7 +1096,7 @@ func TestSectionLevelsAdd(t *testing.T) {
 				level: slvl.level, overLine: slvl.overLine,
 			}
 			for _, sn := range slvl.nodes {
-				n := &SectionNode{ID: sn.id, Level: sn.level}
+				n := &SectionNode{Level: sn.level}
 				n.UnderLine = &AdornmentNode{Rune: sn.uRune}
 				if sn.oRune != 0 {
 					n.OverLine = &AdornmentNode{
@@ -1201,10 +1190,6 @@ func TestSectionLevelsLast(t *testing.T) {
 				pSec.UnderLine.Rune)
 		}
 		// There can be only one
-		if tt.eLevel.sections[0].ID != pSec.ID {
-			t.Errorf("Test: %q\n\tGot: level[0].sections[0].ID = %d, "+"Expect: %d", tt.name, pSec.ID,
-				tt.eLevel.sections[0].ID)
-		}
 		if tt.eLevel.sections[0].Title.Text != pSec.Title.Text {
 			t.Errorf("Test: %q\n\tGot: level[0].sections[0].Title.Text = %q, "+"Expect: %q", tt.name,
 				pSec.Title.Text, tt.eLevel.sections[0].Title.Text)
