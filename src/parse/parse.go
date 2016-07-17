@@ -683,6 +683,8 @@ outer:
 	t.log.Debug(fmt.Sprintf("tree.paragraph: t.indents.len = %d", t.indents.len()))
 	if t.indents.len() > 0 {
 		t.nodeTarget = t.indents.topNodeList()
+	} else {
+		t.nodeTarget = &t.Nodes
 	}
 	return np
 }
