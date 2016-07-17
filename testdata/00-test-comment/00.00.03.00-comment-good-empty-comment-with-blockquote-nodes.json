@@ -14,7 +14,6 @@
     {
         "type": "NodeBlockQuote",
         "startPosition": 5,
-        "level": 1,
         "line": 6,
         "nodeList": [
             {

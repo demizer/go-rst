@@ -729,49 +729,7 @@ func (t *Tree) blockquote(i *item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
-	s := i
-	if i.Type != itemSpace {
-		// If i is not itemSpace, it is a itemBlockQuote. In that case we will get the last itemSpace token found to
-		// use for the indent level calculation.
-		s = t.peekBackTo(itemSpace)
-	}
-	level := s.Length / indentWidth
-	// t.log.WithFields(log.Fields{"t.indentLevel": t.indentLevel, "level": level}).Debugf("blockquote: indent level")
-
-	// if t.indentLevel == level {
-	// t.log.Debug("blockquote: t.indentLevel == level")
-	// i.Type = itemText
-	// t.Nodes.append(newParagraph(i))
-	// return
-	// }
-
-	if i.Type == itemSpace {
-		if t.peek(1).Type != itemBlockQuote {
-			t.log.Debug("blockquote: t.peek(1) != itemBlockQuote")
-			// t.indentLevel = level
-			nnb := newBlockQuote(i, level)
-			t.Nodes.append(nnb)
-			t.nodeTarget = &nnb.NodeList
-		}
-		t.log.Debug("Next item is itemBlockQuote")
-		return
-	}
-
-	// levelChanged := false
-	// if t.indentLevel != level {
-	// t.log.WithField("indentLevel", level).Debug("blockquote: Setting indentLevel (t.indentLevel != level)")
-	// t.indentLevel = level
-	// levelChanged = true
-	// }
-
-	var sec Node
-	// n := *i
-	// if levelChanged {
-	// t.token[zed+1] = &n
-	// // t.indentLevel = level
-	// sec = newBlockQuote(i, level)
-	// t.next(1)
-	// }
+	sec := newBlockQuote(i)
 	t.Nodes.append(sec)
 }
 
