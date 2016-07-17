@@ -34,11 +34,11 @@ func (l Line) String() string { return strconv.Itoa(int(l)) }
 // StartPosition is the starting location of an item in the line of input.
 type StartPosition int
 
-// Position returns the StartPosition of an item.
-func (s StartPosition) Position() StartPosition { return s }
-
 // String implements Stringer and returns StartPosition converted to a string.
 func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
+
+// Int return the StartPosition as an integer value.
+func (s StartPosition) Int() int { return int(s) }
 
 type lexPosition struct {
 	index int

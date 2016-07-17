@@ -302,7 +302,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		case "startPosition":
 			// Most nodes begin at position one in the line, therefore we can ignore them if it hasn't been
 			// specified in the expected nodes.
-			if pVal.(StartPosition).Position() == 0 || pVal.(StartPosition).Position() == 1 {
+			if pVal.(StartPosition) == 0 || pVal.(StartPosition) == 1 {
 				continue
 			}
 		case "line":

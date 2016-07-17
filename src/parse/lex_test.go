@@ -564,7 +564,7 @@ func TestLexStartPosition(t *testing.T) {
 	testPath := testPathFromName("03.00.00.00-section-good-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	if items[0].Position() != 1 {
+	if items[0].StartPosition != 1 {
 		t.Error("StartPosition != 1")
 	}
 	if items[0].StartPosition.String() != "1" {

@@ -1,3 +1,5 @@
+* Sun Apr 10 11:16 2016: debug log should include line number and function name (context)
+
 * Sun Mar 20 01:13 2016: REMOVE ID from NODE tests
 
   IDS make it easy to identify a node that is having trouble, but don't really help fix with structural problems.
