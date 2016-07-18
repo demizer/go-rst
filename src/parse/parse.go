@@ -15,7 +15,7 @@ import (
 )
 
 // Used for debugging only
-var spd = spew.ConfigState{Indent: "\t"} //, DisableMethods: true}
+var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //, DisableMethods: true}
 
 // Log is the default logging object. By default, all output is discarded. Set Log.Out to std.Stdout to enable output. The
 // level of the log output can also be set in this manner. See the documentation of the logrus package for other options.
