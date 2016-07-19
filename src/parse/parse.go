@@ -199,7 +199,11 @@ func (t *Tree) backup() {
 		t.token[x] = t.token[x-1]
 		t.token[x-1] = nil
 	}
-	t.log.Debug(fmt.Sprintf("parse.backup: current token is: %s", t.token[zed].Type))
+	if t.token[zed] == nil {
+		t.log.Debug("parse.backup: current token is: <nil>")
+	} else {
+		t.log.Debug(fmt.Sprintf("parse.backup: current token is: %T", t.token[zed].Type))
+	}
 }
 
 // peekBack uses the token buffer to "look back" a number of positions (pos). Looking back more positions than the
@@ -615,9 +619,10 @@ outer:
 	for {
 		ni := t.next(1)
 		if ni == nil {
-			t.log.Debug("t.paragraph: ni == nil, breaking")
+			t.log.Debug("tree.paragraph: ni == nil, breaking")
 			break
 		}
+		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("paragraph: Have token")
 		if ni.Type == itemText {
 			switch pn := t.nodeTarget.lastNode().(type) {
 			case *TextNode:
@@ -641,29 +646,34 @@ outer:
 			for {
 				// Loop merging itemText into a single NodeText
 				ni := t.next(1)
+				t.log.WithFields(log.Fields{
+					"token": fmt.Sprintf("%+#v", ni),
+				}).Debug("paragraph: Have token in itemText switch")
 				if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
-					t.log.Debug("t.paragraph: next item type != (itemScape || itemText), break!")
+					t.log.Debug("tree.paragraph: next item type != (itemScape || itemText), break!")
 					break
 				}
+
 				if ni.Type == itemEscape {
-					t.log.Debug("t.paragraph: next item == itemEscape, continuing")
+					t.log.Debug("tree.paragraph: next item == itemEscape, continuing")
 					continue
 				}
+
 				if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
-					t.log.Debug("t.paragraph: peek next == itemEscape")
+					t.log.Debug("tree.paragraph: peek next == itemEscape")
 					// Next item is itemEscape
 					if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
-						t.log.Debug("t.paragraph: peek two next type == itemText and pn.Line < pn2.Line")
+						t.log.Debug("tree.paragraph: t.peek(2) == itemText and pn.Line < pn2.Line")
 						// Next item is escaped newline, merge text with current and add explicit
 						// '\n'
-						ni.Text += "\n" + ni.Text
+						nt.Text += "\n" + ni.Text
 					}
 				} else {
 					nt.Text += ni.Text
 				}
 			}
 			nt.Length = len(nt.Text)
-			t.log.WithFields(log.Fields{"node": fmt.Sprintf("%+#v", nt)}).Debug("t.paragraph: Adding node")
+			t.log.WithFields(log.Fields{"node": fmt.Sprintf("%+#v", nt)}).Debug("tree.paragraph: Adding node")
 			t.nodeTarget.append(nt)
 		case itemInlineEmphasisOpen:
 			t.inlineEmphasis(ni)
