@@ -7,7 +7,6 @@ package parse
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/apex/log"
 	"github.com/apex/log/handlers/text"
