@@ -7,6 +7,7 @@ package parse
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/apex/log"
 	"github.com/apex/log/handlers/text"
@@ -181,8 +182,8 @@ func (t *Tree) subParseBodyElements(token *item) Node {
 	case itemBlankLine, itemEscape:
 	case itemBlockQuote:
 		t.blockquote(token)
-	case itemDefinitionTerm:
-		t.definitionTerm(token)
+	// case itemDefinitionTerm:
+	// t.definitionTerm(token)
 	// case itemBullet:
 	// t.bulletListItem(token)
 	default:
@@ -199,6 +200,7 @@ func (t *Tree) backup() {
 		t.token[x] = t.token[x-1]
 		t.token[x-1] = nil
 	}
+	t.log.Debug(fmt.Sprintf("parse.backup: current token is: %s", t.token[zed].Type))
 }
 
 // peekBack uses the token buffer to "look back" a number of positions (pos). Looking back more positions than the
@@ -408,27 +410,29 @@ func (t *Tree) section(i *item) Node {
 	return sec
 }
 
-func (t *Tree) comment(i *item) {
+func (t *Tree) comment(i *item) Node {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		t.log.Debug("Found empty comment block")
+		t.log.Debug("comment: Found empty comment block")
 		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line})
 		t.nodeTarget.append(n)
-		return
+		return n
 	}
 	if nSpace := t.peek(1); nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		t.log.Warn("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.log.Warn("comment: Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line})
 		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 		t.nodeTarget.append(n, sm)
-		return
+		return n
 	}
 	nPara := t.peek(2)
 	if nPara != nil && nPara.Type == itemText {
+		// Skip the itemSpace
 		t.next(2)
+		// See if next line is indented, if so, it is part of the comment
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
-			t.log.Debug("Found NodeComment block")
+			t.log.Debug("comment: Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -441,19 +445,20 @@ func (t *Tree) comment(i *item) {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1); z != nil && z.Type != itemBlankLine && z.Type != itemCommentMark && z.Type != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			t.log.Debug("Found warningExplicitMarkupWithUnIndent")
+			t.log.Debug("comment: Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara)
 			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 			t.nodeTarget.append(n)
 			t.nodeTarget.append(sm)
-			return
+			return n
 		} else {
-			t.log.Debug("Found NodeComment")
+			// Just a regular single lined comment
+			t.log.Debug("comment: Found one-line NodeComment")
 		}
 		n = newComment(nPara)
 	}
 	t.nodeTarget.append(n)
-	return
+	return n
 }
 
 // systemMessage generates a Node based on the passed parserMessage. The generated message is returned as a
@@ -676,7 +681,8 @@ outer:
 		// case itemEnumListArabic:
 		// t.enumList(ni)
 		case itemBlankLine:
-			t.log.Debug("Found newline, closing paragraph")
+			t.log.Debug("tree.paragraph: Found newline, closing paragraph")
+			t.backup()
 			break outer
 		}
 	}
@@ -734,14 +740,13 @@ func (t *Tree) blockquote(i *item) {
 }
 
 func (t *Tree) definitionTerm(i *item) Node {
-	// sec := t.definitionList
-	// if sec == nil {
-	// sec = newDefinitionList(&item{Line: i.Line})
-	// t.definitionList = sec
-	// t.nodeTarget.append(sec)
-	// t.next(1)
-	// }
-	// t.nodeTarget = &sec.NodeList
+	//
+	//  FIXME: Definition list parsing is NOT fully implemented.
+	//
+	dl := newDefinitionList(&item{Line: i.Line})
+	t.nodeTarget.append(dl)
+	t.nodeTarget = &dl.NodeList
+	t.next(1)
 
 	// Container for definition items
 	dli := newDefinitionListItem(i, t.peek(1))
@@ -754,35 +759,36 @@ func (t *Tree) definitionTerm(i *item) Node {
 		if ni == nil {
 			break
 		}
+		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("blockquote: Have token")
 		pb := t.peekBack(1)
 		if ni.Type == itemSpace {
 			continue
+		} else if ni.Type == itemEOF {
+			break
+		} else if ni.Type == itemBlankLine {
+			t.log.Debug("blockquote: Setting nodeTarget to dli")
+			t.nodeTarget = &dli.Definition.NodeList
 		} else if ni.Type == itemCommentMark && (pb != nil && pb.Type != itemSpace) {
 			// Comment at start of the line breaks current definition list
+			t.log.Debug("t.blockquote: Have itemCommentMark at start of the line!")
 			t.nodeTarget = &t.Nodes
 			t.backup()
-			// t.definitionList = nil
 			break
 		} else if ni.Type == itemDefinitionText {
 			np := newParagraph(ni)
-			dli.Definition.NodeList.append(np)
+			t.nodeTarget.append(np)
 			t.nodeTarget = &np.NodeList
-			t.next(1)
 			continue
 		} else if ni.Type == itemDefinitionTerm {
-			// t.nodeTarget = &sec.NodeList
-			t.definitionTerm(ni)
+			dli2 := newDefinitionListItem(ni, t.peek(2))
+			t.nodeTarget = &dl.NodeList
+			t.nodeTarget.append(dli2)
+			t.nodeTarget = &dli2.Definition.NodeList
 			continue
 		}
-		if ni.Type == itemEOF {
-			break
-		}
-		t.nodeTarget = &dli.Definition.NodeList
 		t.subParseBodyElements(ni)
 	}
-
-	// return sec
-	return nil
+	return dl
 }
 
 func (t *Tree) bulletList(i *item) {
