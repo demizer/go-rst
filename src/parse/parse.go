@@ -5,24 +5,16 @@
 package parse
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/text"
 	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/text/unicode/norm"
 )
 
 // Used for debugging only
 var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //, DisableMethods: true}
-
-// Log is the default logging object. By default, all output is discarded. Set Log.Out to std.Stdout to enable output. The
-// level of the log output can also be set in this manner. See the documentation of the logrus package for other options.
-var Log = &log.Logger{
-	Handler: text.New(os.Stdout),
-	Level:   log.InfoLevel,
-}
 
 const (
 	// The middle of the Tree.token buffer so that there are three possible "backup" token positions and three forward
@@ -51,7 +43,7 @@ type Tree struct {
 
 	openList Node // Open Bullet List, Enum List, or Definition List
 
-	log *log.Entry // Logging!
+	logCtx *logCtx // Use this to log to the "parse" context, mainly for debugging.
 }
 
 // New returns a fresh parser tree.
@@ -61,7 +53,7 @@ func New(name, text string) *Tree {
 		text:          text,
 		sectionLevels: new(sectionLevels),
 		indents:       new(indentQueue),
-		log:           log.NewEntry(Log).WithField("unit", "parser"),
+		logCtx:        NewLogCtx("parser"),
 	}
 	t.nodeTarget = &t.Nodes
 	return t
@@ -77,6 +69,10 @@ func Parse(name, text string) (t *Tree, errors NodeList) {
 	errors = t.Messages
 	return
 }
+
+func (t *Tree) log(keyvals ...interface{}) { t.logCtx.Log(keyvals...) }
+
+func (t *Tree) logMsg(message string) { t.logCtx.Log("msg", message) }
 
 // startParse initializes the parser, using the lexer.
 func (t *Tree) startParse(lex *lexer) {
@@ -102,7 +98,7 @@ func (t *Tree) parse(tree *Tree) {
 			break
 		}
 
-		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", token)}).Info("Parser got token")
+		t.log("msg", "Parser got token", "token", fmt.Sprintf("%+#v", token))
 
 		switch token.Type {
 		case itemText:
@@ -150,15 +146,13 @@ func (t *Tree) parse(tree *Tree) {
 		case itemBullet:
 			t.bulletList(token)
 		default:
-			err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
-			t.log.WithError(err).Error("Invalid token type")
+			t.log(fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String()))
 		}
 	}
 }
 
 func (t *Tree) subParseBodyElements(token *item) Node {
-	t.log.WithFields(log.Fields{"tokenType": token.Type,
-		"tokenText": fmt.Sprintf("%q", token.Text)}).Debug("subParseBodyElements: Have token")
+	t.log("msg", "Have token", "tokenType", token.Type, "tokenText", fmt.Sprintf("%q", token.Text))
 	var n Node
 	switch token.Type {
 	case itemText:
@@ -186,8 +180,7 @@ func (t *Tree) subParseBodyElements(token *item) Node {
 	// case itemBullet:
 	// t.bulletListItem(token)
 	default:
-		err := fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String())
-		t.log.WithError(err).Error("Invalid token type")
+		t.log(fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String()))
 	}
 	return n
 }
@@ -200,9 +193,9 @@ func (t *Tree) backup() {
 		t.token[x-1] = nil
 	}
 	if t.token[zed] == nil {
-		t.log.Debug("parse.backup: current token is: <nil>")
+		t.log("Current token is: <nil>")
 	} else {
-		t.log.Debug(fmt.Sprintf("parse.backup: current token is: %T", t.token[zed].Type))
+		t.log("Current token is: %T", t.token[zed].Type)
 	}
 }
 
@@ -230,13 +223,13 @@ func (t *Tree) peek(pos int) *item {
 	for i := 1; i <= pos; i++ {
 		if t.token[zed+i] != nil {
 			nItem = t.token[zed+i]
-			t.log.WithFields(log.Fields{"node": fmt.Sprintf("%+#v", nItem)}).Debug("peek: Have node")
+			t.log("msg", "Have node", "node", fmt.Sprintf("%+#v", nItem))
 			continue
 		} else {
 			if t.lex == nil {
 				continue
 			}
-			t.log.Debug("peek: Getting next item")
+			t.log("Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
 		}
@@ -376,17 +369,17 @@ func (t *Tree) section(i *item) Node {
 
 	// Determine the level of the section and where to append it to in t.Nodes
 	sec := newSection(title, overAdorn, underAdorn, indent)
-	t.log.WithFields(log.Fields{"sectionLevel": sec.UnderLine.Rune}).Debug("section: Adding sectionLevel")
+	t.log("msg", "Adding section level", "sectionLevel", sec.UnderLine.Rune)
 
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
-		t.log.Debug("Found inconsistent section level!")
+		t.log("Found inconsistent section level!")
 		return t.systemMessage(severeTitleLevelInconsistent)
 	}
 
 	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
-		t.log.Debug("Setting nodeTarget to Tree.Nodes!")
+		t.log("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = &t.Nodes
 	} else {
 		lSec := t.sectionLevels.lastSectionNode
@@ -416,14 +409,14 @@ func (t *Tree) section(i *item) Node {
 func (t *Tree) comment(i *item) Node {
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		t.log.Debug("comment: Found empty comment block")
+		t.log("Found empty comment block")
 		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line})
 		t.nodeTarget.append(n)
 		return n
 	}
 	if nSpace := t.peek(1); nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		t.log.Warn("comment: Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.log("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line})
 		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 		t.nodeTarget.append(n, sm)
@@ -435,7 +428,7 @@ func (t *Tree) comment(i *item) Node {
 		t.next(2)
 		// See if next line is indented, if so, it is part of the comment
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
-			t.log.Debug("comment: Found NodeComment block")
+			t.log("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -448,7 +441,7 @@ func (t *Tree) comment(i *item) Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1); z != nil && z.Type != itemBlankLine && z.Type != itemCommentMark && z.Type != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			t.log.Debug("comment: Found warningExplicitMarkupWithUnIndent")
+			t.log("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara)
 			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 			t.nodeTarget.append(n)
@@ -456,7 +449,7 @@ func (t *Tree) comment(i *item) Node {
 			return n
 		} else {
 			// Just a regular single lined comment
-			t.log.Debug("comment: Found one-line NodeComment")
+			t.log("Found one-line NodeComment")
 		}
 		n = newComment(nPara)
 	}
@@ -477,8 +470,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		Length: len(err.Message()),
 	})
 
-	t.log.WithField("systemMessage", err).Debug("systemMessage: Have systemMessage")
-	t.log.Debug("systemMessage: Adding msg to system message NodeList")
+	t.log("msg", "Adding msg to system message NodeList", "systemMessage", err)
 	s.NodeList.append(msg)
 
 	var overLine, indent, title, underLine, newLine string
@@ -619,51 +611,51 @@ outer:
 	for {
 		ni := t.next(1)
 		if ni == nil {
-			t.log.Debug("tree.paragraph: ni == nil, breaking")
+			t.log("ni == nil, breaking")
 			break
 		}
-		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("paragraph: Have token")
-		if ni.Type == itemText {
-			switch pn := t.nodeTarget.lastNode().(type) {
-			case *TextNode:
-				// Merge current itemText  with previous TextNode that has already been inserted into the
-				// NodeList.
-				// FIXME: Temporary hack to get tests to pass for bullet list with comment See test
-				// 00.00.05.00
-				if t.peekBack(1).Type == itemSpace {
-					break
-				}
-				pn.Text += "\n" + ni.Text
-				pn.Length = len(pn.Text)
-				continue
-			default:
-				// The previous node is not of type TextNode, this will start a new TextNode
-			}
-		}
+		t.log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
+		// if ni.Type == itemText {
+		// switch pn := t.nodeTarget.lastNode().(type) {
+		// case *TextNode:
+		// // Merge current itemText  with previous TextNode that has already been inserted into the
+		// // NodeList.
+		// // FIXME: Temporary hack to get tests to pass for bullet list with comment See test
+		// // 00.00.05.00
+		// if t.peekBack(1).Type == itemSpace {
+		// break
+		// }
+		// pn.Text += "\n" + ni.Text
+		// pn.Length = len(pn.Text)
+		// continue
+		// default:
+		// // The previous node is not of type TextNode, this will start a new TextNode
+		// }
+		// }
 		switch ni.Type {
 		case itemText:
 			nt := newText(ni)
 			for {
 				// Loop merging itemText into a single NodeText
 				ni := t.next(1)
-				t.log.WithFields(log.Fields{
-					"token": fmt.Sprintf("%+#v", ni),
-				}).Debug("paragraph: Have token in itemText switch")
+
+				t.log("msg", "Have token in itemText switch", "token", fmt.Sprintf("%+#v", ni))
+
 				if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
-					t.log.Debug("tree.paragraph: next item type != (itemScape || itemText), break!")
+					t.log("next item type != (itemScape || itemText), break!")
 					break
 				}
 
 				if ni.Type == itemEscape {
-					t.log.Debug("tree.paragraph: next item == itemEscape, continuing")
+					t.log("next item == itemEscape, continuing")
 					continue
 				}
 
 				if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
-					t.log.Debug("tree.paragraph: peek next == itemEscape")
+					t.log("peek next == itemEscape PLOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
 					// Next item is itemEscape
 					if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
-						t.log.Debug("tree.paragraph: t.peek(2) == itemText and pn.Line < pn2.Line")
+						t.log("t.peek(2) == itemText and pn.Line < pn2.Line")
 						// Next item is escaped newline, merge text with current and add explicit
 						// '\n'
 						nt.Text += "\n" + ni.Text
@@ -673,8 +665,9 @@ outer:
 				}
 			}
 			nt.Length = len(nt.Text)
-			t.log.WithFields(log.Fields{"node": fmt.Sprintf("%+#v", nt)}).Debug("tree.paragraph: Adding node")
+			t.log("msg", "Adding node", "node", fmt.Sprintf("%+#v", nt))
 			t.nodeTarget.append(nt)
+			// t.log.Debug(spd.Sdump(t.Nodes))
 		case itemInlineEmphasisOpen:
 			t.inlineEmphasis(ni)
 		case itemInlineStrongOpen:
@@ -690,12 +683,15 @@ outer:
 		// case itemEnumListArabic:
 		// t.enumList(ni)
 		case itemBlankLine:
-			t.log.Debug("tree.paragraph: Found newline, closing paragraph")
+			t.log("Found newline, closing paragraph")
 			t.backup()
 			break outer
 		}
+		// if ni.StartPosition.Int() == 27 {
+		// t.log.Debug(spd.Sdump(t.Nodes))
+		// }
 	}
-	t.log.Debug(fmt.Sprintf("tree.paragraph: t.indents.len = %d", t.indents.len()))
+	t.log("t.indents.len", t.indents.len())
 	if t.indents.len() > 0 {
 		t.nodeTarget = t.indents.topNodeList()
 	} else {
@@ -768,18 +764,18 @@ func (t *Tree) definitionTerm(i *item) Node {
 		if ni == nil {
 			break
 		}
-		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("blockquote: Have token")
+		t.log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
 		pb := t.peekBack(1)
 		if ni.Type == itemSpace {
 			continue
 		} else if ni.Type == itemEOF {
 			break
 		} else if ni.Type == itemBlankLine {
-			t.log.Debug("blockquote: Setting nodeTarget to dli")
+			t.log("Setting nodeTarget to dli")
 			t.nodeTarget = &dli.Definition.NodeList
 		} else if ni.Type == itemCommentMark && (pb != nil && pb.Type != itemSpace) {
 			// Comment at start of the line breaks current definition list
-			t.log.Debug("t.blockquote: Have itemCommentMark at start of the line!")
+			t.log("Have itemCommentMark at start of the line!")
 			t.nodeTarget = &t.Nodes
 			t.backup()
 			break
@@ -821,21 +817,22 @@ func (t *Tree) bulletList(i *item) {
 	// Capture all bullet items until un-indent
 	for {
 		ni := t.next(1)
-		t.log.WithFields(log.Fields{"token": fmt.Sprintf("%+#v", ni)}).Debug("bulletList: Have token")
+		t.log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
 		if ni == nil {
-			t.log.Debug("bulletList: break next item == nil")
+			t.log("break next item == nil")
 			break
 		} else if ni.Type == itemEOF {
-			t.log.Debug("bulletList: break itemEOF")
+			t.log("break itemEOF")
 			break
 		} else if t.indents.len() > 0 && len(*t.indents.topNodeList()) > 0 && t.peekBack(1).Type == itemSpace &&
 			t.peekBack(2).Type != itemCommentMark {
-			t.log.WithFields(log.Fields{
-				"lastStartPosition": t.indents.lastStartPosition(),
-				"ni.StartPosition":  ni.StartPosition,
-			}).Debug("bulletLis: have indents")
+			t.log("msg", "Have indents",
+				"lastStartPosition", t.indents.lastStartPosition(),
+				"ni.StartPosition", ni.StartPosition)
 			if t.indents.lastStartPosition() != ni.StartPosition {
-				t.log.Error("Unexpected un-indent!")
+				// FIXME: WE SHOULD NEVER EXIT IN LIBRARY !! This is just debug code, but we need to add
+				// proper handling for this ...
+				t.log(errors.New("Unexpected un-indent!"))
 				spd.Dump(t.indents)
 				os.Exit(1)
 			}

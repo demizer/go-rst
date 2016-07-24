@@ -1,6 +1,9 @@
 package parse
 
-import "fmt"
+import (
+	"fmt"
+	// "github.com/go-kit/kit/log"
+)
 
 type indent struct {
 	token *item
@@ -35,7 +38,7 @@ func (i *indentQueue) lastStartPosition() StartPosition {
 			return sp
 		}
 	default:
-		Log.Error(fmt.Sprintf("topNodeList: Unhandled type = %q", spd.Sdump(nt)))
+		Log.Log(fmt.Errorf("Unhandled type = %q", spd.Sdump(nt)))
 		return sp
 	}
 
@@ -58,11 +61,11 @@ func (i *indentQueue) lastStartPosition() StartPosition {
 		case *TextNode:
 			sp = nt2.StartPosition
 		default:
-			Log.Error(fmt.Sprintf("topNodeList: Unhandled sub Node type = %q", spd.Sdump(nt)))
+			Log.Log(fmt.Errorf("Unhandled sub Node type = %q", spd.Sdump(nt)))
 			return sp
 		}
 	default:
-		Log.Error(fmt.Sprintf("topNodeList: Unhandled child NodeList type = %q", spd.Sdump(n)))
+		Log.Log(fmt.Errorf("Unhandled child NodeList type = %q", spd.Sdump(n)))
 		return sp
 	}
 
@@ -77,7 +80,7 @@ func (i *indentQueue) topNodeList() *NodeList {
 	// case *ParagraphNode:
 	// return &n.NodeList
 	default:
-		Log.Error(fmt.Sprintf("topNodeList: Unhandled type = %q", spd.Sdump(n)))
+		Log.Log(fmt.Errorf("Unhandled type = %q", spd.Sdump(n)))
 	}
 	return nil
 }

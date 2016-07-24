@@ -1,11 +1,5 @@
 package parse
 
-import (
-	"fmt"
-
-	"github.com/apex/log"
-)
-
 // NodeType identifies the type of a parse tree node.
 type NodeType int
 
@@ -118,11 +112,10 @@ type NodeList []Node
 
 func (l *NodeList) append(n ...Node) {
 	for _, node := range n {
-		Log.WithFields(log.Fields{
-			"nodePointer":     fmt.Sprintf("%p", node),
-			"nodeType":        fmt.Sprintf("%s", node.NodeType()),
-			"nodeListPointer": fmt.Sprintf("%p", l),
-		}).Debug("Adding node")
+		// Log.Log("msg", "Adding node",
+		// "nodePointer", fmt.Sprintf("%p", node),
+		// "nodeType", fmt.Sprintf("%s", node.NodeType()),
+		// "nodeListPointer", fmt.Sprintf("%p", l))
 		*l = append(*l, node)
 	}
 }
@@ -445,7 +438,6 @@ type SystemMessageNode struct {
 }
 
 func newSystemMessage(i *item, m parserMessage) *SystemMessageNode {
-	// Log.Debug(spd.Sdump(i))
 	return &SystemMessageNode{
 		Type:        NodeSystemMessage,
 		MessageType: m,

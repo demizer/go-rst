@@ -40,7 +40,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		Log.WithField("level", level).Debug("newSectionLevel: Creating new sectionLevel")
+		Log.Log("msg", "Creating new sectionLeel", "level", level)
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,
@@ -71,7 +71,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 			level = len(s.levels) + 1
 			newSectionLevel()
 		} else {
-			Log.WithField("sectionLevel", secLvl.level).Debug("add: using sectionLevel")
+			Log.Log("msg", "using sectionLevel", "sectionLevel", secLvl.level)
 			level = secLvl.level
 		}
 	}
@@ -101,7 +101,7 @@ exit:
 		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
 			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
-				Log.WithField("sectionLevel", sec.Level).Debug("LastSectionByLevel: found sectionLevel")
+				Log.Log("msg", "found sectionLevel", "sectionLevel", sec.Level)
 				break exit
 			}
 		}
