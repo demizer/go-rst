@@ -615,67 +615,34 @@ outer:
 	for {
 		ci := t.next(1)     // current item
 		pi := t.peekBack(1) // previous item
-		ni := t.peek(1)     // next item
+		// ni := t.peek(1)     // next item
 
 		t.log("msg", "Have token", "token", ci)
 		if ci == nil {
 			t.log("ci == nil, breaking")
-			// t.nodeTarget.append(nt)
 			break
 		} else if ci.Type == itemEOF {
-			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK")
-			// spd.Dump(np)
-			// spd.Dump(nt)
-			// t.nodeTarget.append(nt)
+			t.log("msg", "current item type == itemEOF")
 			break
 		} else if pi != nil && pi.Type == itemText && ci.Type == itemText {
-			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK 22222222222222222222222222222222")
+			t.log("msg", "Previous type == itemText, current type == itemText; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = len(nt.Text)
-			// if t.peek(1).Type != itemText {
-			// t.nodeTarget.append(nt)
-			// }
-			continue
-		} else if ni != nil && ni.Type != itemText {
-			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK 33333333333333333333333333333333")
-			// t.nodeTarget.append(nt)
 			continue
 		}
 
+		t.log("msg", "Going into subparser...")
+
 		switch ci.Type {
 		case itemText:
-			// nt := newText(ni)
-		// for {
-		// // Loop merging all itemText into a single NodeText
-		// // Merge will stop on empty line
-		// ni := t.next(1)
-
-		// t.log("msg", "Have token in itemText switch", "token", fmt.Sprintf("%+#v", ni))
-
-		// if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
-		// t.log("next item type != (itemScape || itemText), break!")
-		// break
-		// }
-
-		// if ni.Type == itemEscape {
-		// t.log("next item == itemEscape, continuing")
-		// continue
-		// }
-
-		// if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
-		// t.log("peek next == itemEscape PLOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
-		// // Next item is itemEscape
-		// if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
-		// t.log("t.peek(2) == itemText and pn.Line < pn2.Line")
-		// // Next item is escaped newline, merge text with current and add explicit
-		// // '\n'
-		// nt.Text += "\n" + ni.Text
-		// }
-		// } else {
-		// nt.Text += ni.Text
-		// }
-		// }
-		// // t.log.Debug(spd.Sdump(t.Nodes))
+			if pi != nil && pi.Type == itemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
+				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
+				nt.Text += ci.Text
+				nt.Length = len(nt.Text)
+			} else {
+				nt = newText(ci)
+				t.nodeTarget.append(nt)
+			}
 		case itemInlineEmphasisOpen:
 			t.inlineEmphasis(ci)
 		case itemInlineStrongOpen:
@@ -695,9 +662,7 @@ outer:
 			t.backup()
 			break outer
 		}
-		// if ci.StartPosition.Int() == 27 {
-		// t.log.Debug(spd.Sdump(t.Nodes))
-		// }
+		t.log("msg", "Continuing...")
 	}
 	t.log("t.indents.len", t.indents.len())
 	if t.indents.len() > 0 {
@@ -772,11 +737,13 @@ func (t *Tree) definitionTerm(i *item) Node {
 		if ni == nil {
 			break
 		}
-		t.log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
+		t.log("msg", "Have token", "token", ni)
 		pb := t.peekBack(1)
 		if ni.Type == itemSpace {
+			t.log("msg", "continue; ni.Type == itemSpace")
 			continue
 		} else if ni.Type == itemEOF {
+			t.log("msg", "break; ni.Type == itemEOF")
 			break
 		} else if ni.Type == itemBlankLine {
 			t.log("Setting nodeTarget to dli")
@@ -789,15 +756,17 @@ func (t *Tree) definitionTerm(i *item) Node {
 			break
 		} else if ni.Type == itemDefinitionText {
 			// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
-			// np := newParagraph(ni)
-			// t.nodeTarget.append(np)
-			// t.nodeTarget = &np.NodeList
+			np := newParagraphWithNodeText(ni)
+			t.nodeTarget.append(np)
+			t.nodeTarget = &np.NodeList
+			t.log("msg", "continue; ni.Type == itemDefinitionText")
 			continue
 		} else if ni.Type == itemDefinitionTerm {
 			dli2 := newDefinitionListItem(ni, t.peek(2))
 			t.nodeTarget = &dl.NodeList
 			t.nodeTarget.append(dli2)
 			t.nodeTarget = &dli2.Definition.NodeList
+			t.log("msg", "continue; ni.Type == itemDefinitionTerm")
 			continue
 		}
 		t.subParseBodyElements(ni)
