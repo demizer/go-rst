@@ -1,9 +1,13 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "A paragraph.",
-        "line": 1,
-        "length": 12
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "A paragraph.",
+                "line": 1,
+                "length": 12
+            }
+        ]
     }
 ]

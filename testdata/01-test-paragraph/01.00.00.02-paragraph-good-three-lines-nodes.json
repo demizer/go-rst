@@ -1,9 +1,13 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "Line 1: A paragraph with three lines.\nLine 2.\nLine 3.",
-        "line": 1,
-        "length": 53
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Line 1: A paragraph with three lines.\nLine 2.\nLine 3.",
+                "line": 1,
+                "length": 53
+            }
+        ]
     }
 ]

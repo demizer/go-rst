@@ -1,31 +1,42 @@
 [
     {
-        "id": 1,
         "type": "NodeSystemMessage",
         "messageType": "infoOverlineTooShortForTitle",
         "severity": "INFO",
         "line": 1,
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeParagraph",
-                "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
-                "length": 96
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
+                        "length": 96
+                    }
+                ]
             }
         ]
     },
     {
-        "id": 3,
         "type": "NodeParagraph",
-        "text": "==\nABC",
-        "line": 1,
-        "length": 6
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "==\nABC",
+                "line": 1,
+                "length": 6
+            }
+        ]
     },
     {
-        "id": 4,
         "type": "NodeParagraph",
-        "text": "Overline too short, no underline.",
-        "line": 4,
-        "length": 33
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Overline too short, no underline.",
+                "line": 4,
+                "length": 33
+            }
+        ]
     }
 ]

@@ -401,8 +401,7 @@ func (i InlineInterpretedTextRole) NodeType() NodeType { return i.Type }
 
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.
 type BlockQuoteNode struct {
-	Type NodeType `json:"type"`
-	// Level         int      `json:"level"`
+	Type          NodeType `json:"type"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
@@ -411,8 +410,7 @@ type BlockQuoteNode struct {
 
 func newBlockQuote(i *item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
-		Type: NodeBlockQuote,
-		// Level:         indentLevel,
+		Type:          NodeBlockQuote,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}

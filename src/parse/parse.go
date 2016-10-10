@@ -129,7 +129,8 @@ func (t *Tree) parse(tree *Tree) {
 			// //
 			// //  FIXME: Blockquote parsing is NOT fully implemented.
 			// //
-			// if t.peekBack(1).Type == itemBlankLine && t.indentLevel == 0 {
+			// if t.peekBack(1).Type == itemBlankLine {
+			// t.next(1)
 			// t.blockquote(token)
 			// }
 			// if n == nil {
@@ -284,12 +285,14 @@ func (t *Tree) clearTokens(begin, end int) {
 // parsing these elements, than a systemMessage is generated and added to Tree.Nodes.
 func (t *Tree) section(i *item) Node {
 	var overAdorn, indent, title, underAdorn *item
+	t.log("msg", "have item", "item", i)
 
 	pBack := t.peekBack(1)
 	pFor := t.peekSkip(itemSpace)
 	tZedLen := t.token[zed].Length
 
 	if pFor != nil && pFor.Type == itemTitle {
+		t.log("msg", "next type == itemTitle")
 		// Section with overline
 		pBack := t.peekBack(1)
 		// Check for errors
@@ -326,6 +329,7 @@ func (t *Tree) section(i *item) Node {
 			}
 		}
 	} else if pBack != nil && (pBack.Type == itemTitle || pBack.Type == itemSpace) {
+		t.log("msg", "last item type", "type", pBack.Type)
 		// Section with no overline Check for errors
 		if pBack.Type == itemSpace {
 			pBack := t.peekBack(2)
@@ -403,6 +407,8 @@ func (t *Tree) section(i *item) Node {
 		m := warningShortUnderline
 		sec.NodeList = append(sec.NodeList, t.systemMessage(m))
 	}
+	t.Nodes.append(sec)
+	t.nodeTarget = &sec.NodeList
 	return sec
 }
 

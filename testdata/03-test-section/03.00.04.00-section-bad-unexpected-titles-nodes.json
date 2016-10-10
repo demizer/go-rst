@@ -1,32 +1,37 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "Test unexpected section titles.",
-        "line": 1,
-        "length": 31
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Test unexpected section titles.",
+                "line": 1,
+                "length": 31
+            }
+        ]
     },
     {
-        "id": 2,
         "type": "NodeBlockQuote",
         "level": 1,
         "line": 3,
         "nodeList": [
             {
-                "id": 3,
                 "type": "NodeSystemMessage",
                 "messageType": "severeUnexpectedSectionTitle",
                 "severity": "SEVERE",
                 "line": 4,
                 "nodeList": [
                     {
-                        "id": 4,
                         "type": "NodeParagraph",
-                        "text": "Unexpected section title.",
-                        "length": 25
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Unexpected section title.",
+                                "length": 25
+                            }
+                        ]
                     },
                     {
-                        "id": 5,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n=====",
                         "length": 11
@@ -34,28 +39,34 @@
                 ]
             },
             {
-                "id": 6,
                 "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "startPosition": 5,
-                "line": 5,
-                "length": 10
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph.",
+                        "startPosition": 5,
+                        "line": 5,
+                        "length": 10
+                    }
+                ]
             },
             {
-                "id": 7,
                 "type": "NodeSystemMessage",
                 "messageType": "severeUnexpectedSectionTitleOrTransition",
                 "severity": "SEVERE",
                 "line": 7,
                 "nodeList": [
                     {
-                        "id": 8,
                         "type": "NodeParagraph",
-                        "text": "Unexpected section title or transition.",
-                        "length": 39
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Unexpected section title or transition.",
+                                "length": 39
+                            }
+                        ]
                     },
                     {
-                        "id": 9,
                         "type": "NodeLiteralBlock",
                         "text": "-----",
                         "length": 5
@@ -63,20 +74,22 @@
                 ]
             },
             {
-                "id": 10,
                 "type": "NodeSystemMessage",
                 "messageType": "severeUnexpectedSectionTitle",
                 "severity": "SEVERE",
                 "line": 9,
                 "nodeList": [
                     {
-                        "id": 11,
                         "type": "NodeParagraph",
-                        "text": "Unexpected section title.",
-                        "length": 25
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Unexpected section title.",
+                                "length": 25
+                            }
+                        ]
                     },
                     {
-                        "id": 12,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n-----",
                         "length": 11
@@ -84,12 +97,16 @@
                 ]
             },
             {
-                "id": 13,
                 "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "startPosition": 5,
-                "line": 10,
-                "length": 10
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph.",
+                        "startPosition": 5,
+                        "line": 10,
+                        "length": 10
+                    }
+                ]
             }
         ]
     }

@@ -1,17 +1,14 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "Empty Section",
             "line": 1,
             "length": 13
         },
         "underLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,

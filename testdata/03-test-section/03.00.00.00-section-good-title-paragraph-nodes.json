@@ -1,18 +1,15 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "overLine": null,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "Title",
             "line": 1,
             "length": 5
         },
         "underLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
@@ -20,11 +17,15 @@
         },
         "nodeList": [
             {
-                "id": 4,
                 "type": "NodeParagraph",
-                "text": "Test section header and paragraph.",
-                "line": 4,
-                "length": 34
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Test section header and paragraph.",
+                        "line": 4,
+                        "length": 34
+                    }
+                ]
             }
         ]
     }

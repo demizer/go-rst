@@ -1,25 +1,26 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "Test paragraph section header and paragraph.",
-        "line": 1,
-        "length": 44
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Test paragraph section header and paragraph.",
+                "line": 1,
+                "length": 44
+            }
+        ]
     },
     {
-        "id": 2,
         "type": "NodeSection",
         "level": 1,
         "overLine": null,
         "title": {
-            "id": 3,
             "type": "NodeTitle",
             "text": "Title",
             "line": 3,
             "length": 5
         },
         "underLine": {
-            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
@@ -27,11 +28,15 @@
         },
         "nodeList": [
             {
-                "id": 5,
                 "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "line": 6,
-                "length": 10
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph.",
+                        "line": 6,
+                        "length": 10
+                    }
+                ]
             }
         ]
     }

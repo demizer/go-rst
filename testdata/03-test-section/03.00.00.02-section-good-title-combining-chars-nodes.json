@@ -1,18 +1,15 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "overLine": null,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "à with combining varia",
             "line": 1,
             "length": 22
         },
         "underLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
@@ -20,11 +17,15 @@
         },
         "nodeList": [
             {
-                "id": 4,
                 "type": "NodeParagraph",
-                "text": "Do not count combining chars in title column width.",
-                "line": 4,
-                "length": 51
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Do not count combining chars in title column width.",
+                        "line": 4,
+                        "length": 51
+                    }
+                ]
             }
         ]
     }

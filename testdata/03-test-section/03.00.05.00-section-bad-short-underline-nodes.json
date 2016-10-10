@@ -1,18 +1,15 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "overLine": null,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "Title",
             "line": 1,
             "length": 5
         },
         "underLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
@@ -20,20 +17,22 @@
         },
         "nodeList": [
             {
-                "id": 4,
                 "type": "NodeSystemMessage",
                 "messageType": "warningShortUnderline",
                 "severity": "WARNING",
                 "line": 1,
                 "nodeList": [
                     {
-                        "id": 5,
                         "type": "NodeParagraph",
-                        "text": "Title underline too short.",
-                        "length": 26
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Title underline too short.",
+                                "length": 26
+                            }
+                        ]
                     },
                     {
-                        "id": 6,
                         "type": "NodeLiteralBlock",
                         "text": "Title\n====",
                         "length": 10
@@ -41,11 +40,15 @@
                 ]
             },
             {
-                "id": 7,
                 "type": "NodeParagraph",
-                "text": "Test short underline.",
-                "line": 4,
-                "length": 21
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Test short underline.",
+                        "line": 4,
+                        "length": 21
+                    }
+                ]
             }
         ]
     }
