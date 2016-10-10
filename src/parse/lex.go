@@ -182,6 +182,12 @@ type item struct {
 	Length        int `json:"length"`
 }
 
+// String satisfies the Stringer interface.
+func (i *item) String() string {
+	return fmt.Sprintf("ID=%d Type=%s text=%q Line=%d StartPosition=%d Length=%d",
+		i.ID, i.Type, i.Text, i.Line, i.StartPosition, i.Length)
+}
+
 // The lexer struct tracks the state of the lexer
 type lexer struct {
 	name             string    // The name of the current lexer

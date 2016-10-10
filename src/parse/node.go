@@ -1,5 +1,7 @@
 package parse
 
+import "fmt"
+
 // NodeType identifies the type of a parse tree node.
 type NodeType int
 
@@ -112,10 +114,10 @@ type NodeList []Node
 
 func (l *NodeList) append(n ...Node) {
 	for _, node := range n {
-		// Log.Log("msg", "Adding node",
-		// "nodePointer", fmt.Sprintf("%p", node),
-		// "nodeType", fmt.Sprintf("%s", node.NodeType()),
-		// "nodeListPointer", fmt.Sprintf("%p", l))
+		Log.Log("msg", "Adding node",
+			"nodePointer", fmt.Sprintf("%p", node),
+			"nodeType", fmt.Sprintf("%s", node.NodeType()),
+			"nodeListPointer", fmt.Sprintf("%p", l))
 		*l = append(*l, node)
 	}
 }
@@ -274,7 +276,9 @@ type ParagraphNode struct {
 	NodeList `json:"nodeList"` // NodeList contains children of the ParagraphNode, even other ParagraphNodes!
 }
 
-func newParagraph(i *item) *ParagraphNode {
+func newParagraph() *ParagraphNode { return &ParagraphNode{Type: NodeParagraph} }
+
+func newParagraphWithNodeText(i *item) *ParagraphNode {
 	pn := &ParagraphNode{Type: NodeParagraph}
 	pn.append(newText(i))
 	return pn
@@ -412,7 +416,7 @@ func newBlockQuote(i *item) *BlockQuoteNode {
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
-	bq.NodeList.append(newParagraph(i))
+	bq.NodeList.append(newParagraphWithNodeText(i))
 	return bq
 }
 

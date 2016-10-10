@@ -2,6 +2,7 @@ package parse
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -16,14 +17,12 @@ import (
 	"time"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/term"
 
 	"golang.org/x/text/unicode/norm"
 )
 
-var (
-	tlogCtx = NewLogCtx("test")
-	debug   = false
-)
+var tlogCtx = NewLogCtx("test")
 
 func init() { SetDebug() }
 
@@ -36,11 +35,34 @@ func tlog(out string) {
 // SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test
 // binary and also sets the template for logging output.
 func SetDebug() {
-	flag.StringVar(&excludeNamedContext, "exclude", "", "Exclude context from output.")
+	flag.StringVar(&excludeNamedContext, "exclude", "test", "Exclude context from output.")
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
+	// Color by level value
+	colorFn := func(keyvals ...interface{}) term.FgBgColor {
+		for i := 0; i < len(keyvals)-1; i += 2 {
+			if keyvals[i] != "name" {
+				continue
+			}
+			switch keyvals[i+1] {
+			case "lexer":
+				return term.FgBgColor{Fg: term.DarkGray}
+			case "parser":
+				return term.FgBgColor{Fg: term.Gray}
+			default:
+				return term.FgBgColor{}
+			}
+		}
+		return term.FgBgColor{}
+	}
+
 	if debug {
-		Log = log.NewContext(log.NewLogfmtLogger(os.Stdout))
+		// if term.IsTerminal() {
+		// Log = log.NewContext(log.NewLogfmtLogger(os.Stdout))
+		// } else {
+		Log = log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))
+		// Log = log.NewContext(log.NewLogfmtLogger(os.Stdout))
+		// }
 		tlogCtx = NewLogCtx("test")
 	}
 }
@@ -345,7 +367,7 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 
 // checkFields is a recursive function that compares the expected node output to the parser output comparing the two objects
 // field by field. eNodes is unmarshaled json input and pNode is the parser node to check.
-func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
+func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
 	if eNodes == nil || pNode == nil {
 		panic("arguments cannot be nil!")
 	}
@@ -371,10 +393,6 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			if c.eFieldVal != c.pFieldVal.(parserMessage).String() {
 				c.dError()
 			}
-		case "id":
-			if c.eFieldVal != float64(c.pFieldVal.(ID)) {
-				c.dError()
-			}
 		case "level", "length", "indentLength":
 			if c.eFieldVal != float64(c.pFieldVal.(int)) {
 				c.dError()
@@ -388,30 +406,26 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 				c.dError()
 			}
 		case "indent", "overLine", "title", "underLine":
-			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+			if cerr := c.checkFields(c.eFieldVal, c.pFieldVal.(Node)); cerr != nil {
+				return cerr
+			}
 		case "term", "definition":
-			c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+			if cerr := c.checkFields(c.eFieldVal, c.pFieldVal.(Node)); cerr != nil {
+				return cerr
+			}
 		case "nodeList":
 			len1 := len(c.eFieldVal.([]interface{}))
 			len2 := len(c.pFieldVal.(NodeList))
 			if len1 != len2 {
-				iVal := c.eFieldVal.([]interface{})[0]
-				id := iVal.(map[string]interface{})["id"]
-				// DO NOT REMOVE SPD CALLS
-				time.Sleep(time.Second / 3) // Give the lexer time to finish printing
-				tlog(fmt.Sprintf("%d Parse NodeList Nodes", len2))
-				spd.Dump(pNode)
-				tlog(fmt.Sprintf("%d Expected NodeList Nodes", len1))
-				spd.Dump(eNodes)
-				tlog(fmt.Sprintln())
-				// DO NOT REMOVE SPD CALLS
-				c.t.Fatalf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
-					"do not match beginning at item ID: %d", len1, len2, int(id.(float64)))
+				return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
+					"do not match!", len1, len2)
 			}
 			for num, node := range c.eFieldVal.([]interface{}) {
 				// Store and reset the parser value, otherwise a panic will occur on the next iteration
 				pFieldVal := c.pFieldVal
-				c.checkFields(node, c.pFieldVal.(NodeList)[num])
+				if cerr := c.checkFields(node, c.pFieldVal.(NodeList)[num]); cerr != nil {
+					return cerr
+				}
 				c.pFieldVal = pFieldVal
 			}
 		case "rune":
@@ -439,29 +453,37 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) {
 			c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
 		}
 	}
-
+	return nil
 }
 
 // checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output node by node.
-func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
-	testPath string) {
+func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testPath string) {
 
 	state := &checkNode{t: t, testPath: testPath}
 
-	if len(pNodes) != len(eTree) {
+	failTest := func(err error) {
 		// Give all other output time to print
 		time.Sleep(time.Second / 2)
+		tlog(fmt.Sprintf("\nFAIL: %s\n", err.Error()))
+		tlog("-----------------------------------------------------------------------------")
 		tlog(fmt.Sprintf("%d Parse Nodes", len(pNodes)))
-		spd.Dump(pNodes)
+		tlog("-----------------------------------------------------------------------------")
+		tlog(spd.Sdump(pNodes))
+		tlog("-----------------------------------------------------------------------------")
 		tlog(fmt.Sprintf("%d Expected Nodes", len(eTree)))
-		spd.Dump(eTree)
-		// fmt.Println()
-		tlog("The number of parsed nodes does not match expected nodes!")
-		os.Exit(1)
+		tlog("-----------------------------------------------------------------------------")
+		tlog(spd.Sdump(eTree))
+		t.FailNow()
+	}
+
+	if len(pNodes) != len(eTree) {
+		failTest(errors.New("The number of parsed nodes does not match expected nodes!"))
 	}
 
 	for eNum, eNode := range eTree {
-		state.checkFields(eNode, pNodes[eNum])
+		if cerr := state.checkFields(eNode, pNodes[eNum]); cerr != nil {
+			failTest(cerr)
+		}
 	}
 
 	return
@@ -470,7 +492,7 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node,
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *Test) (tree *Tree) {
 	tlog(fmt.Sprintf("Test path: %s", test.path))
-	tlog(fmt.Sprintf("Test Input:\n\n-----------\n%s\n----------\n", test.data))
+	tlog(fmt.Sprintf("Test Input:\n\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n%s\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n", test.data))
 	tree, _ = Parse(test.path, test.data)
 	return
 }

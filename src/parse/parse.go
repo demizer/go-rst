@@ -585,108 +585,117 @@ var lastEnum *EnumListNode
 func (t *Tree) enumList(i *item) (n Node) {
 	// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
 	var eNode *EnumListNode
-	var affix *item
-	if lastEnum == nil {
-		t.next(1)
-		affix = t.token[zed]
-		t.next(1)
-		eNode = newEnumListNode(i, affix)
-		t.next(1)
-		eNode.NodeList.append(newParagraph(t.token[zed]))
-	} else {
-		t.next(3)
-		lastEnum.NodeList.append(newParagraph(t.token[zed]))
-		return nil
-	}
+	// var affix *item
+	// FIXME: This has been commented out because newParagraph has been deprecated.
+	// if lastEnum == nil {
+	// t.next(1)
+	// affix = t.token[zed]
+	// t.next(1)
+	// eNode = newEnumListNode(i, affix)
+	// t.next(1)
+	// eNode.NodeList.append(newParagraph(t.token[zed]))
+	// } else {
+	// t.next(3)
+	// lastEnum.NodeList.append(newParagraph(t.token[zed]))
+	// return nil
+	// }
 	lastEnum = eNode
 	return eNode
 }
 
 func (t *Tree) paragraph(i *item) Node {
-	np := newParagraph(i)
+	t.log("msg", "Have token", "token", i)
+	np := newParagraph()
 	t.nodeTarget.append(np)
 	t.nodeTarget = &np.NodeList
+	nt := newText(i)
+	t.nodeTarget.append(nt)
 outer:
+	// Paragraphs can contain many different types of elements, so we'll need to loop until blank line or nil
 	for {
-		ni := t.next(1)
-		if ni == nil {
-			t.log("ni == nil, breaking")
+		ci := t.next(1)     // current item
+		pi := t.peekBack(1) // previous item
+		ni := t.peek(1)     // next item
+
+		t.log("msg", "Have token", "token", ci)
+		if ci == nil {
+			t.log("ci == nil, breaking")
+			// t.nodeTarget.append(nt)
 			break
+		} else if ci.Type == itemEOF {
+			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK")
+			// spd.Dump(np)
+			// spd.Dump(nt)
+			// t.nodeTarget.append(nt)
+			break
+		} else if pi != nil && pi.Type == itemText && ci.Type == itemText {
+			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK 22222222222222222222222222222222")
+			nt.Text += "\n" + ci.Text
+			nt.Length = len(nt.Text)
+			// if t.peek(1).Type != itemText {
+			// t.nodeTarget.append(nt)
+			// }
+			continue
+		} else if ni != nil && ni.Type != itemText {
+			t.log("msg", "FAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK 33333333333333333333333333333333")
+			// t.nodeTarget.append(nt)
+			continue
 		}
-		t.log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
-		// if ni.Type == itemText {
-		// switch pn := t.nodeTarget.lastNode().(type) {
-		// case *TextNode:
-		// // Merge current itemText  with previous TextNode that has already been inserted into the
-		// // NodeList.
-		// // FIXME: Temporary hack to get tests to pass for bullet list with comment See test
-		// // 00.00.05.00
-		// if t.peekBack(1).Type == itemSpace {
+
+		switch ci.Type {
+		case itemText:
+			// nt := newText(ni)
+		// for {
+		// // Loop merging all itemText into a single NodeText
+		// // Merge will stop on empty line
+		// ni := t.next(1)
+
+		// t.log("msg", "Have token in itemText switch", "token", fmt.Sprintf("%+#v", ni))
+
+		// if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
+		// t.log("next item type != (itemScape || itemText), break!")
 		// break
 		// }
-		// pn.Text += "\n" + ni.Text
-		// pn.Length = len(pn.Text)
+
+		// if ni.Type == itemEscape {
+		// t.log("next item == itemEscape, continuing")
 		// continue
-		// default:
-		// // The previous node is not of type TextNode, this will start a new TextNode
+		// }
+
+		// if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
+		// t.log("peek next == itemEscape PLOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
+		// // Next item is itemEscape
+		// if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
+		// t.log("t.peek(2) == itemText and pn.Line < pn2.Line")
+		// // Next item is escaped newline, merge text with current and add explicit
+		// // '\n'
+		// nt.Text += "\n" + ni.Text
+		// }
+		// } else {
+		// nt.Text += ni.Text
 		// }
 		// }
-		switch ni.Type {
-		case itemText:
-			nt := newText(ni)
-			for {
-				// Loop merging itemText into a single NodeText
-				ni := t.next(1)
-
-				t.log("msg", "Have token in itemText switch", "token", fmt.Sprintf("%+#v", ni))
-
-				if ni != nil && ni.Type != itemEscape && ni.Type != itemText {
-					t.log("next item type != (itemScape || itemText), break!")
-					break
-				}
-
-				if ni.Type == itemEscape {
-					t.log("next item == itemEscape, continuing")
-					continue
-				}
-
-				if pn := t.peek(1); pn != nil && pn.Type == itemEscape {
-					t.log("peek next == itemEscape PLOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
-					// Next item is itemEscape
-					if pn2 := t.peek(2); pn2 != nil && (pn2.Type == itemText && pn.Line < pn2.Line) {
-						t.log("t.peek(2) == itemText and pn.Line < pn2.Line")
-						// Next item is escaped newline, merge text with current and add explicit
-						// '\n'
-						nt.Text += "\n" + ni.Text
-					}
-				} else {
-					nt.Text += ni.Text
-				}
-			}
-			nt.Length = len(nt.Text)
-			t.log("msg", "Adding node", "node", fmt.Sprintf("%+#v", nt))
-			t.nodeTarget.append(nt)
-			// t.log.Debug(spd.Sdump(t.Nodes))
+		// // t.log.Debug(spd.Sdump(t.Nodes))
 		case itemInlineEmphasisOpen:
-			t.inlineEmphasis(ni)
+			t.inlineEmphasis(ci)
 		case itemInlineStrongOpen:
-			t.inlineStrong(ni)
+			t.inlineStrong(ci)
 		case itemInlineLiteralOpen:
-			t.inlineLiteral(ni)
+			t.inlineLiteral(ci)
 		case itemInlineInterpretedTextOpen:
-			t.inlineInterpretedText(ni)
+			t.inlineInterpretedText(ci)
 		case itemInlineInterpretedTextRoleOpen:
-			t.inlineInterpretedTextRole(ni)
+			t.inlineInterpretedTextRole(ci)
 		case itemCommentMark:
-			t.comment(ni)
+			t.comment(ci)
 		// case itemEnumListArabic:
-		// t.enumList(ni)
+		// t.enumList(ci)
 		case itemBlankLine:
 			t.log("Found newline, closing paragraph")
 			t.backup()
 			break outer
 		}
-		// if ni.StartPosition.Int() == 27 {
+		// if ci.StartPosition.Int() == 27 {
 		// t.log.Debug(spd.Sdump(t.Nodes))
 		// }
 	}
@@ -779,9 +788,10 @@ func (t *Tree) definitionTerm(i *item) Node {
 			t.backup()
 			break
 		} else if ni.Type == itemDefinitionText {
-			np := newParagraph(ni)
-			t.nodeTarget.append(np)
-			t.nodeTarget = &np.NodeList
+			// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
+			// np := newParagraph(ni)
+			// t.nodeTarget.append(np)
+			// t.nodeTarget = &np.NodeList
 			continue
 		} else if ni.Type == itemDefinitionTerm {
 			dli2 := newDefinitionListItem(ni, t.peek(2))
