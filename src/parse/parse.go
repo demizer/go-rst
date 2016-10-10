@@ -38,6 +38,8 @@ type Tree struct {
 	token      [9]*item     // Token buffer, number 4 is the middle. AKA the "zed" token
 	indents    *indentQueue // Indent level tracking
 
+	bqLevel *BlockQuoteNode // FIXME: will be replaced with blockquoteLevels
+
 	sectionLevels *sectionLevels // Encountered section levels
 	sections      []*SectionNode // Pointers to encountered sections
 
@@ -126,17 +128,18 @@ func (t *Tree) parse(tree *Tree) {
 				continue
 			}
 		case itemSpace:
-			// //
-			// //  FIXME: Blockquote parsing is NOT fully implemented.
-			// //
-			// if t.peekBack(1).Type == itemBlankLine {
-			// t.next(1)
-			// t.blockquote(token)
-			// }
-			// if n == nil {
-			// // The calculated indent level was the same as the current indent level.
-			// continue
-			// }
+			//
+			//  FIXME: Blockquote parsing is NOT fully implemented.
+			//
+			if t.peekBack(1).Type == itemBlankLine && t.bqLevel == nil {
+				// Ignore if next item is a blockquote from the lexer
+				if pn := t.peek(1); pn != nil && pn.Type == itemBlockQuote {
+					continue
+				}
+				t.emptyblockquote(token)
+			} else if t.peekBack(1).Type == itemBlankLine {
+				t.nodeTarget = &t.bqLevel.NodeList
+			}
 		case itemBlankLine, itemTitle, itemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
@@ -149,6 +152,7 @@ func (t *Tree) parse(tree *Tree) {
 		default:
 			t.log(fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String()))
 		}
+
 	}
 }
 
@@ -301,14 +305,18 @@ func (t *Tree) section(i *item) Node {
 			bTok := t.peekBack(1)
 			if bTok != nil && bTok.Type == itemSpace {
 				t.next(2)
-				m := infoUnexpectedTitleOverlineOrTransition
-				return t.systemMessage(m)
+				sm := t.systemMessage(infoUnexpectedTitleOverlineOrTransition)
+				t.nodeTarget.append(sm)
+				return sm
 			}
-			return t.systemMessage(infoOverlineTooShortForTitle)
+			sm := t.systemMessage(infoOverlineTooShortForTitle)
+			t.nodeTarget.append(sm)
+			return sm
 		} else if pBack != nil && pBack.Type == itemSpace {
 			// Indented section (error) The section title has an indented overline
-			m := severeUnexpectedSectionTitleOrTransition
-			return t.systemMessage(m)
+			sm := t.systemMessage(severeUnexpectedSectionTitleOrTransition)
+			t.nodeTarget.append(sm)
+			return sm
 		}
 
 		overAdorn = i
@@ -335,12 +343,15 @@ func (t *Tree) section(i *item) Node {
 			pBack := t.peekBack(2)
 			if pBack != nil && pBack.Type == itemTitle {
 				// The section underline is indented
-				m := severeUnexpectedSectionTitle
-				return t.systemMessage(m)
+				sm := t.systemMessage(severeUnexpectedSectionTitle)
+				t.nodeTarget.append(sm)
+				return sm
 			}
 		} else if tZedLen < 3 && tZedLen != pBack.Length {
 			// Short underline
-			return t.systemMessage(infoUnderlineTooShortForTitle)
+			sm := t.systemMessage(infoUnderlineTooShortForTitle)
+			t.nodeTarget.append(sm)
+			return sm
 		}
 		// Section OKAY
 		title = t.peekBack(1)
@@ -352,23 +363,34 @@ func (t *Tree) section(i *item) Node {
 		t.next(2) // Move the token buffer past the error tokens
 		if tZedLen < 3 && tZedLen != pFor.Length {
 			t.backup()
-			return t.systemMessage(infoOverlineTooShortForTitle)
+			sm := t.systemMessage(infoOverlineTooShortForTitle)
+			t.nodeTarget.append(sm)
+			return sm
 		} else if p := t.peek(1); p != nil && p.Type == itemBlankLine {
-			m := severeMissingMatchingUnderlineForOverline
-			return t.systemMessage(m)
+			sm := t.systemMessage(severeMissingMatchingUnderlineForOverline)
+			t.nodeTarget.append(sm)
+			return sm
 		}
-		return t.systemMessage(severeIncompleteSectionTitle)
+		sm := t.systemMessage(severeIncompleteSectionTitle)
+		t.nodeTarget.append(sm)
+		return sm
 	} else if pFor != nil && pFor.Type == itemSectionAdornment {
 		// Missing section title
 		t.next(1) // Move the token buffer past the error token
-		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		t.nodeTarget.append(sm)
+		return sm
 	} else if pFor != nil && pFor.Type == itemEOF {
 		// Missing underline and at EOF
-		return t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		t.nodeTarget.append(sm)
+		return sm
 	}
 
 	if overAdorn != nil && overAdorn.Text != underAdorn.Text {
-		return t.systemMessage(severeOverlineUnderlineMismatch)
+		sm := t.systemMessage(severeOverlineUnderlineMismatch)
+		t.nodeTarget.append(sm)
+		return sm
 	}
 
 	// Determine the level of the section and where to append it to in t.Nodes
@@ -378,7 +400,9 @@ func (t *Tree) section(i *item) Node {
 	msg := t.sectionLevels.Add(sec)
 	if msg != parserMessageNil {
 		t.log("Found inconsistent section level!")
-		return t.systemMessage(severeTitleLevelInconsistent)
+		sm := t.systemMessage(severeTitleLevelInconsistent)
+		t.nodeTarget.append(sm)
+		return sm
 	}
 
 	sec.Level = t.sectionLevels.lastSectionNode.Level
@@ -413,28 +437,31 @@ func (t *Tree) section(i *item) Node {
 }
 
 func (t *Tree) comment(i *item) Node {
+	t.log("msg", "In transition comment", "token", i)
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		t.log("Found empty comment block")
+		t.log("msg", "Found empty comment block")
 		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line})
 		t.nodeTarget.append(n)
 		return n
 	}
 	if nSpace := t.peek(1); nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		t.log("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.log("msg", "Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line})
 		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 		t.nodeTarget.append(n, sm)
 		return n
 	}
 	nPara := t.peek(2)
+	t.log("msg", "two peek ahead", "type", nPara.Type)
 	if nPara != nil && nPara.Type == itemText {
 		// Skip the itemSpace
 		t.next(2)
+		t.log("msg", "have token", "token", t.token[zed])
 		// See if next line is indented, if so, it is part of the comment
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
-			t.log("Found NodeComment block")
+			t.log("msg", "Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -447,10 +474,10 @@ func (t *Tree) comment(i *item) Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1); z != nil && z.Type != itemBlankLine && z.Type != itemCommentMark && z.Type != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			t.log("Found warningExplicitMarkupWithUnIndent")
+			t.log("msg", "Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara)
-			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 			t.nodeTarget.append(n)
+			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 			t.nodeTarget.append(sm)
 			return n
 		} else {
@@ -581,8 +608,6 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 		lb := newLiteralBlock(&item{Type: itemLiteralBlock, Text: lbText, Length: lbTextLen})
 		s.NodeList = append(s.NodeList, lb)
 	}
-
-	t.Messages.append(s)
 
 	return s
 }
@@ -716,12 +741,24 @@ func (t *Tree) inlineInterpretedTextRole(i *item) {
 	t.next(1)
 }
 
+func (t *Tree) emptyblockquote(i *item) {
+	//
+	//  FIXME: Blockquote parsing is NOT fully implemented.
+	//
+	sec := newEmptyBlockQuote(i)
+	t.Nodes.append(sec)
+	t.nodeTarget = &sec.NodeList
+	t.bqLevel = sec
+}
+
 func (t *Tree) blockquote(i *item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
 	sec := newBlockQuote(i)
 	t.Nodes.append(sec)
+	t.nodeTarget = &sec.NodeList
+	t.bqLevel = sec
 }
 
 func (t *Tree) definitionTerm(i *item) Node {

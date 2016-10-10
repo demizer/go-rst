@@ -1,3 +1,22 @@
+* Mon Oct 10 01:44 2016: Need to add blockquote levels
+
+  Like sectionLevels, but for blockquotes. Currently set to use a hack so I can get all the tests to pass.
+
+* Mon Oct 10 01:34 2016: Document outputing python pseudo xml for tests
+
+  This will dump all output regardless of parsing errors. Very useful to see how the reference parser uses system messages.
+
+  rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --halt=5
+
+* Mon Oct 10 01:27 2016: Debug output should be more like the rst2psuedo command
+
+  I like how this debug output prints the current line and what state the state machine is in. We should use something
+  similar.
+
+  Example:
+
+  rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --debug
+
 * Sun Oct 09 23:18 2016: Rename parse package to somthing more useful for godoc
 
   Simply shows up "parse". Hard to tell apart from stdlib parse packages.

@@ -408,6 +408,15 @@ type BlockQuoteNode struct {
 	NodeList `json:"nodeList"`
 }
 
+func newEmptyBlockQuote(i *item) *BlockQuoteNode {
+	bq := &BlockQuoteNode{
+		Type:          NodeBlockQuote,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
+	return bq
+}
+
 func newBlockQuote(i *item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
 		Type:          NodeBlockQuote,

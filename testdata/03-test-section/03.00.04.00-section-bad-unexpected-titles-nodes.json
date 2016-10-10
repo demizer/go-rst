@@ -12,7 +12,6 @@
     },
     {
         "type": "NodeBlockQuote",
-        "level": 1,
         "line": 3,
         "nodeList": [
             {
@@ -22,14 +21,9 @@
                 "line": 4,
                 "nodeList": [
                     {
-                        "type": "NodeParagraph",
-                        "nodeList": [
-                            {
-                                "type": "NodeText",
-                                "text": "Unexpected section title.",
-                                "length": 25
-                            }
-                        ]
+                        "type": "NodeText",
+                        "text": "Unexpected section title.",
+                        "length": 25
                     },
                     {
                         "type": "NodeLiteralBlock",
@@ -57,14 +51,9 @@
                 "line": 7,
                 "nodeList": [
                     {
-                        "type": "NodeParagraph",
-                        "nodeList": [
-                            {
-                                "type": "NodeText",
-                                "text": "Unexpected section title or transition.",
-                                "length": 39
-                            }
-                        ]
+                        "type": "NodeText",
+                        "text": "Unexpected section title or transition.",
+                        "length": 39
                     },
                     {
                         "type": "NodeLiteralBlock",
@@ -80,14 +69,9 @@
                 "line": 9,
                 "nodeList": [
                     {
-                        "type": "NodeParagraph",
-                        "nodeList": [
-                            {
-                                "type": "NodeText",
-                                "text": "Unexpected section title.",
-                                "length": 25
-                            }
-                        ]
+                        "type": "NodeText",
+                        "text": "Unexpected section title.",
+                        "length": 25
                     },
                     {
                         "type": "NodeLiteralBlock",

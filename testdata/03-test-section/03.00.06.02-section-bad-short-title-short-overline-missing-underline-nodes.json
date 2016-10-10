@@ -6,14 +6,9 @@
         "line": 1,
         "nodeList": [
             {
-                "type": "NodeParagraph",
-                "nodeList": [
-                    {
-                        "type": "NodeText",
-                        "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
-                        "length": 96
-                    }
-                ]
+                "type": "NodeText",
+                "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
+                "length": 96
             }
         ]
     },

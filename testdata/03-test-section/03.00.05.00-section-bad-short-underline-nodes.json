@@ -23,14 +23,9 @@
                 "line": 1,
                 "nodeList": [
                     {
-                        "type": "NodeParagraph",
-                        "nodeList": [
-                            {
-                                "type": "NodeText",
-                                "text": "Title underline too short.",
-                                "length": 26
-                            }
-                        ]
+                        "type": "NodeText",
+                        "text": "Title underline too short.",
+                        "length": 26
                     },
                     {
                         "type": "NodeLiteralBlock",
