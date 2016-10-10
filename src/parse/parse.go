@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"unicode/utf8"
 
 	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/text/unicode/norm"
@@ -627,7 +628,7 @@ outer:
 		} else if pi != nil && pi.Type == itemText && ci.Type == itemText {
 			t.log("msg", "Previous type == itemText, current type == itemText; Concatenating text!")
 			nt.Text += "\n" + ci.Text
-			nt.Length = len(nt.Text)
+			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue
 		}
 
@@ -638,7 +639,7 @@ outer:
 			if pi != nil && pi.Type == itemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				nt.Text += ci.Text
-				nt.Length = len(nt.Text)
+				nt.Length = utf8.RuneCountInString(nt.Text)
 			} else {
 				nt = newText(ci)
 				t.nodeTarget.append(nt)

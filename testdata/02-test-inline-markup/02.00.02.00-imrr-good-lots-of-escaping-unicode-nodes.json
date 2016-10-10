@@ -1,10 +1,8 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeText",
                 "text": "text-",
                 "startPosition": 1,
@@ -12,15 +10,13 @@
                 "length": 5
             },
             {
-                "id": 3,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "separated",
                 "startPosition": 7,
                 "line": 1,
                 "length": 9
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "\u2010",
                 "startPosition": 17,
@@ -28,106 +24,86 @@
                 "length": 1
             },
             {
-                "id": 0,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "by",
-                "startPosition": 23,
+                "startPosition": 21,
                 "line": 1,
                 "length": 2
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "\u2011",
-                "startPosition": 27,
+                "startPosition": 24,
                 "line": 1,
                 "length": 1
             },
             {
-                "id": 0,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "various",
-                "startPosition": 33,
+                "startPosition": 28,
                 "line": 1,
                 "length": 7
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "\u2012",
-                "startPosition": 42,
+                "startPosition": 36,
                 "line": 1,
                 "length": 1
             },
             {
-                "id": 0,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "dashes",
-                "startPosition": 49,
+                "startPosition": 40,
                 "line": 1,
                 "length": 6
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "\u2013",
-                "startPosition": 56,
+                "startPosition": 47,
                 "line": 1,
                 "length": 1
             },
             {
-                "id": 0,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "and",
-                "startPosition": 31,
+                "startPosition": 51,
                 "line": 1,
                 "length": 3
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "\u2014",
+                "startPosition": 55,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "hyphens",
+                "startPosition": 59,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeText",
+                "text": ".\n\u00bf",
                 "startPosition": 67,
                 "line": 1,
-                "length": 1
+                "length": 3
             },
             {
-                "id": 0,
-                "type": "NodeEmphasis",
-                "text": "hyphens",
-                "startPosition": 73,
-                "line": 1,
-                "length": 7
-            },
-            {
-                "id": 1,
-                "type": "NodeText",
-                "text": ".",
-                "startPosition": 46,
-                "line": 1,
-                "length": 1
-            },
-            {
-                "id": 1,
-                "type": "NodeText",
-                "text": "\u00bf",
-                "startPosition": 1,
-                "line": 2,
-                "length": 1
-            },
-            {
-                "id": 0,
-                "type": "NodeEmphasis",
+                "type": "NodeInlineEmphasis",
                 "text": "punctuation",
-                "startPosition": 7,
+                "startPosition": 4,
                 "line": 2,
-                "length": 7
+                "length": 11
             },
             {
-                "id": 1,
                 "type": "NodeText",
                 "text": "?",
-                "startPosition": 20,
+                "startPosition": 16,
                 "line": 2,
                 "length": 1
             }

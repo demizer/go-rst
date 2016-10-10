@@ -1,3 +1,7 @@
+* Sun Oct 09 23:18 2016: Rename parse package to somthing more useful for godoc
+
+  Simply shows up "parse". Hard to tell apart from stdlib parse packages.
+
 * Sun Jul 17 14:42 2016: Add flag to test binary to select lexer or parser debug output
 
 * Sun Apr 10 11:16 2016: debug log should include line number and function name (context)
