@@ -196,7 +196,6 @@ type checkNode struct {
 	eFieldName string
 	eFieldVal  interface{}
 	eFieldType reflect.Type
-	id         int
 }
 
 func (c *checkNode) error(args ...interface{}) {
@@ -253,11 +252,6 @@ func (c *checkNode) updateState(eKey string, eVal interface{},
 	c.pFieldName = strings.ToUpper(string(c.eFieldName[0]))
 	c.pFieldName += c.eFieldName[1:]
 
-	if c.pFieldName == "Id" {
-		// Overide for uppercase ID
-		c.pFieldName = "ID"
-	}
-
 	if !pVal.FieldByName(c.pFieldName).IsValid() {
 		return false
 	}
@@ -304,9 +298,6 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 		pVal := pNodeVal.Field(i).Interface()
 		eFields := eNodes.(map[string]interface{})
 		switch pName {
-		case "id":
-			// Ignore ID, this will be completely removed in the future
-			continue
 		case "indentLength":
 			// Some title nodes aren't indented.
 			if pVal == 0 {
@@ -883,7 +874,6 @@ func TestTreeClearTokens(t *testing.T) {
 }
 
 type shortSectionNode struct {
-	id    ID
 	level int  // SectionNode level
 	oRune rune // SectionNode Overline Rune
 	uRune rune // SectionNode Underline Rune
@@ -1012,10 +1002,8 @@ var testSectionLevelsAdd = []struct {
 	{
 		name: "Test level two with overline and all runes similar",
 		pSecs: []*testSectionLevelSectionNode{
-			{node: shortSectionNode{id: 1, level: 1, uRune: '='}},
-			{node: shortSectionNode{
-				id: 2, level: 2, oRune: '=', uRune: '=',
-			}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, oRune: '=', uRune: '='}},
 		},
 		eLvls: []*testSectionLevelExpectLevels{
 			{rChar: '=', level: 1, nodes: []shortSectionNode{
@@ -1031,10 +1019,8 @@ var testSectionLevelsAdd = []struct {
 	{
 		name: "Test level two with overline with same rune as level one.",
 		pSecs: []*testSectionLevelSectionNode{
-			{node: shortSectionNode{id: 1, level: 1, uRune: '='}},
-			{node: shortSectionNode{
-				id: 2, level: 2, oRune: '=', uRune: '=',
-			}},
+			{node: shortSectionNode{level: 1, uRune: '='}},
+			{node: shortSectionNode{level: 2, oRune: '=', uRune: '='}},
 		},
 		eLvls: []*testSectionLevelExpectLevels{
 			{rChar: '=', level: 1, nodes: []shortSectionNode{
