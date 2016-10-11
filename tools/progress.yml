@@ -36,7 +36,8 @@
         - item: dedent-ends-previous-indent-level
           done: no
 - item: escaping-mechanism
-  done: no
+  done: yes
+  note: Tests 02.00.01.00 and 02.00.02.00
 - item: reference-names
   done: no
   sub-items:

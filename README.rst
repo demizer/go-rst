@@ -52,6 +52,8 @@ See TODO.txt (or issues) for current active work. The following list is in order
 How to contribute
 -----------------
 
+See the `doc` directory for more documentation and tip and tricks.
+
 * **Convert tests into JSON**
 
   The docutils tests are implemented in a "psuedo xml" which is non-standard.

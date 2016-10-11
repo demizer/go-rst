@@ -1,8 +1,10 @@
-* Mon Oct 10 19:35 2016: DOCUMENT DEBUGGING TRICKS
+* Tue Oct 11 00:10 2016: Document creating new tests
 
-  gb test -v -test.run=".*03.02.07.00.*_Parse.*" parse -debug | grep -v "name=lexer"
-  rst2pseudoxml testdata/03-test-section/03.01.03.00-section-bad-subsection-order.rst --halt=5
-  gb test -v -test.run=".*03.01.03.00.*_Parse.*" parse -debug | grep -v "name=lexer" | ag "NodeList" --passthrough
+  The UltiSnips Snippets should be mentioned.
+
+* Mon Feb 29 13:49 2016: Add XX to beginning of test files that are not implmented yet
+
+* Mon Oct 10 19:35 2016: DOCUMENT DEBUGGING TRICKS
 
 * Mon Oct 10 17:53 2016: sectionLevels.Add() should do one thing
 
@@ -15,12 +17,6 @@
 
   Try to make indentQueue more general; perhaps we can use it for blockquotes as well as bullet lists.
 
-* Mon Oct 10 01:34 2016: Document outputing python pseudo xml for tests
-
-  This will dump all output regardless of parsing errors. Very useful to see how the reference parser uses system messages.
-
-  rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --halt=5
-
 * Mon Oct 10 01:27 2016: Debug output should be more like the rst2psuedo command
 
   I like how this debug output prints the current line and what state the state machine is in. We should use something
@@ -30,29 +26,11 @@
 
   rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --debug
 
-* Sun Oct 09 23:18 2016: Rename parse package to somthing more useful for godoc
-
-  Simply shows up "parse". Hard to tell apart from stdlib parse packages.
-
 * Sun Jul 17 14:42 2016: Add flag to test binary to select lexer or parser debug output
 
 * Sun Apr 10 11:16 2016: debug log should include line number and function name (context)
 
-* Sun Mar 20 01:13 2016: REMOVE ID from NODE tests
-
-  IDS make it easy to identify a node that is having trouble, but don't really help fix with structural problems.
-
-  ID support for nodes provide more work than benefit
-
-* Sun Mar 20 12:38 2016: Type:31 should be Type:itemBullit
-
-  INFO[0000] Parser got token          token=&parse.item{ID:1, Type:31, Text:"+", Line:1, StartPosition:1, Length:1} unit=parser
-
 * Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst
-
-* Fri Feb 19 23:32 2016: Turn "8" into a string
-
-  INFO[0000] Parser got token          token=&parse.item{ID:3, Type:8, Text:" ", Line:1, StartPosition:19, Length:1} unit=parser
 
 * Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
 
@@ -70,10 +48,4 @@
 
 * Sun Feb 28 09:26 2016: Refactor parse.go Tree, move it's really big.
 
-* Mon Feb 29 13:49 2016: Need a tool to detect tests that are not implemented in the testdata
-
-* Mon Feb 29 13:52 2016: Implement test 03.04.00.00 after inline markup
-
 * Mon Feb 29 13:59 2016: Implement blockquote tests
-
-* Tue Mar 08 02:40 2016: renumber-items.sh should not un-indent id when modifying number in nodes.json
