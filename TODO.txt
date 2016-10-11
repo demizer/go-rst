@@ -1,6 +1,19 @@
+* Mon Oct 10 19:35 2016: DOCUMENT DEBUGGING TRICKS
+
+  gb test -v -test.run=".*03.02.07.00.*_Parse.*" parse -debug | grep -v "name=lexer"
+  rst2pseudoxml testdata/03-test-section/03.01.03.00-section-bad-subsection-order.rst --halt=5
+  gb test -v -test.run=".*03.01.03.00.*_Parse.*" parse -debug | grep -v "name=lexer" | ag "NodeList" --passthrough
+
+* Mon Oct 10 17:53 2016: sectionLevels.Add() should do one thing
+
+  In parse.go#399 a section is added or existing is returned. We should rename this function from Add() to AddOrReuse() for
+  self documentation.
+
 * Mon Oct 10 01:44 2016: Need to add blockquote levels
 
   Like sectionLevels, but for blockquotes. Currently set to use a hack so I can get all the tests to pass.
+
+  Try to make indentQueue more general; perhaps we can use it for blockquotes as well as bullet lists.
 
 * Mon Oct 10 01:34 2016: Document outputing python pseudo xml for tests
 

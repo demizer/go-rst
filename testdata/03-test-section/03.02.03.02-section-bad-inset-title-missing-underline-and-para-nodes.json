@@ -1,19 +1,16 @@
 [
     {
-        "id": 1,
         "type": "NodeSystemMessage",
         "messageType": "severeMissingMatchingUnderlineForOverline",
         "severity": "SEVERE",
         "line": 1,
         "nodeList": [
             {
-                "id": 2,
-                "type": "NodeParagraph",
+                "type": "NodeText",
                 "text": "Missing matching underline for section title overline.",
                 "length": 54
             },
             {
-                "id": 3,
                 "type": "NodeLiteralBlock",
                 "text": "=======\n Title",
                 "length": 14
@@ -21,10 +18,14 @@
         ]
     },
     {
-        "id": 4,
         "type": "NodeParagraph",
-        "text": "Test missing underline, with paragraph.",
-        "line": 4,
-        "length": 39
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Test missing underline, with paragraph.",
+                "line": 4,
+                "length": 39
+            }
+        ]
     }
 ]

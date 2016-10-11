@@ -550,7 +550,7 @@ type BulletListItemNode struct {
 	NodeList `json:"nodeList"`
 }
 
-// newEnumListNode initializes a new EnumListNode.
+// newBulletListNode initializes a new EnumListNode.
 func newBulletListItemNode(i *item) *BulletListItemNode {
 	return &BulletListItemNode{Type: NodeBulletListItem}
 }

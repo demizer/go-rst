@@ -93,7 +93,7 @@ func (t *Tree) Parse(text string, treeSet *Tree) (tree *Tree) {
 // parse is where items are retrieved from the parser and dispatched according to the itemElement type.
 func (t *Tree) parse(tree *Tree) {
 	for {
-		var n interface{}
+		var n Node
 
 		token := t.next(1)
 		if token == nil || token.Type == itemEOF {
@@ -116,7 +116,8 @@ func (t *Tree) parse(tree *Tree) {
 		case itemInlineInterpretedTextRoleOpen:
 			t.inlineInterpretedTextRole(token)
 		case itemTransition:
-			newTransition(token)
+			// FIXME: Workaround until transitions are supported
+			t.nodeTarget.append(newTransition(token))
 		case itemCommentMark:
 			t.comment(token)
 		case itemSectionAdornment:
@@ -127,6 +128,7 @@ func (t *Tree) parse(tree *Tree) {
 			if n == nil {
 				continue
 			}
+			t.nodeTarget.append(n)
 		case itemSpace:
 			//
 			//  FIXME: Blockquote parsing is NOT fully implemented.
@@ -134,8 +136,10 @@ func (t *Tree) parse(tree *Tree) {
 			if t.peekBack(1).Type == itemBlankLine && t.bqLevel == nil {
 				// Ignore if next item is a blockquote from the lexer
 				if pn := t.peek(1); pn != nil && pn.Type == itemBlockQuote {
+					t.logMsg("Next item is blockquote; not creating empty blockquote")
 					continue
 				}
+				t.logMsg("Creating empty blockquote!")
 				t.emptyblockquote(token)
 			} else if t.peekBack(1).Type == itemBlankLine {
 				t.nodeTarget = &t.bqLevel.NodeList
@@ -150,7 +154,7 @@ func (t *Tree) parse(tree *Tree) {
 		case itemBullet:
 			t.bulletList(token)
 		default:
-			t.log(fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String()))
+			t.logMsg(fmt.Sprintf("Token type: %q is not yet supported in the parser", token.Type.String()))
 		}
 
 	}
@@ -180,12 +184,8 @@ func (t *Tree) subParseBodyElements(token *item) Node {
 	case itemBlankLine, itemEscape:
 	case itemBlockQuote:
 		t.blockquote(token)
-	// case itemDefinitionTerm:
-	// t.definitionTerm(token)
-	// case itemBullet:
-	// t.bulletListItem(token)
 	default:
-		t.log(fmt.Errorf("Token type: %q is not yet supported in the parser", token.Type.String()))
+		t.logMsg(fmt.Sprintf("Token type: %q is not yet supported in the parser", token.Type.String()))
 	}
 	return n
 }
@@ -198,14 +198,14 @@ func (t *Tree) backup() {
 		t.token[x-1] = nil
 	}
 	if t.token[zed] == nil {
-		t.log("Current token is: <nil>")
+		t.logMsg("Current token is: <nil>")
 	} else {
-		t.log("Current token is: %T", t.token[zed].Type)
+		t.logMsg(fmt.Sprintf("Current token is: %T", t.token[zed].Type))
 	}
 }
 
-// peekBack uses the token buffer to "look back" a number of positions (pos). Looking back more positions than the
-// Tree.token buffer allows (3) will generate a panic.
+// peekBack uses the token buffer to "look back" a number of positions (pos). Looking back more positions than the Tree.token
+// buffer allows (3) will generate a panic.
 func (t *Tree) peekBack(pos int) *item {
 	return t.token[zed-pos]
 }
@@ -234,7 +234,7 @@ func (t *Tree) peek(pos int) *item {
 			if t.lex == nil {
 				continue
 			}
-			t.log("Getting next item")
+			t.logMsg("Getting next item")
 			t.token[zed+i] = t.lex.nextItem()
 			nItem = t.token[zed+i]
 		}
@@ -296,7 +296,7 @@ func (t *Tree) section(i *item) Node {
 	tZedLen := t.token[zed].Length
 
 	if pFor != nil && pFor.Type == itemTitle {
-		t.log("msg", "next type == itemTitle")
+		t.logMsg("next type == itemTitle")
 		// Section with overline
 		pBack := t.peekBack(1)
 		// Check for errors
@@ -395,25 +395,28 @@ func (t *Tree) section(i *item) Node {
 
 	// Determine the level of the section and where to append it to in t.Nodes
 	sec := newSection(title, overAdorn, underAdorn, indent)
-	t.log("msg", "Adding section level", "sectionLevel", sec.UnderLine.Rune)
 
 	msg := t.sectionLevels.Add(sec)
+	t.log("msg", "Using section level", "level", len(t.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
 	if msg != parserMessageNil {
-		t.log("Found inconsistent section level!")
+		t.logMsg("Found inconsistent section level!")
 		sm := t.systemMessage(severeTitleLevelInconsistent)
-		t.nodeTarget.append(sm)
+		// Parse Test 03.01.03.00: add the system message to the last section node's nodelist
+		t.sectionLevels.lastSectionNode.NodeList.append(sm)
+		t.nodeTarget = &t.sectionLevels.lastSectionNode.NodeList
 		return sm
 	}
 
-	sec.Level = t.sectionLevels.lastSectionNode.Level
 	if sec.Level == 1 {
-		t.log("Setting nodeTarget to Tree.Nodes!")
+		t.logMsg("Setting nodeTarget to Tree.Nodes!")
 		t.nodeTarget = &t.Nodes
 	} else {
 		lSec := t.sectionLevels.lastSectionNode
+		t.log("msg", "have last section node", "secNode", lSec.Title.Text, "level", lSec.Level)
 		if sec.Level > 1 {
 			lSec = t.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
+		t.log("msg", "setting section node target", "sectionTitle", lSec.Title.Text, "level", lSec.Level)
 		t.nodeTarget = &lSec.NodeList
 	}
 
@@ -431,8 +434,10 @@ func (t *Tree) section(i *item) Node {
 		m := warningShortUnderline
 		sec.NodeList = append(sec.NodeList, t.systemMessage(m))
 	}
-	t.Nodes.append(sec)
+
+	t.nodeTarget.append(sec)
 	t.nodeTarget = &sec.NodeList
+
 	return sec
 }
 
@@ -440,14 +445,14 @@ func (t *Tree) comment(i *item) Node {
 	t.log("msg", "In transition comment", "token", i)
 	var n Node
 	if t.peek(1).Type == itemBlankLine {
-		t.log("msg", "Found empty comment block")
+		t.logMsg("Found empty comment block")
 		n := newComment(&item{StartPosition: i.StartPosition, Line: i.Line})
 		t.nodeTarget.append(n)
 		return n
 	}
 	if nSpace := t.peek(1); nSpace != nil && nSpace.Type != itemSpace {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		t.log("msg", "Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
+		t.logMsg("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = newComment(&item{Line: i.Line})
 		sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
 		t.nodeTarget.append(n, sm)
@@ -461,7 +466,7 @@ func (t *Tree) comment(i *item) Node {
 		t.log("msg", "have token", "token", t.token[zed])
 		// See if next line is indented, if so, it is part of the comment
 		if t.peek(1).Type == itemSpace && t.peek(2).Type == itemText {
-			t.log("msg", "Found NodeComment block")
+			t.logMsg("Found NodeComment block")
 			t.next(2)
 			for {
 				nPara.Text += "\n" + t.token[zed].Text
@@ -474,7 +479,7 @@ func (t *Tree) comment(i *item) Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := t.peek(1); z != nil && z.Type != itemBlankLine && z.Type != itemCommentMark && z.Type != itemEOF {
 			// A valid comment contains a blank line after the comment block
-			t.log("msg", "Found warningExplicitMarkupWithUnIndent")
+			t.logMsg("Found warningExplicitMarkupWithUnIndent")
 			n = newComment(nPara)
 			t.nodeTarget.append(n)
 			sm := t.systemMessage(warningExplicitMarkupWithUnIndent)
@@ -482,7 +487,7 @@ func (t *Tree) comment(i *item) Node {
 			return n
 		} else {
 			// Just a regular single lined comment
-			t.log("Found one-line NodeComment")
+			t.logMsg("Found one-line NodeComment")
 		}
 		n = newComment(nPara)
 	}
@@ -615,22 +620,20 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 var lastEnum *EnumListNode
 
 func (t *Tree) enumList(i *item) (n Node) {
-	// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
 	var eNode *EnumListNode
-	// var affix *item
-	// FIXME: This has been commented out because newParagraph has been deprecated.
-	// if lastEnum == nil {
-	// t.next(1)
-	// affix = t.token[zed]
-	// t.next(1)
-	// eNode = newEnumListNode(i, affix)
-	// t.next(1)
-	// eNode.NodeList.append(newParagraph(t.token[zed]))
-	// } else {
-	// t.next(3)
-	// lastEnum.NodeList.append(newParagraph(t.token[zed]))
-	// return nil
-	// }
+	var affix *item
+	if lastEnum == nil {
+		t.next(1)
+		affix = t.token[zed]
+		t.next(1)
+		eNode = newEnumListNode(i, affix)
+		t.next(1)
+		eNode.NodeList.append(newParagraphWithNodeText(t.token[zed]))
+	} else {
+		t.next(3)
+		lastEnum.NodeList.append(newParagraphWithNodeText(t.token[zed]))
+		return nil
+	}
 	lastEnum = eNode
 	return eNode
 }
@@ -651,19 +654,19 @@ outer:
 
 		t.log("msg", "Have token", "token", ci)
 		if ci == nil {
-			t.log("ci == nil, breaking")
+			t.logMsg("ci == nil, breaking")
 			break
 		} else if ci.Type == itemEOF {
-			t.log("msg", "current item type == itemEOF")
+			t.logMsg("current item type == itemEOF")
 			break
 		} else if pi != nil && pi.Type == itemText && ci.Type == itemText {
-			t.log("msg", "Previous type == itemText, current type == itemText; Concatenating text!")
+			t.logMsg("Previous type == itemText, current type == itemText; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue
 		}
 
-		t.log("msg", "Going into subparser...")
+		t.logMsg("Going into subparser...")
 
 		switch ci.Type {
 		case itemText:
@@ -687,19 +690,21 @@ outer:
 			t.inlineInterpretedTextRole(ci)
 		case itemCommentMark:
 			t.comment(ci)
-		// case itemEnumListArabic:
-		// t.enumList(ci)
+		case itemEnumListArabic:
+			t.nodeTarget.append(t.enumList(ci))
 		case itemBlankLine:
-			t.log("Found newline, closing paragraph")
+			t.logMsg("Found newline, closing paragraph")
 			t.backup()
 			break outer
 		}
-		t.log("msg", "Continuing...")
+		t.logMsg("Continuing...")
 	}
-	t.log("t.indents.len", t.indents.len())
+	t.log("msg", "number of indents", "t.indents.len", t.indents.len())
 	if t.indents.len() > 0 {
 		t.nodeTarget = t.indents.topNodeList()
-	} else {
+		t.log("msg", "Set node target to t.indents.topNodeList!", "nodePtr", t.nodeTarget)
+	} else if len(t.sectionLevels.levels) == 0 {
+		t.logMsg("Setting node target to t.nodes!")
 		t.nodeTarget = &t.Nodes
 	}
 	return np
@@ -755,6 +760,13 @@ func (t *Tree) blockquote(i *item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
+	if t.bqLevel != nil {
+		// Parser Test 03.02.07.00
+		t.logMsg("Adding blockquote text as NodeText to existing blockquote")
+		t.bqLevel.NodeList.append(newParagraphWithNodeText(i))
+		return
+	}
+	t.logMsg("Creating blockquote")
 	sec := newBlockQuote(i)
 	t.Nodes.append(sec)
 	t.nodeTarget = &sec.NodeList
@@ -784,17 +796,17 @@ func (t *Tree) definitionTerm(i *item) Node {
 		t.log("msg", "Have token", "token", ni)
 		pb := t.peekBack(1)
 		if ni.Type == itemSpace {
-			t.log("msg", "continue; ni.Type == itemSpace")
+			t.logMsg("continue; ni.Type == itemSpace")
 			continue
 		} else if ni.Type == itemEOF {
-			t.log("msg", "break; ni.Type == itemEOF")
+			t.logMsg("break; ni.Type == itemEOF")
 			break
 		} else if ni.Type == itemBlankLine {
-			t.log("Setting nodeTarget to dli")
+			t.logMsg("Setting nodeTarget to dli")
 			t.nodeTarget = &dli.Definition.NodeList
 		} else if ni.Type == itemCommentMark && (pb != nil && pb.Type != itemSpace) {
 			// Comment at start of the line breaks current definition list
-			t.log("Have itemCommentMark at start of the line!")
+			t.logMsg("Have itemCommentMark at start of the line!")
 			t.nodeTarget = &t.Nodes
 			t.backup()
 			break
@@ -803,14 +815,14 @@ func (t *Tree) definitionTerm(i *item) Node {
 			np := newParagraphWithNodeText(ni)
 			t.nodeTarget.append(np)
 			t.nodeTarget = &np.NodeList
-			t.log("msg", "continue; ni.Type == itemDefinitionText")
+			t.logMsg("continue; ni.Type == itemDefinitionText")
 			continue
 		} else if ni.Type == itemDefinitionTerm {
 			dli2 := newDefinitionListItem(ni, t.peek(2))
 			t.nodeTarget = &dl.NodeList
 			t.nodeTarget.append(dli2)
 			t.nodeTarget = &dli2.Definition.NodeList
-			t.log("msg", "continue; ni.Type == itemDefinitionTerm")
+			t.logMsg("continue; ni.Type == itemDefinitionTerm")
 			continue
 		}
 		t.subParseBodyElements(ni)

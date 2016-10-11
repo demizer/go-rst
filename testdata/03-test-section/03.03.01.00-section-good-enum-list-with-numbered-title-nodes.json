@@ -1,41 +1,45 @@
 [
     {
-        "id": 1,
         "type": "NodeEnumList",
         "enumType": "enumListArabic",
         "affix": "enumAffixPeriod",
         "nodeList": [
             {
-                "id": 2,
                 "type": "NodeParagraph",
-                "text": "Item 1.",
-                "startPosition": 4,
-                "line": 1,
-                "length": 7
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Item 1.",
+                        "startPosition": 4,
+                        "line": 1,
+                        "length": 7
+                    }
+                ]
             },
             {
-                "id": 3,
                 "type": "NodeParagraph",
-                "text": "Item 2.",
-                "startPosition": 4,
-                "line": 2,
-                "length": 7
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Item 2.",
+                        "startPosition": 4,
+                        "line": 2,
+                        "length": 7
+                    }
+                ]
             }
         ]
     },
     {
-        "id": 4,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 5,
             "type": "NodeTitle",
             "text": "3. Numbered Title",
             "line": 3,
             "length": 17
         },
         "underLine": {
-            "id": 6,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
@@ -43,11 +47,15 @@
         },
         "nodeList": [
             {
-                "id": 7,
                 "type": "NodeParagraph",
-                "text": "Paragraph.",
-                "line": 6,
-                "length": 10
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph.",
+                        "line": 6,
+                        "length": 10
+                    }
+                ]
             }
         ]
     }

@@ -1,24 +1,25 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "Test return to existing, highest-level section (Title 3).",
-        "line": 1,
-        "length": 57
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Test return to existing, highest-level section (Title 3).",
+                "line": 1,
+                "length": 57
+            }
+        ]
     },
     {
-        "id": 2,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 3,
             "type": "NodeTitle",
             "text": "Title 1",
             "line": 3,
             "length": 7
         },
         "underLine": {
-            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
@@ -26,25 +27,26 @@
         },
         "nodeList": [
             {
-                "id": 5,
                 "type": "NodeParagraph",
-                "text": "Paragraph 1.",
-                "line": 5,
-                "length": 12
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph 1.",
+                        "line": 5,
+                        "length": 12
+                    }
+                ]
             },
             {
-                "id": 6,
                 "type": "NodeSection",
                 "level": 2,
                 "title": {
-                    "id": 7,
                     "type": "NodeTitle",
                     "text": "Title 2",
                     "line": 7,
                     "length": 7
                 },
                 "underLine": {
-                    "id": 8,
                     "type": "NodeAdornment",
                     "rune": "-",
                     "line": 8,
@@ -52,29 +54,30 @@
                 },
                 "nodeList": [
                     {
-                        "id": 9,
                         "type": "NodeParagraph",
-                        "text": "Paragraph 2.",
-                        "line": 9,
-                        "length": 12
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Paragraph 2.",
+                                "line": 9,
+                                "length": 12
+                            }
+                        ]
                     }
                 ]
             }
         ]
     },
     {
-        "id": 10,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 11,
             "type": "NodeTitle",
             "text": "Title 3",
             "line": 11,
             "length": 7
         },
         "underLine": {
-            "id": 12,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 12,
@@ -82,25 +85,26 @@
         },
         "nodeList": [
             {
-                "id": 13,
                 "type": "NodeParagraph",
-                "text": "Paragraph 3.",
-                "line": 13,
-                "length": 12
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph 3.",
+                        "line": 13,
+                        "length": 12
+                    }
+                ]
             },
             {
-                "id": 14,
                 "type": "NodeSection",
                 "level": 2,
                 "title": {
-                    "id": 15,
                     "type": "NodeTitle",
                     "text": "Title 4",
                     "line": 15,
                     "length": 7
                 },
                 "underLine": {
-                    "id": 16,
                     "type": "NodeAdornment",
                     "rune": "-",
                     "line": 16,
@@ -108,11 +112,15 @@
                 },
                 "nodeList": [
                     {
-                        "id": 17,
                         "type": "NodeParagraph",
-                        "text": "Paragraph 4.",
-                        "line": 17,
-                        "length": 12
+                        "nodeList": [
+                            {
+                                "type": "NodeText",
+                                "text": "Paragraph 4.",
+                                "line": 17,
+                                "length": 12
+                            }
+                        ]
                     }
                 ]
             }

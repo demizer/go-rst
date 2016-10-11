@@ -1,47 +1,55 @@
 [
     {
-        "id": 1,
         "type": "NodeParagraph",
-        "text": "Paragraph",
-        "line": 1,
-        "length": 9
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Paragraph",
+                "line": 1,
+                "length": 9
+            }
+        ]
     },
     {
-        "id": 2,
         "type": "NodeBlockQuote",
-        "level": 1,
         "line": 3,
         "nodeList": [
             {
-                "id": 3,
                 "type": "NodeSystemMessage",
                 "messageType": "infoUnexpectedTitleOverlineOrTransition",
                 "severity": "INFO",
                 "line": 3,
                 "nodeList": [
                     {
-                        "id": 4,
-                        "type": "NodeParagraph",
+                        "type": "NodeText",
                         "text": "Unexpected possible title overline or transition.\nTreating it as ordinary text because it's so short.",
                         "length": 101
                     }
                 ]
             },
             {
-                "id": 5,
                 "type": "NodeParagraph",
-                "text": "==\nABC\n==",
-                "startPosition": 5,
-                "line": 3,
-                "length": 9
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "==\nABC\n==",
+                        "startPosition": 5,
+                        "line": 3,
+                        "length": 9
+                    }
+                ]
             },
             {
-                "id": 6,
                 "type": "NodeParagraph",
-                "text": "Over & underline too short.",
-                "startPosition": 5,
-                "line": 7,
-                "length": 27
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Over & underline too short.",
+                        "startPosition": 5,
+                        "line": 7,
+                        "length": 27
+                    }
+                ]
             }
         ]
     }

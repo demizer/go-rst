@@ -1,10 +1,8 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "Title",
             "startPosition": 2,
@@ -13,14 +11,12 @@
             "length": 5
         },
         "overLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
             "length": 7
         },
         "underLine": {
-            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
@@ -28,11 +24,15 @@
         },
         "nodeList": [
             {
-                "id": 5,
                 "type": "NodeParagraph",
-                "text": "Test overline title with inset.",
-                "line": 5,
-                "length": 31
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Test overline title with inset.",
+                        "line": 5,
+                        "length": 31
+                    }
+                ]
             }
         ]
     }

@@ -40,7 +40,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		Log.Log("msg", "Creating new sectionLeel", "level", level)
+		Log.Log("msg", "Creating new sectionLevel", "level", level)
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,

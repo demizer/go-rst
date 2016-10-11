@@ -1,24 +1,20 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "One",
             "line": 2,
             "length": 3
         },
         "overLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
             "length": 3
         },
         "underLine": {
-            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
@@ -26,34 +22,34 @@
         },
         "nodeList": [
             {
-                "id": 5,
                 "type": "NodeParagraph",
-                "text": "Paragraph 1.",
-                "line": 5,
-                "length": 12
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph 1.",
+                        "line": 5,
+                        "length": 12
+                    }
+                ]
             }
         ]
     },
     {
-        "id": 6,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 7,
             "type": "NodeTitle",
             "text": "Two",
             "line": 8,
             "length": 3
         },
         "overLine": {
-            "id": 8,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 7,
             "length": 3
         },
         "underLine": {
-            "id": 9,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 9,
@@ -61,11 +57,15 @@
         },
         "nodeList": [
             {
-                "id": 10,
                 "type": "NodeParagraph",
-                "text": "Paragraph 2.",
-                "line": 11,
-                "length": 12
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Paragraph 2.",
+                        "line": 11,
+                        "length": 12
+                    }
+                ]
             }
         ]
     }

@@ -1,10 +1,8 @@
 [
     {
-        "id": 1,
         "type": "NodeSection",
         "level": 1,
         "title": {
-            "id": 2,
             "type": "NodeTitle",
             "text": "Long    Title",
             "startPosition": 2,
@@ -13,14 +11,12 @@
             "indentLength": 1
         },
         "overLine": {
-            "id": 3,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
             "length": 7
         },
         "underLine": {
-            "id": 4,
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
@@ -28,20 +24,17 @@
         },
         "nodeList": [
             {
-                "id": 5,
                 "type": "NodeSystemMessage",
                 "messageType": "warningShortOverline",
                 "severity": "WARNING",
                 "line": 1,
                 "nodeList": [
                     {
-                        "id": 6,
-                        "type": "NodeParagraph",
+                        "type": "NodeText",
                         "text": "Title overline too short.",
                         "length": 25
                     },
                     {
-                        "id": 7,
                         "type": "NodeLiteralBlock",
                         "text": "=======\n Long    Title\n=======",
                         "length": 30
@@ -49,11 +42,15 @@
                 ]
             },
             {
-                "id": 8,
                 "type": "NodeParagraph",
-                "text": "Test long title and space normalization.",
-                "line": 5,
-                "length": 40
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Test long title and space normalization.",
+                        "line": 5,
+                        "length": 40
+                    }
+                ]
             }
         ]
     }

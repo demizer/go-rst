@@ -1,19 +1,16 @@
 [
     {
-        "id": 1,
         "type": "NodeSystemMessage",
         "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 1,
         "nodeList": [
             {
-                "id": 2,
-                "type": "NodeParagraph",
+                "type": "NodeText",
                 "text": "Invalid section title or transition marker.",
                 "length": 43
             },
             {
-                "id": 3,
                 "type": "NodeLiteralBlock",
                 "text": "========================\n========================",
                 "length": 49
@@ -21,27 +18,28 @@
         ]
     },
     {
-        "id": 4,
         "type": "NodeParagraph",
-        "text": "Test missing titles; nothing in-between.",
-        "line": 4,
-        "length": 40
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Test missing titles; nothing in-between.",
+                "line": 4,
+                "length": 40
+            }
+        ]
     },
     {
-        "id": 5,
         "type": "NodeSystemMessage",
         "messageType": "errorInvalidSectionOrTransitionMarker",
         "severity": "ERROR",
         "line": 6,
         "nodeList": [
             {
-                "id": 6,
-                "type": "NodeParagraph",
+                "type": "NodeText",
                 "text": "Invalid section title or transition marker.",
                 "length": 43
             },
             {
-                "id": 7,
                 "type": "NodeLiteralBlock",
                 "text": "========================\n========================",
                 "length": 49
