@@ -1,4 +1,14 @@
-<document source="test data">
-    <paragraph>
-        <strong>
-            strong
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 3,
+                "line": 1,
+                "length": 6
+            }
+        ]
+    }
+]

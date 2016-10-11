@@ -718,6 +718,11 @@ func (t *Tree) inlineEmphasis(i *item) {
 
 func (t *Tree) inlineStrong(i *item) {
 	t.next(1)
+	if len(t.Nodes) == 0 {
+		np := newParagraph()
+		t.nodeTarget.append(np)
+		t.nodeTarget = &np.NodeList
+	}
 	t.nodeTarget.append(newInlineStrong(t.token[zed]))
 	t.next(1)
 }
