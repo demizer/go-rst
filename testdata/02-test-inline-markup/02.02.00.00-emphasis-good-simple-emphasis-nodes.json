@@ -1,4 +1,28 @@
-<document source="test data">
-    <paragraph>
-        <emphasis>
-            emphasis
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "This paragraph contains an ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 27
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasized",
+                "startPosition": 29,
+                "line": 1,
+                "length": 10
+            },
+            {
+                "type": "NodeText",
+                "text": " word.",
+                "startPosition": 40,
+                "line": 1,
+                "length": 6
+            }
+        ]
+    }
+]

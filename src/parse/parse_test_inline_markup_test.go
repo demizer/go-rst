@@ -34,3 +34,11 @@ func Test_02_01_00_00_ParseInlineMarkupStrongGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_02_00_00_ParseInlineMarkupSimpleEmphasisGood(t *testing.T) {
+	testPath := testPathFromName("02.02.00.00-emphasis-good-simple-emphasis")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
