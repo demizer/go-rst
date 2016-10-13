@@ -1,9 +1,42 @@
-<document source="test data">
-    <paragraph>
-        l'
-        <strong>
-            strong
-         and l\u2019
-        <strong>
-            strong
-         with apostrophe
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "l'",
+                "startPosition": 1,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 5,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": " and l\u2019",
+                "startPosition": 13,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 24,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": " with apostrophe.",
+                "startPosition": 32,
+                "line": 1,
+                "length": 17
+            }
+        ]
+    }
+]
