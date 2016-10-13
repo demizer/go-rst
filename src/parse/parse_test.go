@@ -210,6 +210,8 @@ func LoadParseTest(t *testing.T, path string) (test *Test) {
 
 type checkNode struct {
 	t          *testing.T
+	parsedNode interface{}
+	expectNode interface{}
 	testPath   string
 	pNodeName  string
 	pFieldName string
@@ -258,11 +260,14 @@ func (c *checkNode) dError() {
 		got = string(c.pFieldVal.(rune))
 		exp = string(c.eFieldVal.(rune))
 	}
-	c.t.Errorf("Got %s = %q -- Expect %s = %q", c.pFieldName, got, c.eFieldName, exp)
+	lPos := strconv.FormatFloat(c.expectNode.(map[string]interface{})["line"].(float64), 'f', -1, 64)
+	sPos := reflect.Indirect(reflect.ValueOf(c.parsedNode)).FieldByName("StartPosition").Int()
+	c.t.Errorf("[node line:%s startpos:%d] Got %s = %q -- Expect %s = %q", lPos, sPos, c.pFieldName, got, c.eFieldName, exp)
 }
 
-func (c *checkNode) updateState(eKey string, eVal interface{},
-	pVal reflect.Value) bool {
+func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value, eNode interface{}, pNode interface{}) bool {
+	c.expectNode = eNode
+	c.parsedNode = pNode
 
 	// Expected parser metadata
 	c.eFieldName = eKey
@@ -376,7 +381,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
 	}
 	for eKey, eVal := range eNodes.(map[string]interface{}) {
 		pVal := reflect.Indirect(reflect.ValueOf(pNode))
-		if c.updateState(eKey, eVal, pVal) == false {
+		if c.updateState(eKey, eVal, pVal, eNodes, pNode) == false {
 			continue
 		}
 		switch c.eFieldName {

@@ -1,20 +1,84 @@
-<document source="test data">
-    <paragraph>
-        quoted '
-        <strong>
-            strong
-        ', quoted "
-        <strong>
-            strong
-        ",
-        quoted \u2018
-        <strong>
-            strong
-        \u2019, quoted \u201c
-        <strong>
-            strong
-        \u201d,
-        quoted \xab
-        <strong>
-            strong
-        \xbb
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "quoted '",
+                "startPosition": 1,
+                "line": 1,
+                "length": 8
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 11,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": "', quoted \"",
+                "startPosition": 19,
+                "line": 1,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 32,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": "\",\nquoted \u2018",
+                "startPosition": 40,
+                "line": 1,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 13,
+                "line": 2,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": "\u2019, quoted \u201c",
+                "startPosition": 21,
+                "line": 2,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 38,
+                "line": 2,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": "\u201d,\nquoted «",
+                "startPosition": 46,
+                "line": 2,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 12,
+                "line": 3,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": "»",
+                "startPosition": 20,
+                "line": 3,
+                "length": 1
+            }
+        ]
+    }
+]
