@@ -74,3 +74,11 @@ func Test_02_02_00_00_ParseInlineMarkupSimpleEmphasisGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_02_00_01_ParseInlineMarkupSingleEmphasisGood(t *testing.T) {
+	testPath := testPathFromName("02.02.00.01-emphasis-good-single-emphasis")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

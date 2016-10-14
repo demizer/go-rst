@@ -712,6 +712,11 @@ outer:
 
 func (t *Tree) inlineEmphasis(i *item) {
 	t.next(1)
+	if len(t.Nodes) == 0 {
+		np := newParagraph()
+		t.nodeTarget.append(np)
+		t.nodeTarget = &np.NodeList
+	}
 	t.nodeTarget.append(newInlineEmphasis(t.token[zed]))
 	t.next(1)
 }
