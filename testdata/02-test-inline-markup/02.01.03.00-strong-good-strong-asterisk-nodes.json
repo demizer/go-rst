@@ -1,9 +1,40 @@
-<document source="test data">
-    <paragraph>
-        Strong asterisk: \n\
-        <strong>
-            *
-    <paragraph>
-        Strong double asterisk: \n\
-        <strong>
-            **
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Strong asterisk: ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 17
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "*",
+                "startPosition": 20,
+                "line": 1,
+                "length": 1
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Strong double asterisk: ",
+                "startPosition": 1,
+                "line": 3,
+                "length": 24
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "**",
+                "startPosition": 27,
+                "line": 3,
+                "length": 2
+            }
+        ]
+    }
+]
