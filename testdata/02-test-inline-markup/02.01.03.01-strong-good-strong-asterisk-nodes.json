@@ -1,0 +1,80 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Strong ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "*",
+                "startPosition": 10,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "type": "NodeText",
+                "text": " asterisk.",
+                "startPosition": 13,
+                "line": 1,
+                "length": 10
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Strong ",
+                "startPosition": 1,
+                "line": 3,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "**",
+                "startPosition": 10,
+                "line": 3,
+                "length": 2
+            },
+            {
+                "type": "NodeText",
+                "text": " double asterisk.",
+                "startPosition": 14,
+                "line": 3,
+                "length": 17
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Strong ",
+                "startPosition": 1,
+                "line": 5,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "********************",
+                "startPosition": 10,
+                "line": 5,
+                "length": 20
+            },
+            {
+                "type": "NodeText",
+                "text": " asterisk gone to plaid!",
+                "startPosition": 32,
+                "line": 5,
+                "length": 24
+            }
+        ]
+    }
+]
