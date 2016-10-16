@@ -4,7 +4,7 @@ import "testing"
 
 // Tests double underscore recognition
 func Test_02_00_00_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.00.00-imrr-good-double-underscore")
+	testPath := testPathFromName("02.00.00.00-double-underscore")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -12,7 +12,7 @@ func Test_02_00_00_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
 
 // Tests double underscore recognition
 func Test_02_00_01_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.01.00-imrr-good-lots-of-escaping")
+	testPath := testPathFromName("02.00.01.00-lots-of-escaping")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -20,14 +20,14 @@ func Test_02_00_01_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
 
 // Tests escaping with unicode literals
 func Test_02_00_02_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.02.00-imrr-good-lots-of-escaping-unicode")
+	testPath := testPathFromName("02.00.02.00-lots-of-escaping-unicode")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_00_03_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.03.00-imrr-good-emphasis-wrapped-in-unicode")
+	testPath := testPathFromName("02.00.03.00-emphasis-wrapped-in-unicode")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -36,7 +36,7 @@ func Test_02_00_03_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
 // Bad emphasis start string with unicode literal space after start string. The text that is suppossed to close the emphasis
 // is lexed as an emphasis start string without a corresponding end string.
 func Test_02_00_03_01_LexInlineMarkupRecognitionRulesBad(t *testing.T) {
-	testPath := testPathFromName("02.00.03.01-imrr-bad-emphasis-with-unicode-literal")
+	testPath := testPathFromName("02.00.03.01-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -46,28 +46,28 @@ func Test_02_00_03_01_LexInlineMarkupRecognitionRulesBad(t *testing.T) {
 // is lexed as an emphasis start string without a corresponding end string. This test includes more text around the incorrect
 // emphasis.
 func Test_02_00_03_02_LexInlineMarkupRecognitionRulesBad(t *testing.T) {
-	testPath := testPathFromName("02.00.03.02-imrr-bad-emphasis-with-unicode-literal")
+	testPath := testPathFromName("02.00.03.02-emphasis-with-unicode-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_00_04_00_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.04.00-imrr-good-openers-and-closers")
+	testPath := testPathFromName("02.00.04.00-openers-and-closers")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_00_04_01_LexInlineMarkupRecognitionRulesGood(t *testing.T) {
-	testPath := testPathFromName("02.00.04.01-imrr-good-strong-and-kwargs")
+	testPath := testPathFromName("02.00.04.01-strong-and-kwargs")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_00_05_00_LexInlineMarkupRecognitionRulesGood5(t *testing.T) {
-	testPath := testPathFromName("02.00.05.00-imrr-good-emphasis-with-backwards-rule-5")
+	testPath := testPathFromName("02.00.05.00-emphasis-with-backwards-rule-5")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -75,7 +75,7 @@ func Test_02_00_05_00_LexInlineMarkupRecognitionRulesGood5(t *testing.T) {
 
 // Single strong
 func Test_02_01_00_00_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("02.01.00.00-strong-good-strong")
+	testPath := testPathFromName("02.01.00.00-strong")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -83,7 +83,7 @@ func Test_02_01_00_00_LexStrongGood(t *testing.T) {
 
 // Strong with missing closing markup
 func Test_02_01_00_01_LexStrongBad(t *testing.T) {
-	testPath := testPathFromName("02.01.00.01-strong-bad-strong-unclosed")
+	testPath := testPathFromName("02.01.00.01-strong-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -91,7 +91,7 @@ func Test_02_01_00_01_LexStrongBad(t *testing.T) {
 
 // Strong with missing closing markup across three lines
 func Test_02_01_00_02_LexStrongBad(t *testing.T) {
-	testPath := testPathFromName("02.01.00.02-strong-bad-strong-unclosed")
+	testPath := testPathFromName("02.01.00.02-strong-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -99,7 +99,7 @@ func Test_02_01_00_02_LexStrongBad(t *testing.T) {
 
 // Single strong with apostrophes
 func Test_02_01_01_00_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("02.01.01.00-strong-good-strong-with-apostrophe")
+	testPath := testPathFromName("02.01.01.00-strong-with-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -107,7 +107,7 @@ func Test_02_01_01_00_LexStrongGood(t *testing.T) {
 
 // Strong with unicode literal quotes
 func Test_02_01_02_00_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("02.01.02.00-strong-good-strong-quoted")
+	testPath := testPathFromName("02.01.02.00-strong-quoted")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -115,7 +115,7 @@ func Test_02_01_02_00_LexStrongGood(t *testing.T) {
 
 // Strong with asterisk and double asterisk
 func Test_02_01_03_00_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("02.01.03.00-strong-good-strong-asterisk")
+	testPath := testPathFromName("02.01.03.00-strong-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -123,7 +123,7 @@ func Test_02_01_03_00_LexStrongGood(t *testing.T) {
 
 // Strong with asterisk and double asterisk and strong asterisk gone to plaid!
 func Test_02_01_03_01_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("02.01.03.01-strong-good-strong-asterisk")
+	testPath := testPathFromName("02.01.03.01-strong-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -131,7 +131,7 @@ func Test_02_01_03_01_LexStrongGood(t *testing.T) {
 
 // Strong with bad kwargs
 func Test_02_01_03_02_LexStrongBad(t *testing.T) {
-	testPath := testPathFromName("02.01.03.02-strong-bad-strong-kwargs")
+	testPath := testPathFromName("02.01.03.02-strong-kwargs")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -139,7 +139,7 @@ func Test_02_01_03_02_LexStrongBad(t *testing.T) {
 
 // A paragraph containing a single emphasized word
 func Test_02_02_00_00_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.00.00-emphasis-good-simple-emphasis")
+	testPath := testPathFromName("02.02.00.00-simple-emphasis")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -147,7 +147,7 @@ func Test_02_02_00_00_LexEmphasisGood(t *testing.T) {
 
 // A document only containing an emphasized word
 func Test_02_02_00_01_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.00.01-emphasis-good-single-emphasis")
+	testPath := testPathFromName("02.02.00.01-single-emphasis")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -155,7 +155,7 @@ func Test_02_02_00_01_LexEmphasisGood(t *testing.T) {
 
 // Emphasis across two lines
 func Test_02_02_00_02_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.00.02-emphasis-good-emphasis-across-lines")
+	testPath := testPathFromName("02.02.00.02-emphasis-across-lines")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -163,7 +163,7 @@ func Test_02_02_00_02_LexEmphasisGood(t *testing.T) {
 
 // Unclosed emphasis
 func Test_02_02_00_03_LexEmphasisBad(t *testing.T) {
-	testPath := testPathFromName("02.02.00.03-emphasis-bad-emphasis-unclosed")
+	testPath := testPathFromName("02.02.00.03-emphasis-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -171,14 +171,14 @@ func Test_02_02_00_03_LexEmphasisBad(t *testing.T) {
 
 // Unclosed emphasis on two lines with paragraphs and stuff.
 func Test_02_02_00_04_LexEmphasisBad(t *testing.T) {
-	testPath := testPathFromName("02.02.00.04-emphasis-bad-emphasis-unclosed")
+	testPath := testPathFromName("02.02.00.04-emphasis-unclosed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_02_00_05_LexEmphasisBad(t *testing.T) {
-	testPath := testPathFromName("02.02.00.05-emphasis-bad-emphasis-unclosed-surrounded-by-apostrophe")
+	testPath := testPathFromName("02.02.00.05-emphasis-unclosed-surrounded-by-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -186,7 +186,7 @@ func Test_02_02_00_05_LexEmphasisBad(t *testing.T) {
 
 // Emphasis surrounded by apostrophe
 func Test_02_02_01_00_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.01.00-emphasis-good-emphasis-with-emphasis-apostrophe")
+	testPath := testPathFromName("02.02.01.00-emphasis-with-emphasis-apostrophe")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -194,7 +194,7 @@ func Test_02_02_01_00_LexEmphasisGood(t *testing.T) {
 
 // Emphasis surrounded by quotes from many languages
 func Test_02_02_01_01_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.01.01-emphasis-good-emphasis-surrounded-by-quotes")
+	testPath := testPathFromName("02.02.01.01-emphasis-surrounded-by-quotes")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -202,7 +202,7 @@ func Test_02_02_01_01_LexEmphasisGood(t *testing.T) {
 
 // Emphasized asterisk
 func Test_02_02_02_00_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.02.00-emphasis-good-emphasis-with-asterisk")
+	testPath := testPathFromName("02.02.02.00-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -210,7 +210,7 @@ func Test_02_02_02_00_LexEmphasisGood(t *testing.T) {
 
 // Emphasized asterisk
 func Test_02_02_02_01_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.02.01-emphasis-good-emphasis-with-asterisk")
+	testPath := testPathFromName("02.02.02.01-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
@@ -218,21 +218,21 @@ func Test_02_02_02_01_LexEmphasisGood(t *testing.T) {
 
 // Emphasized asterisk
 func Test_02_02_02_02_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.02.02-emphasis-good-emphasis-with-asterisk")
+	testPath := testPathFromName("02.02.02.02-emphasis-with-asterisk")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_02_03_00_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.03.00-emphasis-good-emphasis-surrounded-by-markup")
+	testPath := testPathFromName("02.02.03.00-emphasis-surrounded-by-markup")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
 func Test_02_02_04_00_LexEmphasisGood(t *testing.T) {
-	testPath := testPathFromName("02.02.04.00-emphasis-good-emphasis-closed-with-strong-markup")
+	testPath := testPathFromName("02.02.04.00-emphasis-closed-with-strong-markup")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
