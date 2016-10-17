@@ -1,0 +1,28 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "what about ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "this*",
+                "startPosition": 13,
+                "line": 1,
+                "length": 5
+            },
+            {
+                "type": "NodeText",
+                "text": "?",
+                "startPosition": 19,
+                "line": 1,
+                "length": 1
+            }
+        ]
+    }
+]
