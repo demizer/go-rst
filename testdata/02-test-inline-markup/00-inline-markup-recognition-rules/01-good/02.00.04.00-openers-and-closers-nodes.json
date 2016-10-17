@@ -1,0 +1,50 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "\"Quoted\" markup start-string (matched openers & closers) -> no markup:",
+                "startPosition": 1,
+                "line": 1,
+                "length": 70
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "'*' \"*\" (*) <*> [*] {*}\n⁅*⁆",
+                "startPosition": 1,
+                "line": 3,
+                "length": 27
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Some international quoting styles:\n‘*’ “*” English, ...,\n„*“ ‚*‘ »*« ›*‹ German, Czech, ...,\n„*” «*» Romanian,\n“*„ ‘*‚ Greek,\n「*」 『*』traditional Chinese,\n”*” ’*’ »*» ›*› Swedish, Finnish,\n„*” ‚*’ Polish,\n„*” »*« ’*’ Hungarian,",
+                "startPosition": 1,
+                "line": 6,
+                "length": 226
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "But this is „*’ emphasized »*‹.",
+                "startPosition": 1,
+                "line": 16,
+                "length": 31
+            }
+        ]
+    }
+]

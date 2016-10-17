@@ -34,6 +34,15 @@ func Test_02_00_03_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_00_04_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
+	testPath := testPathFromName("02.00.04.00-openers-and-closers")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
 func Test_02_01_00_00_ParseInlineMarkupStrongGood(t *testing.T) {
 	testPath := testPathFromName("02.01.00.00-strong")
 	test := LoadParseTest(t, testPath)
