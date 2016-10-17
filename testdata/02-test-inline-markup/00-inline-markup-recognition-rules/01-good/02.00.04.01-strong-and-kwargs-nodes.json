@@ -1,0 +1,28 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "(",
+                "startPosition": 1,
+                "line": 1,
+                "length": 1
+            },
+            {
+                "type": "NodeInlineStrong",
+                "text": "strong",
+                "startPosition": 4,
+                "line": 1,
+                "length": 6
+            },
+            {
+                "type": "NodeText",
+                "text": ") but not (**) or '(** ' or x**2 or \\**kwargs or **",
+                "startPosition": 12,
+                "line": 1,
+                "length": 51
+            }
+        ]
+    }
+]
