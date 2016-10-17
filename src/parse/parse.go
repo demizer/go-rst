@@ -653,6 +653,7 @@ outer:
 		// ni := t.peek(1)     // next item
 
 		t.log("msg", "Have token", "token", ci)
+
 		if ci == nil {
 			t.logMsg("ci == nil, breaking")
 			break
@@ -721,13 +722,30 @@ outer:
 }
 
 func (t *Tree) inlineEmphasis(i *item) {
-	t.next(1)
+	ni := t.next(1)
 	if len(t.Nodes) == 0 {
 		np := newParagraph()
 		t.nodeTarget.append(np)
 		t.nodeTarget = &np.NodeList
 	}
-	t.nodeTarget.append(newInlineEmphasis(t.token[zed]))
+main:
+	for {
+		ci := t.next(1)
+		if ci == nil {
+			break
+		}
+		switch ci.Type {
+		case itemInlineEmphasis:
+			ni.Text += "\n" + ci.Text
+		case itemBlankLine:
+			continue
+		default:
+			t.backup()
+			break main
+		}
+	}
+	ni.Length = utf8.RuneCountInString(ni.Text)
+	t.nodeTarget.append(newInlineEmphasis(ni))
 	t.next(1)
 }
 

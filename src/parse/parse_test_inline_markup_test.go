@@ -99,7 +99,7 @@ func Test_02_01_01_00_ParseInlineMarkupStrongWithApostropheGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func Test_02_02_00_00_ParseInlineMarkupSimpleEmphasisGood(t *testing.T) {
+func Test_02_02_00_00_ParseInlineMarkupEmphasisGood(t *testing.T) {
 	testPath := testPathFromName("02.02.00.00-simple-emphasis")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -107,8 +107,16 @@ func Test_02_02_00_00_ParseInlineMarkupSimpleEmphasisGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func Test_02_02_00_01_ParseInlineMarkupSingleEmphasisGood(t *testing.T) {
+func Test_02_02_00_01_ParseInlineMarkupEmphasisGood(t *testing.T) {
 	testPath := testPathFromName("02.02.00.01-single-emphasis")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
+func Test_02_02_00_02_ParseInlineMarkupEmphasisGood(t *testing.T) {
+	testPath := testPathFromName("02.02.00.02-emphasis-across-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()

@@ -1,0 +1,14 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasized sentence\nacross lines",
+                "startPosition": 2,
+                "line": 1,
+                "length": 32
+            }
+        ]
+    }
+]

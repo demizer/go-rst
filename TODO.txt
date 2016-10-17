@@ -1,3 +1,8 @@
+* Sun Oct 16 22:02 2016: Add strong across lines test
+
+  **Strong is
+  across lines!**
+
 * Tue Oct 11 00:10 2016: Document creating new tests
 
   The UltiSnips Snippets should be mentioned.
