@@ -1,0 +1,54 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\*blah\\*",
+                "startPosition": 13,
+                "line": 1,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": " asterisk.",
+                "startPosition": 22,
+                "line": 1,
+                "length": 10
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized ",
+                "startPosition": 1,
+                "line": 3,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\**blah\\**",
+                "startPosition": 13,
+                "line": 3,
+                "length": 10
+            },
+            {
+                "type": "NodeText",
+                "text": " double asterisk.",
+                "startPosition": 24,
+                "line": 3,
+                "length": 17
+            }
+        ]
+    }
+]
