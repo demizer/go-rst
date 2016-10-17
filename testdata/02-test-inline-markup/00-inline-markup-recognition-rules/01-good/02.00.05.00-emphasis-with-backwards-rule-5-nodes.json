@@ -1,0 +1,28 @@
+[
+	{
+	    "type": "NodeParagraph",
+	    "nodeList": [
+	        {
+	            "type": "NodeText",
+	            "text": ")*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),\n(*), [*], '*' or '\"*\"' (\"quoted\" start-string),\nx*2* or 2*x* (alphanumeric char before),\n\\*args or * (escaped, whitespace behind start-string),\nor ",
+	            "startPosition": 1,
+	            "line": 1,
+	            "length": 222
+	        },
+	        {
+	            "type": "NodeInlineEmphasis",
+	            "text": "the\\* *stars\\* *inside",
+	            "startPosition": 5,
+	            "line": 5,
+	            "length": 22
+	        },
+            {
+                "type": "NodeText",
+                "text": " (escaped, whitespace before end-string).",
+                "startPosition": 28,
+                "line": 5,
+                "length": 41
+            }
+	    ]
+	}
+]

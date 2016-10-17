@@ -51,6 +51,14 @@ func Test_02_00_04_01_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+func Test_02_00_05_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
+	testPath := testPathFromName("02.00.05.00-emphasis-with-backwards-rule-5")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
 func Test_02_01_00_00_ParseInlineMarkupStrongGood(t *testing.T) {
 	testPath := testPathFromName("02.01.00.00-strong")
 	test := LoadParseTest(t, testPath)
