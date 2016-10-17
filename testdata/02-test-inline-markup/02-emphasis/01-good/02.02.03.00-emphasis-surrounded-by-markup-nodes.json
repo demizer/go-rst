@@ -1,0 +1,168 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "some punctuation is allowed around inline markup, e.g.\n/",
+                "startPosition": 1,
+                "line": 1,
+                "length": 56
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 3,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "/, -",
+                "startPosition": 12,
+                "line": 2,
+                "length": 4
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 17,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "-, and :",
+                "startPosition": 26,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 35,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": ": (delimiters),\n(",
+                "startPosition": 44,
+                "line": 2,
+                "length": 17
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 3,
+                "line": 3,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "), [",
+                "startPosition": 12,
+                "line": 3,
+                "length": 4
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 17,
+                "line": 3,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "], <",
+                "startPosition": 26,
+                "line": 3,
+                "length": 4
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 31,
+                "line": 3,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": ">, {",
+                "startPosition": 40,
+                "line": 3,
+                "length": 4
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 45,
+                "line": 3,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "} (open/close pairs),",
+                "startPosition": 54,
+                "line": 3,
+                "length": 21
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 2,
+                "line": 4,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "., ",
+                "startPosition": 11,
+                "line": 4,
+                "length": 3
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 15,
+                "line": 4,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": ",, ",
+                "startPosition": 24,
+                "line": 4,
+                "length": 3
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 28,
+                "line": 4,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "!, and ",
+                "startPosition": 37,
+                "line": 4,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 45,
+                "line": 4,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "(closing delimiters).",
+                "startPosition": 56,
+                "line": 4,
+                "length": 21
+            }
+        ]
+    }
+]
