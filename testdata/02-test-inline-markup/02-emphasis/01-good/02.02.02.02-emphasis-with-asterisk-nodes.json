@@ -1,0 +1,80 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\*",
+                "startPosition": 13,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "type": "NodeText",
+                "text": " asterisk.",
+                "startPosition": 16,
+                "line": 1,
+                "length": 10
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized ",
+                "startPosition": 1,
+                "line": 3,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\**",
+                "startPosition": 13,
+                "line": 3,
+                "length": 3
+            },
+            {
+                "type": "NodeText",
+                "text": " double asterisk.",
+                "startPosition": 17,
+                "line": 3,
+                "length": 17
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized ",
+                "startPosition": 1,
+                "line": 5,
+                "length": 11
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\**********************",
+                "startPosition": 13,
+                "line": 5,
+                "length": 23
+            },
+            {
+                "type": "NodeText",
+                "text": " asterisk gone to plaid.",
+                "startPosition": 37,
+                "line": 5,
+                "length": 24
+            }
+        ]
+    }
+]

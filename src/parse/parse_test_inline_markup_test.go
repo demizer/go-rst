@@ -146,3 +146,11 @@ func Test_02_02_02_01_ParseInlineMarkupEmphasisGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_02_02_02_ParseInlineMarkupEmphasisGood(t *testing.T) {
+	testPath := testPathFromName("02.02.02.02-emphasis-with-asterisk")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
