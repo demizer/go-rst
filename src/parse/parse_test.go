@@ -262,7 +262,8 @@ func (c *checkNode) dError() {
 	}
 	lPos := strconv.FormatFloat(c.expectNode.(map[string]interface{})["line"].(float64), 'f', -1, 64)
 	sPos := reflect.Indirect(reflect.ValueOf(c.parsedNode)).FieldByName("StartPosition").Int()
-	c.t.Errorf("[node line:%s startpos:%d] Got %s = %q -- Expect %s = %q", lPos, sPos, c.pFieldName, got, c.eFieldName, exp)
+	txt := reflect.Indirect(reflect.ValueOf(c.parsedNode)).FieldByName("Text").String()
+	c.t.Errorf("[node  text:%q line:%s startpos:%d] Got %s = %q -- Expect %s = %q", txt, lPos, sPos, c.pFieldName, got, c.eFieldName, exp)
 }
 
 func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Value, eNode interface{}, pNode interface{}) bool {

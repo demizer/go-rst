@@ -669,9 +669,19 @@ outer:
 		t.logMsg("Going into subparser...")
 
 		switch ci.Type {
+		case itemSpace:
+			if pi != nil && pi.Type == itemEscape {
+				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
+				t.logMsg("Found escaped space!")
+				continue
+			}
+			// Parse Test 02.00.03.00 :: Emphasis wrapped in unicode spaces
+			nt.Text += "\n" + ci.Text
+			nt.Length = utf8.RuneCountInString(nt.Text)
 		case itemText:
 			if pi != nil && pi.Type == itemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
+				t.logMsg("Found newline escape!")
 				nt.Text += ci.Text
 				nt.Length = utf8.RuneCountInString(nt.Text)
 			} else {

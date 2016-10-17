@@ -27,6 +27,13 @@ func Test_02_00_02_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+func Test_02_00_03_00_ParseInlineMarkupRecognitionRulesGood(t *testing.T) {
+	testPath := testPathFromName("02.00.03.00-emphasis-wrapped-in-unicode")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
 func Test_02_01_00_00_ParseInlineMarkupStrongGood(t *testing.T) {
 	testPath := testPathFromName("02.01.00.00-strong")
 	test := LoadParseTest(t, testPath)

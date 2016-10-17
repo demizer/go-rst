@@ -163,3 +163,88 @@ string (based on the spec). As mentioned in the previous trouble item, the docut
 literals.
 
 I have modified this test to remove the troublesome section.
+
+Test: 02.00.03.00-emphasis-wrapped-in-unicode.rst
+-------------------------------------------------
+
+The following test is clearly valid:
+
+.. code:: reStructuredText
+
+    text separated by
+    *newline*
+    or *space* or one of
+    \xa0*NO-BREAK SPACE*\xa0,
+    \u1680*OGHAM SPACE MARK*\u1680,
+
+but the official docutils parser parses it incorrectly::
+
+    <document source="test data">
+        <paragraph>
+            text separated by
+            <emphasis>
+                newline
+            \n\
+            or \n\
+            <emphasis>
+                space
+            or one of
+            \xa0
+            <emphasis>
+                NO-BREAK SPACE
+            \xa0,
+            \u1680
+            <emphasis>
+                OGHAM SPACE MARK
+            \u1680,
+
+go-rst parses it correctly:
+
+.. code:: json
+
+    [
+        {
+            "type": "NodeParagraph",
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "text separated by",
+                },
+                {
+                    "type": "NodeInlineEmphasis",
+                    "text": "newline",
+                },
+                {
+                    "type": "NodeText",
+                    "text": "or ",
+                },
+                {
+                    "type": "NodeInlineEmphasis",
+                    "text": "space",
+                },
+                {
+                    "type": "NodeText",
+                    "text": " or one of\n\u00a0",
+                },
+                {
+                    "type": "NodeInlineEmphasis",
+                    "text": "NO-BREAK SPACE",
+                },
+                {
+                    "type": "NodeText",
+                    "text": "\u00a0,\n\u1680",
+                },
+                {
+                    "type": "NodeInlineEmphasis",
+                    "text": "OGHAM SPACE MARK",
+                },
+                {
+                    "type": "NodeText",
+                    "text": "\u1680,",
+                },
+            ]
+        }
+    ]
+
+Notice the the usage of `\n` to merge NodeText nodes. The official parser does this correctly for test 02.00.01.00, but fails
+miserably on this test.
