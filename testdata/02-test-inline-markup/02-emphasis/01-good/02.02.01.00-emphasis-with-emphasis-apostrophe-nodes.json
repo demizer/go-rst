@@ -1,0 +1,70 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "l'",
+                "startPosition": 1,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 4,
+                "line": 1,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": " with the ",
+                "startPosition": 13,
+                "line": 1,
+                "length": 10
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 24,
+                "line": 1,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "' apostrophe.\nl\u2019",
+                "startPosition": 33,
+                "line": 1,
+                "length": 16
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 6,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": " with the ",
+                "startPosition": 15,
+                "line": 2,
+                "length": 10
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "emphasis",
+                "startPosition": 26,
+                "line": 2,
+                "length": 8
+            },
+            {
+                "type": "NodeText",
+                "text": "\u2019 apostrophe.",
+                "startPosition": 35,
+                "line": 2,
+                "length": 13
+            }
+        ]
+    }
+]
