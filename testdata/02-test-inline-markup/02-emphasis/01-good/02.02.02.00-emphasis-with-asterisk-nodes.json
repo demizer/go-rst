@@ -1,0 +1,40 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized asterisk: ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 21
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\*",
+                "startPosition": 23,
+                "line": 1,
+                "length": 2
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Emphasized double asterisk: ",
+                "startPosition": 1,
+                "line": 3,
+                "length": 28
+            },
+            {
+                "type": "NodeInlineEmphasis",
+                "text": "\\**",
+                "startPosition": 30,
+                "line": 3,
+                "length": 3
+            }
+        ]
+    }
+]
