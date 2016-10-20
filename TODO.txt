@@ -1,3 +1,5 @@
+* Mon Oct 17 22:33 2016: Refactor InlineInterpretedText to InlineInterpretedTextNode
+
 * Sun Oct 16 22:02 2016: Add strong across lines test
 
   **Strong is

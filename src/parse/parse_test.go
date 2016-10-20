@@ -17,12 +17,11 @@ import (
 	"time"
 
 	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/term"
 
 	"golang.org/x/text/unicode/norm"
 )
 
-var tlogCtx = NewLogCtx("test")
+var debug bool
 
 func init() { SetDebug() }
 
@@ -38,32 +37,8 @@ func SetDebug() {
 	flag.StringVar(&excludeNamedContext, "exclude", "test", "Exclude context from output.")
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
-	// Color by level value
-	colorFn := func(keyvals ...interface{}) term.FgBgColor {
-		for i := 0; i < len(keyvals)-1; i += 2 {
-			if keyvals[i] != "name" {
-				continue
-			}
-			switch keyvals[i+1] {
-			case "lexer":
-				return term.FgBgColor{Fg: term.DarkGray}
-			case "parser":
-				return term.FgBgColor{Fg: term.Gray}
-			default:
-				return term.FgBgColor{}
-			}
-		}
-		return term.FgBgColor{}
-	}
-
 	if debug {
-		// if term.IsTerminal() {
-		// Log = log.NewContext(log.NewLogfmtLogger(os.Stdout))
-		// } else {
-		Log = log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))
-		// Log = log.NewContext(log.NewLogfmtLogger(os.Stdout))
-		// }
-		tlogCtx = NewLogCtx("test")
+		LogSetContext(log.NewContext(log.NewLogfmtLogger(os.Stdout)))
 	}
 }
 
@@ -463,7 +438,7 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
 }
 
 // checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output node by node.
-func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testPath string) {
+func checkParseNodes(t *testing.T, eTree []interface{}, pNodes *NodeList, testPath string) {
 
 	state := &checkNode{t: t, testPath: testPath}
 
@@ -482,12 +457,12 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes []Node, testPath 
 		t.FailNow()
 	}
 
-	if len(pNodes) != len(eTree) {
+	if len(*pNodes) != len(eTree) {
 		failTest(errors.New("The number of parsed nodes does not match expected nodes!"))
 	}
 
 	for eNum, eNode := range eTree {
-		if cerr := state.checkFields(eNode, pNodes[eNum]); cerr != nil {
+		if cerr := state.checkFields(eNode, (*pNodes)[eNum]); cerr != nil {
 			failTest(cerr)
 		}
 	}

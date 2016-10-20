@@ -38,7 +38,7 @@ func (i *indentQueue) lastStartPosition() StartPosition {
 			return sp
 		}
 	default:
-		Log.Log(fmt.Errorf("Unhandled type = %q", spd.Sdump(nt)))
+		logp.Err(fmt.Errorf("Unhandled type = %T", nt))
 		return sp
 	}
 
@@ -61,11 +61,11 @@ func (i *indentQueue) lastStartPosition() StartPosition {
 		case *TextNode:
 			sp = nt2.StartPosition
 		default:
-			Log.Log(fmt.Errorf("Unhandled sub Node type = %q", spd.Sdump(nt)))
+			logp.Err(fmt.Errorf("Unhandled sub Node type = %T", nt))
 			return sp
 		}
 	default:
-		Log.Log(fmt.Errorf("Unhandled child NodeList type = %q", spd.Sdump(n)))
+		logp.Err(fmt.Errorf("Unhandled child NodeList type = %T", n))
 		return sp
 	}
 
@@ -80,7 +80,9 @@ func (i *indentQueue) topNodeList() *NodeList {
 	// case *ParagraphNode:
 	// return &n.NodeList
 	default:
-		Log.Log(fmt.Errorf("Unhandled type = %q", spd.Sdump(n)))
+		logp.Err(fmt.Errorf("Unhandled type = %T", n))
 	}
 	return nil
 }
+
+func (i *indentQueue) topNode() Node { return (*i)[len(*i)-1].node }

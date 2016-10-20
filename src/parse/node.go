@@ -107,6 +107,7 @@ func (n NodeType) String() string { return nodeTypes[n] }
 // Node is the interface used to implement parser nodes.
 type Node interface {
 	NodeType() NodeType
+	String() string
 }
 
 // NodeList is a list of parser nodes that implement Node.
@@ -114,16 +115,93 @@ type NodeList []Node
 
 func (l *NodeList) append(n ...Node) {
 	for _, node := range n {
-		Log.Log("msg", "Adding node",
-			"nodePointer", fmt.Sprintf("%p", node),
-			"nodeType", fmt.Sprintf("%s", node.NodeType()),
-			"nodeListPointer", fmt.Sprintf("%p", l))
 		*l = append(*l, node)
 	}
 }
 
 // last returns the last item added to the slice
 func (l *NodeList) lastNode(n ...Node) Node { return (*l)[len(*l)-1] }
+
+// NodeTarget contains the NodeList where subsequent nodes will be added during parsing. It also contains a pointer to the
+// parent Node of the NodeTarget NodeList.
+type nodeTarget struct {
+	mainList *NodeList // The default NodeList for reset()
+	subList  *NodeList // The nodelist contained in target
+	parent   Node      // If set, a parent Node containing a NodeList. Can be nil.
+}
+
+func newNodeTarget(pNodes *NodeList) *nodeTarget {
+	return &nodeTarget{mainList: pNodes, subList: pNodes}
+}
+
+func (nt *nodeTarget) reset() {
+	logp.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.mainList))
+	nt.subList = nt.mainList
+	nt.parent = nil
+}
+
+func (nt *nodeTarget) append(n ...Node) {
+	for _, node := range n {
+		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", node),
+			"nodeListPointer", fmt.Sprintf("%p", nt.subList), "node", node.String())
+		nt.subList.append(node)
+	}
+}
+
+// setParent sets the nodeTarget to the NodeList of a Node
+func (nt *nodeTarget) setParent(n Node) {
+	// logp.Log("msg", "setParent have node", "node", n.(Node).String())
+	// logp.Log("msg", "nodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
+	// "nodeListPointer", fmt.Sprintf("%p", nt.subList))
+	switch t := n.(type) {
+	case *ParagraphNode:
+		nt.subList = &n.(*ParagraphNode).NodeList
+		nt.parent = n
+	case *InlineInterpretedText:
+		nt.subList = &n.(*InlineInterpretedText).NodeList
+		nt.parent = n
+	case *BlockQuoteNode:
+		nt.subList = &n.(*BlockQuoteNode).NodeList
+		nt.parent = n
+	case *SystemMessageNode:
+		nt.subList = &n.(*SystemMessageNode).NodeList
+		nt.parent = n
+	case *BulletListNode:
+		nt.subList = &n.(*BulletListNode).NodeList
+		nt.parent = n
+	case *BulletListItemNode:
+		nt.subList = &n.(*BulletListItemNode).NodeList
+		nt.parent = n
+	case *EnumListNode:
+		nt.subList = &n.(*EnumListNode).NodeList
+		nt.parent = n
+	case *DefinitionListNode:
+		nt.subList = &n.(*DefinitionListNode).NodeList
+		nt.parent = n
+	case *DefinitionNode:
+		nt.subList = &n.(*DefinitionNode).NodeList
+		nt.parent = n
+	case *SectionNode:
+		nt.subList = &n.(*SectionNode).NodeList
+		nt.parent = n
+	default:
+		logp.Log("msg", "WARNING: type not supported or dosen't have a NodeList!", "type", fmt.Sprintf("%T", t))
+	}
+	// logp.Log("msg", "nodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
+	// "nodeSubListPointer", fmt.Sprintf("%p", nt.subList), "nodeParentPointer", fmt.Sprintf("%p", nt.parent))
+}
+
+// isParentParagraph will return true if the parent Node of the NodeTarget is a paragraph.
+func (nt *nodeTarget) isParagraphNode() bool {
+	switch nt.parent.(type) {
+	case *ParagraphNode:
+		logp.Msg("nt.parent is type *ParagraphNode!")
+		return true
+	default:
+		logp.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.parent))
+	}
+	return false
+}
 
 // EnumListType identifies the type of the enumeration list element
 type EnumListType int
@@ -187,6 +265,9 @@ type SectionNode struct {
 // NodeType returns the Node type of the SectionNode.
 func (s *SectionNode) NodeType() NodeType { return s.Type }
 
+// String satisfies the Stringer interface
+func (s *SectionNode) String() string { return fmt.Sprintf("%#v", s) }
+
 func newSection(title *item, overSec *item, underSec *item, indent *item) *SectionNode {
 	var indentLen int
 	n := &SectionNode{Type: NodeSection}
@@ -236,6 +317,9 @@ type TitleNode struct {
 // NodeType returns the Node type of the TitleNode.
 func (t TitleNode) NodeType() NodeType { return t.Type }
 
+// String satisfies the Stringer interface
+func (t TitleNode) String() string { return fmt.Sprintf("%#v", t) }
+
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
 	Type          NodeType `json:"type"`
@@ -247,6 +331,9 @@ type AdornmentNode struct {
 
 // NodeType returns the Node type of the AdornmentNode.
 func (a AdornmentNode) NodeType() NodeType { return a.Type }
+
+// String satisfies the Stringer interface
+func (a AdornmentNode) String() string { return fmt.Sprintf("%#v", a) }
 
 // TextNode is ordinary text. Typically added to the nodelist of parapgraphs.
 type TextNode struct {
@@ -270,6 +357,9 @@ func newText(i *item) *TextNode {
 // NodeType returns the Node type of the TextNode.
 func (p TextNode) NodeType() NodeType { return p.Type }
 
+// String satisfies the Stringer interface
+func (p TextNode) String() string { return fmt.Sprintf("%#v", p) }
+
 // ParagraphNode is a parsed paragraph.
 type ParagraphNode struct {
 	Type     NodeType          `json:"type"`
@@ -286,6 +376,9 @@ func newParagraphWithNodeText(i *item) *ParagraphNode {
 
 // NodeType returns the Node type of the ParagraphNode.
 func (p ParagraphNode) NodeType() NodeType { return p.Type }
+
+// String satisfies the Stringer interface
+func (p ParagraphNode) String() string { return fmt.Sprintf("%#v", p) }
 
 // InlineEmphasisNode is parsed inline italicized text.
 type InlineEmphasisNode struct {
@@ -309,6 +402,9 @@ func newInlineEmphasis(i *item) *InlineEmphasisNode {
 // NodeType returns the Node type of the InlineEmphasisNode.
 func (e InlineEmphasisNode) NodeType() NodeType { return e.Type }
 
+// String satisfies the Stringer interface
+func (e InlineEmphasisNode) String() string { return fmt.Sprintf("%#v", e) }
+
 // InlineStrongNode is a parsed inline bold text.
 type InlineStrongNode struct {
 	Type          NodeType `json:"type"`
@@ -331,6 +427,9 @@ func newInlineStrong(i *item) *InlineStrongNode {
 // NodeType returns the Node type of the InlineStrongNode.
 func (s InlineStrongNode) NodeType() NodeType { return s.Type }
 
+// String satisfies the Stringer interface
+func (s InlineStrongNode) String() string { return fmt.Sprintf("%#v", s) }
+
 // InlineLiteralNode is a parsed inline literal node.
 type InlineLiteralNode struct {
 	Type          NodeType `json:"type"`
@@ -352,6 +451,9 @@ func newInlineLiteral(i *item) *InlineLiteralNode {
 
 // NodeType returns the Node type of the InlineStrongNode.
 func (l InlineLiteralNode) NodeType() NodeType { return l.Type }
+
+// String satisfies the Stringer interface
+func (l InlineLiteralNode) String() string { return fmt.Sprintf("%#v", l) }
 
 // InlineInterpretedText is a parsed interpreted text role.
 type InlineInterpretedText struct {
@@ -377,6 +479,9 @@ func newInlineInterpretedText(i *item) *InlineInterpretedText {
 // NodeType returns the Node type of the InlineInterpretedText.
 func (i InlineInterpretedText) NodeType() NodeType { return i.Type }
 
+// String satisfies the Stringer interface
+func (i InlineInterpretedText) String() string { return fmt.Sprintf("%#v", i) }
+
 // InlineInterpretedTextRole is a parsed interpreted text role.
 type InlineInterpretedTextRole struct {
 	Type          NodeType `json:"type"`
@@ -398,6 +503,9 @@ func newInlineInterpretedTextRole(i *item) *InlineInterpretedTextRole {
 
 // NodeType returns the Node type of the InlineInterpretedTextRole
 func (i InlineInterpretedTextRole) NodeType() NodeType { return i.Type }
+
+// String satisfies the Stringer interface
+func (i InlineInterpretedTextRole) String() string { return fmt.Sprintf("%#v", i) }
 
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.
 type BlockQuoteNode struct {
@@ -430,6 +538,9 @@ func newBlockQuote(i *item) *BlockQuoteNode {
 // NodeType returns the Node type of the BlockQuoteNode.
 func (b BlockQuoteNode) NodeType() NodeType { return b.Type }
 
+// String satisfies the Stringer interface
+func (b BlockQuoteNode) String() string { return fmt.Sprintf("%#v", b) }
+
 // SystemMessageNode are messages generated by the parser. System messages are leveled by severity and can be one of either
 // Warning, Error, Info, and Severe.
 type SystemMessageNode struct {
@@ -460,6 +571,9 @@ func newSystemMessage(i *item, m parserMessage) *SystemMessageNode {
 // NodeType returns the Node type of the SystemMessageNode.
 func (s SystemMessageNode) NodeType() NodeType { return s.Type }
 
+// String satisfies the Stringer interface
+func (s SystemMessageNode) String() string { return fmt.Sprintf("%#v", s) }
+
 // LiteralBlockNode is a parsed literal block element.
 type LiteralBlockNode struct {
 	Type          NodeType `json:"type"`
@@ -481,6 +595,9 @@ func newLiteralBlock(i *item) *LiteralBlockNode {
 
 // NodeType returns the Node type of LiteralBlockNode.
 func (l LiteralBlockNode) NodeType() NodeType { return l.Type }
+
+// String satisfies the Stringer interface
+func (l LiteralBlockNode) String() string { return fmt.Sprintf("%#v", l) }
 
 // TransitionNode is a parsed transition element. Transition elements are very similar to AdornmentNodes.
 type TransitionNode struct {
@@ -504,6 +621,9 @@ func newTransition(i *item) *TransitionNode {
 // NodeType returns the Node type of the TransitionNode.
 func (t TransitionNode) NodeType() NodeType { return t.Type }
 
+// String satisfies the Stringer interface
+func (t TransitionNode) String() string { return fmt.Sprintf("%#v", t) }
+
 // CommentNode is a parsed comment element. Comment elements do not appear as visible elements in document transformations.
 type CommentNode struct {
 	Type          NodeType `json:"type"`
@@ -526,6 +646,9 @@ func newComment(i *item) *CommentNode {
 // NodeType returns the Node type of the CommentNode.
 func (t CommentNode) NodeType() NodeType { return t.Type }
 
+// String satisfies the Stringer interface
+func (t CommentNode) String() string { return fmt.Sprintf("%#v", t) }
+
 // BulletListNode defines a bullet list element.
 type BulletListNode struct {
 	Type     NodeType `json:"type"`
@@ -544,6 +667,9 @@ func newBulletListNode(i *item) *BulletListNode {
 // NodeType returns the type of Node for the bullet list.
 func (b BulletListNode) NodeType() NodeType { return b.Type }
 
+// String satisfies the Stringer interface
+func (b BulletListNode) String() string { return fmt.Sprintf("%#v", b) }
+
 // BulletListItemNode defines a Bullet List Item element.
 type BulletListItemNode struct {
 	Type     NodeType `json:"type"`
@@ -557,6 +683,9 @@ func newBulletListItemNode(i *item) *BulletListItemNode {
 
 // NodeType returns the type of Node for the bullet list item.
 func (b BulletListItemNode) NodeType() NodeType { return b.Type }
+
+// String satisfies the Stringer interface
+func (b BulletListItemNode) String() string { return fmt.Sprintf("%#v", b) }
 
 // EnumListNode defines an enumerated list element.
 type EnumListNode struct {
@@ -594,6 +723,9 @@ func newEnumListNode(enumList *item, affix *item) *EnumListNode {
 // NodeType returns the Node type of the EnumListNode.
 func (e EnumListNode) NodeType() NodeType { return e.Type }
 
+// String satisfies the Stringer interface
+func (e EnumListNode) String() string { return fmt.Sprintf("%#v", e) }
+
 // DefinitionListNode defines a definition list element.
 type DefinitionListNode struct {
 	Type     NodeType `json:"type"`
@@ -606,6 +738,9 @@ func newDefinitionList(i *item) *DefinitionListNode {
 
 // NodeType returns the Node type of DefinitionListNode.
 func (d DefinitionListNode) NodeType() NodeType { return d.Type }
+
+// String satisfies the Stringer interface
+func (d DefinitionListNode) String() string { return fmt.Sprintf("%#v", d) }
 
 // DefinitionListItemNode defines a definition list item element.
 type DefinitionListItemNode struct {
@@ -632,6 +767,9 @@ func newDefinitionListItem(defTerm *item, def *item) *DefinitionListItemNode {
 // NodeType returns the Node type of DefinitionListItemNode.
 func (d DefinitionListItemNode) NodeType() NodeType { return d.Type }
 
+// String satisfies the Stringer interface
+func (d DefinitionListItemNode) String() string { return fmt.Sprintf("%#v", d) }
+
 // DefinitionTermNode defines a definition list term element.
 type DefinitionTermNode struct {
 	Type          NodeType `json:"type"`
@@ -644,6 +782,9 @@ type DefinitionTermNode struct {
 // NodeType returns the Node type of DefinitionTermNode.
 func (d DefinitionTermNode) NodeType() NodeType { return d.Type }
 
+// String satisfies the Stringer interface
+func (d DefinitionTermNode) String() string { return fmt.Sprintf("%#v", d) }
+
 // DefinitionNode defines a difinition element.
 type DefinitionNode struct {
 	Type     NodeType `json:"type"`
@@ -653,3 +794,6 @@ type DefinitionNode struct {
 
 // NodeType returns the Node type of DefinitionNode.
 func (d DefinitionNode) NodeType() NodeType { return d.Type }
+
+// String satisfies the Stringer interface
+func (d DefinitionNode) String() string { return fmt.Sprintf("%#v", d) }

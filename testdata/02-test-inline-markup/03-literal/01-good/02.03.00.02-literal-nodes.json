@@ -1,0 +1,21 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineLiteral",
+                "text": "inline literal",
+                "startPosition": 3,
+                "line": 1,
+                "length": 14
+            },
+            {
+                "type": "NodeText",
+                "text": " at the beginning of a paragraph.",
+                "startPosition": 19,
+                "line": 1,
+                "length": 33
+            }
+        ]
+    }
+]

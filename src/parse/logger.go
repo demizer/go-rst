@@ -2,23 +2,49 @@ package parse
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/term"
 	"github.com/go-stack/stack"
 )
 
+var logc **log.Context
+
 var (
 	// LogCtx is the default logger for the parse package
-	Log                 = log.NewContext(log.NewNopLogger())
+	logp                = NewLogCtx("parser")
+	logl                = NewLogCtx("lexer")
+	logt                = NewLogCtx("test")
 	excludeNamedContext string // Exclude a log context from being shown in the output
-	debug               bool
 )
 
 type logCtx struct {
 	name string
 	ctx  *log.Context
 }
+
+// NewLogCtx creates a new logging context with name and returns o logCtx ready to use.
+func NewLogCtx(name string) *logCtx {
+	return &logCtx{name: name, ctx: log.NewContext(log.NewNopLogger())}
+}
+
+func LogSetContext(l *log.Context) {
+	logp.ctx = l
+	logl.ctx = l
+	logt.ctx = l
+}
+
+func NewColorLogCtx(name string, colorFn func(keyvals ...interface{}) term.FgBgColor) *logCtx {
+	return &logCtx{name: name, ctx: log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))}
+}
+
+// Msg logs a message to the log context.
+func (l *logCtx) Msg(message string) { l.Log("msg", message) }
+
+// Error logs an error to the log context.
+func (l *logCtx) Err(err error) { l.Log("msg", err.Error()) }
 
 // Log writes log output to the LogCtx of the package with added context
 func (l *logCtx) Log(keyvals ...interface{}) error {
@@ -28,10 +54,5 @@ func (l *logCtx) Log(keyvals ...interface{}) error {
 	cs := stack.Caller(2)
 	funcName := fmt.Sprintf("%n", cs)
 	file := cs.String()
-	return l.ctx.WithPrefix("name", l.name, "caller", file, "func", funcName).Log(keyvals...)
-}
-
-// NewLogCtx creates a new logging context with name and returns o logCtx ready to use.
-func NewLogCtx(name string) *logCtx {
-	return &logCtx{name: name, ctx: Log}
+	return l.ctx.WithPrefix("name", l.name, "line", file, "func", funcName).Log(keyvals...)
 }

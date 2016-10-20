@@ -1,0 +1,28 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Inline literal ",
+                "startPosition": 1,
+                "line": 1,
+                "length": 15
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "in",
+                "startPosition": 18,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "type": "NodeText",
+                "text": " the middle of a paragraph.",
+                "startPosition": 22,
+                "line": 1,
+                "length": 27
+            }
+        ]
+    }
+]
