@@ -226,3 +226,11 @@ func Test_02_03_02_00_ParseInlineMarkupLiteralGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_03_03_00_ParseInlineMarkupLiteralGood(t *testing.T) {
+	testPath := testPathFromName("02.03.03.00-literal-quoted")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

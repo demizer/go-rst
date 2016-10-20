@@ -449,11 +449,23 @@ func checkParseNodes(t *testing.T, eTree []interface{}, pNodes *NodeList, testPa
 		tlog("-----------------------------------------------------------------------------")
 		tlog("Parse Nodes")
 		tlog("-----------------------------------------------------------------------------")
-		tlog(spd.Sdump(pNodes))
+		pnj, err := json.MarshalIndent(pNodes, "", "    ")
+		if err != nil {
+			tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
+			t.Fail()
+		}
+		tlog(string(pnj))
+		// tlog(spd.Sdump(pNodes))
 		tlog("-----------------------------------------------------------------------------")
 		tlog("Expected Nodes")
 		tlog("-----------------------------------------------------------------------------")
-		tlog(spd.Sdump(eTree))
+		enj, err := json.MarshalIndent(eTree, "", " ")
+		if err != nil {
+			tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
+			t.Fail()
+		}
+		tlog(string(enj))
+		// tlog(spd.Sdump(eTree))
 		t.FailNow()
 	}
 

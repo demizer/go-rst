@@ -1,6 +1,9 @@
 package parse
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // NodeType identifies the type of a parse tree node.
 type NodeType int
@@ -344,6 +347,23 @@ type TextNode struct {
 	StartPosition `json:"startPosition"`
 }
 
+// MarshalJSON satisfies the Marshaler interface.
+func (t TextNode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type          string `json:"type"`
+		Text          string `json:"text"`
+		Length        int    `json:"length"`
+		Line          `json:"line"`
+		StartPosition `json:"startPosition"`
+	}{
+		Type:          nodeTypes[t.Type],
+		Text:          t.Text,
+		Length:        t.Length,
+		Line:          t.Line,
+		StartPosition: t.StartPosition,
+	})
+}
+
 func newText(i *item) *TextNode {
 	return &TextNode{
 		Type:          NodeText,
@@ -364,6 +384,17 @@ func (p TextNode) String() string { return fmt.Sprintf("%#v", p) }
 type ParagraphNode struct {
 	Type     NodeType          `json:"type"`
 	NodeList `json:"nodeList"` // NodeList contains children of the ParagraphNode, even other ParagraphNodes!
+}
+
+// MarshalJSON satisfies the Marshaler interface.
+func (p ParagraphNode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type     string `json:"type"`
+		NodeList `json:"nodeList"`
+	}{
+		Type:     nodeTypes[p.Type],
+		NodeList: p.NodeList,
+	})
 }
 
 func newParagraph() *ParagraphNode { return &ParagraphNode{Type: NodeParagraph} }
@@ -437,6 +468,23 @@ type InlineLiteralNode struct {
 	Length        int      `json:"length"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
+}
+
+// MarshalJSON satisfies the Marshaler interface.
+func (l InlineLiteralNode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type          string `json:"type"`
+		Text          string `json:"text"`
+		Length        int    `json:"length"`
+		Line          `json:"line"`
+		StartPosition `json:"startPosition"`
+	}{
+		Type:          nodeTypes[l.Type],
+		Text:          l.Text,
+		Length:        l.Length,
+		Line:          l.Line,
+		StartPosition: l.StartPosition,
+	})
 }
 
 func newInlineLiteral(i *item) *InlineLiteralNode {

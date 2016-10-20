@@ -1,0 +1,84 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "quoted '",
+                "length": 8,
+                "line": 1,
+                "startPosition": 1
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "length": 7,
+                "line": 1,
+                "startPosition": 11
+            },
+            {
+                "type": "NodeText",
+                "text": "', quoted \"",
+                "length": 11,
+                "line": 1,
+                "startPosition": 20
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "length": 7,
+                "line": 1,
+                "startPosition": 33
+            },
+            {
+                "type": "NodeText",
+                "text": "\",\nquoted ‘",
+                "length": 11,
+                "line": 1,
+                "startPosition": 42
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "length": 7,
+                "line": 2,
+                "startPosition": 13
+            },
+            {
+                "type": "NodeText",
+                "text": "’, quoted “",
+                "length": 11,
+                "line": 2,
+                "startPosition": 22
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "length": 7,
+                "line": 2,
+                "startPosition": 39
+            },
+            {
+                "type": "NodeText",
+                "text": "”,\nquoted «",
+                "length": 11,
+                "line": 2,
+                "startPosition": 48
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "length": 7,
+                "line": 3,
+                "startPosition": 12
+            },
+            {
+                "type": "NodeText",
+                "text": "»",
+                "length": 1,
+                "line": 3,
+                "startPosition": 21
+            }
+        ]
+    }
+]

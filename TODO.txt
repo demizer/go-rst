@@ -1,3 +1,9 @@
+* Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
+
+* Thu Oct 20 00:42 2016: add -json argument to gb test -v parse to output to JSON
+
+  Parse nodes and expected nodes see parse_test.go#450
+
 * Mon Oct 17 22:33 2016: Refactor InlineInterpretedText to InlineInterpretedTextNode
 
 * Sun Oct 16 22:02 2016: Add strong across lines test
