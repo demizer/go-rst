@@ -1,0 +1,42 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "l'",
+                "startPosition": 1,
+                "line": 1,
+                "length": 2
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "startPosition": 5,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeText",
+                "text": " and l\u2019",
+                "startPosition": 14,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal",
+                "startPosition": 25,
+                "line": 1,
+                "length": 7
+            },
+            {
+                "type": "NodeText",
+                "text": " with apostrophe.",
+                "startPosition": 34,
+                "line": 1,
+                "length": 17
+            }
+        ]
+    }
+]
