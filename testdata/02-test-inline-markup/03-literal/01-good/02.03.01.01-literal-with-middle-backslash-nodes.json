@@ -1,0 +1,14 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineLiteral",
+                "text": "lite\\ral",
+                "startPosition": 3,
+                "line": 1,
+                "length": 8
+            }
+        ]
+    }
+]
