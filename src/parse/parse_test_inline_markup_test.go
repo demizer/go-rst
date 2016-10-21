@@ -234,3 +234,35 @@ func Test_02_03_03_00_ParseInlineMarkupLiteralGood(t *testing.T) {
 	eNodes := test.expectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
+
+func Test_02_03_03_01_ParseInlineMarkupLiteralGood(t *testing.T) {
+	testPath := testPathFromName("02.03.03.01-literal-quoted-literal")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
+func Test_02_03_04_00_ParseInlineMarkupLiteralGood(t *testing.T) {
+	testPath := testPathFromName("02.03.04.00-literal-interpreted-text")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
+func Test_02_03_05_00_ParseInlineMarkupLiteralGood(t *testing.T) {
+	testPath := testPathFromName("02.03.05.00-literal-followed-by-backslash")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
+func Test_02_03_06_00_ParseInlineMarkupLiteralGood(t *testing.T) {
+	testPath := testPathFromName("02.03.06.00-literal-with-tex-quotes")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}

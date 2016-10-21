@@ -1,0 +1,21 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineLiteral",
+                "text": "literal ``TeX quotes'' & \\backslash",
+                "length": 35,
+                "line": 1,
+                "startPosition": 3
+            },
+            {
+                "type": "NodeText",
+                "text": " but not \"``\" or ``",
+                "length": 19,
+                "line": 1,
+                "startPosition": 40
+            }
+        ]
+    }
+]

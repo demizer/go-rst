@@ -1,0 +1,77 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeInlineLiteral",
+                "text": "'literal'",
+                "length": 9,
+                "line": 1,
+                "startPosition": 3
+            },
+            {
+                "type": "NodeText",
+                "text": " with quotes, ",
+                "length": 14,
+                "line": 1,
+                "startPosition": 14
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "\"literal\"",
+                "length": 9,
+                "line": 1,
+                "startPosition": 30
+            },
+            {
+                "type": "NodeText",
+                "text": " with quotes,",
+                "length": 13,
+                "line": 1,
+                "startPosition": 41
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "‘literal’",
+                "length": 9,
+                "line": 2,
+                "startPosition": 3
+            },
+            {
+                "type": "NodeText",
+                "text": " with quotes, ",
+                "length": 14,
+                "line": 2,
+                "startPosition": 18
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "“literal”",
+                "length": 9,
+                "line": 2,
+                "startPosition": 34
+            },
+            {
+                "type": "NodeText",
+                "text": " with quotes,",
+                "length": 13,
+                "line": 2,
+                "startPosition": 49
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "«literal»",
+                "length": 9,
+                "line": 3,
+                "startPosition": 3
+            },
+            {
+                "type": "NodeText",
+                "text": " with quotes.",
+                "length": 13,
+                "line": 3,
+                "startPosition": 16
+            }
+        ]
+    }
+]

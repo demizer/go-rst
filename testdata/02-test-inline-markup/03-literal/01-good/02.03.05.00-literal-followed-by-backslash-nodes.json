@@ -1,0 +1,28 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Python ",
+                "length": 7,
+                "line": 1,
+                "startPosition": 1
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "list",
+                "length": 4,
+                "line": 1,
+                "startPosition": 10
+            },
+            {
+                "type": "NodeText",
+                "text": "s use square bracket syntax.",
+                "length": 28,
+                "line": 1,
+                "startPosition": 17
+            }
+        ]
+    }
+]

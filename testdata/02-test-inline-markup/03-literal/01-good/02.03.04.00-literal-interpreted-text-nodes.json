@@ -1,0 +1,29 @@
+[
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "Find the ",
+                "length": 9,
+                "line": 1,
+                "startPosition": 1
+            },
+            {
+                "type": "NodeInlineLiteral",
+                "text": "`interpreted text`",
+                "length": 18,
+                "line": 1,
+                "startPosition": 12
+            },
+            {
+                "type": "NodeText",
+                "text": " in this paragraph!",
+                "length": 19,
+                "line": 1,
+                "startPosition": 32
+            }
+        ]
+    }
+]
+
