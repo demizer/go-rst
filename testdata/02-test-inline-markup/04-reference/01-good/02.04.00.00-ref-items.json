@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineReferenceText",
+        "text": "ref",
+        "startPosition": 1,
+        "line": 1,
+        "length": 3
+    },
+    {
+        "id": 2,
+        "type": "itemInlineReferenceClose",
+        "text": "_",
+        "startPosition": 4,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemEOF",
+        "startPosition": 5,
+        "line": 1
+    }
+]

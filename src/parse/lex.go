@@ -98,6 +98,9 @@ const (
 	itemInlineInterpretedTextRoleOpen
 	itemInlineInterpretedTextRole
 	itemInlineInterpretedTextRoleClose
+	itemInlineReferenceOpen
+	itemInlineReferenceText
+	itemInlineReferenceClose
 	itemDefinitionTerm
 	itemDefinitionText
 	itemBullet
@@ -134,6 +137,9 @@ var elements = [...]string{
 	"itemInlineInterpretedTextRoleOpen",
 	"itemInlineInterpretedTextRole",
 	"itemInlineInterpretedTextRoleClose",
+	"itemInlineReferenceOpen",
+	"itemInlineReferenceText",
+	"itemInlineReferenceClose",
 	"itemDefinitionTerm",
 	"itemDefinitionText",
 	"itemBullet",
@@ -729,6 +735,18 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 	return false
 }
 
+func isInlineReference(l *lexer) bool {
+	logl.Log("msg", "mark", "m", string(l.mark))
+	notSurrounded := l.peekBack(1) != '_' && l.peek(1) != '_'
+	lastItemIsNotSpace := l.lastItem == nil || l.lastItem.Type != itemSpace
+	if l.mark == '_' && notSurrounded && lastItemIsNotSpace {
+		logl.Msg("Found inlineReference!")
+		return true
+	}
+	logl.Msg("isInlineReference not found")
+	return false
+}
+
 func isEscaped(l *lexer) bool {
 	// logl.Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 	return (l.mark == '\\' && (unicode.In(l.peek(1), unicode.Zs, unicode.Cc, unicode.Lu, unicode.Ll) || l.peek(1) ==
@@ -764,6 +782,8 @@ func lexStart(l *lexer) stateFn {
 				return lexBlockquote
 			} else if isDefinitionTerm(l) {
 				return lexDefinitionTerm
+			} else if isInlineReference(l) {
+				return lexInlineReference
 			} else {
 				return lexText
 			}
@@ -890,6 +910,7 @@ func lexEnumList(l *lexer) stateFn {
 }
 
 func lexText(l *lexer) stateFn {
+	logl.Msg("lexText start")
 	for {
 		// logl.Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 		if isEscaped(l) {
@@ -904,6 +925,9 @@ func lexText(l *lexer) stateFn {
 			if isEscaped(l) {
 				lexEscape(l)
 			}
+			continue
+		} else if isInlineReference(l) {
+			lexInlineReference(l)
 			continue
 		}
 		if l.isEndOfLine() && l.mark == utf8.RuneError {
@@ -1123,5 +1147,12 @@ func lexInlineInterpretedTextRole(l *lexer) stateFn {
 	}
 	l.next()
 	l.emit(itemInlineInterpretedTextRoleClose)
+	return lexStart
+}
+
+func lexInlineReference(l *lexer) stateFn {
+	l.emit(itemInlineReferenceText)
+	l.next()
+	l.emit(itemInlineReferenceClose)
 	return lexStart
 }
