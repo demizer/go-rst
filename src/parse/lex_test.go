@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -38,8 +39,19 @@ func equal(t *testing.T, expectItems []item, items []item) {
 
 	lLen := len(items)
 	eLen := len(expectItems)
+
+	litems, err := json.MarshalIndent(items, "", "    ")
+	if err != nil {
+		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
+		t.Fail()
+	}
+	eitems, err := json.MarshalIndent(expectItems, "", "    ")
+	if err != nil {
+		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
+		t.Fail()
+	}
 	if lLen != eLen {
-		o, err := diffLexerItems(spd.Sdump(items), spd.Sdump(expectItems))
+		o, err := diffLexerItems(string(eitems), string(litems))
 		if err != nil {
 			fmt.Println(o)
 			fmt.Println(err)

@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -186,6 +187,25 @@ type item struct {
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	Length        int `json:"length"`
+}
+
+// MarshalJSON satisfies the Marshaler interface.
+func (i item) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		ID            int    `json:"id"`
+		Type          string `json:"type"`
+		Text          string `json:"text"`
+		Line          int    `json:"line"`
+		StartPosition int    `json:"startPosition"`
+		Length        int    `json:"length"`
+	}{
+		ID:            int(i.IDNumber()),
+		Type:          i.Type.String(),
+		Text:          i.Text,
+		Line:          int(i.Line),
+		StartPosition: i.StartPosition.Int(),
+		Length:        i.Length,
+	})
 }
 
 // String satisfies the Stringer interface.
