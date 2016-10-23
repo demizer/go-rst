@@ -1,0 +1,4 @@
+<document source="test data">
+    <paragraph>
+        Anonymous external hyperlink target:
+    <target anonymous="1" ids="id1" refuri="http://w3c.org/">

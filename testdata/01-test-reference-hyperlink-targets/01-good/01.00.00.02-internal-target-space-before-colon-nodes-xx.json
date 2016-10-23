@@ -1,0 +1,4 @@
+<document source="test data">
+    <target ids="a-long-target-name" names="a\ long\ target\ name">
+    <target ids="a-target-name-including-a-colon-quoted" names="a\ target\ name:\ including\ a\ colon\ (quoted)">
+    <target ids="a-target-name-including-a-colon-escaped" names="a\ target\ name:\ including\ a\ colon\ (escaped)">

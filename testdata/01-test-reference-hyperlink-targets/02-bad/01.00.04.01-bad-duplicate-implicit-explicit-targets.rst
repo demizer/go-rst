@@ -1,0 +1,19 @@
+Duplicate targets:
+
+Target
+======
+
+Implicit section header target.
+
+.. [TARGET] Citation target.
+
+.. [#target] Autonumber-labeled footnote target.
+
+.. _target:
+
+Explicit internal target.
+
+.. _target: Explicit_external_target
+
+.. rubric:: directive with target
+   :name: Target

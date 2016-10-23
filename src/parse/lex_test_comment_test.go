@@ -1,6 +1,9 @@
 package parse
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 // A single comment
 func Test_00_00_00_00_LexCommentGood(t *testing.T) {
@@ -61,6 +64,16 @@ func Test_00_00_00_06_LexCommentNotCitationGood(t *testing.T) {
 // A comment block with substitution definition syntax in the text
 func Test_00_00_00_07_LexCommentNotSubstitutionDefinitionGood(t *testing.T) {
 	testPath := testPathFromName("00.00.00.07-comment-not-subs-def")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
+func Test_00_00_00_08_LexCommentIsNotReferenceGood_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testPathFromName("00.00.00.08-comment-not-reference")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

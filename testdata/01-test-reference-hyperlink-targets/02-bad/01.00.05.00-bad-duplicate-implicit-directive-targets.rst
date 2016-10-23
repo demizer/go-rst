@@ -1,0 +1,7 @@
+Duplicate implicit/directive targets.
+
+Title
+=====
+
+.. target-notes::
+   :name: title

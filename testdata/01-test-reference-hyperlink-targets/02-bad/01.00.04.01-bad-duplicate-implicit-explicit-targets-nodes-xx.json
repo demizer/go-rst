@@ -1,0 +1,37 @@
+<document source="test data">
+    <paragraph>
+        Duplicate targets:
+    <section dupnames="target" ids="target">
+        <title>
+            Target
+        <paragraph>
+            Implicit section header target.
+        <citation dupnames="target" ids="id1">
+            <label>
+                TARGET
+            <system_message backrefs="id1" level="1" line="8" source="test data" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "target".
+            <paragraph>
+                Citation target.
+        <footnote auto="1" dupnames="target" ids="id2">
+            <system_message backrefs="id2" level="2" line="10" source="test data" type="WARNING">
+                <paragraph>
+                    Duplicate explicit target name: "target".
+            <paragraph>
+                Autonumber-labeled footnote target.
+        <system_message backrefs="id3" level="2" line="12" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "target".
+        <target dupnames="target" ids="id3">
+        <paragraph>
+            Explicit internal target.
+        <system_message backrefs="id4" level="2" line="16" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "target".
+        <target dupnames="target" ids="id4" refuri="Explicit_external_target">
+        <rubric dupnames="target" ids="id5">
+            directive with target
+            <system_message backrefs="id5" level="2" line="4" source="test data" type="WARNING">
+                <paragraph>
+                    Duplicate explicit target name: "target".

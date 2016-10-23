@@ -1,0 +1,8 @@
+<document source="test data">
+    <paragraph>
+        External hyperlink targets:
+    <target ids="one-liner" names="one-liner" refuri="http://structuredtext.sourceforge.net">
+    <target ids="starts-on-this-line" names="starts-on-this-line" refuri="http://structuredtext.sourceforge.net">
+    <target ids="entirely-below" names="entirely-below" refuri="http://structuredtext.sourceforge.net">
+    <target ids="not-indirect" names="not-indirect" refuri="uri_">
+

@@ -1,0 +1,9 @@
+Duplicate explicit/directive targets.
+
+.. _title:
+
+First.
+
+.. rubric:: this is a title too
+   :name: title
+

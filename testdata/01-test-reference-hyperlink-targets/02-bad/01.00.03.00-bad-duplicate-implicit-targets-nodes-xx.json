@@ -1,0 +1,16 @@
+<document source="test data">
+    <paragraph>
+        Duplicate implicit targets.
+    <section dupnames="title" ids="title">
+        <title>
+            Title
+        <paragraph>
+            Paragraph.
+    <section dupnames="title" ids="id1">
+        <title>
+            Title
+        <system_message backrefs="id1" level="1" line="9" source="test data" type="INFO">
+            <paragraph>
+                Duplicate implicit target name: "title".
+        <paragraph>
+            Paragraph.

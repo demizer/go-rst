@@ -1,0 +1,14 @@
+<document source="test data">
+    <paragraph>
+        Duplicate implicit/directive targets.
+    <section dupnames="title" ids="title">
+        <title>
+            Title
+        <pending ids="id1" names="title">
+            <system_message backrefs="id1" level="1" line="4" source="test data" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "title".
+            .. internal attributes:
+                 .transform: docutils.transforms.references.TargetNotes
+                 .details:
+

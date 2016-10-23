@@ -1,6 +1,9 @@
 package parse
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 // A single comment
 func Test_00_00_00_00_ParseCommentGood(t *testing.T) {
@@ -68,6 +71,17 @@ func Test_00_00_00_06_ParseCommentNotCitationGood(t *testing.T) {
 // A comment block with substitution definition syntax in the text
 func Test_00_00_00_07_ParseCommentNotSubstitutionDefinitionGood(t *testing.T) {
 	testPath := testPathFromName("00.00.00.07-comment-not-subs-def")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
+func Test_00_00_00_08_ParseCommentIsNotReferenceGood_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testPathFromName("00.00.00.08-comment-not-reference")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()

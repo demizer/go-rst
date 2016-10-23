@@ -1,3 +1,7 @@
+* Sat Oct 22 13:55 2016: Bad tests should match good test in number (i.e., 01.00.00.00) and following this naming pattern:
+
+  01.00.00.00-target-missing-backquote-bad-items-xx.json
+
 * Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
 
 * Thu Oct 20 00:42 2016: add -json argument to gb test -v parse to output to JSON

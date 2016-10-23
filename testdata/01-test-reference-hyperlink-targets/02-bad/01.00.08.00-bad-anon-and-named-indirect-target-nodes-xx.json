@@ -1,0 +1,21 @@
+<document source="test data">
+    <paragraph>
+        Mixed anonymous & named indirect hyperlink targets:
+    <target anonymous="1" ids="id1" refname="reference">
+    <target anonymous="1" ids="id2" refname="reference">
+    <target anonymous="1" ids="id3" refname="reference">
+    <target ids="target1" names="target1" refname="reference">
+    <system_message level="2" line="7" source="test data" type="WARNING">
+        <paragraph>
+            Explicit markup ends without a blank line; unexpected unindent.
+    <paragraph>
+        no blank line
+    <target ids="target2" names="target2" refname="reference">
+    <target anonymous="1" ids="id4" refname="reference">
+    <target anonymous="1" ids="id5" refname="reference">
+    <target anonymous="1" ids="id6" refname="reference">
+    <system_message level="2" line="13" source="test data" type="WARNING">
+        <paragraph>
+            Explicit markup ends without a blank line; unexpected unindent.
+    <paragraph>
+        no blank line
