@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Inconsistent literal block quoting.
+    <paragraph>
+        $ Inconsistent line.

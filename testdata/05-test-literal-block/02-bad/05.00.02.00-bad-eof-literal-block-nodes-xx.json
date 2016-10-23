@@ -1,0 +1,6 @@
+<document source="test data">
+    <paragraph>
+        EOF, even though a literal block is indicated:
+    <system_message level="2" line="2" source="test data" type="WARNING">
+        <paragraph>
+            Literal block expected; none found.

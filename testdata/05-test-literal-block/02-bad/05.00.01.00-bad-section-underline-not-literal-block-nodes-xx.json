@@ -1,0 +1,9 @@
+<document source="test data">
+    <system_message level="1" line="2" source="test data" type="INFO">
+        <paragraph>
+            Possible title underline, too short for the title.
+            Treating it as ordinary text because it's so short.
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        A literal block.

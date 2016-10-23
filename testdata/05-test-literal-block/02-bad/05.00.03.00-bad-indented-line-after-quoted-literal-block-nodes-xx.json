@@ -1,0 +1,11 @@
+<document source="test data">
+    <paragraph>
+        A paragraph:
+    <literal_block xml:space="preserve">
+        > A literal block.
+    <system_message level="3" line="4" source="test data" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <block_quote>
+        <paragraph>
+            Indented line.

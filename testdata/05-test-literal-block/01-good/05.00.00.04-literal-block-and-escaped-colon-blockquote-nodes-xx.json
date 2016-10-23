@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        A paragraph\:
+    <literal_block xml:space="preserve">
+        A literal block.
+    <paragraph>
+        A paragraph::
+    <block_quote>
+        <paragraph>
+            Not a literal block.
