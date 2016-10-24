@@ -1,0 +1,22 @@
+<document source="test data">
+    <paragraph>
+        Different bullets:
+    <bullet_list bullet="-">
+        <list_item>
+            <paragraph>
+                item 1
+    <bullet_list bullet="+">
+        <list_item>
+            <paragraph>
+                item 2
+    <bullet_list bullet="*">
+        <list_item>
+            <paragraph>
+                item 3
+    <system_message level="2" line="8" source="test data" type="WARNING">
+        <paragraph>
+            Bullet list ends without a blank line; unexpected unindent.
+    <bullet_list bullet="-">
+        <list_item>
+            <paragraph>
+                item 4

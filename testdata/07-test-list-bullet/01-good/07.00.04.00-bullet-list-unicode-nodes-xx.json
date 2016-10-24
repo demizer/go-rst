@@ -1,0 +1,15 @@
+<document source="test data">
+    <paragraph>
+        Unicode bullets:
+    <bullet_list bullet="\u2022">
+        <list_item>
+            <paragraph>
+                BULLET
+    <bullet_list bullet="\u2023">
+        <list_item>
+            <paragraph>
+                TRIANGULAR BULLET
+    <bullet_list bullet="\u2043">
+        <list_item>
+            <paragraph>
+                HYPHEN BULLET

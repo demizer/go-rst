@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        No blank line between:
+    <bullet_list bullet="+">
+        <list_item>
+            <paragraph>
+                item 1
+        <list_item>
+            <paragraph>
+                item 2
