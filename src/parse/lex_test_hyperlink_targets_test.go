@@ -9,9 +9,6 @@ func Test_01_00_00_00_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	testPath := testPathFromName("01.00.00.00-internal-target")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	// str, _ := json.MarshalIndent(items, "", "    ")
-	// fmt.Println(string(str))
-	// os.Exit(1)
 	equal(t, test.expectItems(), items)
 }
 
@@ -22,6 +19,9 @@ func Test_01_00_00_01_LexReferenceHyperlinkTargetGood_NotImplemented(t *testing.
 	testPath := testPathFromName("01.00.00.01-internal-target-space-before-colon")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
+	// str, _ := json.MarshalIndent(items, "", "    ")
+	// fmt.Println(string(str))
+	// os.Exit(1)
 	equal(t, test.expectItems(), items)
 }
 

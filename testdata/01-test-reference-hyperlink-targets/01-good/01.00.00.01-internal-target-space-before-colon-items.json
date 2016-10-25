@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "startPosition": 4,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemHyperlinkTargetName",
+        "text": "optional space before colon ",
+        "startPosition": 5,
+        "line": 1,
+        "length": 28
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "startPosition": 33,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "startPosition": 34,
+        "line": 1
+    }
+]
