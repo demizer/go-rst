@@ -84,6 +84,11 @@ const (
 	itemCommentMark
 	itemEnumListAffix
 	itemEnumListArabic
+	itemHyperlinkTargetStart
+	itemHyperlinkTargetPrefix
+	itemHyperlinkTargetName
+	itemHyperlinkTargetSuffix
+	itemHyperlinkTargetLink
 	itemInlineStrongOpen
 	itemInlineStrong
 	itemInlineStrongClose
@@ -123,6 +128,11 @@ var elements = [...]string{
 	"itemCommentMark",
 	"itemEnumListAffix",
 	"itemEnumListArabic",
+	"itemHyperlinkTargetStart",
+	"itemHyperlinkTargetPrefix",
+	"itemHyperlinkTargetName",
+	"itemHyperlinkTargetSuffix",
+	"itemHyperlinkTargetLink",
 	"itemInlineStrongOpen",
 	"itemInlineStrong",
 	"itemInlineStrongClose",
@@ -577,14 +587,31 @@ func isComment(l *lexer) bool {
 	if l.lastItem != nil && l.lastItem.Type == itemTitle {
 		return false
 	}
-	if nMark := l.peek(1); l.mark == '.' && nMark == '.' {
-		nMark2 := l.peek(2)
-		if unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError {
-			logl.Msg("Found comment!")
+	nMark := l.peek(1)
+	nMark2 := l.peek(2)
+	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError) {
+		if nMark3 := l.peek(3); nMark3 == '_' {
+			// Is hyperlink target
+			return false
+		}
+		logl.Msg("Found comment!")
+		return true
+	}
+	logl.Msg("Comment not found!")
+	return false
+}
+
+func isHyperlinkTarget(l *lexer) bool {
+	nMark := l.peek(1)
+	nMark2 := l.peek(2)
+	if l.mark == '.' && nMark == '.' && nMark2 != utf8.RuneError {
+		nMark3 := l.peek(3)
+		if unicode.IsSpace(nMark2) && nMark3 == '_' {
+			logl.Msg("Found hyperlink target!")
 			return true
 		}
 	}
-	logl.Msg("Comment not found!")
+	logl.Msg("Hyperlink target not found!")
 	return false
 }
 
@@ -788,6 +815,8 @@ func lexStart(l *lexer) stateFn {
 				"width", l.width, "line", l.lineNumber())
 			if isComment(l) {
 				return lexComment
+			} else if isHyperlinkTarget(l) {
+				return lexHyperlinkTarget
 			} else if isBulletList(l) {
 				return lexBullet
 			} else if isEnumList(l) {
@@ -966,6 +995,19 @@ func lexText(l *lexer) stateFn {
 	return lexStart
 }
 
+func lexHyperlinkTargetName(l *lexer) stateFn {
+	logl.Msg("lexHyperlinkTargetName start")
+	for {
+		lp := l.peek(1)
+		if l.mark == ':' && (unicode.IsSpace(lp) || lp == utf8.RuneError) {
+			l.emit(itemHyperlinkTargetName)
+			break
+		}
+		l.next()
+	}
+	// l.nextLine()
+	return lexStart
+}
 func lexComment(l *lexer) stateFn {
 	for l.mark == '.' {
 		l.next()
@@ -1174,5 +1216,20 @@ func lexInlineReference(l *lexer) stateFn {
 	l.emit(itemInlineReferenceText)
 	l.next()
 	l.emit(itemInlineReferenceClose)
+	return lexStart
+}
+
+func lexHyperlinkTarget(l *lexer) stateFn {
+	for l.mark == '.' {
+		l.next()
+	}
+	l.emit(itemHyperlinkTargetStart)
+	l.next()
+	lexSpace(l)
+	l.next()
+	l.emit(itemHyperlinkTargetPrefix)
+	lexHyperlinkTargetName(l)
+	l.next()
+	l.emit(itemHyperlinkTargetSuffix)
 	return lexStart
 }

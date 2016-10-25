@@ -1,0 +1,64 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "startPosition": 4,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemHyperlinkTargetName",
+        "text": "target",
+        "startPosition": 5,
+        "line": 1,
+        "length": 6
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "startPosition": 11,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemText",
+        "text": "(Internal hyperlink target.)",
+        "startPosition": 1,
+        "line": 3,
+        "length": 28
+    },
+    {
+        "id": 8,
+        "type": "itemEOF",
+        "startPosition": 29,
+        "line": 3
+    }
+]
