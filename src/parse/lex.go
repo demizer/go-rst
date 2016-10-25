@@ -996,16 +996,17 @@ func lexText(l *lexer) stateFn {
 }
 
 func lexHyperlinkTargetName(l *lexer) stateFn {
-	logl.Msg("lexHyperlinkTargetName start")
 	for {
+		lb := l.peekBack(1)
 		lp := l.peek(1)
-		if l.mark == ':' && (unicode.IsSpace(lp) || lp == utf8.RuneError) {
+		suffixNotEscaped := (l.mark == ':' && lb != '\\')
+		suffixIsEOL := (l.mark == ':' && lp == utf8.RuneError)
+		if suffixNotEscaped && suffixIsEOL {
 			l.emit(itemHyperlinkTargetName)
 			break
 		}
 		l.next()
 	}
-	// l.nextLine()
 	return lexStart
 }
 func lexComment(l *lexer) stateFn {
