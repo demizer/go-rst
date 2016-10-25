@@ -1,0 +1,79 @@
+<document source="test data">
+    <paragraph>
+        Definitely ambiguous:
+    <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item A.
+        <list_item>
+            <paragraph>
+                Item B.
+        <list_item>
+            <paragraph>
+                Item C.
+        <list_item>
+            <paragraph>
+                Item D.
+        <list_item>
+            <paragraph>
+                Item E.
+        <list_item>
+            <paragraph>
+                Item F.
+        <list_item>
+            <paragraph>
+                Item G.
+        <list_item>
+            <paragraph>
+                Item H.
+    <system_message level="2" line="11" source="test data" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent.
+    <enumerated_list enumtype="upperroman" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item I.
+        <list_item>
+            <paragraph>
+                Item II.
+        <list_item>
+            <paragraph>
+                Item III.
+    <enumerated_list enumtype="loweralpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item a.
+        <list_item>
+            <paragraph>
+                Item b.
+        <list_item>
+            <paragraph>
+                Item c.
+        <list_item>
+            <paragraph>
+                Item d.
+        <list_item>
+            <paragraph>
+                Item e.
+        <list_item>
+            <paragraph>
+                Item f.
+        <list_item>
+            <paragraph>
+                Item g.
+        <list_item>
+            <paragraph>
+                Item h.
+    <system_message level="2" line="23" source="test data" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent.
+    <enumerated_list enumtype="lowerroman" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item i.
+        <list_item>
+            <paragraph>
+                Item ii.
+        <list_item>
+            <paragraph>
+                Item iii.

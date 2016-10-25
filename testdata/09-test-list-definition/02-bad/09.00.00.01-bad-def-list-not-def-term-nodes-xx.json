@@ -1,0 +1,10 @@
+<document source="test data">
+    <paragraph>
+        this is not a term;
+        a term may only be one line long
+    <system_message level="3" line="3" source="test data" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <block_quote>
+        <paragraph>
+            this is not a definition

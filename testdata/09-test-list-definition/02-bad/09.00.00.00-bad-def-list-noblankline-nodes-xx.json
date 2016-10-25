@@ -1,0 +1,13 @@
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term
+            <definition>
+                <paragraph>
+                    definition
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            Definition list ends without a blank line; unexpected unindent.
+    <paragraph>
+        no blank line

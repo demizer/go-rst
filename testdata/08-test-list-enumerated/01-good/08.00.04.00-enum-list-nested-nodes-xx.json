@@ -1,0 +1,53 @@
+<document source="test data">
+    <paragraph>
+        Nested enumerated lists:
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item 1.
+            <enumerated_list enumtype="upperalpha" prefix="" suffix=")">
+                <list_item>
+                    <paragraph>
+                        Item A).
+                <list_item>
+                    <paragraph>
+                        Item B).
+                <list_item>
+                    <paragraph>
+                        Item C).
+        <list_item>
+            <paragraph>
+                Item 2.
+            <enumerated_list enumtype="loweralpha" prefix="(" suffix=")">
+                <list_item>
+                    <paragraph>
+                        Item (a).
+                    <enumerated_list enumtype="upperroman" prefix="" suffix=")">
+                        <list_item>
+                            <paragraph>
+                                Item I).
+                        <list_item>
+                            <paragraph>
+                                Item II).
+                        <list_item>
+                            <paragraph>
+                                Item III).
+                <list_item>
+                    <paragraph>
+                        Item (b).
+                <list_item>
+                    <paragraph>
+                        Item (c).
+                    <enumerated_list enumtype="lowerroman" prefix="(" suffix=")">
+                        <list_item>
+                            <paragraph>
+                                Item (i).
+                        <list_item>
+                            <paragraph>
+                                Item (ii).
+                        <list_item>
+                            <paragraph>
+                                Item (iii).
+        <list_item>
+            <paragraph>
+                Item 3.

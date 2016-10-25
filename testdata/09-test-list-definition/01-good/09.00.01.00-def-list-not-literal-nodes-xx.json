@@ -1,0 +1,11 @@
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                A paragraph::
+            <definition>
+                <system_message level="1" line="2" source="test data" type="INFO">
+                    <paragraph>
+                        Blank line missing before literal block (after the "::")? Interpreted as a definition list item.
+                <paragraph>
+                    A literal block without a blank line first?

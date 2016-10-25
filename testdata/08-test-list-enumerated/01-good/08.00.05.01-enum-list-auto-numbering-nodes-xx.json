@@ -1,0 +1,11 @@
+<document source="test data">
+    <enumerated_list enumtype="loweralpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Item one.
+        <list_item>
+            <paragraph>
+                Item two.
+        <list_item>
+            <paragraph>
+                Item three.

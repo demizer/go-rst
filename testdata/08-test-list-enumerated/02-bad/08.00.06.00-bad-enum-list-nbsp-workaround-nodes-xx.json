@@ -1,0 +1,21 @@
+<document source="test data">
+    <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Einstein was a great influence on
+        <list_item>
+            <paragraph>
+                Physicist, who was a colleague of
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent.
+    <paragraph>
+        C. Chemist.  They all worked in
+        Princeton, NJ.
+    <paragraph>
+        Using a non-breaking space as a workaround:
+    <paragraph>
+        A.\xa0Einstein was a great influence on
+        B. Physicist, who was a colleague of
+        C. Chemist.  They all worked in
+        Princeton, NJ.
