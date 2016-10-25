@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 1,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 1,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 1,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemHyperlinkTargetName",
+        "text": "a very long target name,",
+        "startPosition": 5,
+        "line": 1,
+        "length": 24
+    },
+    {
+        "id": 5,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 2,
+        "length": 3
+    },
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetName",
+        "text": "split across lines",
+        "line": 2,
+        "startPosition": 4,
+        "length": 18
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 2,
+        "startPosition": 22,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 9,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 3,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemHyperlinkTargetName",
+        "text": "`and another,",
+        "startPosition": 5,
+        "line": 3,
+        "length": 13
+    },
+    {
+        "id": 12,
+        "type": "itemSpace",
+        "text": "   ",
+        "startPosition": 1,
+        "line": 4,
+        "length": 3
+    },
+    {
+        "id": 13,
+        "type": "itemHyperlinkTargetName",
+        "text": "with backquotes`",
+        "line": 4,
+        "startPosition": 4,
+        "length": 16
+    },
+    {
+        "id": 14,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 4,
+        "startPosition": 20,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemEOF",
+        "text": "",
+        "line": 4,
+        "startPosition": 21,
+        "length": 0
+    }
+]

@@ -1001,9 +1001,15 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 		lp := l.peek(1)
 		suffixNotEscaped := (l.mark == ':' && lb != '\\')
 		suffixIsEOL := (l.mark == ':' && lp == utf8.RuneError)
+		isIndented := (unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)))
 		if suffixNotEscaped && suffixIsEOL {
 			l.emit(itemHyperlinkTargetName)
 			break
+		} else if isIndented {
+			lexSpace(l)
+		} else if l.mark == utf8.RuneError {
+			// hyperlink target name is multi-line
+			l.emit(itemHyperlinkTargetName)
 		}
 		l.next()
 	}
