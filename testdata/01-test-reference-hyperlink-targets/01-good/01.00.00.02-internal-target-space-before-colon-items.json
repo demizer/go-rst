@@ -73,14 +73,30 @@
     },
     {
         "id": 10,
-        "type": "itemHyperlinkTargetName",
-        "text": "`a target name: including a colon (quoted)`",
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
         "startPosition": 5,
         "line": 3,
-        "length": 43
+        "length": 1
     },
     {
         "id": 11,
+        "type": "itemHyperlinkTargetName",
+        "text": "a target name: including a colon (quoted)",
+        "startPosition": 6,
+        "line": 3,
+        "length": 41
+    },
+    {
+        "id": 12,
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
+        "startPosition": 47,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 13,
         "type": "itemHyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 48,
@@ -88,7 +104,7 @@
         "length": 1
     },
     {
-        "id": 12,
+        "id": 14,
         "type": "itemBlankLine",
         "text": "\n",
         "startPosition": 1,
@@ -96,7 +112,7 @@
         "length": 1
     },
     {
-        "id": 13,
+        "id": 15,
         "type": "itemHyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
@@ -104,7 +120,7 @@
         "length": 2
     },
     {
-        "id": 14,
+        "id": 16,
         "type": "itemSpace",
         "text": " ",
         "startPosition": 3,
@@ -112,7 +128,7 @@
         "length": 1
     },
     {
-        "id": 15,
+        "id": 17,
         "type": "itemHyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
@@ -120,7 +136,7 @@
         "length": 1
     },
     {
-        "id": 16,
+        "id": 18,
         "type": "itemHyperlinkTargetName",
         "text": "a target name\\: including a colon (escaped)",
         "startPosition": 5,
@@ -128,7 +144,7 @@
         "length": 43
     },
     {
-        "id": 17,
+        "id": 19,
         "type": "itemHyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 48,
@@ -136,7 +152,7 @@
         "length": 1
     },
     {
-        "id": 18,
+        "id": 20,
         "type": "itemEOF",
         "startPosition": 49,
         "line": 5

@@ -33,10 +33,7 @@ func Test_01_00_00_03_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-func Test_01_00_01_00_LexReferenceHyperlinkTargetGood_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
+func Test_01_00_01_00_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	testPath := testPathFromName("01.00.01.00-external-target")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)

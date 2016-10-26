@@ -81,14 +81,22 @@
     },
     {
         "id": 11,
-        "type": "itemHyperlinkTargetName",
-        "text": "`and another,",
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
         "startPosition": 5,
         "line": 3,
-        "length": 13
+        "length": 1
     },
     {
         "id": 12,
+        "type": "itemHyperlinkTargetName",
+        "text": "and another,",
+        "startPosition": 6,
+        "line": 3,
+        "length": 12
+    },
+    {
+        "id": 13,
         "type": "itemSpace",
         "text": "   ",
         "startPosition": 1,
@@ -96,15 +104,23 @@
         "length": 3
     },
     {
-        "id": 13,
+        "id": 14,
         "type": "itemHyperlinkTargetName",
-        "text": "with backquotes`",
+        "text": "with backquotes",
         "line": 4,
         "startPosition": 4,
-        "length": 16
+        "length": 15
     },
     {
-        "id": 14,
+        "id": 15,
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
+        "startPosition": 19,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 16,
         "type": "itemHyperlinkTargetSuffix",
         "text": ":",
         "line": 4,
@@ -112,7 +128,7 @@
         "length": 1
     },
     {
-        "id": 15,
+        "id": 17,
         "type": "itemEOF",
         "text": "",
         "line": 4,

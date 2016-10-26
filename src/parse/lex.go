@@ -86,9 +86,10 @@ const (
 	itemEnumListArabic
 	itemHyperlinkTargetStart
 	itemHyperlinkTargetPrefix
+	itemHyperlinkTargetQuote
 	itemHyperlinkTargetName
 	itemHyperlinkTargetSuffix
-	itemHyperlinkTargetLink
+	itemHyperlinkTargetURI
 	itemInlineStrongOpen
 	itemInlineStrong
 	itemInlineStrongClose
@@ -130,9 +131,10 @@ var elements = [...]string{
 	"itemEnumListArabic",
 	"itemHyperlinkTargetStart",
 	"itemHyperlinkTargetPrefix",
+	"itemHyperlinkTargetQuote",
 	"itemHyperlinkTargetName",
 	"itemHyperlinkTargetSuffix",
-	"itemHyperlinkTargetLink",
+	"itemHyperlinkTargetURI",
 	"itemInlineStrongOpen",
 	"itemInlineStrong",
 	"itemInlineStrongClose",
@@ -995,26 +997,6 @@ func lexText(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetName(l *lexer) stateFn {
-	for {
-		lb := l.peekBack(1)
-		lp := l.peek(1)
-		suffixNotEscaped := (l.mark == ':' && lb != '\\')
-		suffixIsEOL := (l.mark == ':' && lp == utf8.RuneError)
-		isIndented := (unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)))
-		if suffixNotEscaped && suffixIsEOL {
-			l.emit(itemHyperlinkTargetName)
-			break
-		} else if isIndented {
-			lexSpace(l)
-		} else if l.mark == utf8.RuneError {
-			// hyperlink target name is multi-line
-			l.emit(itemHyperlinkTargetName)
-		}
-		l.next()
-	}
-	return lexStart
-}
 func lexComment(l *lexer) stateFn {
 	for l.mark == '.' {
 		l.next()
@@ -1238,5 +1220,57 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 	lexHyperlinkTargetName(l)
 	l.next()
 	l.emit(itemHyperlinkTargetSuffix)
+	// If we still have more runes in the line, then we have a URI
+	if unicode.IsSpace(l.mark) && l.index < len(l.currentLine()) {
+		lexSpace(l)
+		lexHyperlinkTargetURI(l)
+	}
+	l.next()
+	return lexStart
+}
+
+func lexHyperlinkTargetName(l *lexer) stateFn {
+	var inquote bool
+	for {
+		if l.mark == '`' {
+			if !inquote {
+				inquote = true
+				l.next()
+				l.emit(itemHyperlinkTargetQuote)
+				l.next()
+			} else {
+				l.emit(itemHyperlinkTargetName)
+				l.next()
+				l.emit(itemHyperlinkTargetQuote)
+				break
+			}
+			continue
+		}
+		lb := l.peekBack(1)
+		lp := l.peek(1)
+		notEscaped := (l.mark == ':' && lb != '\\')
+		isIndented := (unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)))
+		if l.mark == ':' && !inquote && notEscaped {
+			l.emit(itemHyperlinkTargetName)
+			break
+		} else if isIndented {
+			lexSpace(l)
+		} else if l.mark == utf8.RuneError {
+			// hyperlink target name is multi-line
+			l.emit(itemHyperlinkTargetName)
+		}
+		l.next()
+	}
+	return lexStart
+}
+
+func lexHyperlinkTargetURI(l *lexer) stateFn {
+	for {
+		if l.mark == utf8.RuneError {
+			l.emit(itemHyperlinkTargetURI)
+			break
+		}
+		l.next()
+	}
 	return lexStart
 }
