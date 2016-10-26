@@ -29,7 +29,7 @@ generate_cover_data() {
 }
 
 show_cover_report() {
-    env GOPATH=$PROJECT:$PROJECT/vendor go tool cover -${1}="$profile"
+    env GOPATH=$PROJECT:$PROJECT/vendor GO_RST_SKIP_NOT_IMPLEMENTED=1 go tool cover -${1}="$profile"
 }
 
 push_to_coveralls() {
@@ -39,6 +39,7 @@ push_to_coveralls() {
 
 generate_cover_data parse
 show_cover_report func
+
 case "$1" in
 "")
     ;;
