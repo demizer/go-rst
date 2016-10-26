@@ -1224,6 +1224,11 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 		lexSpace(l)
 		lexHyperlinkTargetBlock(l)
 	}
+	if lp := l.peek(1); lp != utf8.RuneError && lp != '\n' && unicode.IsSpace(lp) {
+		l.next()
+		lexSpace(l)
+		lexHyperlinkTargetBlock(l)
+	}
 	l.next()
 	return lexStart
 }
@@ -1247,12 +1252,11 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 		}
 		lb := l.peekBack(1)
 		lp := l.peek(1)
-		notEscaped := (l.mark == ':' && lb != '\\')
-		isIndented := (unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)))
-		if l.mark == ':' && !inquote && notEscaped {
+		// make sure the : mark is not escaped, i.e., \\:
+		if l.mark == ':' && !inquote && lb != '\\' && l.mark == ':' {
 			l.emit(itemHyperlinkTargetName)
 			break
-		} else if isIndented {
+		} else if unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)) {
 			lexSpace(l)
 		} else if l.mark == utf8.RuneError {
 			// hyperlink target name is multi-line
@@ -1283,15 +1287,26 @@ func lexHyperlinkTargetBlock(l *lexer) stateFn {
 		}
 		lb := l.peekBack(1)
 		lp := l.peek(1)
-		isIndirectRef := (lb != '\\' && l.mark == '_' && lp == utf8.RuneError)
-		if isIndirectRef {
+		// First check for indirect reference
+		if lb != '\\' && l.mark == '_' && lp == utf8.RuneError {
 			l.emit(itemInlineReferenceText)
 			l.next()
 			l.emit(itemInlineReferenceClose)
 			break
-		} else if l.mark == utf8.RuneError {
+		} else if !inquote && l.mark == utf8.RuneError {
+			// end of current line
 			l.emit(itemHyperlinkTargetURI)
-			break
+			if lp == utf8.RuneError {
+				break
+			}
+			// uri continues on next line
+			l.next()
+			lexSpace(l)
+		} else if inquote && l.lastItem.Type == itemInlineReferenceOpen && l.mark == utf8.RuneError {
+			// end of current line, reference continues on next line
+			l.emit(itemInlineReferenceText)
+			l.next()
+			lexSpace(l)
 		}
 		l.next()
 	}

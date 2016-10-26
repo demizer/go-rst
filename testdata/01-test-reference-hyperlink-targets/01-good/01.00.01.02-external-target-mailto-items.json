@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemText",
+        "type": "itemHyperlinkTargetURI",
         "text": "@example.com",
         "line": 4,
         "startPosition": 4,

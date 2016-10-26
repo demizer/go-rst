@@ -1,0 +1,13 @@
+Equivalent indirect hyperlink targets:
+
+.. _one-liner: `A HYPERLINK`_
+
+.. _entirely-below:
+   `a    hyperlink`_
+
+.. _split: `A
+   Hyperlink`_
+
+.. _a hyperlink:
+
+All targets point to here.
