@@ -22,7 +22,7 @@ generate_cover_data() {
     mkdir "$workdir"
     for pkg in "$@"; do
         f="$workdir/$(echo $pkg | tr / -).cover"
-        env GOPATH=$PROJECT:$PROJECT/vendor go test -covermode="$mode" -coverprofile="$f" "$pkg"
+        env GOPATH=$PROJECT:$PROJECT/vendor GO_RST_SKIP_NOT_IMPLEMENTED=1 go test -covermode="$mode" -coverprofile="$f" "$pkg"
     done
     echo "mode: $mode" >"$profile"
     grep -h -v "^mode:" "$workdir"/*.cover >>"$profile"
