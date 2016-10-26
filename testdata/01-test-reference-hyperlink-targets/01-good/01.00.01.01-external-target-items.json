@@ -1,0 +1,80 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "External hyperlink:",
+        "line": 1,
+        "startPosition": 1,
+        "length": 19
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 3,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetName",
+        "text": "target",
+        "line": 3,
+        "startPosition": 5,
+        "length": 6
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 3,
+        "startPosition": 11,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 12,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemHyperlinkTargetURI",
+        "text": "http://www.python.org/",
+        "line": 3,
+        "startPosition": 13,
+        "length": 22
+    },
+    {
+        "id": 10,
+        "type": "itemEOF",
+        "line": 3,
+        "startPosition": 35
+    }
+]
