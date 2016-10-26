@@ -1,3 +1,7 @@
+* Tue Oct 25 19:56 2016: Split up lex.go and parse.go
+
+  These files are getting really long.
+
 * Sat Oct 22 13:55 2016: Bad tests should match good test in number (i.e., 01.00.00.00) and following this naming pattern:
 
   01.00.00.00-target-missing-backquote-bad-items-xx.json

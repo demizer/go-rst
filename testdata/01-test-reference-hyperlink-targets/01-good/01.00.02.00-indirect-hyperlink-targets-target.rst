@@ -1,5 +1,9 @@
 Indirect hyperlink targets:
 
-.. _target1: reference_
+.. _target: reference_
 
-.. _target2: `phrase-link reference`_
+.. _reference: `phrase-link reference`_
+
+.. _phrase-link reference:
+
+All targets point to here.

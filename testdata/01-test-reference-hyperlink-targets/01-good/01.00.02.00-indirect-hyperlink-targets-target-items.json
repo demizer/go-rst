@@ -1,0 +1,232 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "Indirect hyperlink targets:",
+        "startPosition": 1,
+        "line": 1,
+        "length": 27
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 2,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "startPosition": 1,
+        "line": 3,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "startPosition": 4,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetName",
+        "text": "target",
+        "startPosition": 5,
+        "line": 3,
+        "length": 6
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "startPosition": 11,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 12,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemInlineReferenceText",
+        "text": "reference",
+        "startPosition": 13,
+        "line": 3,
+        "length": 9
+    },
+    {
+        "id": 10,
+        "type": "itemInlineReferenceClose",
+        "text": "_",
+        "startPosition": 22,
+        "line": 3,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 4,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "startPosition": 1,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 13,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 14,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "startPosition": 4,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemHyperlinkTargetName",
+        "text": "reference",
+        "startPosition": 5,
+        "line": 5,
+        "length": 9
+    },
+    {
+        "id": 16,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "startPosition": 14,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 17,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 15,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 18,
+        "type": "itemInlineReferenceOpen",
+        "text": "`",
+        "startPosition": 16,
+        "line": 5,
+        "length": 1
+    },
+    {
+        "id": 19,
+        "type": "itemInlineReferenceText",
+        "text": "phrase-link reference",
+        "startPosition": 17,
+        "line": 5,
+        "length": 21
+    },
+    {
+        "id": 20,
+        "type": "itemInlineReferenceClose",
+        "text": "`_",
+        "startPosition": 38,
+        "line": 5,
+        "length": 2
+    },
+    {
+        "id": 21,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 6,
+        "length": 1
+    },
+    {
+        "id": 22,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "startPosition": 4,
+        "line": 7,
+        "length": 2
+    },
+    {
+        "id": 23,
+        "type": "itemSpace",
+        "text": " ",
+        "startPosition": 3,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 24,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "startPosition": 4,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 25,
+        "type": "itemHyperlinkTargetName",
+        "text": "phrase-link reference",
+        "startPosition": 5,
+        "line": 7,
+        "length": 21
+    },
+    {
+        "id": 26,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "startPosition": 26,
+        "line": 7,
+        "length": 1
+    },
+    {
+        "id": 27,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 1,
+        "line": 8,
+        "length": 1
+    },
+    {
+        "id": 28,
+        "type": "itemText",
+        "text": "All targets point to here.",
+        "startPosition": 1,
+        "line": 9,
+        "length": 26
+    },
+    {
+        "id": 29,
+        "type": "itemEOF",
+        "startPosition": 27,
+        "line": 9
+    }
+]

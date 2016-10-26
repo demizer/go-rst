@@ -1220,10 +1220,9 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 	lexHyperlinkTargetName(l)
 	l.next()
 	l.emit(itemHyperlinkTargetSuffix)
-	// If we still have more runes in the line, then we have a URI
 	if unicode.IsSpace(l.mark) && l.index < len(l.currentLine()) {
 		lexSpace(l)
-		lexHyperlinkTargetURI(l)
+		lexHyperlinkTargetBlock(l)
 	}
 	l.next()
 	return lexStart
@@ -1264,9 +1263,33 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetURI(l *lexer) stateFn {
+func lexHyperlinkTargetBlock(l *lexer) stateFn {
+	var inquote bool
 	for {
-		if l.mark == utf8.RuneError {
+		if l.mark == '`' {
+			if !inquote {
+				inquote = true
+				l.next()
+				l.emit(itemInlineReferenceOpen)
+				l.next()
+			} else {
+				l.emit(itemInlineReferenceText)
+				l.next()
+				l.next()
+				l.emit(itemInlineReferenceClose)
+				break
+			}
+			continue
+		}
+		lb := l.peekBack(1)
+		lp := l.peek(1)
+		isIndirectRef := (lb != '\\' && l.mark == '_' && lp == utf8.RuneError)
+		if isIndirectRef {
+			l.emit(itemInlineReferenceText)
+			l.next()
+			l.emit(itemInlineReferenceClose)
+			break
+		} else if l.mark == utf8.RuneError {
 			l.emit(itemHyperlinkTargetURI)
 			break
 		}

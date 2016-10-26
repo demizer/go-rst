@@ -54,16 +54,10 @@ func Test_01_00_01_02_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-func Test_01_00_02_00_LexReferenceHyperlinkTargetGood_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
+func Test_01_00_02_00_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	testPath := testPathFromName("01.00.02.00-indirect-hyperlink-targets-target")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	// str, _ := json.MarshalIndent(items, "", "    ")
-	// fmt.Println(string(str))
-	// os.Exit(1)
 	equal(t, test.expectItems(), items)
 }
 
@@ -74,6 +68,9 @@ func Test_01_00_03_00_LexReferenceHyperlinkTargetGood_NotImplemented(t *testing.
 	testPath := testPathFromName("01.00.03.00-anonymous-external-target")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
+	// str, _ := json.MarshalIndent(items, "", "    ")
+	// fmt.Println(string(str))
+	// os.Exit(1)
 	equal(t, test.expectItems(), items)
 }
 
