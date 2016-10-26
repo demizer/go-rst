@@ -1,0 +1,144 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 1,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 1,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 1,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemHyperlinkTargetName",
+        "text": "email",
+        "line": 1,
+        "startPosition": 5,
+        "length": 5
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 1,
+        "startPosition": 10,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 1,
+        "startPosition": 11,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetURI",
+        "text": "jdoe@example.com",
+        "line": 1,
+        "startPosition": 12,
+        "length": 16
+    },
+    {
+        "id": 8,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 10,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 3,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemHyperlinkTargetName",
+        "text": "multi-line email",
+        "line": 3,
+        "startPosition": 5,
+        "length": 16
+    },
+    {
+        "id": 13,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 3,
+        "startPosition": 21,
+        "length": 1
+    },
+    {
+        "id": 14,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 22,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemHyperlinkTargetURI",
+        "text": "jdoe",
+        "line": 3,
+        "startPosition": 23,
+        "length": 4
+    },
+    {
+        "id": 16,
+        "type": "itemSpace",
+        "text": "   ",
+        "line": 4,
+        "startPosition": 1,
+        "length": 3
+    },
+    {
+        "id": 17,
+        "type": "itemText",
+        "text": "@example.com",
+        "line": 4,
+        "startPosition": 4,
+        "length": 12
+    },
+    {
+        "id": 18,
+        "type": "itemEOF",
+        "line": 4,
+        "startPosition": 16
+    }
+]
