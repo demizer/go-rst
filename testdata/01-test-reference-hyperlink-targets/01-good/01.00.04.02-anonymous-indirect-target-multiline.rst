@@ -1,0 +1,11 @@
+Anonymous indirect hyperlink targets
+
+.. _a really
+        long ref:
+
+target paragraph
+
+`target ref
+across lines for target above`__
+
+__ a really long ref_

@@ -1,0 +1,128 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "Anonymous external hyperlink target, not indirect:",
+        "line": 1,
+        "startPosition": 1,
+        "length": 50
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "__",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetURI",
+        "text": "uri\\_",
+        "line": 3,
+        "startPosition": 4,
+        "length": 5
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 4,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetStart",
+        "text": "__",
+        "line": 5,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 8,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 5,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemHyperlinkTargetURI",
+        "text": "this URI ends with an underscore_",
+        "line": 5,
+        "startPosition": 4,
+        "length": 33
+    },
+    {
+        "id": 10,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 6,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemInlineReferenceText",
+        "text": "target1",
+        "line": 7,
+        "startPosition": 1,
+        "length": 7
+    },
+    {
+        "id": 12,
+        "type": "itemInlineReferenceClose",
+        "text": "__",
+        "line": 7,
+        "startPosition": 8,
+        "length": 2
+    },
+    {
+        "id": 13,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 8,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 14,
+        "type": "itemInlineReferenceText",
+        "text": "target2",
+        "line": 9,
+        "startPosition": 1,
+        "length": 7
+    },
+    {
+        "id": 15,
+        "type": "itemInlineReferenceClose",
+        "text": "__",
+        "line": 9,
+        "startPosition": 8,
+        "length": 2
+    },
+    {
+        "id": 16,
+        "type": "itemEOF",
+        "line": 9,
+        "startPosition": 10
+    }
+]

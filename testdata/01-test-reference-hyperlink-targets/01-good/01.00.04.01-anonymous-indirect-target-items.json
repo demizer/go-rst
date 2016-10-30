@@ -1,0 +1,320 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "Anonymous indirect hyperlink targets",
+        "line": 1,
+        "startPosition": 1,
+        "length": 36
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 3,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetName",
+        "text": "reference",
+        "line": 3,
+        "startPosition": 5,
+        "length": 9
+    },
+    {
+        "id": 7,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 3,
+        "startPosition": 14,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 4,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemText",
+        "text": "target paragraph",
+        "line": 5,
+        "startPosition": 1,
+        "length": 16
+    },
+    {
+        "id": 10,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 6,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 11,
+        "type": "itemInlineReferenceOpen",
+        "text": "`",
+        "line": 7,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 12,
+        "type": "itemInlineReferenceText",
+        "text": "target ref above",
+        "line": 7,
+        "startPosition": 2,
+        "length": 16
+    },
+    {
+        "id": 13,
+        "type": "itemInlineReferenceClose",
+        "text": "`__",
+        "line": 7,
+        "startPosition": 18,
+        "length": 3
+    },
+    {
+        "id": 14,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 8,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 15,
+        "type": "itemText",
+        "text": "filler paragraph",
+        "line": 9,
+        "startPosition": 1,
+        "length": 16
+    },
+    {
+        "id": 16,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 10,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 17,
+        "type": "itemInlineReferenceOpen",
+        "text": "`",
+        "line": 11,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 18,
+        "type": "itemInlineReferenceText",
+        "text": "another filler paragraph",
+        "line": 11,
+        "startPosition": 2,
+        "length": 24
+    },
+    {
+        "id": 19,
+        "type": "itemInlineReferenceClose",
+        "text": "`__",
+        "line": 11,
+        "startPosition": 26,
+        "length": 3
+    },
+    {
+        "id": 20,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 12,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 21,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 13,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 22,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 13,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 23,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 13,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 24,
+        "type": "itemHyperlinkTargetName",
+        "text": "a very long reference",
+        "line": 13,
+        "startPosition": 5,
+        "length": 21
+    },
+    {
+        "id": 25,
+        "type": "itemHyperlinkTargetSuffix",
+        "text": ":",
+        "line": 13,
+        "startPosition": 26,
+        "length": 1
+    },
+    {
+        "id": 26,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 14,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 27,
+        "type": "itemText",
+        "text": "filler pargaraph for a very long reference.",
+        "line": 15,
+        "startPosition": 1,
+        "length": 43
+    },
+    {
+        "id": 28,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 16,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 29,
+        "type": "itemHyperlinkTargetStart",
+        "text": "__",
+        "line": 17,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 30,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 17,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 31,
+        "type": "itemInlineReferenceText",
+        "text": "reference",
+        "line": 17,
+        "startPosition": 4,
+        "length": 9
+    },
+    {
+        "id": 32,
+        "type": "itemInlineReferenceClose",
+        "text": "_",
+        "line": 17,
+        "startPosition": 13,
+        "length": 1
+    },
+    {
+        "id": 33,
+        "type": "itemHyperlinkTargetStart",
+        "text": "__",
+        "line": 18,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 34,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 18,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 35,
+        "type": "itemInlineReferenceOpen",
+        "text": "`",
+        "line": 18,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 36,
+        "type": "itemHyperlinkTargetURI",
+        "text": "a very long",
+        "line": 18,
+        "startPosition": 5,
+        "length": 11
+    },
+    {
+        "id": 37,
+        "type": "itemSpace",
+        "text": "   ",
+        "line": 19,
+        "startPosition": 1,
+        "length": 3
+    },
+    {
+        "id": 38,
+        "type": "itemInlineReferenceText",
+        "text": "reference",
+        "line": 19,
+        "startPosition": 4,
+        "length": 9
+    },
+    {
+        "id": 39,
+        "type": "itemInlineReferenceClose",
+        "text": "`_",
+        "line": 19,
+        "startPosition": 13,
+        "length": 2
+    },
+    {
+        "id": 40,
+        "type": "itemEOF",
+        "line": 19,
+        "startPosition": 15
+    }
+]

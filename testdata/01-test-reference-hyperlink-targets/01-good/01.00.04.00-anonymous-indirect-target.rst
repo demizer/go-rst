@@ -1,3 +1,17 @@
-Anonymous indirect hyperlink target:
+Anonymous indirect hyperlink targets
 
-.. __: reference_
+When reference name includes spaces, the trailing underscore is included in the name.
+
+.. __: underscore is preserved in the name here_
+
+__ underscore is preserved in the name here aswell_
+
+__ no_spaces_so_this_becomes_a_target_
+
+.. _no_spaces_so_this_becomes_a_target:
+
+target1__
+
+target2__
+
+target3__

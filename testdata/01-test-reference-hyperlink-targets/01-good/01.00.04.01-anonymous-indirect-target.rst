@@ -1,5 +1,19 @@
-Anonymous external hyperlink target, not indirect:
+Anonymous indirect hyperlink targets
 
-__ uri\\_
+.. _reference:
 
-__ this URI ends with an underscore_
+target paragraph
+
+`target ref above`__
+
+filler paragraph
+
+`another filler paragraph`__
+
+.. _a very long reference:
+
+filler pargaraph for a very long reference.
+
+__ reference_
+__ `a very long
+   reference`_

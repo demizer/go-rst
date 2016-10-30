@@ -1,3 +1,11 @@
+* Fri Oct 28 00:19 2016: Fix or make comment describing purpose of
+
+		// FIXME: What does this do?
+
+* Thu Oct 27 23:38 2016: Fix NO NEED FOR FOR LOOP HERE
+
+  more efficient then peek and won't require saving lexer state. We should benchmark to see it if improves performance.
+
 * Tue Oct 25 19:56 2016: Split up lex.go and parse.go
 
   These files are getting really long.

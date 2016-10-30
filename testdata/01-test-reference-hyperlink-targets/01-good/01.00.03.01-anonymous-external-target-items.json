@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "Anonymous external hyperlink target:",
+        "line": 1,
+        "startPosition": 1,
+        "length": 36
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "__",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetURI",
+        "text": "http://w3c.org/",
+        "line": 3,
+        "startPosition": 4,
+        "length": 15
+    },
+    {
+        "id": 6,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 4,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 7,
+        "type": "itemInlineReferenceText",
+        "text": "target",
+        "line": 5,
+        "startPosition": 1,
+        "length": 6
+    },
+    {
+        "id": 8,
+        "type": "itemInlineReferenceClose",
+        "text": "__",
+        "line": 5,
+        "startPosition": 7,
+        "length": 2
+    },
+    {
+        "id": 9,
+        "type": "itemEOF",
+        "line": 5,
+        "startPosition": 9
+    }
+]

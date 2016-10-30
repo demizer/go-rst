@@ -3,3 +3,7 @@ Anonymous external hyperlink target, not indirect:
 __ uri\\_
 
 __ this URI ends with an underscore_
+
+target1__
+
+target2__
