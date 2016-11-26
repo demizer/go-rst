@@ -33,6 +33,16 @@ func Test_01_00_00_03_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
+func Test_01_00_00_04_LexReferenceHyperlinkTargetGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testPathFromName("01.00.00.04-internal-target-beginning-with-underscore")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 func Test_01_00_01_00_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	testPath := testPathFromName("01.00.01.00-external-target")
 	test := LoadLexTest(t, testPath)
@@ -108,35 +118,40 @@ func Test_01_00_04_02_LexReferenceHyperlinkTargetGood(t *testing.T) {
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
-	// str, _ := json.MarshalIndent(items, "", "    ")
-	// fmt.Println(string(str))
-	// os.Exit(1)
 }
-func Test_01_00_00_00_LexReferenceHyperlinkTargetBad_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testPathFromName("01.00.00.00-bad-target-missing-backquote")
+
+func Test_01_00_00_00_LexReferenceHyperlinkTargetBad(t *testing.T) {
+	testPath := testPathFromName("01.00.00.00-bad-target-malformed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
-func Test_01_00_00_01_LexReferenceHyperlinkTargetBad_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
+func Test_01_00_00_01_LexReferenceHyperlinkTargetBad(t *testing.T) {
 	testPath := testPathFromName("01.00.00.01-bad-target-malformed")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)
 }
 
-func Test_01_00_00_02_LexReferenceHyperlinkTargetBad_NotImplemented(t *testing.T) {
+func Test_01_00_00_02_LexReferenceHyperlinkTargetBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testPathFromName("01.00.00.02-bad-target-malformed")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	// str, _ := json.MarshalIndent(items, "", "    ")
+	// fmt.Println(string(str))
+	// os.Exit(1)
+	equal(t, test.expectItems(), items)
+}
+
+func Test_01_00_00_03_LexReferenceHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testPathFromName("01.00.00.03-bad-target-missing-backquote")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

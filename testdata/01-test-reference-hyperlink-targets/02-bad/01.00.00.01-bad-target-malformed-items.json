@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemText",
+        "text": "Malformed target:",
+        "line": 1,
+        "startPosition": 1,
+        "length": 17
+    },
+    {
+        "id": 2,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "line": 2,
+        "startPosition": 1,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 3,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 4,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 3,
+        "startPosition": 3,
+        "length": 1
+    },
+	{
+        "id": 5,
+	    "type": "itemHyperlinkTargetPrefix",
+	    "text": "__",
+	    "startPosition": 4,
+	    "line": 3,
+	    "length": 2
+	},
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetURI",
+        "text": "malformed: no good",
+        "line": 3,
+        "startPosition": 6,
+        "length": 18
+    },
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "line": 3,
+        "startPosition": 24
+    }
+]

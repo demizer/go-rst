@@ -1,0 +1,2 @@
+.. _`target: malformed hyperlink target
+.. _`: and another.

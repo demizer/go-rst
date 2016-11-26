@@ -1,0 +1,5 @@
+Target beginning with an underscore:
+
+.. _`_target`: OK
+
+paragraph

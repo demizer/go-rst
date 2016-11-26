@@ -21,8 +21,7 @@ func (i ID) IDNumber() ID { return i }
 // String implements Stringer and returns ID as a string.
 func (i ID) String() string { return strconv.Itoa(int(i)) }
 
-// Line contains the number of a lexed item, or parsed item, from the input
-// data.
+// Line contains the number of a lexed item, or parsed item, from the input data.
 type Line int
 
 // LineNumber returns the Line of an item.
@@ -372,7 +371,7 @@ func (l *lexer) backup(pos int) {
 			l.backup(1)
 		}
 	}
-	logl.Log("mark", l.mark)
+	// logl.Log("mark", l.mark)
 }
 
 // peek looks ahead in the input by a number of locations (locs) and returns the rune at that location in the input. Peek
@@ -1288,17 +1287,16 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 		lexAnonymousHyperlinkTarget(l)
 		return lexStart
 	}
-	l.emit(itemHyperlinkTargetStart)
-	l.next()
-	lexSpace(l)
-	l.next()
-	l.emit(itemHyperlinkTargetPrefix)
+	lexHyperlinkTargetStart(l)
+	lexHyperlinkTargetPrefix(l)
 	lexHyperlinkTargetName(l)
-	l.next()
-	l.emit(itemHyperlinkTargetSuffix)
-	if unicode.IsSpace(l.mark) && l.index < len(l.currentLine()) {
-		lexSpace(l)
-		lexHyperlinkTargetBlock(l)
+	if l.mark == ':' {
+		l.next()
+		l.emit(itemHyperlinkTargetSuffix)
+		if unicode.IsSpace(l.mark) && l.index < len(l.currentLine()) {
+			lexSpace(l)
+			lexHyperlinkTargetBlock(l)
+		}
 	}
 	if lp := l.peek(1); lp != utf8.RuneError && lp != '\n' && unicode.IsSpace(lp) {
 		l.next()
@@ -1310,17 +1308,27 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 }
 
 func lexAnonymousHyperlinkTarget(l *lexer) stateFn {
-	l.emit(itemHyperlinkTargetStart)
-	lexSpace(l)
-	lp := l.peek(2)
-	if lp == ':' {
-		l.next()
-		l.next()
-		l.emit(itemHyperlinkTargetPrefix)
-		l.next()
-		l.emit(itemHyperlinkTargetSuffix)
-		lexSpace(l)
+	// l.emit(itemHyperlinkTargetStart)
+	lexHyperlinkTargetStart(l)
+	if l.mark == '_' {
+		lexHyperlinkTargetPrefix(l)
 	}
+	// lexSpace(l)
+	// lp := l.peek(2)
+	if l.mark == ':' {
+		// l.next()
+		// l.next()
+		// l.emit(itemHyperlinkTargetPrefix)
+		// lexHyperlinkTargetPrefix(l)
+		// l.next()
+		// l.emit(itemHyperlinkTargetSuffix)
+		// lexSpace(l)
+		lexHyperlinkTargetSuffix(l)
+		// } else if l.mark != ':' {
+		// lexHyperlinkTargetName(l)
+		// lexHyperlinkTargetSuffix(l)
+	}
+	lexSpace(l)
 	lexAnonymousHyperlinkTargetBlock(l)
 	return lexStart
 }
@@ -1346,10 +1354,16 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 		lp := l.peek(1)
 		// make sure the : mark is not escaped, i.e., \\:
 		if l.mark == ':' && !inquote && lb != '\\' {
-			l.emit(itemHyperlinkTargetName)
+			if l.index != l.start {
+				// There are runes in the "buffer" that need to be emitted. This is a malformed link
+				l.emit(itemHyperlinkTargetName)
+			}
 			break
 		} else if unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)) {
 			lexSpace(l)
+		} else if l.mark == utf8.RuneError && !unicode.IsSpace(lp) {
+			l.emit(itemHyperlinkTargetName)
+			break
 		} else if l.mark == utf8.RuneError {
 			// hyperlink target name is multi-line
 			l.emit(itemHyperlinkTargetName)
@@ -1446,5 +1460,39 @@ func lexAnonymousHyperlinkTargetBlock(l *lexer) stateFn {
 		}
 		l.next()
 	}
+	return lexStart
+}
+
+func lexHyperlinkTargetStart(l *lexer) stateFn {
+	for {
+		if l.mark != '.' {
+			break
+		}
+		l.next()
+	}
+	l.emit(itemHyperlinkTargetStart)
+	lexSpace(l)
+	return lexStart
+}
+
+func lexHyperlinkTargetPrefix(l *lexer) stateFn {
+	for {
+		if l.mark != '_' {
+			break
+		}
+		l.next()
+	}
+	l.emit(itemHyperlinkTargetPrefix)
+	return lexStart
+}
+
+func lexHyperlinkTargetSuffix(l *lexer) stateFn {
+	for {
+		if l.mark != ':' {
+			break
+		}
+		l.next()
+	}
+	l.emit(itemHyperlinkTargetSuffix)
 	return lexStart
 }

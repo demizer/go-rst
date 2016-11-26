@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 1,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 1,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 1,
+        "startPosition": 4,
+        "length": 1
+    },
+	{
+        "id": 4,
+	    "type": "itemHyperlinkTargetName",
+	    "text": "test",
+	    "startPosition": 5,
+	    "line": 1,
+	    "length": 4
+	},
+	{
+        "id": 5,
+	    "type": "itemBlankLine",
+	    "text": "\n",
+	    "startPosition": 1,
+	    "line": 2,
+	    "length": 1
+	},
+	{
+        "id": 6,
+	    "type": "itemText",
+	    "text": "paragraph",
+	    "startPosition": 1,
+	    "line": 3,
+	    "length": 9
+	},
+    {
+        "id": 7,
+        "type": "itemEOF",
+        "line": 3,
+        "startPosition": 10
+    }
+]

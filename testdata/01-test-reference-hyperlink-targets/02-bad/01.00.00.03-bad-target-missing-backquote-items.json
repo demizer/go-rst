@@ -1,0 +1,88 @@
+[
+    {
+        "id": 1,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 1,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 1,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 3,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 1,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
+        "line": 1,
+        "startPosition": 5,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "itemHyperlinkTargetName",
+        "text": "target: malformed hyperlink target",
+        "line": 1,
+        "startPosition": 6,
+        "length": 34
+    },
+    {
+        "id": 6,
+        "type": "itemHyperlinkTargetStart",
+        "text": "..",
+        "line": 2,
+        "startPosition": 1,
+        "length": 2
+    },
+    {
+        "id": 7,
+        "type": "itemSpace",
+        "text": " ",
+        "line": 2,
+        "startPosition": 3,
+        "length": 1
+    },
+    {
+        "id": 8,
+        "type": "itemHyperlinkTargetPrefix",
+        "text": "_",
+        "line": 2,
+        "startPosition": 4,
+        "length": 1
+    },
+    {
+        "id": 9,
+        "type": "itemHyperlinkTargetQuote",
+        "text": "`",
+        "line": 2,
+        "startPosition": 5,
+        "length": 1
+    },
+    {
+        "id": 10,
+        "type": "itemHyperlinkTargetURI",
+        "text": ": and another.",
+        "line": 2,
+        "startPosition": 8,
+        "length": 14
+    },
+    {
+        "id": 11,
+        "type": "itemEOF",
+        "line": 2,
+        "startPosition": 37
+    }
+]

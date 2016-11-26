@@ -108,7 +108,7 @@ func Test_01_00_03_01_ParseReferenceHyperlinkTargetGood_NotImplemented(t *testin
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testPathFromName("01.00.00.00-bad-target-missing-backquote")
+	testPath := testPathFromName("01.00.03.01-anonymous-external-target")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
@@ -151,7 +151,7 @@ func Test_01_00_00_00_ParseReferenceHyperlinkTargetBad_NotImplemented(t *testing
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testPathFromName("01.00.00.00-bad-target-missing-backquote")
+	testPath := testPathFromName("01.00.00.00-bad-target-malformed")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
