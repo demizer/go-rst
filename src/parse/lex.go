@@ -11,6 +11,9 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
+// End-of-line is denoted by a utf8.RuneError
+var EOL rune = utf8.RuneError
+
 // ID is a consecutive number for identication of a lexed item and parsed item. Primarily for the purpose of debugging lexer
 // and parser output when compared to the JSON encoded tests.
 type ID int
@@ -589,8 +592,8 @@ func isComment(l *lexer) bool {
 	nMark := l.peek(1)
 	nMark2 := l.peek(2)
 	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError) {
-		if nMark3 := l.peek(3); nMark3 == '_' {
-			// Is hyperlink target
+		if isHyperlinkTarget(l) {
+			logl.Msg("Found hyperlink target!")
 			return false
 		}
 		logl.Msg("Found comment!")
@@ -600,20 +603,94 @@ func isComment(l *lexer) bool {
 	return false
 }
 
+func isReferenceNameSimpleAllowedRune(r rune) bool {
+	// allowed runes plus unicode categories
+	allowedRunes := [...]rune{'_', '-', '+', '.', ':'}
+	allowedCats := []*unicode.RangeTable{unicode.Nd, unicode.Ll, unicode.Lt}
+	for _, a := range allowedRunes {
+		if a == r {
+			return true
+		} else if unicode.In(r, allowedCats...) {
+			return true
+		}
+	}
+	return false
+}
+
+func isReferenceNameSimple(l *lexer, fromPos int) bool {
+	count := fromPos
+	for {
+		p := l.peek(count)
+		if p == ':' {
+			break
+		} else if unicode.IsSpace(p) {
+			logl.Msg("NOT FOUND")
+			return false
+		} else if p == EOL {
+			logl.Msg("NOT FOUND")
+			return false
+		} else if !isReferenceNameSimpleAllowedRune(p) {
+			logl.Msg("NOT FOUND")
+			return false
+		}
+		count++
+	}
+	logl.Msg("FOUND")
+	return true
+}
+
+func isReferenceNamePhrase(l *lexer, fromPos int) bool {
+	count := fromPos
+	words := 0
+	openTick := false
+	for {
+		p := l.peek(count)
+		if p == EOL && fromPos == count {
+			// At end of line, so ref is not possible
+			logl.Msg("NOT FOUND")
+			return false
+		}
+		if p == '`' {
+			if openTick && l.peek(count+1) == ':' {
+				break
+			}
+			openTick = true
+		} else if p == EOL {
+			if words == 0 {
+				logl.Msg("NOT FOUND")
+				return false
+			}
+			break
+		} else if unicode.IsSpace(p) {
+			words++
+		}
+		count++
+	}
+	logl.Msg("FOUND")
+	return true
+}
+
 func isHyperlinkTarget(l *lexer) bool {
 	nMark := l.peek(1)
 	nMark2 := l.peek(2)
 	if l.mark == '.' && nMark == '.' && nMark2 != utf8.RuneError {
 		nMark3 := l.peek(3)
 		if unicode.IsSpace(nMark2) && nMark3 == '_' {
-			logl.Msg("Found hyperlink target!")
+			if isReferenceNameSimple(l, 4) {
+				logl.Msg("FOUND hyperlink simple target")
+				return true
+			} else if isReferenceNamePhrase(l, 4) {
+				logl.Msg("FOUND hyperlink phrase target")
+				return true
+			}
+			logl.Msg("FOUND malformed hyperlink target")
 			return true
 		}
 	} else if l.mark == '_' && nMark == '_' && unicode.IsSpace(nMark2) {
-		logl.Msg("Found anonymous hyperlink target!")
+		logl.Msg("FOUND anonymous hyperlink target")
 		return true
 	}
-	logl.Msg("Hyperlink target not found!")
+	logl.Msg("NOT FOUND Hyperlink target")
 	return false
 }
 
@@ -848,6 +925,8 @@ func lexStart(l *lexer) stateFn {
 				return lexComment
 			} else if isHyperlinkTarget(l) {
 				return lexHyperlinkTarget
+			} else if isInlineReference(l) {
+				return lexInlineReference
 			} else if isBulletList(l) {
 				return lexBullet
 			} else if isEnumList(l) {
@@ -862,8 +941,6 @@ func lexStart(l *lexer) stateFn {
 				return lexBlockquote
 			} else if isDefinitionTerm(l) {
 				return lexDefinitionTerm
-			} else if isInlineReference(l) {
-				return lexInlineReference
 			} else {
 				return lexText
 			}
