@@ -370,7 +370,7 @@ func (l *lexer) backup(pos int) {
 		l.width = w
 		// Backup again if iteration has landed on part of a multi-byte rune
 		lLen := len(l.currentLine())
-		if r == utf8.RuneError && lLen != 0 && lLen != l.index {
+		if r == EOL && lLen != 0 && lLen != l.index {
 			l.backup(1)
 		}
 	}
@@ -398,7 +398,7 @@ func (l *lexer) peek(locs int) rune {
 
 func (l *lexer) peekBack(locs int) rune {
 	if l.start == l.index {
-		return utf8.RuneError
+		return EOL
 	}
 	pos := saveLexerPosition(l)
 	defer func() {
@@ -491,7 +491,7 @@ func (l *lexer) lastLineIsBlankLine() bool {
 		return false
 	}
 	m, _ := utf8.DecodeRuneInString(l.lines[l.line-1])
-	if m == utf8.RuneError {
+	if m == EOL {
 		return true
 	}
 	return false
@@ -591,7 +591,7 @@ func isComment(l *lexer) bool {
 	}
 	nMark := l.peek(1)
 	nMark2 := l.peek(2)
-	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == utf8.RuneError) {
+	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == EOL) {
 		if isHyperlinkTarget(l) {
 			logl.Msg("Found hyperlink target!")
 			return false
@@ -673,7 +673,7 @@ func isReferenceNamePhrase(l *lexer, fromPos int) bool {
 func isHyperlinkTarget(l *lexer) bool {
 	nMark := l.peek(1)
 	nMark2 := l.peek(2)
-	if l.mark == '.' && nMark == '.' && nMark2 != utf8.RuneError {
+	if l.mark == '.' && nMark == '.' && nMark2 != EOL {
 		nMark3 := l.peek(3)
 		if unicode.IsSpace(nMark2) && nMark3 == '_' {
 			if isReferenceNameSimple(l, 4) {
@@ -815,7 +815,7 @@ func isInlineMarkup(l *lexer) bool {
 		}
 		// logl.Log.Debugf("back: %q forward: %q", b, f)
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) && !isSurrounded(b, f) &&
-			!unicode.IsSpace(f) && f != utf8.RuneError {
+			!unicode.IsSpace(f) && f != EOL {
 			logl.Msg("Found inline markup!")
 			return true
 		}
@@ -844,7 +844,7 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 	// A valid end string is made up of one of the following items, notice unicode.Po is troublesome with '*' (emphasis
 	// and strong) runes. Special logic is needed in these cases (below).
 	validEnd := (!unicode.IsSpace(b) && (unicode.IsSpace(a) || isEndASCII(a) || unicode.In(a, unicode.Pd, unicode.Po,
-		unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps) || a == utf8.RuneError))
+		unicode.Pi, unicode.Pf, unicode.Pe, unicode.Ps) || a == EOL))
 
 	// If the closing markup is two runes, such as '**', make sure the next rune is not '*' and the rune after that is
 	// not '*'. The spec is completely silent on this, (and somewhat confusing), but it is clearly how the ref compiler
@@ -881,7 +881,7 @@ func isInlineReference(l *lexer) bool {
 					logl.Msg("FOUND quoted inline anonymous hyperlink reference!")
 					return true
 				}
-			} else if lp == utf8.RuneError && lp2 == utf8.RuneError {
+			} else if lp == EOL && lp2 == EOL {
 				logl.Msg("FOUND blank line")
 				break
 			}
@@ -905,7 +905,7 @@ func isInlineReference(l *lexer) bool {
 
 func isEscaped(l *lexer) bool {
 	return (l.mark == '\\' && (unicode.In(l.peek(1), unicode.Zs, unicode.Cc, unicode.Lu, unicode.Ll) || l.peek(1) ==
-		utf8.RuneError))
+		EOL))
 }
 
 // lexStart is the first stateFn called by run(). From here other stateFn's are called depending on the input. When this
@@ -999,7 +999,7 @@ func lexSection(l *lexer) stateFn {
 		lexSectionAdornment(l)
 	} else if unicode.IsSpace(l.mark) {
 		return lexSpace
-	} else if l.mark == utf8.RuneError {
+	} else if l.mark == EOL {
 		l.next()
 	} else if unicode.IsPrint(l.mark) {
 		return lexTitle
@@ -1027,7 +1027,7 @@ func lexSectionAdornment(l *lexer) stateFn {
 	for {
 		if l.isEndOfLine() {
 			l.emit(itemSectionAdornment)
-			if l.mark == utf8.RuneError {
+			if l.mark == EOL {
 				break
 			}
 		}
@@ -1089,7 +1089,7 @@ func lexText(l *lexer) stateFn {
 			lexInlineReference(l)
 			continue
 		}
-		if l.isEndOfLine() && l.mark == utf8.RuneError {
+		if l.isEndOfLine() && l.mark == EOL {
 			if l.start == l.index {
 				return lexStart
 			}
@@ -1110,7 +1110,7 @@ func lexComment(l *lexer) stateFn {
 		l.next()
 	}
 	l.emit(itemCommentMark)
-	if l.mark != utf8.RuneError {
+	if l.mark != EOL {
 		l.next()
 		lexSpace(l)
 		lexText(l)
@@ -1121,7 +1121,7 @@ func lexComment(l *lexer) stateFn {
 func lexBlockquote(l *lexer) stateFn {
 	for {
 		l.next()
-		if l.isEndOfLine() && l.mark == utf8.RuneError {
+		if l.isEndOfLine() && l.mark == EOL {
 			l.emit(itemBlockQuote)
 			break
 		}
@@ -1133,7 +1133,7 @@ func lexBlockquote(l *lexer) stateFn {
 func lexDefinitionTerm(l *lexer) stateFn {
 	for {
 		l.next()
-		if l.isEndOfLine() && l.mark == utf8.RuneError {
+		if l.isEndOfLine() && l.mark == EOL {
 			l.emit(itemDefinitionTerm)
 			break
 		}
@@ -1144,7 +1144,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	lexSpace(l)
 	for {
 		l.next()
-		if l.isEndOfLine() && l.mark == utf8.RuneError {
+		if l.isEndOfLine() && l.mark == EOL {
 			l.emit(itemDefinitionText)
 			break
 		}
@@ -1198,7 +1198,7 @@ func lexInlineStrong(l *lexer) stateFn {
 			logl.Msg("Found strong close")
 			l.emit(itemInlineStrong)
 			break
-		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				logl.Msg("Found EOF (unclosed strong)")
 				l.emit(itemInlineStrong)
@@ -1225,7 +1225,7 @@ func lexInlineEmphasis(l *lexer) stateFn {
 			logl.Msg("Found emphasis close")
 			l.emit(itemInlineEmphasis)
 			break
-		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				logl.Msg("Found EOF (unclosed emphasis)")
 				l.emit(itemInlineEmphasis)
@@ -1261,7 +1261,7 @@ func lexInlineLiteral(l *lexer) stateFn {
 			logl.Msg("Found literal close")
 			l.emit(itemInlineLiteral)
 			break
-		} else if l.isEndOfLine() && l.mark == utf8.RuneError {
+		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				logl.Msg("Found EOF (unclosed inline literal)")
 				l.emit(itemInlineLiteral)
@@ -1326,10 +1326,10 @@ func lexInlineReference(l *lexer) stateFn {
 			} else if l.start == l.index && l.mark == ' ' && l.peek(1) != ' ' {
 				lexSpace(l)
 				continue
-			} else if l.mark == utf8.RuneError && l.peek(1) != utf8.RuneError {
+			} else if l.mark == EOL && l.peek(1) != EOL {
 				l.emit(itemInlineReferenceText)
 				l.next()
-			} else if l.mark == utf8.RuneError && l.peek(1) == utf8.RuneError {
+			} else if l.mark == EOL && l.peek(1) == EOL {
 				break
 			}
 		}
@@ -1375,7 +1375,7 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 			lexHyperlinkTargetBlock(l)
 		}
 	}
-	if lp := l.peek(1); lp != utf8.RuneError && lp != '\n' && unicode.IsSpace(lp) {
+	if lp := l.peek(1); lp != EOL && lp != '\n' && unicode.IsSpace(lp) {
 		l.next()
 		lexSpace(l)
 		lexHyperlinkTargetBlock(l)
@@ -1436,12 +1436,12 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 				l.emit(itemHyperlinkTargetName)
 			}
 			break
-		} else if unicode.IsSpace(l.mark) && (lp != utf8.RuneError && unicode.IsSpace(lp)) {
+		} else if unicode.IsSpace(l.mark) && (lp != EOL && unicode.IsSpace(lp)) {
 			lexSpace(l)
-		} else if l.mark == utf8.RuneError && !unicode.IsSpace(lp) {
+		} else if l.mark == EOL && !unicode.IsSpace(lp) {
 			l.emit(itemHyperlinkTargetName)
 			break
-		} else if l.mark == utf8.RuneError {
+		} else if l.mark == EOL {
 			// hyperlink target name is multi-line
 			l.emit(itemHyperlinkTargetName)
 		}
@@ -1471,21 +1471,21 @@ func lexHyperlinkTargetBlock(l *lexer) stateFn {
 		lb := l.peekBack(1)
 		lp := l.peek(1)
 		// First check for indirect reference
-		if lb != '\\' && l.mark == '_' && lp == utf8.RuneError {
+		if lb != '\\' && l.mark == '_' && lp == EOL {
 			l.emit(itemInlineReferenceText)
 			l.next()
 			l.emit(itemInlineReferenceClose)
 			break
-		} else if !inquote && l.mark == utf8.RuneError {
+		} else if !inquote && l.mark == EOL {
 			// end of current line
 			l.emit(itemHyperlinkTargetURI)
-			if lp == utf8.RuneError {
+			if lp == EOL {
 				break
 			}
 			// uri continues on next line
 			l.next()
 			lexSpace(l)
-		} else if inquote && l.lastItem.Type == itemInlineReferenceOpen && l.mark == utf8.RuneError {
+		} else if inquote && l.lastItem.Type == itemInlineReferenceOpen && l.mark == EOL {
 			// end of current line, reference continues on next line
 			l.emit(itemInlineReferenceText)
 			l.next()
@@ -1520,15 +1520,15 @@ func lexAnonymousHyperlinkTargetBlock(l *lexer) stateFn {
 		}
 		lb := l.peekBack(1)
 		lp := l.peek(1)
-		if !containsSpaces && lb != '\\' && l.mark == '_' && lp == utf8.RuneError {
+		if !containsSpaces && lb != '\\' && l.mark == '_' && lp == EOL {
 			l.emit(itemInlineReferenceText)
 			l.next()
 			l.emit(itemInlineReferenceClose)
 			break
-		} else if l.mark == utf8.RuneError {
+		} else if l.mark == EOL {
 			// end of current line
 			l.emit(itemHyperlinkTargetURI)
-			if lp == utf8.RuneError {
+			if lp == EOL {
 				break
 			}
 			// uri continues on next line

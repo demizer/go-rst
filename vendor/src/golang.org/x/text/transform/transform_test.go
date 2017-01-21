@@ -916,7 +916,7 @@ func TestRemoveFunc(t *testing.T) {
 
 		{
 			t: RemoveFunc(func(r rune) bool {
-				return r == utf8.RuneError
+				return r == EOL
 			}),
 			src:     "\xcc\u0300\x80",
 			wantStr: "\u0300",

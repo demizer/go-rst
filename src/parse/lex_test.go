@@ -193,7 +193,7 @@ var lexerGotoLocationTests = []struct {
 		name:  "Goto end of line",
 		input: "Title",
 		start: 5, startLine: 1,
-		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+		lIndex: 5, lMark: EOL, lWidth: 0, lLine: 1,
 	},
 }
 
@@ -253,7 +253,7 @@ var lexerBackupTests = []struct {
 		input: "Title\n=====",
 		pos:   1,
 		start: 0, startLine: 2,
-		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+		lIndex: 5, lMark: EOL, lWidth: 0, lLine: 1,
 	},
 	{
 		name:  "Start after \u00E0, 2nd line",
@@ -267,14 +267,14 @@ var lexerBackupTests = []struct {
 		input: "Title\n\nà diacritic",
 		pos:   1,
 		start: 0, startLine: 3,
-		lIndex: 0, lMark: utf8.RuneError, lWidth: 0, lLine: 2,
+		lIndex: 0, lMark: EOL, lWidth: 0, lLine: 2,
 	},
 	{
 		name:  "Backup to end of line",
 		input: "Title\n\nà diacritic",
 		pos:   1,
 		start: 0, startLine: 2,
-		lIndex: 5, lMark: utf8.RuneError, lWidth: 0, lLine: 1,
+		lIndex: 5, lMark: EOL, lWidth: 0, lLine: 1,
 	},
 	{
 		name:  "Backup 3 byte rune",
@@ -331,7 +331,7 @@ var lexerNextTests = []struct {
 		name:  "next at end of line",
 		input: "Title",
 		start: 5, startLine: 1,
-		nIndex: 5, nMark: utf8.RuneError, nWidth: 0, nLine: 1,
+		nIndex: 5, nMark: EOL, nWidth: 0, nLine: 1,
 	},
 	{
 		name:  "next on diacritic",
@@ -355,7 +355,7 @@ var lexerNextTests = []struct {
 		name:  "next to blank line",
 		input: "title\n\nà diacritic",
 		start: 5, startLine: 1,
-		nIndex: 0, nMark: utf8.RuneError, nWidth: 0, nLine: 2,
+		nIndex: 0, nMark: EOL, nWidth: 0, nLine: 2,
 	},
 	{
 		name:  "next on 3 byte rune",
@@ -367,7 +367,7 @@ var lexerNextTests = []struct {
 		name:  "next on last rune of last line",
 		input: "Hello\n\nworld\nyeah!",
 		start: 4, startLine: 4,
-		nIndex: 5, nMark: utf8.RuneError, nWidth: 0, nLine: 4,
+		nIndex: 5, nMark: EOL, nWidth: 0, nLine: 4,
 	},
 }
 
@@ -435,7 +435,7 @@ var lexerPeekTests = []struct {
 		name:  "Peek starting on blank line",
 		input: "Title\n\nà diacritic",
 		start: 0, startLine: 2,
-		lIndex: 0, lMark: utf8.RuneError, lWidth: 0, lLine: 2,
+		lIndex: 0, lMark: EOL, lWidth: 0, lLine: 2,
 		pMark: '\u00E0', pWidth: 2,
 	},
 	{
