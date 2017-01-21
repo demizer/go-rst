@@ -1,35 +1,25 @@
-* Thu Oct 27 23:38 2016: Fix NO NEED FOR FOR LOOP HERE
-
-  more efficient then peek and won't require saving lexer state. We should benchmark to see it if improves performance.
-
-* Tue Oct 25 19:56 2016: Split up lex.go and parse.go
-
-  These files are getting really long.
-
-* Sat Oct 22 13:55 2016: Bad tests should match good test in number (i.e., 01.00.00.00) and following this naming pattern:
-
-  01.00.00.00-target-missing-backquote-bad-items-xx.json
-
-* Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
-
 * Thu Oct 20 00:42 2016: add -json argument to gb test -v parse to output to JSON
 
   Parse nodes and expected nodes see parse_test.go#450
 
-* Mon Oct 17 22:33 2016: Refactor InlineInterpretedText to InlineInterpretedTextNode
+* Sat Oct 22 13:55 2016: Bad tests should match good test in number (i.e., 01.00.00.00) and following this naming pattern:
+
+  01.00.00.00-target-missing-backquote-bad-items-xx.json
 
 * Sun Oct 16 22:02 2016: Add strong across lines test
 
   **Strong is
   across lines!**
 
+* Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
+
+* Mon Oct 17 22:33 2016: Refactor InlineInterpretedText to InlineInterpretedTextNode
+
 * Tue Oct 11 00:10 2016: Document creating new tests
 
-  The UltiSnips Snippets should be mentioned.
+  * The UltiSnips Snippets should be mentioned.
 
-* Mon Feb 29 13:49 2016: Add XX to beginning of test files that are not implmented yet
-
-* Mon Oct 10 19:35 2016: DOCUMENT DEBUGGING TRICKS
+  * document debugging tips
 
 * Mon Oct 10 17:53 2016: sectionLevels.Add() should do one thing
 
@@ -70,7 +60,3 @@
 
 * Sun Feb 28 09:21 2016: If I run a lex test directly then "startPosition" is set to 0. It should always be specified in the
   items.
-
-* Sun Feb 28 09:26 2016: Refactor parse.go Tree, move it's really big.
-
-* Mon Feb 29 13:59 2016: Implement blockquote tests
