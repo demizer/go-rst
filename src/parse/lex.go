@@ -802,13 +802,14 @@ func isInlineMarkup(l *lexer) bool {
 	}
 	if l.mark == '*' || l.mark == '`' {
 		var b rune
-		// FIXME: What does this do?
+		// Look back upto three runes looking for * or `
 		for x := 1; x != 3; x++ {
 			b = l.peekBack(x)
 			if l.mark != b {
 				break
 			}
 		}
+		// Get the next rune, if the rune is * or ` then get the rune after that
 		f := l.peek(1)
 		if l.mark == f {
 			f = l.peek(2)
