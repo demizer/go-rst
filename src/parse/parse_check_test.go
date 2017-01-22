@@ -110,15 +110,55 @@ func (c *checkNode) updateState(eKey string, eVal interface{}, pVal reflect.Valu
 	return true
 }
 
+func (c *checkNode) checkType(fieldNum int, parseFieldName string,
+	parseFields reflect.Value, expectedFields map[string]interface{}) bool {
+
+	if parseFieldName == "" {
+		tlog(fmt.Sprintf("Check struct tags! parseFieldName = %s", parseFieldName))
+		os.Exit(1)
+	}
+
+	pVal := parseFields.Field(fieldNum).Interface()
+
+	check := func(cond bool) bool { return cond }
+
+	switch parseFieldName {
+	case "indentLength":
+		// Some title nodes aren't indented.
+		return check(pVal == 0)
+	case "startPosition":
+		// Most nodes begin at position one in the line, therefore we can ignore them if it hasn't been
+		// specified in the expected nodes.
+		return check(pVal.(StartPosition) == 0 || pVal.(StartPosition) == 1)
+	case "line":
+		// zero, then we ignore it.  systemMessage literal block nodes have no line position.
+		return check(pVal.(Line).LineNumber() == 0)
+	case "overLine":
+		// Some sections don't have overlines
+		return check(expectedFields[parseFieldName] == nil && pVal.(*AdornmentNode) == nil)
+	case "nodeList":
+		// Some Nodes don't have child nodes.
+		return check(expectedFields[parseFieldName] == nil && pVal.(NodeList) == nil)
+	case "text":
+		// Some Nodes don't have text.
+		return check(expectedFields[parseFieldName] == nil && pVal.(string) == "")
+	case "length":
+		return check(expectedFields[parseFieldName] == nil && pVal == 0)
+	}
+	return false
+}
+
 // checkMatchingFields compares the expected node output retrieved from the nodes.json file and the actual parser NodeList
 // output. Returns an error if a mismatch is found.
 func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	if eNodes == nil || pNode == nil {
 		panic("arguments must not be nil!")
 	}
+
 	// If the value is missing in eNodes and nil in pNode than we can exclude it.
 	eFields := eNodes.(map[string]interface{})
 	pNodeVal := reflect.Indirect(reflect.ValueOf(pNode))
+
 	// Check expected node to parsed node
 	for eName := range eFields {
 		var sfName string
@@ -128,54 +168,17 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 				sfName, spd.Sdump(pNode), spd.Sdump(eFields))
 		}
 	}
+
 	// Compare pNode against eNodes
 	for i := 0; i < pNodeVal.NumField(); i++ {
 		pName := pNodeVal.Type().Field(i).Tag.Get("json")
-		if pName == "" {
-			tlog(fmt.Sprintf("Check struct tags! pName = %s", pName))
-			os.Exit(1)
+		if c.checkType(i, pName, pNodeVal, eFields) {
+			continue
 		}
-		pVal := pNodeVal.Field(i).Interface()
-		eFields := eNodes.(map[string]interface{})
-		switch pName {
-		case "indentLength":
-			// Some title nodes aren't indented.
-			if pVal == 0 {
-				continue
-			}
-		case "startPosition":
-			// Most nodes begin at position one in the line, therefore we can ignore them if it hasn't been
-			// specified in the expected nodes.
-			if pVal.(StartPosition) == 0 || pVal.(StartPosition) == 1 {
-				continue
-			}
-		case "line":
-			// zero, then we ignore it.  systemMessage literal block nodes have no line position.
-			if pVal.(Line).LineNumber() == 0 {
-				continue
-			}
-		case "overLine":
-			// Some sections don't have overlines
-			if eFields[pName] == nil && pVal.(*AdornmentNode) == nil {
-				continue
-			}
-		case "nodeList":
-			// Some Nodes don't have child nodes.
-			if eFields[pName] == nil && pVal.(NodeList) == nil {
-				continue
-			}
-		case "text":
-			// Some Nodes don't have text.
-			if eFields[pName] == nil && pVal.(string) == "" {
-				continue
-			}
-		case "length":
-			if eFields[pName] == nil && pVal == 0 {
-				continue
-			}
-		}
+
 		eNode := eNodes.(map[string]interface{})
 		if eNode[pName] == nil {
+			pVal := pNodeVal.Field(i).Interface()
 			return fmt.Errorf("NodeType: %q Missing field %q -- Parser got: %q == %v -- ExpectNode:\n%s\n",
 				eNode["type"], pName, pName, pVal, spd.Sdump(eNode))
 		}
