@@ -21,13 +21,13 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	switch err {
 	case infoOverlineTooShortForTitle:
 		var inText string
+		inText = t.token[zed-1].Text + "\n" + t.token[zed].Text
+		s.Line = t.token[zed-1].Line
 		if t.token[zed-2] != nil {
 			inText = t.token[zed-2].Text + "\n" + t.token[zed-1].Text + "\n" + t.token[zed].Text
 			s.Line = t.token[zed-2].Line
 			t.token[zed-2] = nil
-		} else {
-			inText = t.token[zed-1].Text + "\n" + t.token[zed].Text
-			s.Line = t.token[zed-1].Line
+
 		}
 		infoTextLen := len(inText)
 		// Modify the token buffer to change the current token to a itemText then backup the token buffer so the
@@ -107,11 +107,11 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 			lbText = t.token[zed-2].Text + "\n" + t.token[zed-1].Text + "\n" + t.token[zed].Text
 			lbTextLen = len(lbText)
 			s.Line = t.token[zed-2].Line
-		} else {
-			lbText = t.token[zed-1].Text + "\n" + t.token[zed].Text
-			lbTextLen = len(lbText)
-			s.Line = t.token[zed-1].Line
+			break
 		}
+		lbText = t.token[zed-1].Text + "\n" + t.token[zed].Text
+		lbTextLen = len(lbText)
+		s.Line = t.token[zed-1].Line
 	}
 
 	if lbTextLen > 0 {
