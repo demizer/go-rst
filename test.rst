@@ -1,2 +1,2 @@
 *strong
-accross lines*
+across lines*

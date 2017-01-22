@@ -129,9 +129,9 @@ func Test_06_01_03_01_LexStrongGood(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
-// Inline strong accross two lines
+// Inline strong across two lines
 func Test_06_01_04_00_LexStrongGood(t *testing.T) {
-	testPath := testPathFromName("06.01.04.00-strong-accross-lines")
+	testPath := testPathFromName("06.01.04.00-strong-across-lines")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.expectItems(), items)

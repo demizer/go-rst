@@ -2,7 +2,7 @@ package parse
 
 import "unicode/utf8"
 
-// End-of-line is denoted by a utf8.RuneError
+// EOL is denoted by a utf8.RuneError
 var EOL rune = utf8.RuneError
 
 // Valid section adornment runes

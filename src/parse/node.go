@@ -145,7 +145,7 @@ func (nt *nodeTarget) reset() {
 
 func (nt *nodeTarget) append(n ...Node) {
 	for _, node := range n {
-		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", node),
+		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%P", node),
 			"nodeListPointer", fmt.Sprintf("%p", nt.subList), "node", node.String())
 		nt.subList.append(node)
 	}
@@ -375,10 +375,10 @@ func newText(i *item) *TextNode {
 }
 
 // NodeType returns the Node type of the TextNode.
-func (p TextNode) NodeType() NodeType { return p.Type }
+func (t TextNode) NodeType() NodeType { return t.Type }
 
 // String satisfies the Stringer interface
-func (p TextNode) String() string { return fmt.Sprintf("%#v", p) }
+func (t TextNode) String() string { return fmt.Sprintf("%#v", t) }
 
 // ParagraphNode is a parsed paragraph.
 type ParagraphNode struct {

@@ -30,12 +30,14 @@ func NewLogCtx(name string) *logCtx {
 	return &logCtx{name: name, ctx: log.NewContext(log.NewNopLogger())}
 }
 
+// LogSetContent sets a logger context.
 func LogSetContext(l *log.Context) {
 	logp.ctx = l
 	logl.ctx = l
 	logt.ctx = l
 }
 
+// NewColorLogCtx creates a new logger context with ansi coloring.
 func NewColorLogCtx(name string, colorFn func(keyvals ...interface{}) term.FgBgColor) *logCtx {
 	return &logCtx{name: name, ctx: log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))}
 }
@@ -52,7 +54,7 @@ func (l *logCtx) Log(keyvals ...interface{}) error {
 		return nil
 	}
 	cs := stack.Caller(2)
-	funcName := fmt.Sprintf("%n", cs)
+	funcName := fmt.Sprintf("%s", cs)
 	file := cs.String()
 	return l.ctx.WithPrefix("name", l.name, "line", file, "func", funcName).Log(keyvals...)
 }

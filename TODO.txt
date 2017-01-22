@@ -1,3 +1,5 @@
+* Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
+
 * Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
 
 * Tue Oct 11 00:10 2016: Document creating new tests
@@ -26,13 +28,7 @@
 
   rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --debug
 
-* Sun Jul 17 14:42 2016: Add flag to test binary to select lexer or parser debug output
-
-* Sun Apr 10 11:16 2016: debug log should include line number and function name (context)
-
-* Sun Feb 14 22:38 2016: Fix https://goreportcard.com/report/github.com/demizer/go-rst
-
-* Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
+* Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
 

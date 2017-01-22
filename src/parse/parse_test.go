@@ -511,7 +511,6 @@ func checkTokens(tr *Tree, trExp interface{}, isEqual tokEqualChecker) {
 			fName = "Peek" + tokenPosStr + "Tok"
 			zedPos = "zed+" + tokenPosStr
 		}
-		tokenPos = int(math.Abs(float64(i - zed)))
 		tField := reflect.ValueOf(trExp).FieldByName(fName)
 		if tField.IsValid() {
 			isEqual(tr, tField, i, zedPos)

@@ -92,7 +92,7 @@ func Test_06_01_03_01_ParseInlineMarkupStrongGood(t *testing.T) {
 }
 
 func Test_06_01_04_00_ParseInlineMarkupStrongGood(t *testing.T) {
-	testPath := testPathFromName("06.01.04.00-strong-accross-lines")
+	testPath := testPathFromName("06.01.04.00-strong-across-lines")
 	test := LoadParseTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.expectNodes()
