@@ -30,7 +30,7 @@ func NewLogCtx(name string) *logCtx {
 	return &logCtx{name: name, ctx: log.NewContext(log.NewNopLogger())}
 }
 
-// LogSetContent sets a logger context.
+// LogSetContext sets a logger context.
 func LogSetContext(l *log.Context) {
 	logp.ctx = l
 	logl.ctx = l

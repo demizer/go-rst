@@ -145,7 +145,7 @@ func (nt *nodeTarget) reset() {
 
 func (nt *nodeTarget) append(n ...Node) {
 	for _, node := range n {
-		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%P", node),
+		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", node),
 			"nodeListPointer", fmt.Sprintf("%p", nt.subList), "node", node.String())
 		nt.subList.append(node)
 	}
