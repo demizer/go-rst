@@ -4,11 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
-	"strconv"
 	"testing"
 	"unicode/utf8"
-
-	"golang.org/x/text/unicode/norm"
 )
 
 var (
@@ -31,12 +28,6 @@ func lexTest(t *testing.T, test *Test) []item {
 // Test equality between items and expected items from unmarshalled json data, field by field.  Returns error in case of
 // error during json unmarshalling, or mismatch between items and the expected output.
 func equal(t *testing.T, expectItems []item, items []item) {
-	var id int
-	var found bool
-	var pFieldName, eFieldName string
-	var pFieldVal, eFieldVal reflect.Value
-	var pFieldValS reflect.StructField
-
 	lLen := len(items)
 	eLen := len(expectItems)
 
@@ -45,85 +36,29 @@ func equal(t *testing.T, expectItems []item, items []item) {
 		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
 		t.Fail()
 	}
+
 	eitems, err := json.MarshalIndent(expectItems, "", "    ")
 	if err != nil {
 		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
 		t.Fail()
 	}
+
 	if lLen != eLen {
 		o, err := diffLexerItems(string(eitems), string(litems))
 		if err != nil {
 			fmt.Println(o)
 			fmt.Println(err)
 		}
-		eTmp := "Number of expected Lex item values (len=%d) " +
-			"and lexed item values (len=%d) do not match"
+		eTmp := "Number of expected Lex item values (len=%d) and lexed item values (len=%d) do not match"
 		t.Fatalf(eTmp, lLen, eLen)
 	}
 
-	dError := func() {
-		var got, exp string
-		switch r := pFieldVal.Interface().(type) {
-		case ID:
-			got = pFieldVal.Interface().(ID).String()
-			exp = eFieldVal.Interface().(ID).String()
-		case itemElement:
-			got = pFieldVal.Interface().(itemElement).String()
-			exp = eFieldVal.Interface().(itemElement).String()
-		case Line:
-			got = pFieldVal.Interface().(Line).String()
-			exp = eFieldVal.Interface().(Line).String()
-		case StartPosition:
-			got = pFieldVal.Interface().(StartPosition).String()
-			exp = eFieldVal.Interface().(StartPosition).String()
-		case int:
-			got = strconv.Itoa(pFieldVal.Interface().(int))
-			exp = strconv.Itoa(eFieldVal.Interface().(int))
-		case string:
-			got = pFieldVal.Interface().(string)
-			exp = eFieldVal.Interface().(string)
-		default:
-			panic(fmt.Sprintf("%T is not implemented!", r))
-		}
-		t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q", id, pFieldName, got, eFieldName, exp)
-	}
-
-	check := func() {
-		if !found {
-			t.Errorf("ID: %d does not contain field %q", id,
-				eFieldName)
-			return
-		}
-
-		// Handle special cases when comparing fields
-		switch eFieldName {
-		case "Text":
-			normalized := norm.NFC.String(eFieldVal.Interface().(string))
-			eFieldVal = reflect.ValueOf(normalized)
-		case "StartPosition":
-			if pFieldVal.Interface().(StartPosition) == 1 {
-				// Ignore StartPositions that begin at 1 from the parsed output items. This allows
-				// startPosition to be excluded from the expected items tests (*_items.json).
-				return
-			}
-		}
-
-		if eFieldVal.Interface() != pFieldVal.Interface() {
-			dError()
-		}
-	}
-
 	for eNum, eItem := range expectItems {
-		eVal := reflect.ValueOf(eItem)
 		pVal := reflect.ValueOf(items[eNum])
-		id = int(pVal.FieldByName("ID").Interface().(ID))
+		eVal := reflect.ValueOf(eItem)
+		ec := newEqualityCheck(t, pVal, eVal)
 		for x := 0; x < eVal.NumField(); x++ {
-			eFieldVal = eVal.Field(x)
-			eFieldName = eVal.Type().Field(x).Name
-			pFieldVal = pVal.FieldByName(eFieldName)
-			pFieldValS, found = pVal.Type().FieldByName(eFieldName)
-			pFieldName = pFieldValS.Name
-			check()
+			ec.check(x)
 		}
 	}
 

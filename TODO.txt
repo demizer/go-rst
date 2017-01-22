@@ -1,3 +1,15 @@
+* Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
+
+* Sat Jan 21 23:50 2017: Split up the parse package intq lexer, parser, and document
+
+  * lexer package contains all the files starting with "lexer_"
+
+  * parser package containes all files starting with "parse_"
+
+  * document package containes all files starting with "node_"
+
+  The parse directory is becoming too large because it contains three packages...
+
 * Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
 
 * Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
@@ -27,8 +39,6 @@
   Example:
 
   rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --debug
-
-* Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
 
