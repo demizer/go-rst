@@ -237,7 +237,6 @@ func (t *Tree) peekSkip(iSkip itemElement) *item {
 	return nItem
 }
 
-// next is the workhorse of the parser. It is responsible for getting the next token from the lexer stream (channel). If the
 // next token already exists in the token buffer, than the token buffer is shifted left and the pointer to the "zed" token is
 // returned. pos specifies the number of times to call next.
 func (t *Tree) next(pos int) *item {
