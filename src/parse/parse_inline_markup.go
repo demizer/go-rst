@@ -31,13 +31,30 @@ main:
 }
 
 func (t *Tree) inlineStrong(i *item) {
-	t.next(1)
+	ni := t.next(1)
 	if len(*t.Nodes) == 0 {
 		np := newParagraph()
 		t.nodeTarget.append(np)
 		t.nodeTarget.setParent(np)
 	}
-	t.nodeTarget.append(newInlineStrong(t.token[zed]))
+main:
+	for {
+		ci := t.next(1)
+		if ci == nil {
+			break
+		}
+		switch ci.Type {
+		case itemInlineStrong:
+			ni.Text += "\n" + ci.Text
+		case itemBlankLine:
+			continue
+		default:
+			t.backup()
+			break main
+		}
+	}
+	ni.Length = utf8.RuneCountInString(ni.Text)
+	t.nodeTarget.append(newInlineStrong(ni))
 	t.next(1)
 }
 

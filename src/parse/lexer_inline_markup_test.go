@@ -129,6 +129,14 @@ func Test_06_01_03_01_LexStrongGood(t *testing.T) {
 	equal(t, test.expectItems(), items)
 }
 
+// Inline strong accross two lines
+func Test_06_01_04_00_LexStrongGood(t *testing.T) {
+	testPath := testPathFromName("06.01.04.00-strong-accross-lines")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.expectItems(), items)
+}
+
 // Strong with bad kwargs
 func Test_06_01_03_02_LexStrongBad(t *testing.T) {
 	testPath := testPathFromName("06.01.03.02-strong-kwargs")

@@ -1,0 +1,48 @@
+[
+    {
+        "id": 1,
+        "type": "itemInlineStrongOpen",
+        "text": "**",
+        "startPosition": 1,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 2,
+        "type": "itemInlineStrong",
+        "text": "strong",
+        "startPosition": 3,
+        "line": 1,
+        "length": 6
+    },
+    {
+        "id": 3,
+        "type": "itemBlankLine",
+        "text": "\n",
+        "startPosition": 9,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 4,
+        "type": "itemInlineStrong",
+        "text": "accross lines",
+        "startPosition": 1,
+        "line": 2,
+        "length": 13
+    },
+    {
+        "id": 5,
+        "type": "itemInlineStrongClose",
+        "text": "**",
+        "startPosition": 14,
+        "line": 2,
+        "length": 2
+    },
+    {
+        "id": 6,
+        "type": "itemEOF",
+        "startPosition": 16,
+        "line": 2
+    }
+]

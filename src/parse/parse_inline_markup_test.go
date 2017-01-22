@@ -91,6 +91,14 @@ func Test_06_01_03_01_ParseInlineMarkupStrongGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
+func Test_06_01_04_00_ParseInlineMarkupStrongGood(t *testing.T) {
+	testPath := testPathFromName("06.01.04.00-strong-accross-lines")
+	test := LoadParseTest(t, testPath)
+	pTree := parseTest(t, test)
+	eNodes := test.expectNodes()
+	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+}
+
 func Test_06_01_01_00_ParseInlineMarkupStrongWithApostropheGood(t *testing.T) {
 	testPath := testPathFromName("06.01.01.00-strong-with-apostrophe")
 	test := LoadParseTest(t, testPath)
