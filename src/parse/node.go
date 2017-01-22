@@ -188,7 +188,7 @@ func (nt *nodeTarget) setParent(n Node) {
 		nt.subList = &n.(*SectionNode).NodeList
 		nt.parent = n
 	default:
-		logp.Log("msg", "WARNING: type not supported or dosen't have a NodeList!", "type", fmt.Sprintf("%T", t))
+		logp.Log("msg", "WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
 	}
 	// logp.Log("msg", "nodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
 	// "nodeSubListPointer", fmt.Sprintf("%p", nt.subList), "nodeParentPointer", fmt.Sprintf("%p", nt.parent))

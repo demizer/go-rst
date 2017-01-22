@@ -46,7 +46,7 @@ func isInlineMarkup(l *lexer) bool {
 	}
 	if l.mark == '*' || l.mark == '`' {
 		var b rune
-		// Look back upto three runes looking for * or `
+		// Look back up to three runes looking for * or `
 		for x := 1; x != 3; x++ {
 			b = l.peekBack(x)
 			if l.mark != b {

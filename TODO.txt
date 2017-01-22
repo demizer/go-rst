@@ -1,5 +1,9 @@
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
+* Sun Jan 22 00:26 2017: Use travis.ci for building grst
+
+  drone.io went belly up, beta.drone.io doesn't allow me to login...
+
 * Sat Jan 21 23:50 2017: Split up the parse package intq lexer, parser, and document
 
   * lexer package contains all the files starting with "lexer_"
