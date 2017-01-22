@@ -186,6 +186,55 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	return nil
 }
 
+func (c *checkNode) checkFieldByType() error {
+	switch c.eFieldName {
+	case "text":
+		c.checkField(c.pFieldVal.(string), norm.NFC.String(c.eFieldVal.(string)))
+	case "type":
+		c.checkField(c.pFieldVal.(NodeType).String(), c.eFieldVal)
+	case "messageType":
+		c.checkField(c.pFieldVal.(parserMessage).String(), c.eFieldVal)
+	case "level", "length", "indentLength":
+		c.checkField(float64(c.pFieldVal.(int)), c.eFieldVal)
+	case "line":
+		c.checkField(float64(c.pFieldVal.(Line)), c.eFieldVal)
+	case "startPosition":
+		c.checkField(float64(c.pFieldVal.(StartPosition)), c.eFieldVal)
+	case "indent", "overLine", "title", "underLine":
+		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+	case "term", "definition":
+		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
+	case "nodeList":
+		len1 := len(c.eFieldVal.([]interface{}))
+		len2 := len(c.pFieldVal.(NodeList))
+		if len1 != len2 {
+			return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
+				"do not match!", len1, len2)
+		}
+		for num, node := range c.eFieldVal.([]interface{}) {
+			// Store and reset the parser value, otherwise a panic will occur on the next iteration
+			pFieldVal := c.pFieldVal
+			if cerr := c.checkFields(node, c.pFieldVal.(NodeList)[num]); cerr != nil {
+				return cerr
+			}
+			c.pFieldVal = pFieldVal
+		}
+	case "rune":
+		c.checkField(string(c.pFieldVal.(rune)), c.eFieldVal)
+	case "severity":
+		c.checkField(c.pFieldVal.(systemMessageLevel).String(), c.eFieldVal)
+	case "bullet":
+		c.checkField(c.pFieldVal.(string), c.eFieldVal.(string))
+	case "enumType":
+		c.checkField(c.pFieldVal.(EnumListType).String(), c.eFieldVal)
+	case "affix":
+		c.checkField(c.pFieldVal.(EnumAffixType).String(), c.eFieldVal)
+	default:
+		c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
+	}
+	return nil
+}
+
 // checkFields is a recursive function that compares the expected node output to the parser output comparing the two objects
 // field by field. eNodes is unmarshaled json input and pNode is the parser node to check.
 func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
@@ -200,54 +249,8 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
 		if !c.updateState(eKey, eVal, pVal, eNodes, pNode) {
 			continue
 		}
-		switch c.eFieldName {
-		case "text":
-			c.checkField(c.pFieldVal.(string), norm.NFC.String(c.eFieldVal.(string)))
-		case "type":
-			c.checkField(c.pFieldVal.(NodeType).String(), c.eFieldVal)
-		case "messageType":
-			c.checkField(c.pFieldVal.(parserMessage).String(), c.eFieldVal)
-		case "level", "length", "indentLength":
-			c.checkField(float64(c.pFieldVal.(int)), c.eFieldVal)
-		case "line":
-			c.checkField(float64(c.pFieldVal.(Line)), c.eFieldVal)
-		case "startPosition":
-			c.checkField(float64(c.pFieldVal.(StartPosition)), c.eFieldVal)
-		case "indent", "overLine", "title", "underLine":
-			if cerr := c.checkFields(c.eFieldVal, c.pFieldVal.(Node)); cerr != nil {
-				return cerr
-			}
-		case "term", "definition":
-			if cerr := c.checkFields(c.eFieldVal, c.pFieldVal.(Node)); cerr != nil {
-				return cerr
-			}
-		case "nodeList":
-			len1 := len(c.eFieldVal.([]interface{}))
-			len2 := len(c.pFieldVal.(NodeList))
-			if len1 != len2 {
-				return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
-					"do not match!", len1, len2)
-			}
-			for num, node := range c.eFieldVal.([]interface{}) {
-				// Store and reset the parser value, otherwise a panic will occur on the next iteration
-				pFieldVal := c.pFieldVal
-				if cerr := c.checkFields(node, c.pFieldVal.(NodeList)[num]); cerr != nil {
-					return cerr
-				}
-				c.pFieldVal = pFieldVal
-			}
-		case "rune":
-			c.checkField(string(c.pFieldVal.(rune)), c.eFieldVal)
-		case "severity":
-			c.checkField(c.pFieldVal.(systemMessageLevel).String(), c.eFieldVal)
-		case "bullet":
-			c.checkField(c.pFieldVal.(string), c.eFieldVal.(string))
-		case "enumType":
-			c.checkField(c.pFieldVal.(EnumListType).String(), c.eFieldVal)
-		case "affix":
-			c.checkField(c.pFieldVal.(EnumAffixType).String(), c.eFieldVal)
-		default:
-			c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
+		if cerr := c.checkFieldByType(); cerr != nil {
+			return cerr
 		}
 	}
 	return nil
