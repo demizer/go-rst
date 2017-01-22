@@ -206,6 +206,8 @@ func (c *checkNode) checkFieldNodeList() error {
 
 func (c *checkNode) checkFieldByType() error {
 	switch c.eFieldName {
+	case "indent", "overLine", "title", "underLine", "term", "definition":
+		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 	case "text":
 		c.checkField(c.pFieldVal.(string), norm.NFC.String(c.eFieldVal.(string)))
 	case "type":
@@ -218,10 +220,6 @@ func (c *checkNode) checkFieldByType() error {
 		c.checkField(float64(c.pFieldVal.(Line)), c.eFieldVal)
 	case "startPosition":
 		c.checkField(float64(c.pFieldVal.(StartPosition)), c.eFieldVal)
-	case "indent", "overLine", "title", "underLine":
-		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
-	case "term", "definition":
-		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 	case "nodeList":
 		return c.checkFieldNodeList()
 	case "rune":
