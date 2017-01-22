@@ -58,7 +58,7 @@ func (e *equalityCheck) error() {
 	e.t.Errorf("\n(ID: %d) Got: %s = %q, Expect: %s = %q", e.id, e.parsedFieldName, got, e.expectedFieldName, exp)
 }
 
-func (e *equalityCheck) check(fieldNum int) error {
+func (e *equalityCheck) check(fieldNum int) {
 	e.fieldNum = fieldNum
 	e.expectedFieldValue = e.expectedValue.Field(e.fieldNum)
 	e.expectedFieldName = e.expectedValue.Type().Field(e.fieldNum).Name
@@ -69,7 +69,8 @@ func (e *equalityCheck) check(fieldNum int) error {
 	e.parsedFieldName = parsedValueStruct.Name
 
 	if !e.expectedFieldExists {
-		return fmt.Errorf("ID: %d does not contain field %q", e.id, e.expectedFieldName)
+		e.t.Errorf("ID: %d does not contain field %q", e.id, e.expectedFieldName)
+		return
 	}
 
 	// Handle special cases when comparing fields
@@ -80,13 +81,11 @@ func (e *equalityCheck) check(fieldNum int) error {
 		if e.parsedFieldValue.Interface().(StartPosition) == 1 {
 			// Ignore StartPositions that begin at 1 from the parsed output items. This allows
 			// startPosition to be excluded from the expected items tests (*_items.json).
-			return nil
+			return
 		}
 	}
 
 	if e.expectedFieldValue.Interface() != e.parsedFieldValue.Interface() {
 		e.error()
 	}
-
-	return nil
 }
