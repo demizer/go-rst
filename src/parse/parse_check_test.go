@@ -233,7 +233,7 @@ func (c *checkNode) checkFieldByType() error {
 	case "affix":
 		c.checkField(c.pFieldVal.(EnumAffixType).String(), c.eFieldVal)
 	default:
-		c.t.Errorf("Type %q case is not implemented in checkFields!", c.eFieldName)
+		c.t.Errorf("Type %q case is not implemented in checkFieldByType!", c.eFieldName)
 	}
 	return nil
 }
