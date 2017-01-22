@@ -100,6 +100,42 @@ func parseSectionText(s *sectionParseSubState, t *Tree, i *item) Node {
 	return sm
 }
 
+func checkSection(s *sectionParseSubState, t *Tree, i *item) Node {
+	pBack := t.peekBack(1)
+
+	if s.sectionSpace != nil && s.sectionSpace.Type == itemTitle {
+		if sm := parseSectionTitle(s, t, i); sm != nil {
+			return sm
+		}
+	} else if pBack != nil && (pBack.Type == itemTitle || pBack.Type == itemSpace) {
+		if sm := parseSectionTitleNoOverline(s, t, i); sm != nil {
+			return sm
+		}
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemText {
+		if sm := parseSectionText(s, t, i); sm != nil {
+			return sm
+		}
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemSectionAdornment {
+		// Missing section title
+		t.next(1) // Move the token buffer past the error token
+		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		t.nodeTarget.append(sm)
+		return sm
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemEOF {
+		// Missing underline and at EOF
+		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
+		t.nodeTarget.append(sm)
+		return sm
+	}
+
+	if s.sectionOverAdorn != nil && s.sectionOverAdorn.Text != s.sectionUnderAdorn.Text {
+		sm := t.systemMessage(severeOverlineUnderlineMismatch)
+		t.nodeTarget.append(sm)
+		return sm
+	}
+	return nil
+}
+
 func checkSectionLevel(s *sectionParseSubState, t *Tree, sec *SectionNode) Node {
 	msg := t.sectionLevels.Add(sec)
 	logp.Log("msg", "Using section level", "level", len(t.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
@@ -151,36 +187,7 @@ func (t *Tree) section(i *item) Node {
 
 	s := &sectionParseSubState{sectionSpace: t.peekSkip(itemSpace)}
 
-	pBack := t.peekBack(1)
-
-	if s.sectionSpace != nil && s.sectionSpace.Type == itemTitle {
-		if sm := parseSectionTitle(s, t, i); sm != nil {
-			return sm
-		}
-	} else if pBack != nil && (pBack.Type == itemTitle || pBack.Type == itemSpace) {
-		if sm := parseSectionTitleNoOverline(s, t, i); sm != nil {
-			return sm
-		}
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemText {
-		if sm := parseSectionText(s, t, i); sm != nil {
-			return sm
-		}
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemSectionAdornment {
-		// Missing section title
-		t.next(1) // Move the token buffer past the error token
-		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
-		t.nodeTarget.append(sm)
-		return sm
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == itemEOF {
-		// Missing underline and at EOF
-		sm := t.systemMessage(errorInvalidSectionOrTransitionMarker)
-		t.nodeTarget.append(sm)
-		return sm
-	}
-
-	if s.sectionOverAdorn != nil && s.sectionOverAdorn.Text != s.sectionUnderAdorn.Text {
-		sm := t.systemMessage(severeOverlineUnderlineMismatch)
-		t.nodeTarget.append(sm)
+	if sm := checkSection(s, t, i); sm != nil {
 		return sm
 	}
 
