@@ -186,6 +186,24 @@ func (c *checkNode) checkMatchingFields(eNodes interface{}, pNode Node) error {
 	return nil
 }
 
+func (c *checkNode) checkFieldNodeList() error {
+	len1 := len(c.eFieldVal.([]interface{}))
+	len2 := len(c.pFieldVal.(NodeList))
+	if len1 != len2 {
+		return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) do not match!",
+			len1, len2)
+	}
+	for num, node := range c.eFieldVal.([]interface{}) {
+		// Store and reset the parser value, otherwise a panic will occur on the next iteration
+		pFieldVal := c.pFieldVal
+		if cerr := c.checkFields(node, c.pFieldVal.(NodeList)[num]); cerr != nil {
+			return cerr
+		}
+		c.pFieldVal = pFieldVal
+	}
+	return nil
+}
+
 func (c *checkNode) checkFieldByType() error {
 	switch c.eFieldName {
 	case "text":
@@ -205,20 +223,7 @@ func (c *checkNode) checkFieldByType() error {
 	case "term", "definition":
 		return c.checkFields(c.eFieldVal, c.pFieldVal.(Node))
 	case "nodeList":
-		len1 := len(c.eFieldVal.([]interface{}))
-		len2 := len(c.pFieldVal.(NodeList))
-		if len1 != len2 {
-			return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) "+
-				"do not match!", len1, len2)
-		}
-		for num, node := range c.eFieldVal.([]interface{}) {
-			// Store and reset the parser value, otherwise a panic will occur on the next iteration
-			pFieldVal := c.pFieldVal
-			if cerr := c.checkFields(node, c.pFieldVal.(NodeList)[num]); cerr != nil {
-				return cerr
-			}
-			c.pFieldVal = pFieldVal
-		}
+		return c.checkFieldNodeList()
 	case "rune":
 		c.checkField(string(c.pFieldVal.(rune)), c.eFieldVal)
 	case "severity":
