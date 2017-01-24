@@ -190,8 +190,12 @@ func (c *checkNode) checkFieldNodeList() error {
 	len1 := len(c.eFieldVal.([]interface{}))
 	len2 := len(c.pFieldVal.(NodeList))
 	if len1 != len2 {
-		return fmt.Errorf("Expected NodeList values (len=%d) and parsed NodeList values (len=%d) do not match!",
-			len1, len2)
+		l := reflect.ValueOf(c.parsedNode).Elem().FieldByName("Line").Int()
+		t := reflect.TypeOf(c.parsedNode)
+		temp := "Expected document and actual document do not match!\n\n" +
+			"      At location: Type: %q Line: %d\n\n" +
+			"      Json diff syntax: https://github.com/josephburnett/jd#diff-language"
+		return fmt.Errorf(temp, t, l)
 	}
 	for num, node := range c.eFieldVal.([]interface{}) {
 		// Store and reset the parser value, otherwise a panic will occur on the next iteration
@@ -261,33 +265,39 @@ func (c *checkNode) checkFields(eNodes interface{}, pNode Node) error {
 
 // checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output node by node.
 func checkParseNodes(t *testing.T, eTree []interface{}, pNodes *NodeList, testPath string) {
-
 	state := &checkNode{t: t, testPath: testPath}
+
+	pJson, err := json.MarshalIndent(pNodes, "", "    ")
+	if err != nil {
+		t.Errorf("Error Marshalling JSON: %s", err.Error())
+		return
+	}
+
+	// Convert NodeList to []interface{} to pass to the jsonDiff function
+	toSlice := func(v *NodeList) []interface{} {
+		v2 := []Node(*v)
+		s := make([]interface{}, len(v2))
+		for i, j := range v2 {
+			s[i] = j
+		}
+		return s
+	}
 
 	failTest := func(err error) {
 		// Give all other output time to print
 		time.Sleep(time.Second / 2)
 		tlog(fmt.Sprintf("\nFAIL: %s\n", err.Error()))
-		tlog("-----------------------------------------------------------------------------")
-		tlog("Parse Nodes")
-		tlog("-----------------------------------------------------------------------------")
-		pnj, err := json.MarshalIndent(pNodes, "", "    ")
+		// Json diff output has a syntax:
+		// https://github.com/josephburnett/jd#diff-language
+		o, err := jsonDiff(eTree, toSlice(pNodes))
 		if err != nil {
-			tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
-			t.Fail()
+			fmt.Println(o)
+			fmt.Printf("Error diffing JSON: %s", err.Error())
 		}
-		tlog(string(pnj))
-		// tlog(spd.Sdump(pNodes))
-		tlog("-----------------------------------------------------------------------------")
-		tlog("Expected Nodes")
-		tlog("-----------------------------------------------------------------------------")
-		enj, err := json.MarshalIndent(eTree, "", " ")
-		if err != nil {
-			tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
-			t.Fail()
-		}
-		tlog(string(enj))
-		// tlog(spd.Sdump(eTree))
+		tlog("\n[Parsed Nodes JSON]\n\n")
+		tlog(string(pJson))
+		tlog("\n\n[JSON DIFF]\n\n")
+		tlog(o)
 		t.FailNow()
 	}
 

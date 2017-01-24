@@ -28,6 +28,13 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/josephburnett/jd/lib",
+			"repository": "https://github.com/josephburnett/jd",
+			"revision": "9dfd7ca586ee84c84b17c6643ec35f7c8e17b72d",
+			"branch": "master",
+			"path": "/lib"
+		},
+		{
 			"importpath": "golang.org/x/text/transform",
 			"repository": "https://go.googlesource.com/text",
 			"revision": "07b9a78963006a15c538ec5175243979025fa7a8",

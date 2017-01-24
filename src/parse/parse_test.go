@@ -7,13 +7,13 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strconv"
 	"testing"
 
 	"github.com/go-kit/kit/log"
+	jd "github.com/josephburnett/jd/lib"
 )
 
 var debug bool
@@ -37,28 +37,21 @@ func SetDebug() {
 	}
 }
 
-func diffLexerItems(parsedItems, expectedItems string) (string, error) {
-	f, err := ioutil.TempFile("/tmp", "go-rst-parseditems-")
+func jsonDiff(expectedItems, parsedItems []interface{}) (string, error) {
+	eJson, err := json.Marshal(expectedItems)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("Failed to marshal expectedItems: %s", err.Error())
 	}
-	_, err = f.WriteString(parsedItems)
+
+	pJson, err := json.Marshal(parsedItems)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("Failed to marshal parsedItems: %s", err.Error())
 	}
-	f2, err := ioutil.TempFile("/tmp", "go-rst-expectitems-")
-	if err != nil {
-		return "", err
-	}
-	_, err = f2.WriteString(expectedItems)
-	if err != nil {
-		return "", err
-	}
-	o, err := exec.Command("diff", "-u", f.Name(), f2.Name()).Output()
-	if err != nil {
-		return string(o), err
-	}
-	return string(o), nil
+
+	a, _ := jd.ReadJsonString(string(eJson))
+	b, _ := jd.ReadJsonString(string(pJson))
+
+	return a.Diff(b).Render(), nil
 }
 
 // Contains a single test with data loaded from test files in the testdata directory

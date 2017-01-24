@@ -1,4 +1,13 @@
+* Mon Jan 23 21:50 2017: Remove custom json similarity checks and used jsondiff (jd)
+
+  The lexer/parser test checker is overly complex at about 2000 lines. We need to make sure the json output of the
+  lexer/parser match the expected results and that's it. This can be done with the json diff library.
+
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
+
+* Sun Jan 22 02:45 2017: Add MarshalJSON() to all Nodes in node.go
+
+  otherwise diff output on errors shows an index number and not the type!
 
 * Sun Jan 22 00:26 2017: Use travis.ci for building grst
 
@@ -15,6 +24,8 @@
   The parse directory is becoming too large because it contains three packages...
 
 * Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
+
+  NodeSystemMessage becomes SystemMessageNode
 
 * Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
 

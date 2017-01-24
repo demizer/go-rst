@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"testing"
@@ -31,20 +30,16 @@ func equal(t *testing.T, expectItems []item, items []item) {
 	lLen := len(items)
 	eLen := len(expectItems)
 
-	litems, err := json.MarshalIndent(items, "", "    ")
-	if err != nil {
-		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
-		t.Fail()
-	}
-
-	eitems, err := json.MarshalIndent(expectItems, "", "    ")
-	if err != nil {
-		tlog(fmt.Sprintf("ERROR: Could not marshal json! Error=%q", err.Error()))
-		t.Fail()
+	toSlice := func(v []item) []interface{} {
+		s := make([]interface{}, len(v))
+		for i, j := range v {
+			s[i] = j
+		}
+		return s
 	}
 
 	if lLen != eLen {
-		o, err := diffLexerItems(string(eitems), string(litems))
+		o, err := jsonDiff(toSlice(expectItems), toSlice(items))
 		if err != nil {
 			fmt.Println(o)
 			fmt.Println(err)
