@@ -4,127 +4,130 @@ import (
 	"errors"
 	"fmt"
 	"os"
+
+	doc "github.com/demizer/go-rst/rst/document"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
 )
 
-func (t *Tree) definitionTerm(i *item) Node {
+func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 	//
 	//  FIXME: Definition list parsing is NOT fully implemented.
 	//
-	dl := newDefinitionList(&item{Line: i.Line})
-	t.nodeTarget.append(dl)
-	t.nodeTarget.setParent(dl)
-	t.next(1)
+	dl := doc.NewDefinitionList(&tok.Item{Line: i.Line})
+	p.nodeTarget.Append(dl)
+	p.nodeTarget.SetParent(dl)
+	p.next(1)
 
 	// Container for definition items
-	dli := newDefinitionListItem(i, t.peek(1))
-	t.nodeTarget.append(dli)
-	t.nodeTarget.setParent(dli.Definition)
+	dli := doc.NewDefinitionListItem(i, p.peek(1))
+	p.nodeTarget.Append(dli)
+	p.nodeTarget.SetParent(dli.Definition)
 
 	// Gather definitions and body elements
 	for {
-		ni := t.next(1)
+		ni := p.next(1)
 		if ni == nil {
 			break
 		}
-		logp.Log("msg", "Have token", "token", ni)
-		pb := t.peekBack(1)
-		if ni.Type == itemSpace {
-			logp.Msg("continue; ni.Type == itemSpace")
+		log.Log("msg", "Have token", "token", ni)
+		pb := p.peekBack(1)
+		if ni.Type == tok.ItemSpace {
+			log.Msg("continue; ni.Type == ItemSpace")
 			continue
-		} else if ni.Type == itemEOF {
-			logp.Msg("break; ni.Type == itemEOF")
+		} else if ni.Type == tok.ItemEOF {
+			log.Msg("break; ni.Type == ItemEOF")
 			break
-		} else if ni.Type == itemBlankLine {
-			logp.Msg("Setting nodeTarget to dli")
-			t.nodeTarget.setParent(dli.Definition)
-		} else if ni.Type == itemCommentMark && (pb != nil && pb.Type != itemSpace) {
+		} else if ni.Type == tok.ItemBlankLine {
+			log.Msg("Setting nodeTarget to dli")
+			p.nodeTarget.SetParent(dli.Definition)
+		} else if ni.Type == tok.ItemCommentMark && (pb != nil && pb.Type != tok.ItemSpace) {
 			// Comment at start of the line breaks current definition list
-			logp.Msg("Have itemCommentMark at start of the line!")
-			t.nodeTarget.reset()
-			t.backup()
+			log.Msg("Have tok.ItemCommentMark at start of the line!")
+			p.nodeTarget.Reset()
+			p.backup()
 			break
-		} else if ni.Type == itemDefinitionText {
+		} else if ni.Type == tok.ItemDefinitionText {
 			// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
-			np := newParagraphWithNodeText(ni)
-			t.nodeTarget.append(np)
-			t.nodeTarget.setParent(np)
-			logp.Msg("continue; ni.Type == itemDefinitionText")
+			np := doc.NewParagraphWithNodeText(ni)
+			p.nodeTarget.Append(np)
+			p.nodeTarget.SetParent(np)
+			log.Msg("continue; ni.Type == tok.ItemDefinitionText")
 			continue
-		} else if ni.Type == itemDefinitionTerm {
-			dli2 := newDefinitionListItem(ni, t.peek(2))
-			t.nodeTarget.setParent(dl)
-			t.nodeTarget.append(dli2)
-			t.nodeTarget.setParent(dli2.Definition)
-			logp.Msg("continue; ni.Type == itemDefinitionTerm")
+		} else if ni.Type == tok.ItemDefinitionTerm {
+			dli2 := doc.NewDefinitionListItem(ni, p.peek(2))
+			p.nodeTarget.SetParent(dl)
+			p.nodeTarget.Append(dli2)
+			p.nodeTarget.SetParent(dli2.Definition)
+			log.Msg("continue; ni.Type == tok.ItemDefinitionTerm")
 			continue
 		}
-		t.subParseBodyElements(ni)
+		p.subParseBodyElements(ni)
 	}
 	return dl
 }
 
-func (t *Tree) bulletList(i *item) {
+func (p *Parser) bulletList(i *tok.Item) {
 	//
 	// FIXME: Bullet List Parsing is NOT fully implemented
 	//
-	bl := newBulletListNode(i)
-	t.openList = bl
-	t.nodeTarget.append(bl)
-	t.nodeTarget.setParent(bl)
+	bl := doc.NewBulletListNode(i)
+	p.openList = bl
+	p.nodeTarget.Append(bl)
+	p.nodeTarget.SetParent(bl)
 
 	// Get the bullet list paragraph
-	t.next(1)
-	bli := newBulletListItemNode(i)
+	p.next(1)
+	bli := doc.NewBulletListItemNode(i)
 
 	// Set the node target to the bullet list paragraph
-	t.nodeTarget.append(bli)
-	t.nodeTarget.setParent(bli)
-	t.indents.add(i, bli)
+	p.nodeTarget.Append(bli)
+	p.nodeTarget.SetParent(bli)
+	p.indents.add(i, bli)
 
 	// Capture all bullet items until un-indent
 	for {
-		ni := t.next(1)
-		logp.Log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
+		ni := p.next(1)
+		log.Log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
 		if ni == nil {
-			logp.Log("break next item == nil")
+			log.Log("break next item == nil")
 			break
-		} else if ni.Type == itemEOF {
-			logp.Log("break itemEOF")
+		} else if ni.Type == tok.ItemEOF {
+			log.Log("break itemEOF")
 			break
-		} else if t.indents.len() > 0 && len(*t.indents.topNodeList()) > 0 && t.peekBack(1).Type == itemSpace &&
-			t.peekBack(2).Type != itemCommentMark {
-			logp.Log("msg", "Have indents",
-				"lastStartPosition", t.indents.lastStartPosition(),
+		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.ItemSpace &&
+			p.peekBack(2).Type != tok.ItemCommentMark {
+			log.Log("msg", "Have indents",
+				"lastStartPosition", p.indents.lastStartPosition(),
 				"ni.StartPosition", ni.StartPosition)
-			if t.indents.lastStartPosition() != ni.StartPosition {
+			if p.indents.lastStartPosition() != ni.StartPosition {
 				// FIXME: WE SHOULD NEVER EXIT IN LIBRARY !! This is just debug code, but we need to add
 				// proper handling for this ...
-				logp.Log(errors.New("Unexpected un-indent!"))
-				spd.Dump(t.indents)
+				log.Log(errors.New("Unexpected un-indent!"))
+				spd.Dump(p.indents)
 				os.Exit(1)
 			}
 		}
 
-		t.subParseBodyElements(ni)
+		p.subParseBodyElements(ni)
 	}
-	t.indents.pop()
+	p.indents.pop()
 }
 
-var lastEnum *EnumListNode
+var lastEnum *doc.EnumListNode
 
-func (t *Tree) enumList(i *item) (n Node) {
-	var eNode *EnumListNode
-	var affix *item
+func (p *Parser) enumList(i *tok.Item) (n doc.Node) {
+	var eNode *doc.EnumListNode
+	var affix *tok.Item
 	if lastEnum == nil {
-		t.next(1)
-		affix = t.token[zed]
-		t.next(1)
-		eNode = newEnumListNode(i, affix)
-		t.next(1)
-		eNode.NodeList.append(newParagraphWithNodeText(t.token[zed]))
+		p.next(1)
+		affix = p.token[zed]
+		p.next(1)
+		eNode = doc.NewEnumListNode(i, affix)
+		p.next(1)
+		eNode.NodeList.Append(doc.NewParagraphWithNodeText(p.token[zed]))
 	} else {
-		t.next(3)
-		lastEnum.NodeList.append(newParagraphWithNodeText(t.token[zed]))
+		p.next(3)
+		lastEnum.NodeList.Append(doc.NewParagraphWithNodeText(p.token[zed]))
 		return nil
 	}
 	lastEnum = eNode

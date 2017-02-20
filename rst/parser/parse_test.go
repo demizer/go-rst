@@ -2,232 +2,25 @@ package parser
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"math"
-	"os"
-	"path/filepath"
 	"reflect"
 	"strconv"
 	"testing"
 
-	"github.com/go-kit/kit/log"
-	jd "github.com/josephburnett/jd/lib"
+	"github.com/demizer/go-rst/rst/testutil"
+
+	doc "github.com/demizer/go-rst/rst/document"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
 )
 
-var debug bool
-
-func init() { SetDebug() }
-
-func tlog(out string) {
-	if debug {
-		fmt.Println(out)
-	}
-}
-
-// SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test
-// binary and also sets the template for logging output.
-func SetDebug() {
-	flag.StringVar(&excludeNamedContext, "exclude", "test", "Exclude context from output.")
-	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
-	flag.Parse()
-	if debug {
-		LogSetContext(log.NewContext(log.NewLogfmtLogger(os.Stdout)))
-	}
-}
-
-func nodeListToInterface(v *NodeList) []interface{} {
-	v2 := []Node(*v)
-	s := make([]interface{}, len(v2))
-	for i, j := range v2 {
-		s[i] = j
-	}
-	return s
-}
-
-func jsonDiff(expectedItems, parsedItems []interface{}) (string, error) {
-	eJson, err := json.Marshal(expectedItems)
-	if err != nil {
-		return "", fmt.Errorf("Failed to marshal expectedItems: %s", err.Error())
-	}
-
-	pJson, err := json.Marshal(parsedItems)
-	if err != nil {
-		return "", fmt.Errorf("Failed to marshal parsedItems: %s", err.Error())
-	}
-
-	a, _ := jd.ReadJsonString(string(eJson))
-	b, _ := jd.ReadJsonString(string(pJson))
-
-	return a.Diff(b).Render(), nil
-}
-
-// checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output using the jd library.
-func checkParseNodes(t *testing.T, eTree []interface{}, pNodes *NodeList, testPath string) {
-	pJson, err := json.MarshalIndent(pNodes, "", "    ")
-	if err != nil {
-		t.Errorf("Error Marshalling JSON: %s", err.Error())
-		return
-	}
-
-	// Json diff output has a syntax:
-	// https://github.com/josephburnett/jd#diff-language
-	o, err := jsonDiff(eTree, nodeListToInterface(pNodes))
-	if err != nil {
-		fmt.Println(o)
-		fmt.Printf("Error diffing JSON: %s", err.Error())
-		return
-	}
-
-	// There should be no output from the diff
-	if len(o) != 0 {
-		// Give all other output time to print
-		// time.Sleep(time.Second / 2)
-
-		tlog("\nFAIL: parsed nodes do not match expected nodes!")
-
-		tlog("\n[Parsed Nodes JSON]\n\n")
-		tlog(string(pJson))
-
-		tlog("\n\n[JSON DIFF]\n\n")
-		tlog(o)
-
-		t.FailNow()
-	}
-}
-
-// Contains a single test with data loaded from test files in the testdata directory
-type Test struct {
-	path     string // The path including directory and basename
-	data     string // The input data to be parsed
-	itemData string // The expected lex items output in json
-	nodeData string // The expected parse nodes in json
-}
-
-// expectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic occurs if there is an error
-// unmarshaling the JSON data.
-func (l Test) expectNodes() (nl []interface{}) {
-	if err := json.Unmarshal([]byte(l.nodeData), &nl); err != nil {
-		panic(fmt.Sprintln("JSON error: ", err))
-	}
-	return
-}
-
-// expectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is an error decoding the JSON
-// data.
-func (l Test) expectItems() (lexItems []item) {
-	if err := json.Unmarshal([]byte(l.itemData), &lexItems); err != nil {
-		panic(fmt.Sprintln("JSON error: ", err))
-	}
-	return
-}
-
-// Contains absolute file paths for the test data
-var TestDataFiles []string
-
-// testPathsFromDirectory walks through the file tree in the testdata directory containing all of the tests and returns a
-// string slice of all the discovered paths.
-func testPathsFromDirectory(dir string) ([]string, error) {
-	var paths []string
-	wFunc := func(p string, info os.FileInfo, err error) error {
-		path, err := filepath.Abs(p)
-		if err != nil {
-			return err
-		}
-		if filepath.Ext(path) == ".rst" {
-			paths = append(paths, path[:len(path)-4])
-		}
-		return nil
-	}
-	err := filepath.Walk(dir, wFunc)
-	if err != nil {
-		return nil, err
-	}
-	return paths, nil
-}
-
-// testPathFromName loops through TestDataFiles until name is matched.
-func testPathFromName(name string) string {
-	var err error
-	if len(TestDataFiles) < 1 {
-		TestDataFiles, err = testPathsFromDirectory("../../testdata")
-		if err != nil {
-			panic(err)
-		}
-	}
-	for _, p := range TestDataFiles {
-		if len(p)-len(name) > 0 {
-			if p[len(p)-len(name):] == name {
-				return p
-			}
-		}
-	}
-	panic(fmt.Sprintf("Could not find test for %q\n", name))
-}
-
-func LoadLexTest(t *testing.T, path string) (test *Test) {
-	iDPath := path + ".rst"
-	inputData, err := ioutil.ReadFile(iDPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(inputData) == 0 {
-		t.Fatalf("\"%s\" is empty!", iDPath)
-	}
-	itemFPath := path + "-items.json"
-	itemData, err := ioutil.ReadFile(itemFPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(itemData) == 0 {
-		t.Fatalf("\"%s\" is empty!", itemFPath)
-	}
-	return &Test{
-		path:     path,
-		data:     string(inputData[:len(inputData)-1]),
-		itemData: string(itemData),
-	}
-}
-
-func LoadParseTest(t *testing.T, path string) (test *Test) {
-	iDPath := path + ".rst"
-	inputData, err := ioutil.ReadFile(iDPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(inputData) == 0 {
-		t.Fatalf("\"%s\" is empty!", iDPath)
-	}
-	nDPath := path + "-nodes.json"
-	nodeData, err := ioutil.ReadFile(nDPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(nodeData) == 0 {
-		t.Fatalf("\"%s\" is empty!", nDPath)
-	}
-	return &Test{
-		path:     path,
-		data:     string(inputData[:len(inputData)-1]),
-		nodeData: string(nodeData),
-	}
-}
-
-// parseTest initiates the parser and parses a test using test.data is input.
-func parseTest(t *testing.T, test *Test) (tree *Tree) {
-	tlog(fmt.Sprintf("Test path: %s", test.path))
-	tlog(fmt.Sprintf("Test Input:\n\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n%s\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n", test.data))
-	tree, _ = Parse(test.path, test.data)
-	return
-}
-
 // tokEqualChecker compares the lexed tokens and the expected tokens and reports failures.
-type tokEqualChecker func(*Tree, reflect.Value, int, string)
+type tokEqualChecker func(*Parser, reflect.Value, int, string)
 
 // checkTokens checks the lexed tokens against the expected tokens and uses isEqual to perform the actual checks and report
 // errors.
-func checkTokens(tr *Tree, trExp interface{}, isEqual tokEqualChecker) {
+func checkTokens(tr *Parser, trExp interface{}, isEqual tokEqualChecker) {
 	for i := 0; i < len(tr.token); i++ {
 		tokenPos := i - zed
 		zedPos := "zed"
@@ -250,59 +43,134 @@ func checkTokens(tr *Tree, trExp interface{}, isEqual tokEqualChecker) {
 	}
 }
 
-var treeBackupTests = []struct {
+func nodeListToInterface(v *doc.NodeList) []interface{} {
+	v2 := []doc.Node(*v)
+	s := make([]interface{}, len(v2))
+	for i, j := range v2 {
+		s[i] = j
+	}
+	return s
+}
+
+// checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output using the jd library.
+func checkParseNodes(t *testing.T, eParser []interface{}, pNodes *doc.NodeList, testPath string) {
+	pJson, err := json.MarshalIndent(pNodes, "", "    ")
+	if err != nil {
+		t.Errorf("Error Marshalling JSON: %s", err.Error())
+		return
+	}
+
+	// Json diff output has a syntax:
+	// https://github.com/josephburnett/jd#diff-language
+	o, err := testutil.JsonDiff(eParser, nodeListToInterface(pNodes))
+	if err != nil {
+		fmt.Println(o)
+		fmt.Printf("Error diffing JSON: %s", err.Error())
+		return
+	}
+
+	// There should be no output from the diff
+	if len(o) != 0 {
+		// Give all other output time to print
+		// time.Sleep(time.Second / 2)
+
+		testutil.Log("\nFAIL: parsed nodes do not match expected nodes!")
+
+		testutil.Log("\n[Parsed Nodes JSON]\n\n")
+		testutil.Log(string(pJson))
+
+		testutil.Log("\n\n[JSON DIFF]\n\n")
+		testutil.Log(o)
+
+		t.FailNow()
+	}
+}
+
+func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
+	iDPath := path + ".rst"
+	inputData, err := ioutil.ReadFile(iDPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(inputData) == 0 {
+		t.Fatalf("\"%s\" is empty!", iDPath)
+	}
+	nDPath := path + "-nodes.json"
+	nodeData, err := ioutil.ReadFile(nDPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(nodeData) == 0 {
+		t.Fatalf("\"%s\" is empty!", nDPath)
+	}
+	return &testutil.Test{
+		Path:     path,
+		Data:     string(inputData[:len(inputData)-1]),
+		NodeData: string(nodeData),
+	}
+}
+
+// parseTest initiates the parser and parses a test using test.data is input.
+func parseTest(t *testing.T, test *testutil.Test) *Parser {
+	testutil.Log(fmt.Sprintf("Test path: %s", test.Path))
+	testutil.Log(fmt.Sprintf("Test Input:\n\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n%s\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n", test.Data))
+	p, _ := Parse(test.Path, test.Data)
+	return p
+}
+
+var parserBackupTests = []struct {
 	name      string
 	input     string
-	nextNum   int   // The number of times to call Tree.next().
-	backupNum int   // Number of calls to Tree.backup(). Value starts at 1.
-	Back4Tok  *item // The fourth backup token.
-	Back3Tok  *item // The third backup token.
-	Back2Tok  *item // The second backup token.
-	Back1Tok  *item // The first backup token.
-	ZedToken  *item // The item to expect at Tree.token[zed].
-	Peek1Tok  *item // The first peek token.
-	Peek2Tok  *item // The second peek token.
-	Peek3Tok  *item // The third peek token.
-	Peek4Tok  *item // The fourth peek token.
+	nextNum   int       // The number of times to call Parser.next().
+	backupNum int       // Number of calls to Parser.backup(). Value starts at 1.
+	Back4Tok  *tok.Item // The fourth backup token.
+	Back3Tok  *tok.Item // The third backup token.
+	Back2Tok  *tok.Item // The second backup token.
+	Back1Tok  *tok.Item // The first backup token.
+	ZedToken  *tok.Item // The item to expect at Parser.token[zed].
+	Peek1Tok  *tok.Item // The first peek token.
+	Peek2Tok  *tok.Item // The second peek token.
+	Peek3Tok  *tok.Item // The third peek token.
+	Peek4Tok  *tok.Item // The fourth peek token.
 }{
 	{
 		name:    "Single backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 1,
-		ZedToken: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
-		Peek1Tok: &item{ID: 2, Type: itemSectionAdornment},
+		ZedToken: &tok.Item{ID: 1, Type: tok.ItemTitle, Text: "Title 1"},
+		Peek1Tok: &tok.Item{ID: 2, Type: tok.ItemSectionAdornment},
 	},
 	{
 		name:    "Double backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 2,
 		// ZedToken is nil
-		Peek1Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
-		Peek2Tok: &item{ID: 2, Type: itemSectionAdornment},
+		Peek1Tok: &tok.Item{ID: 1, Type: tok.ItemTitle, Text: "Title 1"},
+		Peek2Tok: &tok.Item{ID: 2, Type: tok.ItemSectionAdornment},
 	},
 	{
 		name:    "Triple backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 3,
 		// ZedToken is nil
-		Peek2Tok: &item{ID: 1, Type: itemTitle, Text: "Title 1"},
-		Peek3Tok: &item{ID: 2, Type: itemSectionAdornment},
+		Peek2Tok: &tok.Item{ID: 1, Type: tok.ItemTitle, Text: "Title 1"},
+		Peek3Tok: &tok.Item{ID: 2, Type: tok.ItemSectionAdornment},
 	},
 	{
 		name:    "Quadruple backup",
 		input:   "Title\n=====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
 		nextNum: 13, backupNum: 4,
 		// Back tokens 4 - 1 and ZedToken are nil
-		Peek1Tok: &item{ID: 10, Type: itemText, Text: "Four"},
-		Peek2Tok: &item{ID: 11, Type: itemBlankLine, Text: "\n"},
-		Peek3Tok: &item{ID: 12, Type: itemText, Text: "Five"},
-		Peek4Tok: &item{ID: 13, Type: itemEOF},
+		Peek1Tok: &tok.Item{ID: 10, Type: tok.ItemText, Text: "Four"},
+		Peek2Tok: &tok.Item{ID: 11, Type: tok.ItemBlankLine, Text: "\n"},
+		Peek3Tok: &tok.Item{ID: 12, Type: tok.ItemText, Text: "Five"},
+		Peek4Tok: &tok.Item{ID: 13, Type: tok.ItemEOF},
 	},
 }
 
-func TestTreeBackup(t *testing.T) {
-	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
-		val := tExp.Interface().(*item)
+func TestParserBackup(t *testing.T) {
+	isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*tok.Item)
 		if val == nil && tr.token[tPos] == nil {
 			return
 		}
@@ -320,10 +188,10 @@ func TestTreeBackup(t *testing.T) {
 			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
-	for _, tt := range treeBackupTests {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+	for _, tt := range parserBackupTests {
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = lex(tt.name, []byte(tt.input))
+		tr.lex = tok.Lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
@@ -332,19 +200,19 @@ func TestTreeBackup(t *testing.T) {
 	}
 }
 
-var treeNextTests = []struct {
+var parserNextTests = []struct {
 	name     string
 	input    string
-	nextNum  int   // Number of times to call Tree.next(). Value starts at 1.
-	Back4Tok *item // The item to expect at Tree.token[zed-4]
-	Back3Tok *item // The item to expect at Tree.token[zed-3]
-	Back2Tok *item // The item to expect at Tree.token[zed-2]
-	Back1Tok *item // The item to expect at Tree.token[zed-1]
-	ZedToken *item // The item to expect at Tree.token[zed]
-	Peek1Tok *item // Peek tokens should be blank on next tests.
-	Peek2Tok *item
-	Peek3Tok *item
-	Peek4Tok *item
+	nextNum  int       // Number of times to call Parser.next(). Value starts at 1.
+	Back4Tok *tok.Item // The item to expect at Parser.token[zed-4]
+	Back3Tok *tok.Item // The item to expect at Parser.token[zed-3]
+	Back2Tok *tok.Item // The item to expect at Parser.token[zed-2]
+	Back1Tok *tok.Item // The item to expect at Parser.token[zed-1]
+	ZedToken *tok.Item // The item to expect at Parser.token[zed]
+	Peek1Tok *tok.Item // Peek tokens should be blank on next tests.
+	Peek2Tok *tok.Item
+	Peek3Tok *tok.Item
+	Peek4Tok *tok.Item
 }{
 	{
 		name:    "Next no input",
@@ -356,90 +224,90 @@ var treeNextTests = []struct {
 		name:     "Single next from start",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  1,
-		ZedToken: &item{Type: itemTitle, Text: "Test"},
+		ZedToken: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
 	},
 	{
 		name:     "Double next",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  2,
-		Back1Tok: &item{Type: itemTitle, Text: "Test"},
-		ZedToken: &item{Type: itemSectionAdornment, Text: "====="},
+		Back1Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		ZedToken: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
 	},
 	{
 		name:     "Triple next",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  3,
-		Back2Tok: &item{Type: itemTitle, Text: "Test"},
-		Back1Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
+		Back2Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Back1Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		ZedToken: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 	},
 	{
 		name:     "Quadruple next",
 		input:    "Test\n=====\n\nParagraph.",
 		nextNum:  4,
-		Back3Tok: &item{Type: itemTitle, Text: "Test"},
-		Back2Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		ZedToken: &item{Type: itemText, Text: "Paragraph."},
+		Back3Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Back2Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Back1Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		ZedToken: &tok.Item{Type: tok.ItemText, Text: "Paragraph."},
 	},
 	{
 		name:     "Quintuple next",
 		input:    "Test\n=====\n\nParagraph.\n\n",
 		nextNum:  5,
-		Back4Tok: &item{Type: itemTitle, Text: "Test"},
-		Back3Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		Back2Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back1Tok: &item{Type: itemText, Text: "Paragraph."},
-		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
+		Back4Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Back3Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Back2Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Back1Tok: &tok.Item{Type: tok.ItemText, Text: "Paragraph."},
+		ZedToken: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 	},
 	{
 		name:     "Sextuple next",
 		input:    "Test\n=====\n\nParagraph.\n\n",
 		nextNum:  6,
-		Back4Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		Back3Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back2Tok: &item{Type: itemText, Text: "Paragraph."},
-		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
+		Back4Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Back3Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Back2Tok: &tok.Item{Type: tok.ItemText, Text: "Paragraph."},
+		Back1Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		ZedToken: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 	},
 	{
 		name:     "Septuple next",
 		input:    "Test\n=====\n\nParagraph.\n\n",
 		nextNum:  7,
-		Back4Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back3Tok: &item{Type: itemText, Text: "Paragraph."},
-		Back2Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Back1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		ZedToken: &item{Type: itemEOF},
+		Back4Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Back3Tok: &tok.Item{Type: tok.ItemText, Text: "Paragraph."},
+		Back2Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Back1Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		ZedToken: &tok.Item{Type: tok.ItemEOF},
 	},
 	{
 		name:     "Two next() on one line of input",
 		input:    "Test",
 		nextNum:  2,
-		Back1Tok: &item{Type: itemText, Text: "Test"},
-		ZedToken: &item{Type: itemEOF},
+		Back1Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
+		ZedToken: &tok.Item{Type: tok.ItemEOF},
 	},
 	{
 		name:    "Three next() on one line of input; Test channel close.",
 		input:   "Test",
 		nextNum: 3,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
-		Back2Tok: &item{Type: itemText, Text: "Test"},
-		Back1Tok: &item{Type: itemEOF},
+		Back2Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
+		Back1Tok: &tok.Item{Type: tok.ItemEOF},
 	},
 	{
 		name:    "Four next() on one line of input; Test channel close.",
 		input:   "Test",
 		nextNum: 4,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
-		Back3Tok: &item{Type: itemText, Text: "Test"},
-		Back2Tok: &item{Type: itemEOF},
+		Back3Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
+		Back2Tok: &tok.Item{Type: tok.ItemEOF},
 	},
 }
 
-func TestTreeNext(t *testing.T) {
-	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
-		val := tExp.Interface().(*item)
+func TestParserNext(t *testing.T) {
+	isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*tok.Item)
 		if val == nil && tr.token[tPos] == nil {
 			return
 		}
@@ -454,72 +322,72 @@ func TestTreeNext(t *testing.T) {
 			t.Errorf("Test: %q\n\tGot: token[%d].Text = %q, Expect: %q", tr.Name, tPos, tr.token[tPos].Text, val.Text)
 		}
 	}
-	for _, tt := range treeNextTests {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+	for _, tt := range parserNextTests {
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = lex(tt.name, []byte(tt.input))
+		tr.lex = tok.Lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
 		checkTokens(tr, tt, isEqual)
 	}
 }
 
-var treePeekTests = []struct {
+var parserPeekTests = []struct {
 	name     string
 	input    string
-	nextNum  int // Number of times to call Tree.next() before peek
-	peekNum  int // position argument to Tree.peek()
-	Back4Tok *item
-	Back3Tok *item
-	Back2Tok *item
-	Back1Tok *item
-	ZedToken *item
-	Peek1Tok *item
-	Peek2Tok *item
-	Peek3Tok *item
-	Peek4Tok *item
+	nextNum  int // Number of times to call Parser.next() before peek
+	peekNum  int // position argument to Parser.peek()
+	Back4Tok *tok.Item
+	Back3Tok *tok.Item
+	Back2Tok *tok.Item
+	Back1Tok *tok.Item
+	ZedToken *tok.Item
+	Peek1Tok *tok.Item
+	Peek2Tok *tok.Item
+	Peek3Tok *tok.Item
+	Peek4Tok *tok.Item
 }{
 	{
 		name:     "Single peek no next",
 		input:    "Test\n=====\n\nParagraph.",
 		peekNum:  1,
-		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
+		Peek1Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
 	},
 	{
 		name:     "Double peek no next",
 		input:    "Test\n=====\n\nParagraph.",
 		peekNum:  2,
-		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
-		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
+		Peek1Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Peek2Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
 	},
 	{
 		name:     "Triple peek no next",
 		input:    "Test\n=====\n\nParagraph.",
 		peekNum:  3,
-		Peek1Tok: &item{Type: itemTitle, Text: "Test"},
-		Peek2Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		Peek3Tok: &item{Type: itemBlankLine, Text: "\n"},
+		Peek1Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Peek2Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Peek3Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 	},
 	{
 		name:    "Triple peek and double next",
 		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
 		nextNum: 2, peekNum: 3,
-		Back1Tok: &item{Type: itemTitle, Text: "Test"},
-		ZedToken: &item{Type: itemSectionAdornment, Text: "====="},
-		Peek1Tok: &item{Type: itemBlankLine, Text: "\n"},
-		Peek2Tok: &item{Type: itemText, Text: "One"},
-		Peek3Tok: &item{Type: itemTitle, Text: "Test 2"},
+		Back1Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		ZedToken: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Peek1Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Peek2Tok: &tok.Item{Type: tok.ItemText, Text: "One"},
+		Peek3Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test 2"},
 	},
 	{
 		name:    "Quadruple peek and triple next",
 		input:   "Test\n=====\n\nOne\nTest 2\n=====\n\nTwo",
 		nextNum: 3, peekNum: 4,
-		Back2Tok: &item{Type: itemTitle, Text: "Test"},
-		Back1Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		ZedToken: &item{Type: itemBlankLine, Text: "\n"},
-		Peek1Tok: &item{Type: itemText, Text: "One"},
-		Peek2Tok: &item{Type: itemTitle, Text: "Test 2"},
-		Peek3Tok: &item{Type: itemSectionAdornment, Text: "====="},
-		Peek4Tok: &item{Type: itemBlankLine, Text: "\n"},
+		Back2Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test"},
+		Back1Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		ZedToken: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
+		Peek1Tok: &tok.Item{Type: tok.ItemText, Text: "One"},
+		Peek2Tok: &tok.Item{Type: tok.ItemTitle, Text: "Test 2"},
+		Peek3Tok: &tok.Item{Type: tok.ItemSectionAdornment, Text: "====="},
+		Peek4Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 	},
 	{
 		name:    "Peek on no input",
@@ -527,9 +395,9 @@ var treePeekTests = []struct {
 	},
 }
 
-func TestTreePeek(t *testing.T) {
-	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
-		val := tExp.Interface().(*item)
+func TestParserPeek(t *testing.T) {
+	isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*tok.Item)
 		if val == nil && tr.token[tPos] == nil {
 			return
 		}
@@ -544,74 +412,74 @@ func TestTreePeek(t *testing.T) {
 			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
 		}
 	}
-	for _, tt := range treePeekTests {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+	for _, tt := range parserPeekTests {
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = lex(tt.name, []byte(tt.input))
+		tr.lex = tok.Lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		checkTokens(tr, tt, isEqual)
 	}
 }
 
-var testTreeClearTokensTests = []struct {
+var testParserClearTokensTests = []struct {
 	name       string
 	input      string
-	nextNum    int   // Number of times to call Tree.next() before peek
-	peekNum    int   // position argument to Tree.peek()
-	clearBegin int   // Passed to Tree.clear() as the begin arg
-	clearEnd   int   // Passed to Tree.clear() as the end arg
-	Back4Tok   *item // Use &item{} if the token is not expected to be nil
-	Back3Tok   *item
-	Back2Tok   *item
-	Back1Tok   *item
-	ZedToken   *item
-	Peek1Tok   *item
-	Peek2Tok   *item
-	Peek3Tok   *item
-	Peek4Tok   *item
+	nextNum    int       // Number of times to call Parser.next() before peek
+	peekNum    int       // position argument to Parser.peek()
+	clearBegin int       // Passed to Parser.clear() as the begin arg
+	clearEnd   int       // Passed to Parser.clear() as the end arg
+	Back4Tok   *tok.Item // Use &item{} if the token is not expected to be nil
+	Back3Tok   *tok.Item
+	Back2Tok   *tok.Item
+	Back1Tok   *tok.Item
+	ZedToken   *tok.Item
+	Peek1Tok   *tok.Item
+	Peek2Tok   *tok.Item
+	Peek3Tok   *tok.Item
+	Peek4Tok   *tok.Item
 }{
 	{
 		name:    "Fill token buffer and clear it.",
-		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		input:   "Parser\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
 		nextNum: 5, peekNum: 4,
 		clearBegin: zed - 4, clearEnd: zed + 4,
 	},
 	{
 		name:    "Fill token buffer and clear back tokens.",
-		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		input:   "Parser\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
 		nextNum: 5, peekNum: 4,
 		clearBegin: zed - 4, clearEnd: zed - 1,
-		ZedToken: &item{},
-		Peek1Tok: &item{},
-		Peek2Tok: &item{},
-		Peek3Tok: &item{},
-		Peek4Tok: &item{},
+		ZedToken: &tok.Item{},
+		Peek1Tok: &tok.Item{},
+		Peek2Tok: &tok.Item{},
+		Peek3Tok: &tok.Item{},
+		Peek4Tok: &tok.Item{},
 	},
 	{
 		name:    "Fill token buffer and clear peek tokens.",
-		input:   "Tree\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		input:   "Parser\n====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
 		nextNum: 5, peekNum: 4,
 		clearBegin: zed + 1, clearEnd: zed + 4,
-		Back4Tok: &item{},
-		Back3Tok: &item{},
-		Back2Tok: &item{},
-		Back1Tok: &item{},
-		ZedToken: &item{},
+		Back4Tok: &tok.Item{},
+		Back3Tok: &tok.Item{},
+		Back2Tok: &tok.Item{},
+		Back1Tok: &tok.Item{},
+		ZedToken: &tok.Item{},
 	},
 }
 
-func TestTreeClearTokens(t *testing.T) {
-	isEqual := func(tr *Tree, tExp reflect.Value, tPos int, tName string) {
-		val := tExp.Interface().(*item)
+func TestParserClearTokens(t *testing.T) {
+	isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
+		val := tExp.Interface().(*tok.Item)
 		if tr.token[tPos] != nil && val == nil {
 			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
 		}
 	}
-	for _, tt := range testTreeClearTokensTests {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+	for _, tt := range testParserClearTokensTests {
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = lex(tt.name, []byte(tt.input))
+		tr.lex = tok.Lex(tt.name, []byte(tt.input))
 		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		tr.clearTokens(tt.clearBegin, tt.clearEnd)
@@ -813,10 +681,10 @@ func TestSectionLevelsAdd(t *testing.T) {
 	var testName string
 
 	addSection := func(s *testSectionLevelSectionNode) {
-		n := &SectionNode{Level: s.node.level,
-			UnderLine: &AdornmentNode{Rune: s.node.uRune}}
+		n := &doc.SectionNode{Level: s.node.level,
+			UnderLine: &doc.AdornmentNode{Rune: s.node.uRune}}
 		if s.node.oRune != 0 {
-			n.OverLine = &AdornmentNode{Rune: s.node.oRune}
+			n.OverLine = &doc.AdornmentNode{Rune: s.node.oRune}
 		}
 		msg := pSecLvls.Add(n)
 		if msg > parserMessageNil && msg != s.eMessage {
@@ -825,7 +693,7 @@ func TestSectionLevelsAdd(t *testing.T) {
 	}
 
 	for _, tt := range testSectionLevelsAdd {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		pSecLvls = *new(sectionLevels)
 		eSecLvls = *new(sectionLevels)
 		testName = tt.name
@@ -841,10 +709,10 @@ func TestSectionLevelsAdd(t *testing.T) {
 				level: slvl.level, overLine: slvl.overLine,
 			}
 			for _, sn := range slvl.nodes {
-				n := &SectionNode{Level: sn.level}
-				n.UnderLine = &AdornmentNode{Rune: sn.uRune}
+				n := &doc.SectionNode{Level: sn.level}
+				n.UnderLine = &doc.AdornmentNode{Rune: sn.uRune}
 				if sn.oRune != 0 {
-					n.OverLine = &AdornmentNode{
+					n.OverLine = &doc.AdornmentNode{
 						Rune: sn.oRune,
 					}
 				}
@@ -863,55 +731,55 @@ func TestSectionLevelsAdd(t *testing.T) {
 var testSectionLevelsLast = []struct {
 	name      string
 	tLevel    int // The last level to get
-	tSections []*SectionNode
+	tSections []*doc.SectionNode
 	eLevel    sectionLevel // There can be only one
 }{
 	{
 		name:   "Test last section level two",
 		tLevel: 2,
-		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
+		tSections: []*doc.SectionNode{
+			{Level: 1, Title: &doc.TitleNode{Text: "Title 1"}, UnderLine: &doc.AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 2"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 3"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 4"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '-', level: 2,
-			sections: []*SectionNode{
-				{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '~'}},
+			sections: []*doc.SectionNode{
+				{Level: 2, Title: &doc.TitleNode{Text: "Title 4"}, UnderLine: &doc.AdornmentNode{Rune: '~'}},
 			},
 		},
 	},
 	{
 		name:   "Test last section level one",
 		tLevel: 1,
-		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
+		tSections: []*doc.SectionNode{
+			{Level: 1, Title: &doc.TitleNode{Text: "Title 1"}, UnderLine: &doc.AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 2"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 3"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 4"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '=', level: 1,
-			sections: []*SectionNode{
-				{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
+			sections: []*doc.SectionNode{
+				{Level: 1, Title: &doc.TitleNode{Text: "Title 1"}, UnderLine: &doc.AdornmentNode{Rune: '='}},
 			},
 		},
 	},
 	{
 		name:   "Test last section level three",
 		tLevel: 3,
-		tSections: []*SectionNode{
-			{Level: 1, Title: &TitleNode{Text: "Title 1"}, UnderLine: &AdornmentNode{Rune: '='}},
-			{Level: 2, Title: &TitleNode{Text: "Title 2"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 3"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 2, Title: &TitleNode{Text: "Title 4"}, UnderLine: &AdornmentNode{Rune: '-'}},
-			{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
+		tSections: []*doc.SectionNode{
+			{Level: 1, Title: &doc.TitleNode{Text: "Title 1"}, UnderLine: &doc.AdornmentNode{Rune: '='}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 2"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 3"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 2, Title: &doc.TitleNode{Text: "Title 4"}, UnderLine: &doc.AdornmentNode{Rune: '-'}},
+			{Level: 3, Title: &doc.TitleNode{Text: "Title 5"}, UnderLine: &doc.AdornmentNode{Rune: '+'}},
 		},
 		eLevel: sectionLevel{
 			rChar: '+', level: 3,
-			sections: []*SectionNode{
-				{Level: 3, Title: &TitleNode{Text: "Title 5"}, UnderLine: &AdornmentNode{Rune: '+'}},
+			sections: []*doc.SectionNode{
+				{Level: 3, Title: &doc.TitleNode{Text: "Title 5"}, UnderLine: &doc.AdornmentNode{Rune: '+'}},
 			},
 		},
 	},
@@ -919,12 +787,12 @@ var testSectionLevelsLast = []struct {
 
 func TestSectionLevelsLast(t *testing.T) {
 	for _, tt := range testSectionLevelsLast {
-		tlog(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
+		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		secLvls := new(sectionLevels)
 		for _, secNode := range tt.tSections {
 			secLvls.Add(secNode)
 		}
-		var pSec *SectionNode
+		var pSec *doc.SectionNode
 		pSec = secLvls.LastSectionByLevel(tt.tLevel)
 		if tt.eLevel.level != pSec.Level {
 			t.Errorf("Test: %q\n\tGot: sectionLevel.Level = %d, Expect: %d", tt.name, tt.eLevel.level,

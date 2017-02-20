@@ -2,31 +2,31 @@ package tokenizer
 
 import "unicode"
 
-func isHyperlinkTarget(l *lexer) bool {
+func isHyperlinkTarget(l *Lexer) bool {
 	nMark := l.peek(1)
 	nMark2 := l.peek(2)
 	if l.mark == '.' && nMark == '.' && nMark2 != EOL {
 		nMark3 := l.peek(3)
 		if unicode.IsSpace(nMark2) && nMark3 == '_' {
 			if isReferenceNameSimple(l, 4) {
-				logl.Msg("FOUND hyperlink simple target")
+				log.Msg("FOUND hyperlink simple target")
 				return true
 			} else if isReferenceNamePhrase(l, 4) {
-				logl.Msg("FOUND hyperlink phrase target")
+				log.Msg("FOUND hyperlink phrase target")
 				return true
 			}
-			logl.Msg("FOUND malformed hyperlink target")
+			log.Msg("FOUND malformed hyperlink target")
 			return true
 		}
 	} else if l.mark == '_' && nMark == '_' && unicode.IsSpace(nMark2) {
-		logl.Msg("FOUND anonymous hyperlink target")
+		log.Msg("FOUND anonymous hyperlink target")
 		return true
 	}
-	logl.Msg("NOT FOUND Hyperlink target")
+	log.Msg("NOT FOUND Hyperlink target")
 	return false
 }
 
-func lexHyperlinkTarget(l *lexer) stateFn {
+func lexHyperlinkTarget(l *Lexer) stateFn {
 	var anonstart bool
 	for l.mark == '.' || l.mark == '_' {
 		if l.mark == '_' {
@@ -60,7 +60,7 @@ func lexHyperlinkTarget(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexAnonymousHyperlinkTarget(l *lexer) stateFn {
+func lexAnonymousHyperlinkTarget(l *Lexer) stateFn {
 	// l.emit(ItemHyperlinkTargetStart)
 	lexHyperlinkTargetStart(l)
 	if l.mark == '_' {
@@ -86,7 +86,7 @@ func lexAnonymousHyperlinkTarget(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetName(l *lexer) stateFn {
+func lexHyperlinkTargetName(l *Lexer) stateFn {
 	var inquote bool
 	for {
 		if l.mark == '`' {
@@ -126,7 +126,7 @@ func lexHyperlinkTargetName(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetBlock(l *lexer) stateFn {
+func lexHyperlinkTargetBlock(l *Lexer) stateFn {
 	var inquote bool
 	for {
 		if l.mark == '`' {
@@ -172,7 +172,7 @@ func lexHyperlinkTargetBlock(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexAnonymousHyperlinkTargetBlock(l *lexer) stateFn {
+func lexAnonymousHyperlinkTargetBlock(l *Lexer) stateFn {
 	var inquote bool
 	var containsSpaces bool
 	for {
@@ -216,7 +216,7 @@ func lexAnonymousHyperlinkTargetBlock(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetStart(l *lexer) stateFn {
+func lexHyperlinkTargetStart(l *Lexer) stateFn {
 	for {
 		if l.mark != '.' {
 			break
@@ -228,7 +228,7 @@ func lexHyperlinkTargetStart(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetPrefix(l *lexer) stateFn {
+func lexHyperlinkTargetPrefix(l *Lexer) stateFn {
 	for {
 		if l.mark != '_' {
 			break
@@ -239,7 +239,7 @@ func lexHyperlinkTargetPrefix(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexHyperlinkTargetSuffix(l *lexer) stateFn {
+func lexHyperlinkTargetSuffix(l *Lexer) stateFn {
 	for {
 		if l.mark != ':' {
 			break

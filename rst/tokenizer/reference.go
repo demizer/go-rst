@@ -16,29 +16,29 @@ func isReferenceNameSimpleAllowedRune(r rune) bool {
 	return false
 }
 
-func isReferenceNameSimple(l *lexer, fromPos int) bool {
+func isReferenceNameSimple(l *Lexer, fromPos int) bool {
 	count := fromPos
 	for {
 		p := l.peek(count)
 		if p == ':' {
 			break
 		} else if unicode.IsSpace(p) {
-			logl.Msg("NOT FOUND")
+			log.Msg("NOT FOUND")
 			return false
 		} else if p == EOL {
-			logl.Msg("NOT FOUND")
+			log.Msg("NOT FOUND")
 			return false
 		} else if !isReferenceNameSimpleAllowedRune(p) {
-			logl.Msg("NOT FOUND")
+			log.Msg("NOT FOUND")
 			return false
 		}
 		count++
 	}
-	logl.Msg("FOUND")
+	log.Msg("FOUND")
 	return true
 }
 
-func isReferenceNamePhrase(l *lexer, fromPos int) bool {
+func isReferenceNamePhrase(l *Lexer, fromPos int) bool {
 	count := fromPos
 	words := 0
 	openTick := false
@@ -46,7 +46,7 @@ func isReferenceNamePhrase(l *lexer, fromPos int) bool {
 		p := l.peek(count)
 		if p == EOL && fromPos == count {
 			// At end of line, so ref is not possible
-			logl.Msg("NOT FOUND")
+			log.Msg("NOT FOUND")
 			return false
 		}
 		if p == '`' {
@@ -56,7 +56,7 @@ func isReferenceNamePhrase(l *lexer, fromPos int) bool {
 			openTick = true
 		} else if p == EOL {
 			if words == 0 {
-				logl.Msg("NOT FOUND")
+				log.Msg("NOT FOUND")
 				return false
 			}
 			break
@@ -65,6 +65,6 @@ func isReferenceNamePhrase(l *lexer, fromPos int) bool {
 		}
 		count++
 	}
-	logl.Msg("FOUND")
+	log.Msg("FOUND")
 	return true
 }

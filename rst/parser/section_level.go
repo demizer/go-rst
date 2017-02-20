@@ -1,18 +1,22 @@
 package parser
 
-// sectionLevel is a single section level. sections contains a list of pointers to SectionNode that are dertermined to be a
+import (
+	doc "github.com/demizer/go-rst/rst/document"
+)
+
+// sectionLevel is a single section level. sections contains a list of pointers to doc.SectionNode that are dertermined to be a
 // section of the level indicated by level. rChar is the rune character that denotes the section level.
 type sectionLevel struct {
 	rChar    rune
 	level    int
-	overLine bool           // True if the section level has an overline.
-	sections []*SectionNode // Sections matching level.
+	overLine bool               // True if the section level has an overline.
+	sections []*doc.SectionNode // Sections matching level.
 }
 
 // sectionLevels contains the encountered section levels in order by level.  levels[0] is section level 1 and levels[1] is
 // section level 2.  lastSectionNode is a pointer to the lastSectionNode added to levels.
 type sectionLevels struct {
-	lastSectionNode *SectionNode
+	lastSectionNode *doc.SectionNode
 	levels          []*sectionLevel
 }
 
@@ -30,7 +34,7 @@ func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
 // Add determines if the underline rune in the sec argument matches any existing sectionLevel in sectionLevels. Add also
 // checks the section level ordering is correct and returns a severeTitleLevelInconsistent parserMessage if inconsistencies
 // are found.
-func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
+func (s *sectionLevels) Add(sec *doc.SectionNode) (err parserMessage) {
 	level := 1
 	secLvl := s.FindByRune(sec.UnderLine.Rune)
 
@@ -40,7 +44,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		logp.Log("msg", "Creating new sectionLevel", "level", level)
+		log.Log("msg", "Creating new sectionLevel", "level", level)
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,
@@ -71,7 +75,7 @@ func (s *sectionLevels) Add(sec *SectionNode) (err parserMessage) {
 			level = len(s.levels) + 1
 			newSectionLevel()
 		} else {
-			logp.Log("msg", "using sectionLevel", "sectionLevel", secLvl.level)
+			log.Log("msg", "using sectionLevel", "sectionLevel", secLvl.level)
 			level = secLvl.level
 		}
 	}
@@ -92,7 +96,7 @@ func (s *sectionLevels) SectionLevelByLevel(level int) *sectionLevel {
 }
 
 // LastSectionByLevel returns a pointer to the last section encountered by level.
-func (s *sectionLevels) LastSectionByLevel(level int) (sec *SectionNode) {
+func (s *sectionLevels) LastSectionByLevel(level int) (sec *doc.SectionNode) {
 exit:
 	for i := len(s.levels) - 1; i >= 0; i-- {
 		if (s.levels)[i].level != level {
@@ -101,7 +105,7 @@ exit:
 		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
 			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
-				logp.Log("msg", "found sectionLevel", "sectionLevel", sec.Level)
+				log.Log("msg", "found sectionLevel", "sectionLevel", sec.Level)
 				break exit
 			}
 		}

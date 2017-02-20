@@ -7,7 +7,7 @@ func isArabic(r rune) bool {
 	return r > '0' && r < '9'
 }
 
-func isEnumList(l *lexer) (ret bool) {
+func isEnumList(l *Lexer) (ret bool) {
 	bCount := 0
 	if isSection(l) {
 		goto exit
@@ -17,7 +17,7 @@ func isEnumList(l *lexer) (ret bool) {
 			bCount++
 			if nMark, _ := l.next(); !isArabic(nMark) {
 				if nMark == '.' || nMark == ' ' {
-					logl.Msg("Found arabic enum list!")
+					log.Msg("Found arabic enum list!")
 					ret = true
 					goto exit
 				}
@@ -29,21 +29,21 @@ exit:
 	return
 }
 
-func isBulletList(l *lexer) bool {
+func isBulletList(l *Lexer) bool {
 	for _, x := range bullets {
 		if l.mark == x && l.peek(1) == ' ' {
-			logl.Msg("A bullet was found")
+			log.Msg("A bullet was found")
 			return true
 		}
 	}
-	logl.Msg("A bullet was not found")
+	log.Msg("A bullet was not found")
 	return false
 }
 
-func isDefinitionTerm(l *lexer) bool {
+func isDefinitionTerm(l *Lexer) bool {
 	// Definition terms are preceded by a blankline
 	if l.line != 0 && !l.lastLineIsBlankLine() {
-		logl.Msg("Not definition, lastLineIsBlankLine == false")
+		log.Msg("Not definition, lastLineIsBlankLine == false")
 		return false
 	}
 	nL := l.peekNextLine()
@@ -55,16 +55,16 @@ func isDefinitionTerm(l *lexer) bool {
 			break
 		}
 	}
-	logl.Log("msg", "Section count", "sCount", sCount)
+	log.Log("msg", "Section count", "sCount", sCount)
 	if sCount >= 2 {
-		logl.Msg("FOUND definition term!")
+		log.Msg("FOUND definition term!")
 		return true
 	}
-	logl.Msg("NOT FOUND definition term.")
+	log.Msg("NOT FOUND definition term.")
 	return false
 }
 
-func lexEnumList(l *lexer) stateFn {
+func lexEnumList(l *Lexer) stateFn {
 	if isArabic(l.mark) {
 		for {
 			if nMark, _ := l.next(); !isArabic(nMark) {
@@ -82,7 +82,7 @@ func lexEnumList(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexDefinitionTerm(l *lexer) stateFn {
+func lexDefinitionTerm(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {
@@ -92,7 +92,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	}
 	l.nextLine()
 	l.next()
-	logl.Log("msg", "Current line", "line", l.currentLine())
+	log.Log("msg", "Current line", "line", l.currentLine())
 	lexSpace(l)
 	for {
 		l.next()
@@ -104,7 +104,7 @@ func lexDefinitionTerm(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexBullet(l *lexer) stateFn {
+func lexBullet(l *Lexer) stateFn {
 	l.next()
 	l.emit(ItemBullet)
 	lexSpace(l)

@@ -5,7 +5,7 @@ import (
 	// . "github.com/demizer/go-rst"
 )
 
-func isComment(l *lexer) bool {
+func isComment(l *Lexer) bool {
 	if l.lastItem != nil && l.lastItem.Type == ItemTitle {
 		return false
 	}
@@ -13,17 +13,17 @@ func isComment(l *lexer) bool {
 	nMark2 := l.peek(2)
 	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == EOL) {
 		if isHyperlinkTarget(l) {
-			logl.Msg("Found hyperlink target!")
+			log.Msg("Found hyperlink target!")
 			return false
 		}
-		logl.Msg("Found comment!")
+		log.Msg("Found comment!")
 		return true
 	}
-	logl.Msg("Comment not found!")
+	log.Msg("Comment not found!")
 	return false
 }
 
-func lexComment(l *lexer) stateFn {
+func lexComment(l *Lexer) stateFn {
 	for l.mark == '.' {
 		l.next()
 	}

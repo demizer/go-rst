@@ -10,10 +10,10 @@ import (
 	. "github.com/demizer/go-rst"
 )
 
-var logl *LogCtx
+var log *LogCtx
 
 func init() {
-	logl = NewLogCtx("lexer")
+	log = NewLogCtx("lexer")
 }
 
 // EOL is denoted by a utf8.RuneError
@@ -37,7 +37,7 @@ var bullets = []rune{'*', '+', '-', '•', '‣', '⁃'}
 const eof rune = -1
 
 // Function prototype for scanner functions
-type stateFn func(*lexer) stateFn
+type stateFn func(*Lexer) stateFn
 
 // ID is a consecutive number for identication of a lexed item and parsed item. Primarily for the purpose of debugging lexer
 // and parser output when compared to the JSON encoded tests.
@@ -57,7 +57,7 @@ type lexPosition struct {
 	width int
 }
 
-func saveLexerPosition(lexState *lexer) *lexPosition {
+func saveLexerPosition(lexState *Lexer) *lexPosition {
 	return &lexPosition{
 		index: lexState.index,
 		start: lexState.start,
@@ -67,7 +67,7 @@ func saveLexerPosition(lexState *lexer) *lexPosition {
 	}
 }
 
-func (l *lexPosition) restore(lexState *lexer) {
+func (l *lexPosition) restore(lexState *Lexer) {
 	lexState.index = l.index
 	lexState.start = l.start
 	lexState.line = l.line
@@ -75,8 +75,8 @@ func (l *lexPosition) restore(lexState *lexer) {
 	lexState.width = l.width
 }
 
-// The lexer struct tracks the state of the lexer
-type lexer struct {
+// The Lexer struct tracks the state of the Lexer
+type Lexer struct {
 	name             string    // The name of the current lexer
 	input            string    // The input text
 	line             int       // Line number of the parser, from 0
@@ -100,11 +100,11 @@ func getu4(s []byte, q int) rune {
 	return rune(r)
 }
 
-func newLexer(name string, input []byte) *lexer {
+func newLexer(name string, input []byte) *Lexer {
 	if len(input) == 0 {
 		return nil
 	}
-	l := &lexer{name: name}
+	l := &Lexer{name: name}
 	// Convert unicode literals to runes and strip escaped whitespace
 	var tInput []byte
 	r := 0
@@ -125,7 +125,7 @@ func newLexer(name string, input []byte) *lexer {
 	}
 	// var nInput []byte
 	// if !norm.NFC.IsNormal(tInput) {
-	// logl.Msg("Normalizing input")
+	// log.Msg("Normalizing input")
 	// nInput = norm.NFC.Bytes(tInput)
 	// tInput = nInput
 	// }
@@ -135,7 +135,7 @@ func newLexer(name string, input []byte) *lexer {
 	lines := strings.Split(string(tInput), "\n")
 
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	logl.Log("mark", mark, "index", 0, "line", 1)
+	log.Log("mark", mark, "index", 0, "line", 1)
 
 	l.input = string(tInput) // stored string is never altered
 	l.lines = lines
@@ -148,7 +148,7 @@ func newLexer(name string, input []byte) *lexer {
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
 // to identify the lexing process in debugging.
-func lex(name string, input []byte) *lexer {
+func Lex(name string, input []byte) *Lexer {
 	l := newLexer(name, input)
 	if l == nil {
 		return nil
@@ -158,14 +158,14 @@ func lex(name string, input []byte) *lexer {
 }
 
 // run is the engine of the lexing process.
-func (l *lexer) run() {
+func (l *Lexer) run() {
 	for l.state = lexStart; l.state != nil; {
 		l.state = l.state(l)
 	}
 }
 
 // emit passes an item back to the client.
-func (l *lexer) emit(t ItemElement) {
+func (l *Lexer) emit(t ItemElement) {
 	var tok string
 
 	if t == ItemBlankLine {
@@ -192,19 +192,19 @@ func (l *lexer) emit(t ItemElement) {
 		Length:        length,
 	}
 
-	logl.Log("ID", ID(l.id)+1, t.String(), fmt.Sprintf("%q", tok), "l.start+1", l.start+1, "l.index",
+	log.Log("ID", ID(l.id)+1, t.String(), fmt.Sprintf("%q", tok), "l.start+1", l.start+1, "l.index",
 		l.index, "line", l.lineNumber())
 
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
-	logl.Log("msg", "Position after EMIT", "l.mark", fmt.Sprintf("%q", l.mark), "l.start", l.start,
+	log.Log("msg", "Position after EMIT", "l.mark", fmt.Sprintf("%q", l.mark), "l.start", l.start,
 		"l.index", l.index, "line", l.lineNumber())
 }
 
 // backup backs up the lexer position by a number of rune positions (pos).  backup cannot backup off the input, in that case
 // the index of the lexer is set to the starting position on the input. The run
-func (l *lexer) backup(pos int) {
+func (l *Lexer) backup(pos int) {
 	for i := 0; i < pos; i++ {
 		if l.index == 0 && l.line != 0 && i < pos {
 			l.line--
@@ -223,12 +223,12 @@ func (l *lexer) backup(pos int) {
 			l.backup(1)
 		}
 	}
-	// logl.Log("mark", l.mark)
+	// log.Log("mark", l.mark)
 }
 
 // peek looks ahead in the input by a number of locations (locs) and returns the rune at that location in the input. Peek
 // works across lines.
-func (l *lexer) peek(locs int) rune {
+func (l *Lexer) peek(locs int) rune {
 	pos := saveLexerPosition(l)
 	var r rune
 	x := 0
@@ -241,11 +241,11 @@ func (l *lexer) peek(locs int) rune {
 		x++
 	}
 	pos.restore(l)
-	// logl.Log("mark", fmt.Sprintf("%#v", r), "index", l.index)
+	// log.Log("mark", fmt.Sprintf("%#v", r), "index", l.index)
 	return r
 }
 
-func (l *lexer) peekBack(locs int) rune {
+func (l *Lexer) peekBack(locs int) rune {
 	if l.start == l.index {
 		return EOL
 	}
@@ -260,11 +260,11 @@ func (l *lexer) peekBack(locs int) rune {
 		r = l.mark
 		x--
 	}
-	// logl.Log("mark", string(r), "index", l.index)
+	// log.Log("mark", string(r), "index", l.index)
 	return r
 }
 
-func (l *lexer) peekNextLine() string {
+func (l *Lexer) peekNextLine() string {
 	if l.isLastLine() {
 		return ""
 	}
@@ -272,7 +272,7 @@ func (l *lexer) peekNextLine() string {
 }
 
 // next advances the position of the lexer by one rune and returns that rune.
-func (l *lexer) next() (rune, int) {
+func (l *Lexer) next() (rune, int) {
 	if l.isEndOfLine() && !l.isLastLine() {
 		l.nextLine()
 	}
@@ -280,11 +280,11 @@ func (l *lexer) next() (rune, int) {
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
 	l.width = width
 	l.mark = r
-	// logl.Log("mark", fmt.Sprintf("%#U", r), "start", l.start, "index", l.index, "line", l.lineNumber())
+	// log.Log("mark", fmt.Sprintf("%#U", r), "start", l.start, "index", l.index, "line", l.lineNumber())
 	return r, width
 }
 
-func (l *lexer) nextLine() string {
+func (l *Lexer) nextLine() string {
 	if len(l.lines) == l.line+1 {
 		return ""
 	}
@@ -296,7 +296,7 @@ func (l *lexer) nextLine() string {
 }
 
 // nextItem returns the next item from the input.
-func (l *lexer) nextItem() *Item {
+func (l *Lexer) NextItem() *Item {
 	item, ok := <-l.items
 	if ok == false {
 		return nil
@@ -306,7 +306,7 @@ func (l *lexer) nextItem() *Item {
 
 }
 
-func (l *lexer) skip(locs int) {
+func (l *Lexer) skip(locs int) {
 	for x := 1; x <= locs; x++ {
 		l.next()
 	}
@@ -314,7 +314,7 @@ func (l *lexer) skip(locs int) {
 }
 
 // gotoLine advances the lexer to a line and index within that line. Line numbers start at 1.
-func (l *lexer) gotoLocation(start, line int) {
+func (l *Lexer) gotoLocation(start, line int) {
 	l.line = line - 1
 	l.index = start
 	r, width := utf8.DecodeRuneInString(l.currentLine()[l.index:])
@@ -323,19 +323,19 @@ func (l *lexer) gotoLocation(start, line int) {
 	return
 }
 
-func (l *lexer) currentLine() string {
+func (l *Lexer) currentLine() string {
 	return l.lines[l.line]
 }
 
-func (l *lexer) lineNumber() int {
+func (l *Lexer) lineNumber() int {
 	return l.line + 1
 }
 
-func (l *lexer) isLastLine() bool {
+func (l *Lexer) isLastLine() bool {
 	return len(l.lines) == l.lineNumber()
 }
 
-func (l *lexer) lastLineIsBlankLine() bool {
+func (l *Lexer) lastLineIsBlankLine() bool {
 	if l.line == 0 {
 		return false
 	}
@@ -346,28 +346,28 @@ func (l *lexer) lastLineIsBlankLine() bool {
 	return false
 }
 
-func (l *lexer) isEndOfLine() bool {
+func (l *Lexer) isEndOfLine() bool {
 	return len(l.lines[l.line]) == l.index
 }
 
-func isEscaped(l *lexer) bool {
+func isEscaped(l *Lexer) bool {
 	return (l.mark == '\\' && (unicode.In(l.peek(1), unicode.Zs, unicode.Cc, unicode.Lu, unicode.Ll) || l.peek(1) ==
 		EOL))
 }
 
 // lexStart is the first stateFn called by run(). From here other stateFn's are called depending on the input. When this
 // function returns nil, the lexing is finished and run() will exit.
-func lexStart(l *lexer) stateFn {
+func lexStart(l *Lexer) stateFn {
 	for {
 		if l.index == 0 && l.start == 0 {
-			logl.Log("msg", "lexing line", "text", l.currentLine(), "line", l.lineNumber())
+			log.Log("msg", "lexing line", "text", l.currentLine(), "line", l.lineNumber())
 		}
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			if l.index == 0 && l.mark != ' ' {
 				l.indentLevel = 0
 				l.indentWidth = ""
 			}
-			logl.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
+			log.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
 				"width", l.width, "line", l.lineNumber())
 			if isComment(l) {
 				return lexComment
@@ -393,16 +393,16 @@ func lexStart(l *lexer) stateFn {
 				return lexText
 			}
 		} else if l.isEndOfLine() {
-			logl.Msg("isEndOfLine == true")
+			log.Msg("isEndOfLine == true")
 			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
-					logl.Msg("Found blank line")
+					log.Msg("Found blank line")
 					l.emit(ItemBlankLine)
 					if l.isLastLine() {
 						break
 					}
 				} else if l.isLastLine() {
-					logl.Msg("Found end of last line")
+					log.Msg("Found end of last line")
 					break
 				}
 			}
@@ -416,26 +416,26 @@ func lexStart(l *lexer) stateFn {
 }
 
 // lexSpace consumes space characters (space and tab) in the input and emits a ItemSpace token.
-func lexSpace(l *lexer) stateFn {
-	logl.Log("l.mark", l.mark)
+func lexSpace(l *Lexer) stateFn {
+	log.Log("l.mark", l.mark)
 	for unicode.IsSpace(l.mark) {
-		logl.Log("msg", "found space rune", "isSpace", unicode.IsSpace(l.mark))
+		log.Log("msg", "found space rune", "isSpace", unicode.IsSpace(l.mark))
 		if r := l.peek(1); unicode.IsSpace(r) {
 			l.next()
 		} else {
-			logl.Msg("Next mark is not space!")
+			log.Msg("Next mark is not space!")
 			l.next()
 			break
 		}
 	}
-	logl.Log("start", l.start, "index", l.index)
+	log.Log("start", l.start, "index", l.index)
 	if l.start < l.index {
 		l.emit(ItemSpace)
 	}
 	return lexStart
 }
 
-func lexEscape(l *lexer) stateFn {
+func lexEscape(l *Lexer) stateFn {
 	l.next()
 	l.emit(ItemEscape)
 	if unicode.IsSpace(l.mark) {

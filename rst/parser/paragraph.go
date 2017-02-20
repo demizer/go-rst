@@ -1,89 +1,94 @@
 package parser
 
-import "unicode/utf8"
+import (
+	"unicode/utf8"
 
-func (t *Tree) paragraph(i *item) Node {
-	logp.Log("msg", "Have token", "token", i)
-	var np ParagraphNode
-	if !t.nodeTarget.isParagraphNode() {
-		np := newParagraph()
-		t.nodeTarget.append(np)
-		t.nodeTarget.setParent(np)
+	doc "github.com/demizer/go-rst/rst/document"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
+)
+
+func (p *Parser) paragraph(i *tok.Item) doc.Node {
+	log.Log("msg", "Have token", "token", i)
+	var np doc.ParagraphNode
+	if !p.nodeTarget.IsParagraphNode() {
+		np := doc.NewParagraph()
+		p.nodeTarget.Append(np)
+		p.nodeTarget.SetParent(np)
 	}
-	nt := newText(i)
-	t.nodeTarget.append(nt)
+	nt := doc.NewText(i)
+	p.nodeTarget.Append(nt)
 outer:
 	// Paragraphs can contain many different types of elements, so we'll need to loop until blank line or nil
 	for {
-		ci := t.next(1)     // current item
-		pi := t.peekBack(1) // previous item
-		// ni := t.peek(1)     // next item
+		ci := p.next(1)     // current item
+		pi := p.peekBack(1) // previous item
+		// ni := p.peek(1)     // next item
 
-		logp.Log("msg", "Have token", "token", ci)
+		log.Log("msg", "Have token", "token", ci)
 
 		if ci == nil {
-			logp.Msg("ci == nil, breaking")
+			log.Msg("ci == nil, breaking")
 			break
-		} else if ci.Type == itemEOF {
-			logp.Msg("current item type == itemEOF")
+		} else if ci.Type == tok.ItemEOF {
+			log.Msg("current item type == tok.ItemEOF")
 			break
-		} else if pi != nil && pi.Type == itemText && ci.Type == itemText {
-			logp.Msg("Previous type == itemText, current type == itemText; Concatenating text!")
+		} else if pi != nil && pi.Type == tok.ItemText && ci.Type == tok.ItemText {
+			log.Msg("Previous type == tok.ItemText, current type == tok.ItemText; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue
 		}
 
-		logp.Msg("Going into subparser...")
+		log.Msg("Going into subparser...")
 
 		switch ci.Type {
-		case itemSpace:
-			if pi != nil && pi.Type == itemEscape {
+		case tok.ItemSpace:
+			if pi != nil && pi.Type == tok.ItemEscape {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
-				logp.Msg("Found escaped space!")
+				log.Msg("Found escaped space!")
 				continue
 			}
 			// Parse Test 02.00.03.00 :: Emphasis wrapped in unicode spaces
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
-		case itemText:
-			if pi != nil && pi.Type == itemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
+		case tok.ItemText:
+			if pi != nil && pi.Type == tok.ItemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
-				logp.Msg("Found newline escape!")
+				log.Msg("Found newline escape!")
 				nt.Text += ci.Text
 				nt.Length = utf8.RuneCountInString(nt.Text)
 			} else {
-				nt = newText(ci)
-				t.nodeTarget.append(nt)
+				nt = doc.NewText(ci)
+				p.nodeTarget.Append(nt)
 			}
-		case itemInlineEmphasisOpen:
-			t.inlineEmphasis(ci)
-		case itemInlineStrongOpen:
-			t.inlineStrong(ci)
-		case itemInlineLiteralOpen:
-			t.inlineLiteral(ci)
-		case itemInlineInterpretedTextOpen:
-			t.inlineInterpretedText(ci)
-		case itemInlineInterpretedTextRoleOpen:
-			t.inlineInterpretedTextRole(ci)
-		case itemCommentMark:
-			t.comment(ci)
-		case itemEnumListArabic:
-			t.nodeTarget.append(t.enumList(ci))
-		case itemBlankLine:
-			logp.Msg("Found newline, closing paragraph")
-			t.backup()
+		case tok.ItemInlineEmphasisOpen:
+			p.inlineEmphasis(ci)
+		case tok.ItemInlineStrongOpen:
+			p.inlineStrong(ci)
+		case tok.ItemInlineLiteralOpen:
+			p.inlineLiteral(ci)
+		case tok.ItemInlineInterpretedTextOpen:
+			p.inlineInterpretedText(ci)
+		case tok.ItemInlineInterpretedTextRoleOpen:
+			p.inlineInterpretedTextRole(ci)
+		case tok.ItemCommentMark:
+			p.comment(ci)
+		case tok.ItemEnumListArabic:
+			p.nodeTarget.Append(p.enumList(ci))
+		case tok.ItemBlankLine:
+			log.Msg("Found newline, closing paragraph")
+			p.backup()
 			break outer
 		}
-		logp.Msg("Continuing...")
+		log.Msg("Continuing...")
 	}
-	logp.Log("msg", "number of indents", "t.indents.len", t.indents.len())
-	if t.indents.len() > 0 {
-		t.nodeTarget.setParent(t.indents.topNode())
-		logp.Log("msg", "Set node target to t.indents.topNodeList!", "nodePtr", t.nodeTarget)
-	} else if len(t.sectionLevels.levels) == 0 {
-		logp.Msg("Setting node target to t.nodes!")
-		t.nodeTarget.reset()
+	log.Log("msg", "number of indents", "p.indents.len", p.indents.len())
+	if p.indents.len() > 0 {
+		p.nodeTarget.SetParent(p.indents.topNode())
+		log.Log("msg", "Set node target to p.indents.topNodeList!", "nodePtr", p.nodeTarget)
+	} else if len(p.sectionLevels.levels) == 0 {
+		log.Msg("Setting node target to p.nodes!")
+		p.nodeTarget.Reset()
 	}
 	return np
 }

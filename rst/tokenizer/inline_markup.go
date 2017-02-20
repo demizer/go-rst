@@ -5,19 +5,19 @@ import (
 	"unicode"
 )
 
-func isInlineMarkup(l *lexer) bool {
+func isInlineMarkup(l *Lexer) bool {
 	isOpenerRune := func(r rune) bool {
 		for _, x := range inlineMarkupStartStringOpeners {
 			if x == r {
-				logl.Msg("Found inline markup!")
+				log.Msg("Found inline markup!")
 				return true
 			}
 		}
 		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs, unicode.Zl) {
-			logl.Msg("Found inline markup!")
+			log.Msg("Found inline markup!")
 			return true
 		}
-		logl.Msg("Not inline markup!")
+		log.Msg("Not inline markup!")
 		return false
 	}
 	isSurrounded := func(back, front rune) bool {
@@ -58,18 +58,18 @@ func isInlineMarkup(l *lexer) bool {
 		if l.mark == f {
 			f = l.peek(2)
 		}
-		// logl.Log.Debugf("back: %q forward: %q", b, f)
+		// log.Log.Debugf("back: %q forward: %q", b, f)
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) && !isSurrounded(b, f) &&
 			!unicode.IsSpace(f) && f != EOL {
-			logl.Msg("Found inline markup!")
+			log.Msg("Found inline markup!")
 			return true
 		}
 	}
-	logl.Msg("Not inline markup!")
+	log.Msg("Not inline markup!")
 	return false
 }
 
-func isInlineMarkupClosed(l *lexer, markup string) bool {
+func isInlineMarkupClosed(l *Lexer, markup string) bool {
 	isEndASCII := func(r rune) bool {
 		for _, x := range inlineMarkupEndStringClosers {
 			if x == r {
@@ -99,15 +99,15 @@ func isInlineMarkupClosed(l *lexer, markup string) bool {
 
 	// If the closing markup is one rune, then do nothing.
 	if validEnd && validNext {
-		logl.Msg("Found inline markup close")
+		log.Msg("Found inline markup close")
 		return true
 	}
 
-	logl.Msg("Inline markup close not found")
+	log.Msg("Inline markup close not found")
 	return false
 }
 
-func isInlineReference(l *lexer) bool {
+func isInlineReference(l *Lexer) bool {
 	isNotSurroundedByUnderscores := l.peekBack(1) != '_' && l.peek(1) != '_'
 	lastItemIsNotSpace := l.lastItem == nil || l.lastItem.Type != ItemSpace
 	isAnon := l.lastItem != nil && l.lastItem.Type == ItemBlankLine && l.mark == '_' && l.peek(1) == '_'
@@ -123,34 +123,34 @@ func isInlineReference(l *lexer) bool {
 			lp2 := l.peek(x + 1)
 			if lp == '`' {
 				if l.peek(x+1) == '_' {
-					logl.Msg("FOUND quoted inline anonymous hyperlink reference!")
+					log.Msg("FOUND quoted inline anonymous hyperlink reference!")
 					return true
 				}
 			} else if lp == EOL && lp2 == EOL {
-				logl.Msg("FOUND blank line")
+				log.Msg("FOUND blank line")
 				break
 			}
 			x++
 		}
-		logl.Msg("NOT FOUND quoted inline anonymous hyperlink reference")
+		log.Msg("NOT FOUND quoted inline anonymous hyperlink reference")
 		return false
 	}
 
 	if l.mark == '_' && isNotSurroundedByUnderscores && lastItemIsNotSpace {
-		logl.Msg("FOUND inlineReference!")
+		log.Msg("FOUND inlineReference!")
 		return true
 	} else if isAnon || isQuotedAnon() {
-		logl.Msg("FOUND anonymous inlineReference!")
+		log.Msg("FOUND anonymous inlineReference!")
 		return true
 	}
 
-	logl.Msg("NOT FOUND isInlineReference")
+	log.Msg("NOT FOUND isInlineReference")
 	return false
 }
 
-func lexInlineMarkup(l *lexer) stateFn {
+func lexInlineMarkup(l *Lexer) stateFn {
 	for {
-		logl.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
+		log.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
 			"width", l.width, "line", l.lineNumber())
 		if l.mark == '*' && l.peek(1) == '*' {
 			lexInlineStrong(l)
@@ -173,7 +173,7 @@ func lexInlineMarkup(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineStrong(l *lexer) stateFn {
+func lexInlineStrong(l *Lexer) stateFn {
 	// Log.funcName = "lexInlineStrong"
 	l.next()
 	l.next()
@@ -181,16 +181,16 @@ func lexInlineStrong(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "**") {
-			logl.Msg("Found strong close")
+			log.Msg("Found strong close")
 			l.emit(ItemInlineStrong)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
-				logl.Msg("Found EOF (unclosed strong)")
+				log.Msg("Found EOF (unclosed strong)")
 				l.emit(ItemInlineStrong)
 				return lexStart
 			}
-			logl.Msg("Found end-of-line")
+			log.Msg("Found end-of-line")
 			l.emit(ItemInlineStrong)
 			l.emit(ItemBlankLine)
 			l.nextLine()
@@ -202,22 +202,22 @@ func lexInlineStrong(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineEmphasis(l *lexer) stateFn {
+func lexInlineEmphasis(l *Lexer) stateFn {
 	l.next()
 	l.emit(ItemInlineEmphasisOpen)
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
-			logl.Msg("Found emphasis close")
+			log.Msg("Found emphasis close")
 			l.emit(ItemInlineEmphasis)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
-				logl.Msg("Found EOF (unclosed emphasis)")
+				log.Msg("Found EOF (unclosed emphasis)")
 				l.emit(ItemInlineEmphasis)
 				return lexStart
 			}
-			logl.Msg("Found end-of-line")
+			log.Msg("Found end-of-line")
 			l.emit(ItemInlineEmphasis)
 			l.emit(ItemBlankLine)
 			l.nextLine()
@@ -228,23 +228,23 @@ func lexInlineEmphasis(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineLiteral(l *lexer) stateFn {
+func lexInlineLiteral(l *Lexer) stateFn {
 	l.next()
 	l.next()
 	l.emit(ItemInlineLiteralOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "``") {
-			logl.Msg("Found literal close")
+			log.Msg("Found literal close")
 			l.emit(ItemInlineLiteral)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
-				logl.Msg("Found EOF (unclosed inline literal)")
+				log.Msg("Found EOF (unclosed inline literal)")
 				l.emit(ItemInlineLiteral)
 				return lexStart
 			}
-			logl.Msg("Found end-of-line")
+			log.Msg("Found end-of-line")
 			l.emit(ItemInlineLiteral)
 			l.emit(ItemBlankLine)
 			l.nextLine()
@@ -256,13 +256,13 @@ func lexInlineLiteral(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineInterpretedText(l *lexer) stateFn {
+func lexInlineInterpretedText(l *Lexer) stateFn {
 	l.next()
 	l.emit(ItemInlineInterpretedTextOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "`") {
-			logl.Msg("Found literal close")
+			log.Msg("Found literal close")
 			l.emit(ItemInlineInterpretedText)
 			break
 		}
@@ -275,7 +275,7 @@ func lexInlineInterpretedText(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineInterpretedTextRole(l *lexer) stateFn {
+func lexInlineInterpretedTextRole(l *Lexer) stateFn {
 	l.next()
 	l.emit(ItemInlineInterpretedTextRoleOpen)
 	for {
@@ -290,7 +290,7 @@ func lexInlineInterpretedTextRole(l *lexer) stateFn {
 	return lexStart
 }
 
-func lexInlineReference(l *lexer) stateFn {
+func lexInlineReference(l *Lexer) stateFn {
 	if l.mark == '`' {
 		l.next()
 		l.emit(ItemInlineReferenceOpen)

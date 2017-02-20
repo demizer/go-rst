@@ -2,23 +2,26 @@ package tokenizer
 
 import (
 	"fmt"
+	"io/ioutil"
 	"testing"
 	"unicode/utf8"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/demizer/go-rst/rst/testutil"
 )
 
 var (
-	tEOF = item{Type: itemEOF, StartPosition: 0, Text: ""}
+	tEOF = Item{Type: ItemEOF, StartPosition: 0, Text: ""}
 )
 
-func lexTest(t *testing.T, test *Test) []item {
-	var items []item
-	l := lex(test.path, []byte(test.data))
+func lexTest(t *testing.T, test *testutil.Test) []Item {
+	var items []Item
+	l := Lex(test.Path, []byte(test.Data))
 	for {
-		item := l.nextItem()
+		item := l.NextItem()
 		items = append(items, *item)
-		if item.Type == itemEOF || item.Type == itemError {
+		if item.Type == ItemEOF || item.Type == ItemError {
 			break
 		}
 	}
@@ -27,11 +30,11 @@ func lexTest(t *testing.T, test *Test) []item {
 
 // Test equality between items and expected items from unmarshalled json data, field by field.  Returns error in case of
 // error during json unmarshalling, or mismatch between items and the expected output.
-func equal(t *testing.T, expectItems []item, items []item) {
+func equal(t *testing.T, expectItems []interface{}, items []Item) {
 	lLen := len(items)
 	eLen := len(expectItems)
 
-	toSlice := func(v []item) []interface{} {
+	toSlice := func(v []Item) []interface{} {
 		s := make([]interface{}, len(v))
 		for i, j := range v {
 			s[i] = j
@@ -40,7 +43,7 @@ func equal(t *testing.T, expectItems []item, items []item) {
 	}
 
 	if lLen != eLen {
-		o, err := jsonDiff(toSlice(expectItems), toSlice(items))
+		o, err := testutil.JsonDiff(expectItems, toSlice(items))
 		if err != nil {
 			fmt.Println(o)
 			fmt.Println(err)
@@ -49,16 +52,31 @@ func equal(t *testing.T, expectItems []item, items []item) {
 		t.Fatalf(eTmp, lLen, eLen)
 	}
 
-	// for eNum, eItem := range expectItems {
-	// pVal := reflect.ValueOf(items[eNum])
-	// eVal := reflect.ValueOf(eItem)
-	// ec := newEqualityCheck(t, pVal, eVal)
-	// for x := 0; x < eVal.NumField(); x++ {
-	// ec.check(x)
-	// }
-	// }
-
 	return
+}
+
+func LoadLexTest(t *testing.T, path string) (test *testutil.Test) {
+	iDPath := path + ".rst"
+	inputData, err := ioutil.ReadFile(iDPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(inputData) == 0 {
+		t.Fatalf("\"%s\" is empty!", iDPath)
+	}
+	itemFPath := path + "-items.json"
+	itemData, err := ioutil.ReadFile(itemFPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(itemData) == 0 {
+		t.Fatalf("\"%s\" is empty!", itemFPath)
+	}
+	return &testutil.Test{
+		Path:     path,
+		Data:     string(inputData[:len(inputData)-1]),
+		ItemData: string(itemData),
+	}
 }
 
 var lexerTests = []struct {
@@ -480,7 +498,7 @@ func TestLexerPeekNextLine(t *testing.T) {
 }
 
 func TestLexId(t *testing.T) {
-	testPath := testPathFromName("04.00.00.00-title-paragraph")
+	testPath := testutil.TestPathFromName("04.00.00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].IDNumber() != 1 {
@@ -492,7 +510,7 @@ func TestLexId(t *testing.T) {
 }
 
 func TestLexLine(t *testing.T) {
-	testPath := testPathFromName("04.00.00.00-title-paragraph")
+	testPath := testutil.TestPathFromName("04.00.00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].LineNumber() != 1 {
@@ -504,7 +522,7 @@ func TestLexLine(t *testing.T) {
 }
 
 func TestLexStartPosition(t *testing.T) {
-	testPath := testPathFromName("04.00.00.00-title-paragraph")
+	testPath := testutil.TestPathFromName("04.00.00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	if items[0].StartPosition != 1 {

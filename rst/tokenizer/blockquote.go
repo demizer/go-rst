@@ -1,6 +1,6 @@
 package tokenizer
 
-func isBlockquote(l *lexer) bool {
+func isBlockquote(l *Lexer) bool {
 	if !l.lastLineIsBlankLine() || l.lastItem.Type != ItemSpace {
 		return false
 	}
@@ -10,7 +10,7 @@ func isBlockquote(l *lexer) bool {
 	return false
 }
 
-func lexBlockquote(l *lexer) stateFn {
+func lexBlockquote(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {

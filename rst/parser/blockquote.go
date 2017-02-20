@@ -1,28 +1,33 @@
 package parser
 
-func (p *ParserState) emptyblockquote(i *item) {
+import (
+	doc "github.com/demizer/go-rst/rst/document"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
+)
+
+func (p *Parser) emptyblockquote(i *tok.Item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
-	sec := newEmptyBlockQuote(i)
-	p.nodeTarget.append(sec)
-	p.nodeTarget.setParent(sec)
+	sec := doc.NewEmptyBlockQuote(i)
+	p.nodeTarget.Append(sec)
+	p.nodeTarget.SetParent(sec)
 	p.bqLevel = sec
 }
 
-func (p *ParserState) blockquote(i *item) {
+func (p *Parser) blockquote(i *tok.Item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
 	if p.bqLevel != nil {
 		// Parser Test 03.02.07.00
-		logp.Msg("Adding blockquote text as NodeText to existing blockquote")
-		p.bqLevel.NodeList.append(newParagraphWithNodeText(i))
+		log.Msg("Adding blockquote text as NodeText to existing blockquote")
+		p.bqLevel.NodeList.Append(doc.NewParagraphWithNodeText(i))
 		return
 	}
-	logp.Msg("Creating blockquote")
-	sec := newBlockQuote(i)
-	p.nodeTarget.append(sec)
-	p.nodeTarget.setParent(sec)
+	log.Msg("Creating blockquote")
+	sec := doc.NewBlockQuote(i)
+	p.nodeTarget.Append(sec)
+	p.nodeTarget.SetParent(sec)
 	p.bqLevel = sec
 }

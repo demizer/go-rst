@@ -125,92 +125,92 @@ type Node interface {
 // NodeList is a list of parser nodes that implement Node.
 type NodeList []Node
 
-func (l *NodeList) append(n ...Node) {
+func (l *NodeList) Append(n ...Node) {
 	for _, node := range n {
 		*l = append(*l, node)
 	}
 }
 
 // last returns the last item added to the slice
-func (l *NodeList) lastNode(n ...Node) Node { return (*l)[len(*l)-1] }
+func (l *NodeList) LastNode(n ...Node) Node { return (*l)[len(*l)-1] }
 
 // NodeTarget contains the NodeList where subsequent nodes will be added during parsing. It also contains a pointer to the
 // parent Node of the NodeTarget NodeList.
-type nodeTarget struct {
-	mainList *NodeList // The default NodeList for reset()
-	subList  *NodeList // The nodelist contained in target
-	parent   Node      // If set, a parent Node containing a NodeList. Can be nil.
+type NodeTarget struct {
+	MainList *NodeList // The default NodeList for reset()
+	SubList  *NodeList // The nodelist contained in target
+	Parent   Node      // If set, a parent Node containing a NodeList. Can be nil.
 }
 
-func newNodeTarget(pNodes *NodeList) *nodeTarget {
-	return &nodeTarget{mainList: pNodes, subList: pNodes}
+func NewNodeTarget(pNodes *NodeList) *NodeTarget {
+	return &NodeTarget{MainList: pNodes, SubList: pNodes}
 }
 
-func (nt *nodeTarget) reset() {
-	log.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.mainList))
-	nt.subList = nt.mainList
-	nt.parent = nil
+func (nt *NodeTarget) Reset() {
+	log.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.MainList))
+	nt.SubList = nt.MainList
+	nt.Parent = nil
 }
 
-func (nt *nodeTarget) append(n ...Node) {
+func (nt *NodeTarget) Append(n ...Node) {
 	for _, node := range n {
 		log.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", &node),
-			"nodeListPointer", fmt.Sprintf("%p", nt.subList), "node", node.String())
-		nt.subList.append(node)
+			"nodeListPointer", fmt.Sprintf("%p", nt.SubList), "node", node.String())
+		nt.SubList.Append(node)
 	}
 }
 
-// setParent sets the nodeTarget to the NodeList of a Node
-func (nt *nodeTarget) setParent(n Node) {
+// setParent sets the NodeTarget to the NodeList of a Node
+func (nt *NodeTarget) SetParent(n Node) {
 	// log.Log("msg", "setParent have node", "node", n.(Node).String())
-	// log.Log("msg", "nodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
+	// log.Log("msg", "NodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
 	// "nodeListPointer", fmt.Sprintf("%p", nt.subList))
 	switch t := n.(type) {
 	case *ParagraphNode:
-		nt.subList = &n.(*ParagraphNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*ParagraphNode).NodeList
+		nt.Parent = n
 	case *InlineInterpretedText:
-		nt.subList = &n.(*InlineInterpretedText).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*InlineInterpretedText).NodeList
+		nt.Parent = n
 	case *BlockQuoteNode:
-		nt.subList = &n.(*BlockQuoteNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*BlockQuoteNode).NodeList
+		nt.Parent = n
 	case *SystemMessageNode:
-		nt.subList = &n.(*SystemMessageNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*SystemMessageNode).NodeList
+		nt.Parent = n
 	case *BulletListNode:
-		nt.subList = &n.(*BulletListNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*BulletListNode).NodeList
+		nt.Parent = n
 	case *BulletListItemNode:
-		nt.subList = &n.(*BulletListItemNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*BulletListItemNode).NodeList
+		nt.Parent = n
 	case *EnumListNode:
-		nt.subList = &n.(*EnumListNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*EnumListNode).NodeList
+		nt.Parent = n
 	case *DefinitionListNode:
-		nt.subList = &n.(*DefinitionListNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*DefinitionListNode).NodeList
+		nt.Parent = n
 	case *DefinitionNode:
-		nt.subList = &n.(*DefinitionNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*DefinitionNode).NodeList
+		nt.Parent = n
 	case *SectionNode:
-		nt.subList = &n.(*SectionNode).NodeList
-		nt.parent = n
+		nt.SubList = &n.(*SectionNode).NodeList
+		nt.Parent = n
 	default:
 		log.Log("msg", "WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
 	}
-	// log.Log("msg", "nodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
+	// log.Log("msg", "NodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
 	// "nodeSubListPointer", fmt.Sprintf("%p", nt.subList), "nodeParentPointer", fmt.Sprintf("%p", nt.parent))
 }
 
 // isParentParagraph will return true if the parent Node of the NodeTarget is a paragraph.
-func (nt *nodeTarget) isParagraphNode() bool {
-	switch nt.parent.(type) {
+func (nt *NodeTarget) IsParagraphNode() bool {
+	switch nt.Parent.(type) {
 	case *ParagraphNode:
 		log.Msg("nt.parent is type *ParagraphNode!")
 		return true
 	default:
-		log.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.parent))
+		log.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.Parent))
 	}
 	return false
 }
@@ -280,7 +280,7 @@ func (s *SectionNode) NodeType() NodeType { return s.Type }
 // String satisfies the Stringer interface
 func (s *SectionNode) String() string { return fmt.Sprintf("%#v", s) }
 
-func newSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *tok.Item) *SectionNode {
+func NewSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *tok.Item) *SectionNode {
 	var indentLen int
 	n := &SectionNode{Type: NodeSection}
 	if indent != nil {
@@ -392,7 +392,7 @@ type TextNode struct {
 	StartPosition `json:"startPosition,omitempty"`
 }
 
-func newText(i *tok.Item) *TextNode {
+func NewText(i *tok.Item) *TextNode {
 	return &TextNode{
 		Type:          NodeText,
 		Text:          i.Text,
@@ -431,11 +431,11 @@ type ParagraphNode struct {
 	NodeList `json:"nodeList"` // NodeList contains children of the ParagraphNode, even other ParagraphNodes!
 }
 
-func newParagraph() *ParagraphNode { return &ParagraphNode{Type: NodeParagraph} }
+func NewParagraph() *ParagraphNode { return &ParagraphNode{Type: NodeParagraph} }
 
-func newParagraphWithNodeText(i *tok.Item) *ParagraphNode {
+func NewParagraphWithNodeText(i *tok.Item) *ParagraphNode {
 	pn := &ParagraphNode{Type: NodeParagraph}
-	pn.append(newText(i))
+	pn.Append(NewText(i))
 	return pn
 }
 
@@ -465,7 +465,7 @@ type InlineEmphasisNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineEmphasis(i *tok.Item) *InlineEmphasisNode {
+func NewInlineEmphasis(i *tok.Item) *InlineEmphasisNode {
 	return &InlineEmphasisNode{
 		Type:          NodeInlineEmphasis,
 		Text:          i.Text,
@@ -507,7 +507,7 @@ type InlineStrongNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineStrong(i *tok.Item) *InlineStrongNode {
+func NewInlineStrong(i *tok.Item) *InlineStrongNode {
 	return &InlineStrongNode{
 		Type:          NodeInlineStrong,
 		Text:          i.Text,
@@ -549,7 +549,7 @@ type InlineLiteralNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineLiteral(i *tok.Item) *InlineLiteralNode {
+func NewInlineLiteral(i *tok.Item) *InlineLiteralNode {
 	return &InlineLiteralNode{
 		Type:          NodeInlineLiteral,
 		Text:          i.Text,
@@ -593,7 +593,7 @@ type InlineInterpretedText struct {
 	NodeList `json:"nodeList"`
 }
 
-func newInlineInterpretedText(i *tok.Item) *InlineInterpretedText {
+func NewInlineInterpretedText(i *tok.Item) *InlineInterpretedText {
 	return &InlineInterpretedText{
 		Type:          NodeInlineInterpretedText,
 		Text:          i.Text,
@@ -637,7 +637,7 @@ type InlineInterpretedTextRole struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineInterpretedTextRole(i *tok.Item) *InlineInterpretedTextRole {
+func NewInlineInterpretedTextRole(i *tok.Item) *InlineInterpretedTextRole {
 	return &InlineInterpretedTextRole{
 		Type:          NodeInlineInterpretedTextRole,
 		Text:          i.Text,
@@ -679,7 +679,7 @@ type BlockQuoteNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newEmptyBlockQuote(i *tok.Item) *BlockQuoteNode {
+func NewEmptyBlockQuote(i *tok.Item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
 		Type:          NodeBlockQuote,
 		Line:          i.Line,
@@ -688,13 +688,13 @@ func newEmptyBlockQuote(i *tok.Item) *BlockQuoteNode {
 	return bq
 }
 
-func newBlockQuote(i *tok.Item) *BlockQuoteNode {
+func NewBlockQuote(i *tok.Item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
 		Type:          NodeBlockQuote,
 		Line:          i.Line,
 		StartPosition: i.StartPosition,
 	}
-	bq.NodeList.append(newParagraphWithNodeText(i))
+	bq.NodeList.Append(NewParagraphWithNodeText(i))
 	return bq
 }
 
@@ -737,7 +737,7 @@ type SystemMessageNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *tok.Item, m string, l string) *SystemMessageNode {
+func NewSystemMessage(i *tok.Item, m string, l string) *SystemMessageNode {
 	return &SystemMessageNode{
 		Type:        NodeSystemMessage,
 		MessageType: m,
@@ -778,7 +778,7 @@ type LiteralBlockNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newLiteralBlock(i *tok.Item) *LiteralBlockNode {
+func NewLiteralBlock(i *tok.Item) *LiteralBlockNode {
 	return &LiteralBlockNode{
 		Type:          NodeLiteralBlock,
 		Text:          i.Text,
@@ -820,7 +820,7 @@ type TransitionNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newTransition(i *tok.Item) *TransitionNode {
+func NewTransition(i *tok.Item) *TransitionNode {
 	return &TransitionNode{
 		Type:          NodeTransition,
 		Text:          i.Text,
@@ -862,7 +862,7 @@ type CommentNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newComment(i *tok.Item) *CommentNode {
+func NewComment(i *tok.Item) *CommentNode {
 	return &CommentNode{
 		Type:          NodeComment,
 		Text:          i.Text,
@@ -902,8 +902,8 @@ type BulletListNode struct {
 	NodeList `json:"nodeList"`
 }
 
-// newEnumListNode initializes a new BulletListNode.
-func newBulletListNode(i *tok.Item) *BulletListNode {
+// NewEnumListNode initializes a new BulletListNode.
+func NewBulletListNode(i *tok.Item) *BulletListNode {
 	return &BulletListNode{
 		Type:   NodeBulletList,
 		Bullet: i.Text,
@@ -935,8 +935,8 @@ type BulletListItemNode struct {
 	NodeList `json:"nodeList"`
 }
 
-// newBulletListNode initializes a new EnumListNode.
-func newBulletListItemNode(i *tok.Item) *BulletListItemNode {
+// NewBulletListNode initializes a new EnumListNode.
+func NewBulletListItemNode(i *tok.Item) *BulletListItemNode {
 	return &BulletListItemNode{Type: NodeBulletListItem}
 }
 
@@ -965,8 +965,8 @@ type EnumListNode struct {
 	NodeList `json:"nodeList"`
 }
 
-// newEnumListNode initializes a new EnumListNode.
-func newEnumListNode(enumList *tok.Item, affix *tok.Item) *EnumListNode {
+// NewEnumListNode initializes a new EnumListNode.
+func NewEnumListNode(enumList *tok.Item, affix *tok.Item) *EnumListNode {
 	var enType EnumListType
 	switch enumList.Type {
 	case tok.ItemEnumListArabic:
@@ -1017,7 +1017,7 @@ type DefinitionListNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newDefinitionList(i *tok.Item) *DefinitionListNode {
+func NewDefinitionList(i *tok.Item) *DefinitionListNode {
 	return &DefinitionListNode{Type: NodeDefinitionList}
 }
 
@@ -1045,7 +1045,7 @@ type DefinitionListItemNode struct {
 	Definition *DefinitionNode     `json:"definition"`
 }
 
-func newDefinitionListItem(defTerm *tok.Item, def *tok.Item) *DefinitionListItemNode {
+func NewDefinitionListItem(defTerm *tok.Item, def *tok.Item) *DefinitionListItemNode {
 	n := &DefinitionListItemNode{Type: NodeDefinitionListItem}
 	ndt := &DefinitionTermNode{
 		Type:          NodeDefinitionTerm,

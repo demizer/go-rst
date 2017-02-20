@@ -12,16 +12,10 @@ import (
 
 var logc **log.Context
 
-var (
-	// LogCtx is the default logger for the parse package
-	logp                = NewLogCtx("parser")
-	logt                = NewLogCtx("test")
-	excludeNamedContext string // Exclude a log context from being shown in the output
-)
-
 type LogCtx struct {
-	name string
-	ctx  *log.Context
+	name                string
+	excludeNamedContext string
+	ctx                 *log.Context
 }
 
 // NewLogCtx creates a new logging context with name and returns o LogCtx ready to use.
@@ -29,7 +23,7 @@ func NewLogCtx(name string) *LogCtx {
 	return &LogCtx{name: name, ctx: log.NewContext(log.NewNopLogger())}
 }
 
-// // LogSetContext sets a logger context.
+// LogSetContext sets a logger context.
 // func LogSetContext(l *log.Context) {
 // logp.ctx = l
 // // logl.ctx = l
@@ -49,7 +43,7 @@ func (l *LogCtx) Err(err error) { l.Log("msg", err.Error()) }
 
 // Log writes log output to the logCtx of the package with added context
 func (l *LogCtx) Log(keyvals ...interface{}) error {
-	if strings.Contains(excludeNamedContext, l.name) {
+	if strings.Contains(l.excludeNamedContext, l.name) {
 		return nil
 	}
 	cs := stack.Caller(2)
