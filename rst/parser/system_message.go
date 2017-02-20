@@ -1,6 +1,6 @@
 package parser
 
-func (t *Tree) systemMessageSection(s *SystemMessageNode, err parserMessage) *LiteralBlockNode {
+func (t *Tree) systemMessageSection(s *SystemMessageNode, err ParserMessage) *LiteralBlockNode {
 	var overLine, indent, title, underLine, newLine string
 	var lbText string
 	var lbTextLen int
@@ -111,7 +111,7 @@ func (t *Tree) systemMessageSection(s *SystemMessageNode, err parserMessage) *Li
 	return nil
 }
 
-func (t *Tree) systemMessageInlineMarkup(s *SystemMessageNode, err parserMessage) *LiteralBlockNode {
+func (t *Tree) systemMessageInlineMarkup(s *SystemMessageNode, err ParserMessage) *LiteralBlockNode {
 	switch err {
 	case warningExplicitMarkupWithUnIndent:
 		s.Line = t.token[zed+1].Line
@@ -119,9 +119,9 @@ func (t *Tree) systemMessageInlineMarkup(s *SystemMessageNode, err parserMessage
 	return nil
 }
 
-// systemMessage generates a Node based on the passed parserMessage. The generated message is returned as a
+// systemMessage generates a Node based on the passed ParserMessage. The generated message is returned as a
 // SystemMessageNode.
-func (t *Tree) systemMessage(err parserMessage) Node {
+func (t *Tree) systemMessage(err ParserMessage) Node {
 	s := newSystemMessage(&item{Type: itemSystemMessage, Line: t.token[zed].Line}, err)
 	msg := newText(&item{
 		Text:   err.Message(),
@@ -131,7 +131,7 @@ func (t *Tree) systemMessage(err parserMessage) Node {
 	logp.Log("msg", "Adding msg to system message NodeList", "systemMessage", err)
 	s.NodeList.append(msg)
 
-	appendOrDie := func(f func(s2 *SystemMessageNode, err2 parserMessage) *LiteralBlockNode) {
+	appendOrDie := func(f func(s2 *SystemMessageNode, err2 ParserMessage) *LiteralBlockNode) {
 		if lb := f(s, err); lb != nil {
 			s.NodeList = append(s.NodeList, lb)
 		}

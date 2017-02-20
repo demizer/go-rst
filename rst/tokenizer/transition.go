@@ -5,7 +5,7 @@ func isTransition(l *lexer) bool {
 		logl.Msg("Transition not found")
 		return false
 	}
-	pBlankLine := l.lastItem != nil && l.lastItem.Type == itemBlankLine
+	pBlankLine := l.lastItem != nil && l.lastItem.Type == ItemBlankLine
 	nBlankLine := l.peekNextLine() == ""
 	if l.line == 0 && nBlankLine {
 		logl.Msg("Found transition (followed by newline)")
@@ -25,7 +25,7 @@ func lexTransition(l *lexer) stateFn {
 		}
 		l.next()
 	}
-	l.emit(itemTransition)
+	l.emit(ItemTransition)
 	l.nextLine()
 	return lexStart
 }

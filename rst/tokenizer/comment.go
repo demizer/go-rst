@@ -1,9 +1,12 @@
 package tokenizer
 
-import "unicode"
+import (
+	"unicode"
+	// . "github.com/demizer/go-rst"
+)
 
 func isComment(l *lexer) bool {
-	if l.lastItem != nil && l.lastItem.Type == itemTitle {
+	if l.lastItem != nil && l.lastItem.Type == ItemTitle {
 		return false
 	}
 	nMark := l.peek(1)
@@ -24,7 +27,7 @@ func lexComment(l *lexer) stateFn {
 	for l.mark == '.' {
 		l.next()
 	}
-	l.emit(itemCommentMark)
+	l.emit(ItemCommentMark)
 	if l.mark != EOL {
 		l.next()
 		lexSpace(l)

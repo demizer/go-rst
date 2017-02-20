@@ -6,10 +6,15 @@ import (
 	"strings"
 	"unicode"
 	"unicode/utf8"
-	// "golang.org/x/text/unicode/norm"
+
+	. "github.com/demizer/go-rst"
 )
 
-import "unicode/utf8"
+var logl *LogCtx
+
+func init() {
+	logl = NewLogCtx("lexer")
+}
 
 // EOL is denoted by a utf8.RuneError
 var EOL rune = utf8.RuneError
@@ -43,24 +48,6 @@ func (i ID) IDNumber() ID { return i }
 
 // String implements Stringer and returns ID as a string.
 func (i ID) String() string { return strconv.Itoa(int(i)) }
-
-// Line contains the number of a lexed item, or parsed item, from the input data.
-type Line int
-
-// LineNumber returns the Line of an item.
-func (l Line) LineNumber() Line { return l }
-
-// String implements Stringer and returns Line converted to a string.
-func (l Line) String() string { return strconv.Itoa(int(l)) }
-
-// StartPosition is the starting location of an item in the line of input.
-type StartPosition int
-
-// String implements Stringer and returns StartPosition converted to a string.
-func (s StartPosition) String() string { return strconv.Itoa(int(s)) }
-
-// Int return the StartPosition as an integer value.
-func (s StartPosition) Int() int { return int(s) }
 
 type lexPosition struct {
 	index int
@@ -98,9 +85,9 @@ type lexer struct {
 	start            int       // Start position of the token in the line
 	index            int       // Position in input
 	width            int       // The width of the current position
-	items            chan item // The channel items are emitted to
-	lastItem         *item     // The last item emitted to the channel
-	lastItemPosition StartPosition
+	items            chan Item // The channel items are emitted to
+	lastItem         *Item     // The last item emitted to the channel
+	lastItemPosition *StartPosition
 	id               int    // Unique ID for each item emitted
 	mark             rune   // The current lexed rune
 	indentLevel      int    // For tracking indentation with indentable items
@@ -152,7 +139,7 @@ func newLexer(name string, input []byte) *lexer {
 
 	l.input = string(tInput) // stored string is never altered
 	l.lines = lines
-	l.items = make(chan item)
+	l.items = make(chan Item)
 	l.index = 0
 	l.mark = mark
 	l.width = width
@@ -178,15 +165,15 @@ func (l *lexer) run() {
 }
 
 // emit passes an item back to the client.
-func (l *lexer) emit(t itemElement) {
+func (l *lexer) emit(t ItemElement) {
 	var tok string
 
-	if t == itemBlankLine {
+	if t == ItemBlankLine {
 		tok = "\n"
-	} else if t == itemSpace && l.start == l.index {
+	} else if t == ItemSpace && l.start == l.index {
 		// For linebreaks and vertical tabs at the end of the line in a paragraph
 		tok = " "
-	} else if t == itemEOF {
+	} else if t == ItemEOF {
 		tok = ""
 	} else {
 		tok = l.lines[l.line][l.start:l.index]
@@ -195,7 +182,7 @@ func (l *lexer) emit(t itemElement) {
 	l.id++
 	length := utf8.RuneCountInString(tok)
 
-	nItem := item{
+	nItem := Item{
 		ID:   ID(l.id),
 		Type: t,
 		Text: tok,
@@ -309,12 +296,12 @@ func (l *lexer) nextLine() string {
 }
 
 // nextItem returns the next item from the input.
-func (l *lexer) nextItem() *item {
+func (l *lexer) nextItem() *Item {
 	item, ok := <-l.items
 	if ok == false {
 		return nil
 	}
-	l.lastItemPosition = item.StartPosition
+	l.lastItemPosition = &item.StartPosition
 	return &item
 
 }
@@ -410,7 +397,7 @@ func lexStart(l *lexer) stateFn {
 			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
 					logl.Msg("Found blank line")
-					l.emit(itemBlankLine)
+					l.emit(ItemBlankLine)
 					if l.isLastLine() {
 						break
 					}
@@ -423,12 +410,12 @@ func lexStart(l *lexer) stateFn {
 		l.next()
 	}
 
-	l.emit(itemEOF)
+	l.emit(ItemEOF)
 	close(l.items)
 	return nil
 }
 
-// lexSpace consumes space characters (space and tab) in the input and emits a itemSpace token.
+// lexSpace consumes space characters (space and tab) in the input and emits a ItemSpace token.
 func lexSpace(l *lexer) stateFn {
 	logl.Log("l.mark", l.mark)
 	for unicode.IsSpace(l.mark) {
@@ -443,14 +430,14 @@ func lexSpace(l *lexer) stateFn {
 	}
 	logl.Log("start", l.start, "index", l.index)
 	if l.start < l.index {
-		l.emit(itemSpace)
+		l.emit(ItemSpace)
 	}
 	return lexStart
 }
 
 func lexEscape(l *lexer) stateFn {
 	l.next()
-	l.emit(itemEscape)
+	l.emit(ItemEscape)
 	if unicode.IsSpace(l.mark) {
 		lexSpace(l)
 	}

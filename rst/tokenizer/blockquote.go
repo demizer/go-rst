@@ -1,7 +1,7 @@
 package tokenizer
 
 func isBlockquote(l *lexer) bool {
-	if !l.lastLineIsBlankLine() || l.lastItem.Type != itemSpace {
+	if !l.lastLineIsBlankLine() || l.lastItem.Type != ItemSpace {
 		return false
 	}
 	if l.index != len(l.indentWidth) {
@@ -14,7 +14,7 @@ func lexBlockquote(l *lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {
-			l.emit(itemBlockQuote)
+			l.emit(ItemBlockQuote)
 			break
 		}
 	}

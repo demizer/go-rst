@@ -1,28 +1,28 @@
 package parser
 
-func (t *Tree) emptyblockquote(i *item) {
+func (p *ParserState) emptyblockquote(i *item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
 	sec := newEmptyBlockQuote(i)
-	t.nodeTarget.append(sec)
-	t.nodeTarget.setParent(sec)
-	t.bqLevel = sec
+	p.nodeTarget.append(sec)
+	p.nodeTarget.setParent(sec)
+	p.bqLevel = sec
 }
 
-func (t *Tree) blockquote(i *item) {
+func (p *ParserState) blockquote(i *item) {
 	//
 	//  FIXME: Blockquote parsing is NOT fully implemented.
 	//
-	if t.bqLevel != nil {
+	if p.bqLevel != nil {
 		// Parser Test 03.02.07.00
 		logp.Msg("Adding blockquote text as NodeText to existing blockquote")
-		t.bqLevel.NodeList.append(newParagraphWithNodeText(i))
+		p.bqLevel.NodeList.append(newParagraphWithNodeText(i))
 		return
 	}
 	logp.Msg("Creating blockquote")
 	sec := newBlockQuote(i)
-	t.nodeTarget.append(sec)
-	t.nodeTarget.setParent(sec)
-	t.bqLevel = sec
+	p.nodeTarget.append(sec)
+	p.nodeTarget.setParent(sec)
+	p.bqLevel = sec
 }

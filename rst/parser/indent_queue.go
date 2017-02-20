@@ -2,12 +2,14 @@ package parser
 
 import (
 	"fmt"
-	// "github.com/go-kit/kit/log"
+
+	// doc "github.com/demizer/go-rst/rst/document"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
 )
 
 type indent struct {
-	token *item
-	node  Node
+	token *tok.Item
+	node  doc.Node
 }
 
 // indentQueue is a LIFO stack
@@ -15,7 +17,7 @@ type indentQueue []*indent
 
 func (i *indentQueue) len() int { return len(*i) }
 
-func (i *indentQueue) add(t *item, n Node) Node {
+func (i *indentQueue) add(t *tok.Item, n Node) Node {
 	ni := &indent{t, n}
 	*i = append(*i, ni)
 	return n

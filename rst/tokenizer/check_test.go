@@ -37,9 +37,9 @@ func (e *equalityCheck) error() {
 	case ID:
 		got = e.parsedValue.Interface().(ID).String()
 		exp = e.expectedValue.Interface().(ID).String()
-	case itemElement:
-		got = e.parsedValue.Interface().(itemElement).String()
-		exp = e.expectedValue.Interface().(itemElement).String()
+	case ItemElement:
+		got = e.parsedValue.Interface().(ItemElement).String()
+		exp = e.expectedValue.Interface().(ItemElement).String()
 	case Line:
 		got = e.parsedValue.Interface().(Line).String()
 		exp = e.expectedValue.Interface().(Line).String()

@@ -3,7 +3,16 @@ package document
 import (
 	"encoding/json"
 	"fmt"
+
+	. "github.com/demizer/go-rst"
+	tok "github.com/demizer/go-rst/rst/tokenizer"
 )
+
+var log *LogCtx
+
+func init() {
+	log = NewLogCtx("doc")
+}
 
 // NodeType identifies the type of a parse tree node.
 type NodeType int
@@ -138,14 +147,14 @@ func newNodeTarget(pNodes *NodeList) *nodeTarget {
 }
 
 func (nt *nodeTarget) reset() {
-	logp.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.mainList))
+	log.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.mainList))
 	nt.subList = nt.mainList
 	nt.parent = nil
 }
 
 func (nt *nodeTarget) append(n ...Node) {
 	for _, node := range n {
-		logp.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", &node),
+		log.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", &node),
 			"nodeListPointer", fmt.Sprintf("%p", nt.subList), "node", node.String())
 		nt.subList.append(node)
 	}
@@ -153,8 +162,8 @@ func (nt *nodeTarget) append(n ...Node) {
 
 // setParent sets the nodeTarget to the NodeList of a Node
 func (nt *nodeTarget) setParent(n Node) {
-	// logp.Log("msg", "setParent have node", "node", n.(Node).String())
-	// logp.Log("msg", "nodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
+	// log.Log("msg", "setParent have node", "node", n.(Node).String())
+	// log.Log("msg", "nodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
 	// "nodeListPointer", fmt.Sprintf("%p", nt.subList))
 	switch t := n.(type) {
 	case *ParagraphNode:
@@ -188,9 +197,9 @@ func (nt *nodeTarget) setParent(n Node) {
 		nt.subList = &n.(*SectionNode).NodeList
 		nt.parent = n
 	default:
-		logp.Log("msg", "WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
+		log.Log("msg", "WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
 	}
-	// logp.Log("msg", "nodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
+	// log.Log("msg", "nodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
 	// "nodeSubListPointer", fmt.Sprintf("%p", nt.subList), "nodeParentPointer", fmt.Sprintf("%p", nt.parent))
 }
 
@@ -198,10 +207,10 @@ func (nt *nodeTarget) setParent(n Node) {
 func (nt *nodeTarget) isParagraphNode() bool {
 	switch nt.parent.(type) {
 	case *ParagraphNode:
-		logp.Msg("nt.parent is type *ParagraphNode!")
+		log.Msg("nt.parent is type *ParagraphNode!")
 		return true
 	default:
-		logp.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.parent))
+		log.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.parent))
 	}
 	return false
 }
@@ -271,7 +280,7 @@ func (s *SectionNode) NodeType() NodeType { return s.Type }
 // String satisfies the Stringer interface
 func (s *SectionNode) String() string { return fmt.Sprintf("%#v", s) }
 
-func newSection(title *item, overSec *item, underSec *item, indent *item) *SectionNode {
+func newSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *tok.Item) *SectionNode {
 	var indentLen int
 	n := &SectionNode{Type: NodeSection}
 	if indent != nil {
@@ -383,7 +392,7 @@ type TextNode struct {
 	StartPosition `json:"startPosition,omitempty"`
 }
 
-func newText(i *item) *TextNode {
+func newText(i *tok.Item) *TextNode {
 	return &TextNode{
 		Type:          NodeText,
 		Text:          i.Text,
@@ -424,7 +433,7 @@ type ParagraphNode struct {
 
 func newParagraph() *ParagraphNode { return &ParagraphNode{Type: NodeParagraph} }
 
-func newParagraphWithNodeText(i *item) *ParagraphNode {
+func newParagraphWithNodeText(i *tok.Item) *ParagraphNode {
 	pn := &ParagraphNode{Type: NodeParagraph}
 	pn.append(newText(i))
 	return pn
@@ -456,7 +465,7 @@ type InlineEmphasisNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineEmphasis(i *item) *InlineEmphasisNode {
+func newInlineEmphasis(i *tok.Item) *InlineEmphasisNode {
 	return &InlineEmphasisNode{
 		Type:          NodeInlineEmphasis,
 		Text:          i.Text,
@@ -498,7 +507,7 @@ type InlineStrongNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineStrong(i *item) *InlineStrongNode {
+func newInlineStrong(i *tok.Item) *InlineStrongNode {
 	return &InlineStrongNode{
 		Type:          NodeInlineStrong,
 		Text:          i.Text,
@@ -540,7 +549,7 @@ type InlineLiteralNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineLiteral(i *item) *InlineLiteralNode {
+func newInlineLiteral(i *tok.Item) *InlineLiteralNode {
 	return &InlineLiteralNode{
 		Type:          NodeInlineLiteral,
 		Text:          i.Text,
@@ -584,7 +593,7 @@ type InlineInterpretedText struct {
 	NodeList `json:"nodeList"`
 }
 
-func newInlineInterpretedText(i *item) *InlineInterpretedText {
+func newInlineInterpretedText(i *tok.Item) *InlineInterpretedText {
 	return &InlineInterpretedText{
 		Type:          NodeInlineInterpretedText,
 		Text:          i.Text,
@@ -628,7 +637,7 @@ type InlineInterpretedTextRole struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newInlineInterpretedTextRole(i *item) *InlineInterpretedTextRole {
+func newInlineInterpretedTextRole(i *tok.Item) *InlineInterpretedTextRole {
 	return &InlineInterpretedTextRole{
 		Type:          NodeInlineInterpretedTextRole,
 		Text:          i.Text,
@@ -670,7 +679,7 @@ type BlockQuoteNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newEmptyBlockQuote(i *item) *BlockQuoteNode {
+func newEmptyBlockQuote(i *tok.Item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
 		Type:          NodeBlockQuote,
 		Line:          i.Line,
@@ -679,7 +688,7 @@ func newEmptyBlockQuote(i *item) *BlockQuoteNode {
 	return bq
 }
 
-func newBlockQuote(i *item) *BlockQuoteNode {
+func newBlockQuote(i *tok.Item) *BlockQuoteNode {
 	bq := &BlockQuoteNode{
 		Type:          NodeBlockQuote,
 		Line:          i.Line,
@@ -717,10 +726,10 @@ type SystemMessageNode struct {
 	Line `json:"line"`
 
 	// The type of parser message that generated the systemMessage.
-	MessageType parserMessage `json:"messageType"`
+	MessageType string `json:"messageType"`
 
 	// Severity is the level of importance of the message. It can be one of either info, warning, error, and severe.
-	Severity systemMessageLevel `json:"severity"`
+	Severity string `json:"severity"`
 
 	// NodeList contains children Nodes of the systemMessage. Typically containing the first list item as a NodeParagraph
 	// which contains the message, and a NodeLiteralBlock which contains the input data causing the systemMessage to be
@@ -728,11 +737,11 @@ type SystemMessageNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newSystemMessage(i *item, m parserMessage) *SystemMessageNode {
+func newSystemMessage(i *tok.Item, m string, l string) *SystemMessageNode {
 	return &SystemMessageNode{
 		Type:        NodeSystemMessage,
 		MessageType: m,
-		Severity:    m.Level(),
+		Severity:    l,
 		Line:        i.Line,
 	}
 }
@@ -754,8 +763,8 @@ func (s SystemMessageNode) MarshalJSON() ([]byte, error) {
 	}{
 		Type:        nodeTypes[s.Type],
 		Line:        s.Line,
-		MessageType: s.MessageType.String(),
-		Severity:    s.Severity.String(),
+		MessageType: s.MessageType,
+		Severity:    s.Severity,
 		NodeList:    s.NodeList,
 	})
 }
@@ -769,7 +778,7 @@ type LiteralBlockNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newLiteralBlock(i *item) *LiteralBlockNode {
+func newLiteralBlock(i *tok.Item) *LiteralBlockNode {
 	return &LiteralBlockNode{
 		Type:          NodeLiteralBlock,
 		Text:          i.Text,
@@ -811,7 +820,7 @@ type TransitionNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newTransition(i *item) *TransitionNode {
+func newTransition(i *tok.Item) *TransitionNode {
 	return &TransitionNode{
 		Type:          NodeTransition,
 		Text:          i.Text,
@@ -853,7 +862,7 @@ type CommentNode struct {
 	StartPosition `json:"startPosition"`
 }
 
-func newComment(i *item) *CommentNode {
+func newComment(i *tok.Item) *CommentNode {
 	return &CommentNode{
 		Type:          NodeComment,
 		Text:          i.Text,
@@ -894,7 +903,7 @@ type BulletListNode struct {
 }
 
 // newEnumListNode initializes a new BulletListNode.
-func newBulletListNode(i *item) *BulletListNode {
+func newBulletListNode(i *tok.Item) *BulletListNode {
 	return &BulletListNode{
 		Type:   NodeBulletList,
 		Bullet: i.Text,
@@ -927,7 +936,7 @@ type BulletListItemNode struct {
 }
 
 // newBulletListNode initializes a new EnumListNode.
-func newBulletListItemNode(i *item) *BulletListItemNode {
+func newBulletListItemNode(i *tok.Item) *BulletListItemNode {
 	return &BulletListItemNode{Type: NodeBulletListItem}
 }
 
@@ -957,10 +966,10 @@ type EnumListNode struct {
 }
 
 // newEnumListNode initializes a new EnumListNode.
-func newEnumListNode(enumList *item, affix *item) *EnumListNode {
+func newEnumListNode(enumList *tok.Item, affix *tok.Item) *EnumListNode {
 	var enType EnumListType
 	switch enumList.Type {
-	case itemEnumListArabic:
+	case tok.ItemEnumListArabic:
 		enType = enumListArabic
 	}
 
@@ -1008,7 +1017,7 @@ type DefinitionListNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func newDefinitionList(i *item) *DefinitionListNode {
+func newDefinitionList(i *tok.Item) *DefinitionListNode {
 	return &DefinitionListNode{Type: NodeDefinitionList}
 }
 
@@ -1036,7 +1045,7 @@ type DefinitionListItemNode struct {
 	Definition *DefinitionNode     `json:"definition"`
 }
 
-func newDefinitionListItem(defTerm *item, def *item) *DefinitionListItemNode {
+func newDefinitionListItem(defTerm *tok.Item, def *tok.Item) *DefinitionListItemNode {
 	n := &DefinitionListItemNode{Type: NodeDefinitionListItem}
 	ndt := &DefinitionTermNode{
 		Type:          NodeDefinitionTerm,
