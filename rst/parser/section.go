@@ -95,7 +95,7 @@ func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node 
 		sm := p.systemMessage(infoOverlineTooShortForTitle)
 		p.nodeTarget.Append(sm)
 		return sm
-	} else if t := p.peek(1); t != nil && t.Type == tok.ItemBlankLine {
+	} else if t := p.peek(1); t != nil && t.Type == tok.BlankLine {
 		sm := p.systemMessage(severeMissingMatchingUnderlineForOverline)
 		p.nodeTarget.Append(sm)
 		return sm

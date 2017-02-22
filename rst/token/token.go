@@ -168,7 +168,7 @@ func (l *Lexer) run() {
 func (l *Lexer) emit(t Type) {
 	var tok string
 
-	if t == ItemBlankLine {
+	if t == BlankLine {
 		tok = "\n"
 	} else if t == Space && l.start == l.index {
 		// For linebreaks and vertical tabs at the end of the line in a paragraph
@@ -397,7 +397,7 @@ func lexStart(l *Lexer) stateFn {
 			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
 					log.Msg("Found blank line")
-					l.emit(ItemBlankLine)
+					l.emit(BlankLine)
 					if l.isLastLine() {
 						break
 					}
@@ -437,7 +437,7 @@ func lexSpace(l *Lexer) stateFn {
 
 func lexEscape(l *Lexer) stateFn {
 	l.next()
-	l.emit(ItemEscape)
+	l.emit(Escape)
 	if unicode.IsSpace(l.mark) {
 		lexSpace(l)
 	}

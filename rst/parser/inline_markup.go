@@ -21,9 +21,9 @@ main:
 			break
 		}
 		switch ci.Type {
-		case tok.ItemInlineEmphasis:
+		case tok.InlineEmphasis:
 			ni.Text += "\n" + ci.Text
-		case tok.ItemBlankLine:
+		case tok.BlankLine:
 			continue
 		default:
 			p.backup()
@@ -49,9 +49,9 @@ main:
 			break
 		}
 		switch ci.Type {
-		case tok.ItemInlineStrong:
+		case tok.InlineStrong:
 			ni.Text += "\n" + ci.Text
-		case tok.ItemBlankLine:
+		case tok.BlankLine:
 			continue
 		default:
 			p.backup()
@@ -77,9 +77,9 @@ main:
 			break
 		}
 		switch ci.Type {
-		case tok.ItemInlineLiteral:
+		case tok.InlineLiteral:
 			ni.Text += "\n" + ci.Text
-		case tok.ItemBlankLine:
+		case tok.BlankLine:
 			continue
 		default:
 			p.backup()
@@ -96,7 +96,7 @@ func (p *Parser) inlineInterpretedText(i *tok.Item) {
 	n := doc.NewInlineInterpretedText(p.token[zed])
 	p.nodeTarget.Append(n)
 	p.next(1)
-	if p.peek(1).Type == tok.ItemInlineInterpretedTextRoleOpen {
+	if p.peek(1).Type == tok.InlineInterpretedTextRoleOpen {
 		p.next(2)
 		n.NodeList.Append(doc.NewInlineInterpretedTextRole(p.token[zed]))
 		p.next(1)

@@ -969,7 +969,7 @@ type EnumListNode struct {
 func NewEnumListNode(enumList *tok.Item, affix *tok.Item) *EnumListNode {
 	var enType EnumListType
 	switch enumList.Type {
-	case tok.ItemEnumListArabic:
+	case tok.EnumListArabic:
 		enType = enumListArabic
 	}
 

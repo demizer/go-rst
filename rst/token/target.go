@@ -45,7 +45,7 @@ func lexHyperlinkTarget(l *Lexer) stateFn {
 	lexHyperlinkTargetName(l)
 	if l.mark == ':' {
 		l.next()
-		l.emit(ItemHyperlinkTargetSuffix)
+		l.emit(HyperlinkTargetSuffix)
 		if unicode.IsSpace(l.mark) && l.index < len(l.currentLine()) {
 			lexSpace(l)
 			lexHyperlinkTargetBlock(l)
@@ -61,7 +61,7 @@ func lexHyperlinkTarget(l *Lexer) stateFn {
 }
 
 func lexAnonymousHyperlinkTarget(l *Lexer) stateFn {
-	// l.emit(ItemHyperlinkTargetStart)
+	// l.emit(HyperlinkTargetStart)
 	lexHyperlinkTargetStart(l)
 	if l.mark == '_' {
 		lexHyperlinkTargetPrefix(l)
@@ -71,10 +71,10 @@ func lexAnonymousHyperlinkTarget(l *Lexer) stateFn {
 	if l.mark == ':' {
 		// l.next()
 		// l.next()
-		// l.emit(ItemHyperlinkTargetPrefix)
+		// l.emit(HyperlinkTargetPrefix)
 		// lexHyperlinkTargetPrefix(l)
 		// l.next()
-		// l.emit(ItemHyperlinkTargetSuffix)
+		// l.emit(HyperlinkTargetSuffix)
 		// lexSpace(l)
 		lexHyperlinkTargetSuffix(l)
 		// } else if l.mark != ':' {
@@ -93,12 +93,12 @@ func lexHyperlinkTargetName(l *Lexer) stateFn {
 			if !inquote {
 				inquote = true
 				l.next()
-				l.emit(ItemHyperlinkTargetQuote)
+				l.emit(HyperlinkTargetQuote)
 				l.next()
 			} else {
-				l.emit(ItemHyperlinkTargetName)
+				l.emit(HyperlinkTargetName)
 				l.next()
-				l.emit(ItemHyperlinkTargetQuote)
+				l.emit(HyperlinkTargetQuote)
 				break
 			}
 			continue
@@ -109,17 +109,17 @@ func lexHyperlinkTargetName(l *Lexer) stateFn {
 		if l.mark == ':' && !inquote && lb != '\\' {
 			if l.index != l.start {
 				// There are runes in the "buffer" that need to be emitted. This is a malformed link
-				l.emit(ItemHyperlinkTargetName)
+				l.emit(HyperlinkTargetName)
 			}
 			break
 		} else if unicode.IsSpace(l.mark) && (lp != EOL && unicode.IsSpace(lp)) {
 			lexSpace(l)
 		} else if l.mark == EOL && !unicode.IsSpace(lp) {
-			l.emit(ItemHyperlinkTargetName)
+			l.emit(HyperlinkTargetName)
 			break
 		} else if l.mark == EOL {
 			// hyperlink target name is multi-line
-			l.emit(ItemHyperlinkTargetName)
+			l.emit(HyperlinkTargetName)
 		}
 		l.next()
 	}
@@ -133,13 +133,13 @@ func lexHyperlinkTargetBlock(l *Lexer) stateFn {
 			if !inquote {
 				inquote = true
 				l.next()
-				l.emit(ItemInlineReferenceOpen)
+				l.emit(InlineReferenceOpen)
 				l.next()
 			} else {
-				l.emit(ItemInlineReferenceText)
+				l.emit(InlineReferenceText)
 				l.next()
 				l.next()
-				l.emit(ItemInlineReferenceClose)
+				l.emit(InlineReferenceClose)
 				break
 			}
 			continue
@@ -148,22 +148,22 @@ func lexHyperlinkTargetBlock(l *Lexer) stateFn {
 		lp := l.peek(1)
 		// First check for indirect reference
 		if lb != '\\' && l.mark == '_' && lp == EOL {
-			l.emit(ItemInlineReferenceText)
+			l.emit(InlineReferenceText)
 			l.next()
-			l.emit(ItemInlineReferenceClose)
+			l.emit(InlineReferenceClose)
 			break
 		} else if !inquote && l.mark == EOL {
 			// end of current line
-			l.emit(ItemHyperlinkTargetURI)
+			l.emit(HyperlinkTargetURI)
 			if lp == EOL {
 				break
 			}
 			// uri continues on next line
 			l.next()
 			lexSpace(l)
-		} else if inquote && l.lastItem.Type == ItemInlineReferenceOpen && l.mark == EOL {
+		} else if inquote && l.lastItem.Type == InlineReferenceOpen && l.mark == EOL {
 			// end of current line, reference continues on next line
-			l.emit(ItemInlineReferenceText)
+			l.emit(InlineReferenceText)
 			l.next()
 			lexSpace(l)
 		}
@@ -183,13 +183,13 @@ func lexAnonymousHyperlinkTargetBlock(l *Lexer) stateFn {
 			if !inquote {
 				inquote = true
 				l.next()
-				l.emit(ItemInlineReferenceOpen)
+				l.emit(InlineReferenceOpen)
 				l.next()
 			} else {
-				l.emit(ItemInlineReferenceText)
+				l.emit(InlineReferenceText)
 				l.next()
 				l.next()
-				l.emit(ItemInlineReferenceClose)
+				l.emit(InlineReferenceClose)
 				break
 			}
 			continue
@@ -197,13 +197,13 @@ func lexAnonymousHyperlinkTargetBlock(l *Lexer) stateFn {
 		lb := l.peekBack(1)
 		lp := l.peek(1)
 		if !containsSpaces && lb != '\\' && l.mark == '_' && lp == EOL {
-			l.emit(ItemInlineReferenceText)
+			l.emit(InlineReferenceText)
 			l.next()
-			l.emit(ItemInlineReferenceClose)
+			l.emit(InlineReferenceClose)
 			break
 		} else if l.mark == EOL {
 			// end of current line
-			l.emit(ItemHyperlinkTargetURI)
+			l.emit(HyperlinkTargetURI)
 			if lp == EOL {
 				break
 			}
@@ -223,7 +223,7 @@ func lexHyperlinkTargetStart(l *Lexer) stateFn {
 		}
 		l.next()
 	}
-	l.emit(ItemHyperlinkTargetStart)
+	l.emit(HyperlinkTargetStart)
 	lexSpace(l)
 	return lexStart
 }
@@ -235,7 +235,7 @@ func lexHyperlinkTargetPrefix(l *Lexer) stateFn {
 		}
 		l.next()
 	}
-	l.emit(ItemHyperlinkTargetPrefix)
+	l.emit(HyperlinkTargetPrefix)
 	return lexStart
 }
 
@@ -246,6 +246,6 @@ func lexHyperlinkTargetSuffix(l *Lexer) stateFn {
 		}
 		l.next()
 	}
-	l.emit(ItemHyperlinkTargetSuffix)
+	l.emit(HyperlinkTargetSuffix)
 	return lexStart
 }

@@ -5,3 +5,4 @@ pkg/
 bin/go-rst2html
 .cover/
 *-session.vim
+refactor*

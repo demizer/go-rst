@@ -43,7 +43,7 @@ outer:
 
 		switch ci.Type {
 		case tok.Space:
-			if pi != nil && pi.Type == tok.ItemEscape {
+			if pi != nil && pi.Type == tok.Escape {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				log.Msg("Found escaped space!")
 				continue
@@ -52,7 +52,7 @@ outer:
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 		case tok.Text:
-			if pi != nil && pi.Type == tok.ItemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
+			if pi != nil && pi.Type == tok.Escape && pi.StartPosition.Int() > ci.StartPosition.Int() {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				log.Msg("Found newline escape!")
 				nt.Text += ci.Text
@@ -61,21 +61,21 @@ outer:
 				nt = doc.NewText(ci)
 				p.nodeTarget.Append(nt)
 			}
-		case tok.ItemInlineEmphasisOpen:
+		case tok.InlineEmphasisOpen:
 			p.inlineEmphasis(ci)
-		case tok.ItemInlineStrongOpen:
+		case tok.InlineStrongOpen:
 			p.inlineStrong(ci)
-		case tok.ItemInlineLiteralOpen:
+		case tok.InlineLiteralOpen:
 			p.inlineLiteral(ci)
-		case tok.ItemInlineInterpretedTextOpen:
+		case tok.InlineInterpretedTextOpen:
 			p.inlineInterpretedText(ci)
-		case tok.ItemInlineInterpretedTextRoleOpen:
+		case tok.InlineInterpretedTextRoleOpen:
 			p.inlineInterpretedTextRole(ci)
-		case tok.ItemCommentMark:
+		case tok.CommentMark:
 			p.comment(ci)
-		case tok.ItemEnumListArabic:
+		case tok.EnumListArabic:
 			p.nodeTarget.Append(p.enumList(ci))
-		case tok.ItemBlankLine:
+		case tok.BlankLine:
 			log.Msg("Found newline, closing paragraph")
 			p.backup()
 			break outer

@@ -37,28 +37,28 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 		} else if ni.Type == tok.EOF {
 			log.Msg("break; ni.Type == EOF")
 			break
-		} else if ni.Type == tok.ItemBlankLine {
+		} else if ni.Type == tok.BlankLine {
 			log.Msg("Setting nodeTarget to dli")
 			p.nodeTarget.SetParent(dli.Definition)
-		} else if ni.Type == tok.ItemCommentMark && (pb != nil && pb.Type != tok.Space) {
+		} else if ni.Type == tok.CommentMark && (pb != nil && pb.Type != tok.Space) {
 			// Comment at start of the line breaks current definition list
-			log.Msg("Have tok.ItemCommentMark at start of the line!")
+			log.Msg("Have tok.CommentMark at start of the line!")
 			p.nodeTarget.Reset()
 			p.backup()
 			break
-		} else if ni.Type == tok.ItemDefinitionText {
+		} else if ni.Type == tok.DefinitionText {
 			// FIXME: This function is COMPLETELY not final. It is only setup for passing section test TitleNumberedGood0100.
 			np := doc.NewParagraphWithNodeText(ni)
 			p.nodeTarget.Append(np)
 			p.nodeTarget.SetParent(np)
-			log.Msg("continue; ni.Type == tok.ItemDefinitionText")
+			log.Msg("continue; ni.Type == tok.DefinitionText")
 			continue
-		} else if ni.Type == tok.ItemDefinitionTerm {
+		} else if ni.Type == tok.DefinitionTerm {
 			dli2 := doc.NewDefinitionListItem(ni, p.peek(2))
 			p.nodeTarget.SetParent(dl)
 			p.nodeTarget.Append(dli2)
 			p.nodeTarget.SetParent(dli2.Definition)
-			log.Msg("continue; ni.Type == tok.ItemDefinitionTerm")
+			log.Msg("continue; ni.Type == tok.DefinitionTerm")
 			continue
 		}
 		p.subParseBodyElements(ni)
@@ -95,7 +95,7 @@ func (p *Parser) bulletList(i *tok.Item) {
 			log.Log("break itemEOF")
 			break
 		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.Space &&
-			p.peekBack(2).Type != tok.ItemCommentMark {
+			p.peekBack(2).Type != tok.CommentMark {
 			log.Log("msg", "Have indents",
 				"lastStartPosition", p.indents.lastStartPosition(),
 				"ni.StartPosition", ni.StartPosition)

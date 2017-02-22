@@ -27,7 +27,7 @@ func lexComment(l *Lexer) stateFn {
 	for l.mark == '.' {
 		l.next()
 	}
-	l.emit(ItemCommentMark)
+	l.emit(CommentMark)
 	if l.mark != EOL {
 		l.next()
 		lexSpace(l)

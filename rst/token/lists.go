@@ -68,10 +68,10 @@ func lexEnumList(l *Lexer) stateFn {
 	if isArabic(l.mark) {
 		for {
 			if nMark, _ := l.next(); !isArabic(nMark) {
-				l.emit(ItemEnumListArabic)
+				l.emit(EnumListArabic)
 				l.next()
 				if nMark == '.' {
-					l.emit(ItemEnumListAffix)
+					l.emit(EnumListAffix)
 					l.next()
 				}
 				l.emit(Space)
@@ -86,7 +86,7 @@ func lexDefinitionTerm(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {
-			l.emit(ItemDefinitionTerm)
+			l.emit(DefinitionTerm)
 			break
 		}
 	}
@@ -97,7 +97,7 @@ func lexDefinitionTerm(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {
-			l.emit(ItemDefinitionText)
+			l.emit(DefinitionText)
 			break
 		}
 	}
@@ -106,7 +106,7 @@ func lexDefinitionTerm(l *Lexer) stateFn {
 
 func lexBullet(l *Lexer) stateFn {
 	l.next()
-	l.emit(ItemBullet)
+	l.emit(Bullet)
 	lexSpace(l)
 	l.indentWidth += l.lastItem.Text + " "
 	lexText(l)

@@ -19,39 +19,39 @@ const (
 	LiteralBlock
 	SystemMessage
 	Space
-	ItemBlankLine
-	ItemTransition
-	ItemCommentMark
-	ItemEnumListAffix
-	ItemEnumListArabic
-	ItemHyperlinkTargetStart
-	ItemHyperlinkTargetPrefix
-	ItemHyperlinkTargetQuote
-	ItemHyperlinkTargetName
-	ItemHyperlinkTargetSuffix
-	ItemHyperlinkTargetURI
-	ItemInlineStrongOpen
-	ItemInlineStrong
-	ItemInlineStrongClose
-	ItemInlineEmphasisOpen
-	ItemInlineEmphasis
-	ItemInlineEmphasisClose
-	ItemInlineLiteralOpen
-	ItemInlineLiteral
-	ItemInlineLiteralClose
-	ItemInlineInterpretedTextOpen
-	ItemInlineInterpretedText
-	ItemInlineInterpretedTextClose
-	ItemInlineInterpretedTextRoleOpen
-	ItemInlineInterpretedTextRole
-	ItemInlineInterpretedTextRoleClose
-	ItemInlineReferenceOpen
-	ItemInlineReferenceText
-	ItemInlineReferenceClose
-	ItemDefinitionTerm
-	ItemDefinitionText
-	ItemBullet
-	ItemEscape
+	BlankLine
+	Transition
+	CommentMark
+	EnumListAffix
+	EnumListArabic
+	HyperlinkTargetStart
+	HyperlinkTargetPrefix
+	HyperlinkTargetQuote
+	HyperlinkTargetName
+	HyperlinkTargetSuffix
+	HyperlinkTargetURI
+	InlineStrongOpen
+	InlineStrong
+	InlineStrongClose
+	InlineEmphasisOpen
+	InlineEmphasis
+	InlineEmphasisClose
+	InlineLiteralOpen
+	InlineLiteral
+	InlineLiteralClose
+	InlineInterpretedTextOpen
+	InlineInterpretedText
+	InlineInterpretedTextClose
+	InlineInterpretedTextRoleOpen
+	InlineInterpretedTextRole
+	InlineInterpretedTextRoleClose
+	InlineReferenceOpen
+	InlineReferenceText
+	InlineReferenceClose
+	DefinitionTerm
+	DefinitionText
+	Bullet
+	Escape
 )
 
 var elements = [...]string{
@@ -64,39 +64,39 @@ var elements = [...]string{
 	"LiteralBlock",
 	"SystemMessage",
 	"Space",
-	"ItemBlankLine",
-	"ItemTransition",
-	"ItemCommentMark",
-	"ItemEnumListAffix",
-	"ItemEnumListArabic",
-	"ItemHyperlinkTargetStart",
-	"ItemHyperlinkTargetPrefix",
-	"ItemHyperlinkTargetQuote",
-	"ItemHyperlinkTargetName",
-	"ItemHyperlinkTargetSuffix",
-	"ItemHyperlinkTargetURI",
-	"ItemInlineStrongOpen",
-	"ItemInlineStrong",
-	"ItemInlineStrongClose",
-	"ItemInlineEmphasisOpen",
-	"ItemInlineEmphasis",
-	"ItemInlineEmphasisClose",
-	"ItemInlineLiteralOpen",
-	"ItemInlineLiteral",
-	"ItemInlineLiteralClose",
-	"ItemInlineInterpretedTextOpen",
-	"ItemInlineInterpretedText",
-	"ItemInlineInterpretedTextClose",
-	"ItemInlineInterpretedTextRoleOpen",
-	"ItemInlineInterpretedTextRole",
-	"ItemInlineInterpretedTextRoleClose",
-	"ItemInlineReferenceOpen",
-	"ItemInlineReferenceText",
-	"ItemInlineReferenceClose",
-	"ItemDefinitionTerm",
-	"ItemDefinitionText",
-	"ItemBullet",
-	"ItemEscape",
+	"BlankLine",
+	"Transition",
+	"CommentMark",
+	"EnumListAffix",
+	"EnumListArabic",
+	"HyperlinkTargetStart",
+	"HyperlinkTargetPrefix",
+	"HyperlinkTargetQuote",
+	"HyperlinkTargetName",
+	"HyperlinkTargetSuffix",
+	"HyperlinkTargetURI",
+	"InlineStrongOpen",
+	"InlineStrong",
+	"InlineStrongClose",
+	"InlineEmphasisOpen",
+	"InlineEmphasis",
+	"InlineEmphasisClose",
+	"InlineLiteralOpen",
+	"InlineLiteral",
+	"InlineLiteralClose",
+	"InlineInterpretedTextOpen",
+	"InlineInterpretedText",
+	"InlineInterpretedTextClose",
+	"InlineInterpretedTextRoleOpen",
+	"InlineInterpretedTextRole",
+	"InlineInterpretedTextRoleClose",
+	"InlineReferenceOpen",
+	"InlineReferenceText",
+	"InlineReferenceClose",
+	"DefinitionTerm",
+	"DefinitionText",
+	"Bullet",
+	"Escape",
 }
 
 // String implements the Stringer interface for printing Type types.

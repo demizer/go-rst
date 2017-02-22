@@ -104,24 +104,24 @@ func (p *Parser) parse() {
 		switch token.Type {
 		case tok.Text:
 			p.paragraph(token)
-		case tok.ItemInlineEmphasisOpen:
+		case tok.InlineEmphasisOpen:
 			p.inlineEmphasis(token)
-		case tok.ItemInlineStrongOpen:
+		case tok.InlineStrongOpen:
 			p.inlineStrong(token)
-		case tok.ItemInlineLiteralOpen:
+		case tok.InlineLiteralOpen:
 			p.inlineLiteral(token)
-		case tok.ItemInlineInterpretedTextOpen:
+		case tok.InlineInterpretedTextOpen:
 			p.inlineInterpretedText(token)
-		case tok.ItemInlineInterpretedTextRoleOpen:
+		case tok.InlineInterpretedTextRoleOpen:
 			p.inlineInterpretedTextRole(token)
-		case tok.ItemTransition:
+		case tok.Transition:
 			// FIXME: Workaround until transitions are supported
 			p.nodeTarget.Append(doc.NewTransition(token))
-		case tok.ItemCommentMark:
+		case tok.CommentMark:
 			p.comment(token)
 		case tok.SectionAdornment:
 			p.section(token)
-		case tok.ItemEnumListArabic:
+		case tok.EnumListArabic:
 			n = p.enumList(token)
 			// FIXME: This is only until enumerated list are properly implemented.
 			if n == nil {
@@ -132,7 +132,7 @@ func (p *Parser) parse() {
 			//
 			//  FIXME: Blockquote parsing is NOT fully implemented.
 			//
-			if p.peekBack(1).Type == tok.ItemBlankLine && p.bqLevel == nil {
+			if p.peekBack(1).Type == tok.BlankLine && p.bqLevel == nil {
 				// Ignore if next item is a blockquote from the lexer
 				if pn := p.peek(1); pn != nil && pn.Type == tok.BlockQuote {
 					log.Msg("Next item is blockquote; not creating empty blockquote")
@@ -140,17 +140,17 @@ func (p *Parser) parse() {
 				}
 				log.Msg("Creating empty blockquote!")
 				p.emptyblockquote(token)
-			} else if p.peekBack(1).Type == tok.ItemBlankLine {
+			} else if p.peekBack(1).Type == tok.BlankLine {
 				p.nodeTarget.SetParent(p.bqLevel)
 			}
-		case tok.ItemBlankLine, tok.Title, tok.ItemEscape:
-			// itemTitle is consumed when evaluating itemSectionAdornment
+		case tok.BlankLine, tok.Title, tok.Escape:
+			// itemTitle is consumed when evaluating SectionAdornment
 			continue
 		case tok.BlockQuote:
 			p.blockquote(token)
-		case tok.ItemDefinitionTerm:
+		case tok.DefinitionTerm:
 			p.definitionTerm(token)
-		case tok.ItemBullet:
+		case tok.Bullet:
 			p.bulletList(token)
 		default:
 			log.Msg(fmt.Sprintf("Token type: %q is not yet supported in the parser", token.Type.String()))
@@ -165,22 +165,22 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 	switch token.Type {
 	case tok.Text:
 		n = p.paragraph(token)
-	case tok.ItemInlineEmphasisOpen:
+	case tok.InlineEmphasisOpen:
 		p.inlineEmphasis(token)
-	case tok.ItemInlineStrongOpen:
+	case tok.InlineStrongOpen:
 		p.inlineStrong(token)
-	case tok.ItemInlineLiteralOpen:
+	case tok.InlineLiteralOpen:
 		p.inlineLiteral(token)
-	case tok.ItemInlineInterpretedTextOpen:
+	case tok.InlineInterpretedTextOpen:
 		p.inlineInterpretedText(token)
-	case tok.ItemInlineInterpretedTextRoleOpen:
+	case tok.InlineInterpretedTextRoleOpen:
 		p.inlineInterpretedTextRole(token)
-	case tok.ItemCommentMark:
+	case tok.CommentMark:
 		p.comment(token)
-	case tok.ItemEnumListArabic:
+	case tok.EnumListArabic:
 		p.enumList(token)
 	case tok.Space:
-	case tok.ItemBlankLine, tok.ItemEscape:
+	case tok.BlankLine, tok.Escape:
 	case tok.BlockQuote:
 		p.blockquote(token)
 	default:

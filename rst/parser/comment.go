@@ -9,7 +9,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 	log.Log("msg", "In transition comment", "token", i)
 	var n doc.Node
 
-	if p.peek(1).Type == tok.ItemBlankLine {
+	if p.peek(1).Type == tok.BlankLine {
 		log.Msg("Found empty comment block")
 		n := doc.NewComment(&tok.Item{StartPosition: i.StartPosition, Line: i.Line})
 		p.nodeTarget.Append(n)
@@ -44,7 +44,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 				}
 			}
 			nPara.Length = len(nPara.Text)
-		} else if z := p.peek(1); z != nil && z.Type != tok.ItemBlankLine && z.Type != tok.ItemCommentMark && z.Type != tok.EOF {
+		} else if z := p.peek(1); z != nil && z.Type != tok.BlankLine && z.Type != tok.CommentMark && z.Type != tok.EOF {
 			// A valid comment contains a blank line after the comment block
 			log.Msg("Found warningExplicitMarkupWithUnIndent")
 			n = doc.NewComment(nPara)

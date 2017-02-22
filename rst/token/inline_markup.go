@@ -110,7 +110,7 @@ func isInlineMarkupClosed(l *Lexer, markup string) bool {
 func isInlineReference(l *Lexer) bool {
 	isNotSurroundedByUnderscores := l.peekBack(1) != '_' && l.peek(1) != '_'
 	lastItemIsNotSpace := l.lastItem == nil || l.lastItem.Type != Space
-	isAnon := l.lastItem != nil && l.lastItem.Type == ItemBlankLine && l.mark == '_' && l.peek(1) == '_'
+	isAnon := l.lastItem != nil && l.lastItem.Type == BlankLine && l.mark == '_' && l.peek(1) == '_'
 
 	isQuotedAnon := func() bool {
 		x := l.index
@@ -177,98 +177,98 @@ func lexInlineStrong(l *Lexer) stateFn {
 	// Log.funcName = "lexInlineStrong"
 	l.next()
 	l.next()
-	l.emit(ItemInlineStrongOpen)
+	l.emit(InlineStrongOpen)
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "**") {
 			log.Msg("Found strong close")
-			l.emit(ItemInlineStrong)
+			l.emit(InlineStrong)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				log.Msg("Found EOF (unclosed strong)")
-				l.emit(ItemInlineStrong)
+				l.emit(InlineStrong)
 				return lexStart
 			}
 			log.Msg("Found end-of-line")
-			l.emit(ItemInlineStrong)
-			l.emit(ItemBlankLine)
+			l.emit(InlineStrong)
+			l.emit(BlankLine)
 			l.nextLine()
 		}
 	}
 	l.next()
 	l.next()
-	l.emit(ItemInlineStrongClose)
+	l.emit(InlineStrongClose)
 	return lexStart
 }
 
 func lexInlineEmphasis(l *Lexer) stateFn {
 	l.next()
-	l.emit(ItemInlineEmphasisOpen)
+	l.emit(InlineEmphasisOpen)
 	for {
 		l.next()
 		if l.peekBack(1) != '\\' && l.mark == '*' && isInlineMarkupClosed(l, "*") {
 			log.Msg("Found emphasis close")
-			l.emit(ItemInlineEmphasis)
+			l.emit(InlineEmphasis)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				log.Msg("Found EOF (unclosed emphasis)")
-				l.emit(ItemInlineEmphasis)
+				l.emit(InlineEmphasis)
 				return lexStart
 			}
 			log.Msg("Found end-of-line")
-			l.emit(ItemInlineEmphasis)
-			l.emit(ItemBlankLine)
+			l.emit(InlineEmphasis)
+			l.emit(BlankLine)
 			l.nextLine()
 		}
 	}
 	l.next()
-	l.emit(ItemInlineEmphasisClose)
+	l.emit(InlineEmphasisClose)
 	return lexStart
 }
 
 func lexInlineLiteral(l *Lexer) stateFn {
 	l.next()
 	l.next()
-	l.emit(ItemInlineLiteralOpen)
+	l.emit(InlineLiteralOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "``") {
 			log.Msg("Found literal close")
-			l.emit(ItemInlineLiteral)
+			l.emit(InlineLiteral)
 			break
 		} else if l.isEndOfLine() && l.mark == EOL {
 			if l.peekNextLine() == "" {
 				log.Msg("Found EOF (unclosed inline literal)")
-				l.emit(ItemInlineLiteral)
+				l.emit(InlineLiteral)
 				return lexStart
 			}
 			log.Msg("Found end-of-line")
-			l.emit(ItemInlineLiteral)
-			l.emit(ItemBlankLine)
+			l.emit(InlineLiteral)
+			l.emit(BlankLine)
 			l.nextLine()
 		}
 	}
 	l.next()
 	l.next()
-	l.emit(ItemInlineLiteralClose)
+	l.emit(InlineLiteralClose)
 	return lexStart
 }
 
 func lexInlineInterpretedText(l *Lexer) stateFn {
 	l.next()
-	l.emit(ItemInlineInterpretedTextOpen)
+	l.emit(InlineInterpretedTextOpen)
 	for {
 		l.next()
 		if l.mark == '`' && isInlineMarkupClosed(l, "`") {
 			log.Msg("Found literal close")
-			l.emit(ItemInlineInterpretedText)
+			l.emit(InlineInterpretedText)
 			break
 		}
 	}
 	l.next()
-	l.emit(ItemInlineInterpretedTextClose)
+	l.emit(InlineInterpretedTextClose)
 	if l.mark == ':' {
 		lexInlineInterpretedTextRole(l)
 	}
@@ -277,34 +277,34 @@ func lexInlineInterpretedText(l *Lexer) stateFn {
 
 func lexInlineInterpretedTextRole(l *Lexer) stateFn {
 	l.next()
-	l.emit(ItemInlineInterpretedTextRoleOpen)
+	l.emit(InlineInterpretedTextRoleOpen)
 	for {
 		l.next()
 		if l.mark == ':' {
-			l.emit(ItemInlineInterpretedTextRole)
+			l.emit(InlineInterpretedTextRole)
 			break
 		}
 	}
 	l.next()
-	l.emit(ItemInlineInterpretedTextRoleClose)
+	l.emit(InlineInterpretedTextRoleClose)
 	return lexStart
 }
 
 func lexInlineReference(l *Lexer) stateFn {
 	if l.mark == '`' {
 		l.next()
-		l.emit(ItemInlineReferenceOpen)
+		l.emit(InlineReferenceOpen)
 		for {
 			l.next()
 			if l.mark == '`' {
-				l.emit(ItemInlineReferenceText)
+				l.emit(InlineReferenceText)
 				l.next()
 				break
 			} else if l.start == l.index && l.mark == ' ' && l.peek(1) != ' ' {
 				lexSpace(l)
 				continue
 			} else if l.mark == EOL && l.peek(1) != EOL {
-				l.emit(ItemInlineReferenceText)
+				l.emit(InlineReferenceText)
 				l.next()
 			} else if l.mark == EOL && l.peek(1) == EOL {
 				break
@@ -314,15 +314,15 @@ func lexInlineReference(l *Lexer) stateFn {
 			l.next()
 			l.next()
 		}
-		l.emit(ItemInlineReferenceClose)
+		l.emit(InlineReferenceClose)
 		return lexStart
 	}
-	l.emit(ItemInlineReferenceText)
+	l.emit(InlineReferenceText)
 	l.next()
 	if l.mark == '_' {
 		// Anonymous hyperlink reference
 		l.next()
 	}
-	l.emit(ItemInlineReferenceClose)
+	l.emit(InlineReferenceClose)
 	return lexStart
 }
