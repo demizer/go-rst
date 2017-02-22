@@ -36,7 +36,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		p.backup()
 	case infoUnexpectedTitleOverlineOrTransition:
 		oLin := p.peekBackTo(tok.ItemSectionAdornment)
-		titl := p.peekBackTo(tok.ItemTitle)
+		titl := p.peekBackTo(tok.Title)
 		uLin := p.token[zed]
 		inText := oLin.Text + "\n" + titl.Text + "\n" + uLin.Text
 		s.Line = oLin.Line

@@ -72,7 +72,7 @@ func lexSection(l *Lexer) stateFn {
 	// log.Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
 	// l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
-		if l.lastItem != nil && l.lastItem.Type != ItemTitle {
+		if l.lastItem != nil && l.lastItem.Type != Title {
 			return lexSectionAdornment
 		}
 		lexSectionAdornment(l)
@@ -86,14 +86,14 @@ func lexSection(l *Lexer) stateFn {
 	return lexStart
 }
 
-// lexTitle consumes input until newline and emits an ItemTitle token. If spaces are detected at the start of the line, an
+// lexTitle consumes input until newline and emits an Title token. If spaces are detected at the start of the line, an
 // ItemSpace is emitted. Spaces after the title (and before newline) are ignored. On completion control is returned to
 // lexSection.
 func lexTitle(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() {
-			l.emit(ItemTitle)
+			l.emit(Title)
 			break
 		}
 	}

@@ -14,7 +14,7 @@ type sectionParseSubState struct {
 }
 
 func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.Node {
-	log.Msg("next type == tok.ItemTitle")
+	log.Msg("next type == tok.Title")
 	// Section with overline
 	pBack := p.peekBack(1)
 	tLen := p.token[zed].Length
@@ -44,7 +44,7 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 loop:
 	for {
 		switch tTok := p.token[zed]; tTok.Type {
-		case tok.ItemTitle:
+		case tok.Title:
 			s.sectionTitle = tTok
 			p.next(1)
 		case tok.ItemSpace:
@@ -66,7 +66,7 @@ func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item
 	// Section with no overline Check for errors
 	if pBack.Type == tok.ItemSpace {
 		pBack := p.peekBack(2)
-		if pBack != nil && pBack.Type == tok.ItemTitle {
+		if pBack != nil && pBack.Type == tok.Title {
 			// The section underline is indented
 			sm := p.systemMessage(severeUnexpectedSectionTitle)
 			p.nodeTarget.Append(sm)
@@ -108,11 +108,11 @@ func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node 
 func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 	pBack := p.peekBack(1)
 
-	if s.sectionSpace != nil && s.sectionSpace.Type == tok.ItemTitle {
+	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Title {
 		if sm := parseSectionTitle(s, p, i); sm != nil {
 			return sm
 		}
-	} else if pBack != nil && (pBack.Type == tok.ItemTitle || pBack.Type == tok.ItemSpace) {
+	} else if pBack != nil && (pBack.Type == tok.Title || pBack.Type == tok.ItemSpace) {
 		if sm := parseSectionTitleNoOverline(s, p, i); sm != nil {
 			return sm
 		}

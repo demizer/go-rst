@@ -143,7 +143,7 @@ func (p *Parser) parse() {
 			} else if p.peekBack(1).Type == tok.ItemBlankLine {
 				p.nodeTarget.SetParent(p.bqLevel)
 			}
-		case tok.ItemBlankLine, tok.ItemTitle, tok.ItemEscape:
+		case tok.ItemBlankLine, tok.Title, tok.ItemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
 		case tok.ItemBlockQuote:

@@ -6,7 +6,7 @@ import (
 )
 
 func isComment(l *Lexer) bool {
-	if l.lastItem != nil && l.lastItem.Type == ItemTitle {
+	if l.lastItem != nil && l.lastItem.Type == Title {
 		return false
 	}
 	nMark := l.peek(1)
