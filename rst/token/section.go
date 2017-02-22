@@ -87,7 +87,7 @@ func lexSection(l *Lexer) stateFn {
 }
 
 // lexTitle consumes input until newline and emits an Title token. If spaces are detected at the start of the line, an
-// ItemSpace is emitted. Spaces after the title (and before newline) are ignored. On completion control is returned to
+// Space is emitted. Spaces after the title (and before newline) are ignored. On completion control is returned to
 // lexSection.
 func lexTitle(l *Lexer) stateFn {
 	for {

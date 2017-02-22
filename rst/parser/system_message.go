@@ -64,7 +64,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		p.backup()
 	case warningShortOverline, severeOverlineUnderlineMismatch:
 		backToken := zed - 2
-		if p.peekBack(2).Type == tok.ItemSpace {
+		if p.peekBack(2).Type == tok.Space {
 			backToken = zed - 3
 			indent = p.token[zed-2].Text
 		}
@@ -78,7 +78,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		return literalBlock()
 	case warningShortUnderline, severeUnexpectedSectionTitle:
 		backToken := zed - 1
-		if p.peekBack(1).Type == tok.ItemSpace {
+		if p.peekBack(1).Type == tok.Space {
 			backToken = zed - 2
 		}
 		lbText = p.token[backToken].Text + "\n" + p.token[zed].Text

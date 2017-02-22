@@ -1,7 +1,7 @@
 package token
 
 func isBlockquote(l *Lexer) bool {
-	if !l.lastLineIsBlankLine() || l.lastItem.Type != ItemSpace {
+	if !l.lastLineIsBlankLine() || l.lastItem.Type != Space {
 		return false
 	}
 	if l.index != len(l.indentWidth) {

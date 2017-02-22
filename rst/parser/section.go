@@ -22,7 +22,7 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 	if tLen < 3 && tLen != s.sectionSpace.Length {
 		p.next(2)
 		bTok := p.peekBack(1)
-		if bTok != nil && bTok.Type == tok.ItemSpace {
+		if bTok != nil && bTok.Type == tok.Space {
 			p.next(2)
 			sm := p.systemMessage(infoUnexpectedTitleOverlineOrTransition)
 			p.nodeTarget.Append(sm)
@@ -31,7 +31,7 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 		sm := p.systemMessage(infoOverlineTooShortForTitle)
 		p.nodeTarget.Append(sm)
 		return sm
-	} else if pBack != nil && pBack.Type == tok.ItemSpace {
+	} else if pBack != nil && pBack.Type == tok.Space {
 		// Indented section (error) The section title has an indented overline
 		sm := p.systemMessage(severeUnexpectedSectionTitleOrTransition)
 		p.nodeTarget.Append(sm)
@@ -47,7 +47,7 @@ loop:
 		case tok.Title:
 			s.sectionTitle = tTok
 			p.next(1)
-		case tok.ItemSpace:
+		case tok.Space:
 			s.sectionIndent = tTok
 			p.next(1)
 		case tok.SectionAdornment:
@@ -64,7 +64,7 @@ func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item
 	pBack := p.peekBack(1)
 	log.Log("msg", "last item type", "type", pBack.Type)
 	// Section with no overline Check for errors
-	if pBack.Type == tok.ItemSpace {
+	if pBack.Type == tok.Space {
 		pBack := p.peekBack(2)
 		if pBack != nil && pBack.Type == tok.Title {
 			// The section underline is indented
@@ -112,7 +112,7 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 		if sm := parseSectionTitle(s, p, i); sm != nil {
 			return sm
 		}
-	} else if pBack != nil && (pBack.Type == tok.Title || pBack.Type == tok.ItemSpace) {
+	} else if pBack != nil && (pBack.Type == tok.Title || pBack.Type == tok.Space) {
 		if sm := parseSectionTitleNoOverline(s, p, i); sm != nil {
 			return sm
 		}
@@ -190,7 +190,7 @@ func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNod
 func (p *Parser) section(i *tok.Item) doc.Node {
 	log.Log("msg", "have item", "item", i)
 
-	s := &sectionParseSubState{sectionSpace: p.peekSkip(tok.ItemSpace)}
+	s := &sectionParseSubState{sectionSpace: p.peekSkip(tok.Space)}
 
 	if sm := checkSection(s, p, i); sm != nil {
 		return sm

@@ -29,7 +29,7 @@ func lexText(l *Lexer) stateFn {
 			}
 			l.emit(Text)
 			// if !l.isLastLine() {
-			// l.emit(ItemSpace) // We hit a "newline", which is converted to a space when in a paragraph
+			// l.emit(Space) // We hit a "newline", which is converted to a space when in a paragraph
 			// }
 			break
 		}

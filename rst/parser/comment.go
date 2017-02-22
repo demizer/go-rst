@@ -16,7 +16,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 		return n
 	}
 
-	if nSpace := p.peek(1); nSpace != nil && nSpace.Type != tok.ItemSpace {
+	if nSpace := p.peek(1); nSpace != nil && nSpace.Type != tok.Space {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
 		log.Msg("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = doc.NewComment(&tok.Item{Line: i.Line})
@@ -28,16 +28,16 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 	nPara := p.peek(2)
 	log.Log("msg", "two peek ahead", "type", nPara.Type)
 	if nPara != nil && nPara.Type == tok.Text {
-		// Skip the tok.ItemSpace
+		// Skip the tok.Space
 		p.next(2)
 		log.Log("msg", "have token", "token", p.token[zed])
 		// See if next line is indented, if so, it is part of the comment
-		if p.peek(1).Type == tok.ItemSpace && p.peek(2).Type == tok.Text {
+		if p.peek(1).Type == tok.Space && p.peek(2).Type == tok.Text {
 			log.Msg("Found NodeComment block")
 			p.next(2)
 			for {
 				nPara.Text += "\n" + p.token[zed].Text
-				if p.peek(1).Type == tok.ItemSpace && p.peek(2).Type == tok.Text {
+				if p.peek(1).Type == tok.Space && p.peek(2).Type == tok.Text {
 					p.next(2)
 				} else {
 					break

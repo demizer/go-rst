@@ -42,7 +42,7 @@ outer:
 		log.Msg("Going into subparser...")
 
 		switch ci.Type {
-		case tok.ItemSpace:
+		case tok.Space:
 			if pi != nil && pi.Type == tok.ItemEscape {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				log.Msg("Found escaped space!")

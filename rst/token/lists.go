@@ -74,7 +74,7 @@ func lexEnumList(l *Lexer) stateFn {
 					l.emit(ItemEnumListAffix)
 					l.next()
 				}
-				l.emit(ItemSpace)
+				l.emit(Space)
 				break
 			}
 		}

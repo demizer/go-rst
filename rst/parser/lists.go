@@ -31,8 +31,8 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 		}
 		log.Log("msg", "Have token", "token", ni)
 		pb := p.peekBack(1)
-		if ni.Type == tok.ItemSpace {
-			log.Msg("continue; ni.Type == ItemSpace")
+		if ni.Type == tok.Space {
+			log.Msg("continue; ni.Type == Space")
 			continue
 		} else if ni.Type == tok.EOF {
 			log.Msg("break; ni.Type == EOF")
@@ -40,7 +40,7 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 		} else if ni.Type == tok.ItemBlankLine {
 			log.Msg("Setting nodeTarget to dli")
 			p.nodeTarget.SetParent(dli.Definition)
-		} else if ni.Type == tok.ItemCommentMark && (pb != nil && pb.Type != tok.ItemSpace) {
+		} else if ni.Type == tok.ItemCommentMark && (pb != nil && pb.Type != tok.Space) {
 			// Comment at start of the line breaks current definition list
 			log.Msg("Have tok.ItemCommentMark at start of the line!")
 			p.nodeTarget.Reset()
@@ -94,7 +94,7 @@ func (p *Parser) bulletList(i *tok.Item) {
 		} else if ni.Type == tok.EOF {
 			log.Log("break itemEOF")
 			break
-		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.ItemSpace &&
+		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.Space &&
 			p.peekBack(2).Type != tok.ItemCommentMark {
 			log.Log("msg", "Have indents",
 				"lastStartPosition", p.indents.lastStartPosition(),

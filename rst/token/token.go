@@ -170,7 +170,7 @@ func (l *Lexer) emit(t Type) {
 
 	if t == ItemBlankLine {
 		tok = "\n"
-	} else if t == ItemSpace && l.start == l.index {
+	} else if t == Space && l.start == l.index {
 		// For linebreaks and vertical tabs at the end of the line in a paragraph
 		tok = " "
 	} else if t == EOF {
@@ -415,7 +415,7 @@ func lexStart(l *Lexer) stateFn {
 	return nil
 }
 
-// lexSpace consumes space characters (space and tab) in the input and emits a ItemSpace token.
+// lexSpace consumes space characters (space and tab) in the input and emits a Space token.
 func lexSpace(l *Lexer) stateFn {
 	log.Log("l.mark", l.mark)
 	for unicode.IsSpace(l.mark) {
@@ -430,7 +430,7 @@ func lexSpace(l *Lexer) stateFn {
 	}
 	log.Log("start", l.start, "index", l.index)
 	if l.start < l.index {
-		l.emit(ItemSpace)
+		l.emit(Space)
 	}
 	return lexStart
 }

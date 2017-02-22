@@ -109,7 +109,7 @@ func isInlineMarkupClosed(l *Lexer, markup string) bool {
 
 func isInlineReference(l *Lexer) bool {
 	isNotSurroundedByUnderscores := l.peekBack(1) != '_' && l.peek(1) != '_'
-	lastItemIsNotSpace := l.lastItem == nil || l.lastItem.Type != ItemSpace
+	lastItemIsNotSpace := l.lastItem == nil || l.lastItem.Type != Space
 	isAnon := l.lastItem != nil && l.lastItem.Type == ItemBlankLine && l.mark == '_' && l.peek(1) == '_'
 
 	isQuotedAnon := func() bool {

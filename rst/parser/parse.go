@@ -128,7 +128,7 @@ func (p *Parser) parse() {
 				continue
 			}
 			p.nodeTarget.Append(n)
-		case tok.ItemSpace:
+		case tok.Space:
 			//
 			//  FIXME: Blockquote parsing is NOT fully implemented.
 			//
@@ -179,7 +179,7 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 		p.comment(token)
 	case tok.ItemEnumListArabic:
 		p.enumList(token)
-	case tok.ItemSpace:
+	case tok.Space:
 	case tok.ItemBlankLine, tok.ItemEscape:
 	case tok.BlockQuote:
 		p.blockquote(token)
