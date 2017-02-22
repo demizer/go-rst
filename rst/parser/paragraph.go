@@ -29,8 +29,8 @@ outer:
 		if ci == nil {
 			log.Msg("ci == nil, breaking")
 			break
-		} else if ci.Type == tok.ItemEOF {
-			log.Msg("current item type == tok.ItemEOF")
+		} else if ci.Type == tok.EOF {
+			log.Msg("current item type == tok.EOF")
 			break
 		} else if pi != nil && pi.Type == tok.ItemText && ci.Type == tok.ItemText {
 			log.Msg("Previous type == tok.ItemText, current type == tok.ItemText; Concatenating text!")

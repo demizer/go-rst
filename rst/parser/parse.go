@@ -95,7 +95,7 @@ func (p *Parser) parse() {
 		var n doc.Node
 
 		token := p.next(1)
-		if token == nil || token.Type == tok.ItemEOF {
+		if token == nil || token.Type == tok.EOF {
 			break
 		}
 

@@ -34,8 +34,8 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 		if ni.Type == tok.ItemSpace {
 			log.Msg("continue; ni.Type == ItemSpace")
 			continue
-		} else if ni.Type == tok.ItemEOF {
-			log.Msg("break; ni.Type == ItemEOF")
+		} else if ni.Type == tok.EOF {
+			log.Msg("break; ni.Type == EOF")
 			break
 		} else if ni.Type == tok.ItemBlankLine {
 			log.Msg("Setting nodeTarget to dli")
@@ -91,7 +91,7 @@ func (p *Parser) bulletList(i *tok.Item) {
 		if ni == nil {
 			log.Log("break next item == nil")
 			break
-		} else if ni.Type == tok.ItemEOF {
+		} else if ni.Type == tok.EOF {
 			log.Log("break itemEOF")
 			break
 		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.ItemSpace &&

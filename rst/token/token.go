@@ -173,7 +173,7 @@ func (l *Lexer) emit(t Type) {
 	} else if t == ItemSpace && l.start == l.index {
 		// For linebreaks and vertical tabs at the end of the line in a paragraph
 		tok = " "
-	} else if t == ItemEOF {
+	} else if t == EOF {
 		tok = ""
 	} else {
 		tok = l.lines[l.line][l.start:l.index]
@@ -410,7 +410,7 @@ func lexStart(l *Lexer) stateFn {
 		l.next()
 	}
 
-	l.emit(ItemEOF)
+	l.emit(EOF)
 	close(l.items)
 	return nil
 }

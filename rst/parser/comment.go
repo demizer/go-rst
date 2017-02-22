@@ -44,7 +44,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 				}
 			}
 			nPara.Length = len(nPara.Text)
-		} else if z := p.peek(1); z != nil && z.Type != tok.ItemBlankLine && z.Type != tok.ItemCommentMark && z.Type != tok.ItemEOF {
+		} else if z := p.peek(1); z != nil && z.Type != tok.ItemBlankLine && z.Type != tok.ItemCommentMark && z.Type != tok.EOF {
 			// A valid comment contains a blank line after the comment block
 			log.Msg("Found warningExplicitMarkupWithUnIndent")
 			n = doc.NewComment(nPara)

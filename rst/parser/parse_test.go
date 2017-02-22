@@ -164,7 +164,7 @@ var parserBackupTests = []struct {
 		Peek1Tok: &tok.Item{ID: 10, Type: tok.ItemText, Text: "Four"},
 		Peek2Tok: &tok.Item{ID: 11, Type: tok.ItemBlankLine, Text: "\n"},
 		Peek3Tok: &tok.Item{ID: 12, Type: tok.ItemText, Text: "Five"},
-		Peek4Tok: &tok.Item{ID: 13, Type: tok.ItemEOF},
+		Peek4Tok: &tok.Item{ID: 13, Type: tok.EOF},
 	},
 }
 
@@ -278,14 +278,14 @@ var parserNextTests = []struct {
 		Back3Tok: &tok.Item{Type: tok.ItemText, Text: "Paragraph."},
 		Back2Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
 		Back1Tok: &tok.Item{Type: tok.ItemBlankLine, Text: "\n"},
-		ZedToken: &tok.Item{Type: tok.ItemEOF},
+		ZedToken: &tok.Item{Type: tok.EOF},
 	},
 	{
 		name:     "Two next() on one line of input",
 		input:    "Test",
 		nextNum:  2,
 		Back1Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
-		ZedToken: &tok.Item{Type: tok.ItemEOF},
+		ZedToken: &tok.Item{Type: tok.EOF},
 	},
 	{
 		name:    "Three next() on one line of input; Test channel close.",
@@ -293,7 +293,7 @@ var parserNextTests = []struct {
 		nextNum: 3,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
 		Back2Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
-		Back1Tok: &tok.Item{Type: tok.ItemEOF},
+		Back1Tok: &tok.Item{Type: tok.EOF},
 	},
 	{
 		name:    "Four next() on one line of input; Test channel close.",
@@ -301,7 +301,7 @@ var parserNextTests = []struct {
 		nextNum: 4,
 		// The channel should be closed on the second next(), otherwise a deadlock would occur.
 		Back3Tok: &tok.Item{Type: tok.ItemText, Text: "Test"},
-		Back2Tok: &tok.Item{Type: tok.ItemEOF},
+		Back2Tok: &tok.Item{Type: tok.EOF},
 	},
 }
 

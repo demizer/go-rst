@@ -10,7 +10,7 @@ import (
 type Type int
 
 const (
-	ItemEOF Type = iota
+	EOF Type = iota
 	ItemError
 	ItemTitle
 	ItemSectionAdornment
@@ -55,7 +55,7 @@ const (
 )
 
 var elements = [...]string{
-	"ItemEOF",
+	"EOF",
 	"ItemError",
 	"ItemTitle",
 	"ItemSectionAdornment",

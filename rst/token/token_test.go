@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	tEOF = Item{Type: ItemEOF, StartPosition: 0, Text: ""}
+	tEOF = Item{Type: EOF, StartPosition: 0, Text: ""}
 )
 
 func lexTest(t *testing.T, test *testutil.Test) []Item {
@@ -21,7 +21,7 @@ func lexTest(t *testing.T, test *testutil.Test) []Item {
 	for {
 		item := l.NextItem()
 		items = append(items, *item)
-		if item.Type == ItemEOF || item.Type == ItemError {
+		if item.Type == EOF || item.Type == ItemError {
 			break
 		}
 	}

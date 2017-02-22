@@ -126,7 +126,7 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)
 		p.nodeTarget.Append(sm)
 		return sm
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.ItemEOF {
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.EOF {
 		// Missing underline and at EOF
 		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)
 		p.nodeTarget.Append(sm)
