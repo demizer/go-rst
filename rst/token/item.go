@@ -14,7 +14,7 @@ const (
 	Error
 	Title
 	SectionAdornment
-	ItemText
+	Text
 	ItemBlockQuote
 	ItemLiteralBlock
 	ItemSystemMessage
@@ -59,7 +59,7 @@ var elements = [...]string{
 	"Error",
 	"Title",
 	"SectionAdornment",
-	"ItemText",
+	"Text",
 	"ItemBlockQuote",
 	"ItemLiteralBlock",
 	"ItemSystemMessage",

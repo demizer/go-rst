@@ -102,7 +102,7 @@ func (p *Parser) parse() {
 		log.Log("msg", "Parser got token", "token", token)
 
 		switch token.Type {
-		case tok.ItemText:
+		case tok.Text:
 			p.paragraph(token)
 		case tok.ItemInlineEmphasisOpen:
 			p.inlineEmphasis(token)
@@ -163,7 +163,7 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 	log.Log("msg", "Have token", "tokenType", token.Type, "tokenText", fmt.Sprintf("%q", token.Text))
 	var n doc.Node
 	switch token.Type {
-	case tok.ItemText:
+	case tok.Text:
 		n = p.paragraph(token)
 	case tok.ItemInlineEmphasisOpen:
 		p.inlineEmphasis(token)

@@ -26,10 +26,10 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 
 		}
 		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a tok.ItemText then backup the token buffer so the
+		// Modify the token buffer to change the current token to a tok.Text then backup the token buffer so the
 		// next loop gets the new paragraph
 		p.token[zed-1] = nil
-		p.token[zed].Type = tok.ItemText
+		p.token[zed].Type = tok.Text
 		p.token[zed].Text = inText
 		p.token[zed].Length = infoTextLen
 		p.token[zed].Line = s.Line
@@ -42,9 +42,9 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		s.Line = oLin.Line
 		p.clearTokens(zed-4, zed-1)
 		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a tok.ItemText then backup the token buffer so the
+		// Modify the token buffer to change the current token to a tok.Text then backup the token buffer so the
 		// next loop gets the new paragraph
-		p.token[zed].Type = tok.ItemText
+		p.token[zed].Type = tok.Text
 		p.token[zed].Text = inText
 		p.token[zed].Length = infoTextLen
 		p.token[zed].Line = s.Line
@@ -54,10 +54,10 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		inText := p.token[zed-1].Text + "\n" + p.token[zed].Text
 		infoTextLen := len(inText)
 		s.Line = p.token[zed-1].Line
-		// Modify the token buffer to change the current token to a tok.ItemText then backup the token buffer so the
+		// Modify the token buffer to change the current token to a tok.Text then backup the token buffer so the
 		// next loop gets the new paragraph
 		p.token[zed-1] = nil
-		p.token[zed].Type = tok.ItemText
+		p.token[zed].Type = tok.Text
 		p.token[zed].Text = inText
 		p.token[zed].Length = infoTextLen
 		p.token[zed].Line = s.Line

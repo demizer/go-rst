@@ -86,8 +86,8 @@ func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item
 }
 
 func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
-	// If a section contains an tok.ItemText, it is because the underline is missing, therefore we generate an error based on
-	// what follows the tok.ItemText.
+	// If a section contains an tok.Text, it is because the underline is missing, therefore we generate an error based on
+	// what follows the tok.Text.
 	tLen := p.token[zed].Length
 	p.next(2) // Move the token buffer past the error tokens
 	if tLen < 3 && tLen != s.sectionSpace.Length {
@@ -116,7 +116,7 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 		if sm := parseSectionTitleNoOverline(s, p, i); sm != nil {
 			return sm
 		}
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.ItemText {
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.Text {
 		if sm := parseSectionText(s, p, i); sm != nil {
 			return sm
 		}

@@ -32,8 +32,8 @@ outer:
 		} else if ci.Type == tok.EOF {
 			log.Msg("current item type == tok.EOF")
 			break
-		} else if pi != nil && pi.Type == tok.ItemText && ci.Type == tok.ItemText {
-			log.Msg("Previous type == tok.ItemText, current type == tok.ItemText; Concatenating text!")
+		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.ItemText {
+			log.Msg("Previous type == tok.Text, current type == tok.ItemText; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue
@@ -51,7 +51,7 @@ outer:
 			// Parse Test 02.00.03.00 :: Emphasis wrapped in unicode spaces
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
-		case tok.ItemText:
+		case tok.Text:
 			if pi != nil && pi.Type == tok.ItemEscape && pi.StartPosition.Int() > ci.StartPosition.Int() {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				log.Msg("Found newline escape!")
