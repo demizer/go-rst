@@ -100,12 +100,12 @@ func lexTitle(l *Lexer) stateFn {
 	return lexSection
 }
 
-// lexSectionAdornment advances the lexer until a newline is encountered and emits a ItemSectionAdornment token. Control is
+// lexSectionAdornment advances the lexer until a newline is encountered and emits a SectionAdornment token. Control is
 // returned to lexSection() on completion.
 func lexSectionAdornment(l *Lexer) stateFn {
 	for {
 		if l.isEndOfLine() {
-			l.emit(ItemSectionAdornment)
+			l.emit(SectionAdornment)
 			if l.mark == EOL {
 				break
 			}

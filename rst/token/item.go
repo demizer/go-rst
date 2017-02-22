@@ -13,7 +13,7 @@ const (
 	EOF Type = iota
 	Error
 	Title
-	ItemSectionAdornment
+	SectionAdornment
 	ItemText
 	ItemBlockQuote
 	ItemLiteralBlock
@@ -58,7 +58,7 @@ var elements = [...]string{
 	"EOF",
 	"Error",
 	"Title",
-	"ItemSectionAdornment",
+	"SectionAdornment",
 	"ItemText",
 	"ItemBlockQuote",
 	"ItemLiteralBlock",

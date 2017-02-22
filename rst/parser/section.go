@@ -50,7 +50,7 @@ loop:
 		case tok.ItemSpace:
 			s.sectionIndent = tTok
 			p.next(1)
-		case tok.ItemSectionAdornment:
+		case tok.SectionAdornment:
 			s.sectionUnderAdorn = tTok
 			break loop
 		}
@@ -120,7 +120,7 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 		if sm := parseSectionText(s, p, i); sm != nil {
 			return sm
 		}
-	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.ItemSectionAdornment {
+	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.SectionAdornment {
 		// Missing section title
 		p.next(1) // Move the token buffer past the error token
 		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)

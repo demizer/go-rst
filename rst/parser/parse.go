@@ -119,7 +119,7 @@ func (p *Parser) parse() {
 			p.nodeTarget.Append(doc.NewTransition(token))
 		case tok.ItemCommentMark:
 			p.comment(token)
-		case tok.ItemSectionAdornment:
+		case tok.SectionAdornment:
 			p.section(token)
 		case tok.ItemEnumListArabic:
 			n = p.enumList(token)

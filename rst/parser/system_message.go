@@ -35,7 +35,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		p.token[zed].Line = s.Line
 		p.backup()
 	case infoUnexpectedTitleOverlineOrTransition:
-		oLin := p.peekBackTo(tok.ItemSectionAdornment)
+		oLin := p.peekBackTo(tok.SectionAdornment)
 		titl := p.peekBackTo(tok.Title)
 		uLin := p.token[zed]
 		inText := oLin.Text + "\n" + titl.Text + "\n" + uLin.Text
@@ -102,7 +102,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 		s.Line = p.token[zed].Line
 		return literalBlock()
 	case severeTitleLevelInconsistent:
-		if p.peekBack(2).Type == tok.ItemSectionAdornment {
+		if p.peekBack(2).Type == tok.SectionAdornment {
 			lbText = p.token[zed-2].Text + "\n" + p.token[zed-1].Text + "\n" + p.token[zed].Text
 			lbTextLen = len(lbText)
 			s.Line = p.token[zed-2].Line
