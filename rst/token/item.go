@@ -16,7 +16,7 @@ const (
 	SectionAdornment
 	Text
 	BlockQuote
-	ItemLiteralBlock
+	LiteralBlock
 	ItemSystemMessage
 	ItemSpace
 	ItemBlankLine
@@ -61,7 +61,7 @@ var elements = [...]string{
 	"SectionAdornment",
 	"Text",
 	"BlockQuote",
-	"ItemLiteralBlock",
+	"LiteralBlock",
 	"ItemSystemMessage",
 	"ItemSpace",
 	"ItemBlankLine",

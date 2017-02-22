@@ -11,7 +11,7 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 	var lbTextLen int
 
 	literalBlock := func() *doc.LiteralBlockNode {
-		return doc.NewLiteralBlock(&tok.Item{Type: tok.ItemLiteralBlock, Text: lbText, Length: lbTextLen})
+		return doc.NewLiteralBlock(&tok.Item{Type: tok.LiteralBlock, Text: lbText, Length: lbTextLen})
 	}
 
 	switch err {
