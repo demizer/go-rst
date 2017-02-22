@@ -127,7 +127,7 @@ func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err parserM
 // systemMessage generates a Node based on the passed parserMessage. The generated message is returned as a
 // SystemMessageNode.
 func (p *Parser) systemMessage(err parserMessage) doc.Node {
-	s := doc.NewSystemMessage(&tok.Item{Type: tok.ItemSystemMessage, Line: p.token[zed].Line}, err.Message(), err.String())
+	s := doc.NewSystemMessage(&tok.Item{Type: tok.SystemMessage, Line: p.token[zed].Line}, err.Message(), err.String())
 	msg := doc.NewText(&tok.Item{
 		Text:   err.Message(),
 		Length: len(err.Message()),

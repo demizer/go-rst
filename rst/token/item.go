@@ -17,7 +17,7 @@ const (
 	Text
 	BlockQuote
 	LiteralBlock
-	ItemSystemMessage
+	SystemMessage
 	ItemSpace
 	ItemBlankLine
 	ItemTransition
@@ -62,7 +62,7 @@ var elements = [...]string{
 	"Text",
 	"BlockQuote",
 	"LiteralBlock",
-	"ItemSystemMessage",
+	"SystemMessage",
 	"ItemSpace",
 	"ItemBlankLine",
 	"ItemTransition",
