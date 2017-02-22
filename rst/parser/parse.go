@@ -8,7 +8,7 @@ import (
 
 	. "github.com/demizer/go-rst"
 	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 var log *LogCtx
@@ -210,7 +210,7 @@ func (p *Parser) peekBack(pos int) *tok.Item {
 	return p.token[zed-pos]
 }
 
-func (p *Parser) peekBackTo(item tok.ItemElement) (tok *tok.Item) {
+func (p *Parser) peekBackTo(item tok.Type) (tok *tok.Item) {
 	for i := zed - 1; i >= 0; i-- {
 		if p.token[i] != nil && p.token[i].Type == item {
 			tok = p.token[i]
@@ -244,7 +244,7 @@ func (p *Parser) peek(pos int) *tok.Item {
 
 // peekSkip looks ahead one position skipiing a specified itemElement. If that element is found, a pointer is returned,
 // otherwise nil is returned.
-func (p *Parser) peekSkip(iSkip tok.ItemElement) *tok.Item {
+func (p *Parser) peekSkip(iSkip tok.Type) *tok.Item {
 	var nItem *tok.Item
 	count := 1
 	for {

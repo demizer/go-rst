@@ -1,4 +1,4 @@
-package tokenizer
+package token
 
 func lexText(l *Lexer) stateFn {
 	log.Msg("lexText start")

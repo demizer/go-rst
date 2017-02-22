@@ -1,4 +1,4 @@
-package tokenizer
+package token
 
 import (
 	"encoding/json"
@@ -6,11 +6,11 @@ import (
 	. "github.com/demizer/go-rst"
 )
 
-// ItemElement are the types that are emitted by the lexer.
-type ItemElement int
+// Type are the types that are emitted by the lexer.
+type Type int
 
 const (
-	ItemEOF ItemElement = iota
+	ItemEOF Type = iota
 	ItemError
 	ItemTitle
 	ItemSectionAdornment
@@ -99,13 +99,13 @@ var elements = [...]string{
 	"ItemEscape",
 }
 
-// String implements the Stringer interface for printing ItemElement types.
-func (t ItemElement) String() string { return elements[t] }
+// String implements the Stringer interface for printing Type types.
+func (t Type) String() string { return elements[t] }
 
-func (t *ItemElement) UnmarshalJSON(data []byte) error {
+func (t *Type) UnmarshalJSON(data []byte) error {
 	for num, elm := range elements {
 		if elm == string(data[1:len(data)-1]) {
-			*t = ItemElement(num)
+			*t = Type(num)
 		}
 	}
 	return nil
@@ -114,8 +114,8 @@ func (t *ItemElement) UnmarshalJSON(data []byte) error {
 // Struct for tokens emitted by the scanning process
 type Item struct {
 	ID            `json:"id"`
-	Type          ItemElement `json:"type"`
-	Text          string      `json:"text"`
+	Type          Type   `json:"type"`
+	Text          string `json:"text"`
 	Line          `json:"line"`
 	StartPosition `json:"startPosition"`
 	Length        int `json:"length"`

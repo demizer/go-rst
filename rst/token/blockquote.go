@@ -1,4 +1,4 @@
-package tokenizer
+package token
 
 func isBlockquote(l *Lexer) bool {
 	if !l.lastLineIsBlankLine() || l.lastItem.Type != ItemSpace {

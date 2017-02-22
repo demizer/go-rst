@@ -1,3 +1,9 @@
+* Tue Feb 21 01:09 2017: remove 'item' from itemElements...
+
+  changes namespace from tok.ItemElement to tok.Element
+
+* Mon Feb 20 02:01 2017: Use travis CI for build status as drone.io is ded
+
 * Fri Feb 17 14:45 2017: add tests for utf8 normalization
 
   Getting '\u2002' instead of '\u2000':

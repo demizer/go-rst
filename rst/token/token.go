@@ -1,4 +1,4 @@
-package tokenizer
+package token
 
 import (
 	"fmt"
@@ -165,7 +165,7 @@ func (l *Lexer) run() {
 }
 
 // emit passes an item back to the client.
-func (l *Lexer) emit(t ItemElement) {
+func (l *Lexer) emit(t Type) {
 	var tok string
 
 	if t == ItemBlankLine {

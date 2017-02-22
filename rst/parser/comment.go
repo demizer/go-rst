@@ -2,7 +2,7 @@ package parser
 
 import (
 	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 func (p *Parser) comment(i *tok.Item) doc.Node {

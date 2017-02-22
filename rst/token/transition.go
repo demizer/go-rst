@@ -1,4 +1,4 @@
-package tokenizer
+package token
 
 func isTransition(l *Lexer) bool {
 	if r := l.peek(4); !isSectionAdornment(l.mark) || !isSectionAdornment(r) {

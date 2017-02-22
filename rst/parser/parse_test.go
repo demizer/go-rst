@@ -12,7 +12,7 @@ import (
 	"github.com/demizer/go-rst/rst/testutil"
 
 	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 // tokEqualChecker compares the lexed tokens and the expected tokens and reports failures.

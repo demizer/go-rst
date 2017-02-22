@@ -4,7 +4,7 @@ import (
 	"unicode/utf8"
 
 	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 func (p *Parser) inlineEmphasis(i *tok.Item) {

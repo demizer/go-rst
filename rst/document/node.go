@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	. "github.com/demizer/go-rst"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 var log *LogCtx

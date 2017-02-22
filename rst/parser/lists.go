@@ -6,7 +6,7 @@ import (
 	"os"
 
 	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/tokenizer"
+	tok "github.com/demizer/go-rst/rst/token"
 )
 
 func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
