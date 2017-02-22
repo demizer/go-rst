@@ -106,7 +106,7 @@ var lexerTests = []struct {
 
 func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		if lex.index != tt.nIndex {
 			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.name, lex.index, tt.nIndex)
 		}
@@ -148,7 +148,7 @@ var lexerGotoLocationTests = []struct {
 
 func TestLexerGotoLocation(t *testing.T) {
 	for _, tt := range lexerGotoLocationTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		if lex.index != tt.lIndex {
 			t.Errorf("Test: %q\n\tGot: lex.index == %d, Expect: %d", tt.name, lex.index, tt.lIndex)
@@ -236,7 +236,7 @@ var lexerBackupTests = []struct {
 
 func TestLexerBackup(t *testing.T) {
 	for _, tt := range lexerBackupTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		lex.backup(tt.pos)
 		if lex.index != tt.lIndex {
@@ -322,7 +322,7 @@ var lexerNextTests = []struct {
 
 func TestLexerNext(t *testing.T) {
 	for _, tt := range lexerNextTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
 		if lex.index != tt.nIndex {
@@ -398,7 +398,7 @@ var lexerPeekTests = []struct {
 
 func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		r := lex.peek(1)
 		w := utf8.RuneLen(r)
@@ -422,17 +422,17 @@ func TestLexerPeek(t *testing.T) {
 
 func TestLexerIsLastLine(t *testing.T) {
 	input := "==============\nTitle\n=============="
-	lex := newLexer("isLastLine test 1", []byte(input))
+	lex := NewLexer("isLastLine test 1", []byte(input))
 	lex.gotoLocation(0, 1)
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), false)
 	}
-	lex = newLexer("isLastLine test 2", []byte(input))
+	lex = NewLexer("isLastLine test 2", []byte(input))
 	lex.gotoLocation(0, 2)
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), false)
 	}
-	lex = newLexer("isLastLine test 3", []byte(input))
+	lex = NewLexer("isLastLine test 3", []byte(input))
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), true)
@@ -482,7 +482,7 @@ var peekNextLineTests = []struct {
 
 func TestLexerPeekNextLine(t *testing.T) {
 	for _, tt := range peekNextLineTests {
-		lex := newLexer(tt.name, []byte(tt.input))
+		lex := NewLexer(tt.name, []byte(tt.input))
 		lex.gotoLocation(tt.start, tt.startLine)
 		out := lex.peekNextLine()
 		if lex.index != tt.lIndex {

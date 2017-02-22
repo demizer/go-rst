@@ -9,11 +9,10 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"regexp"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/hashicorp/rst/rst/token"
+	"github.com/demizer/go-rst/rst/token"
 )
 
 // eof represents a marker rune for the end of the reader.
