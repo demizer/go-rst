@@ -14,7 +14,7 @@ func lexBlockquote(l *Lexer) stateFn {
 	for {
 		l.next()
 		if l.isEndOfLine() && l.mark == EOL {
-			l.emit(ItemBlockQuote)
+			l.emit(BlockQuote)
 			break
 		}
 	}

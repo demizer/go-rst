@@ -15,7 +15,7 @@ const (
 	Title
 	SectionAdornment
 	Text
-	ItemBlockQuote
+	BlockQuote
 	ItemLiteralBlock
 	ItemSystemMessage
 	ItemSpace
@@ -60,7 +60,7 @@ var elements = [...]string{
 	"Title",
 	"SectionAdornment",
 	"Text",
-	"ItemBlockQuote",
+	"BlockQuote",
 	"ItemLiteralBlock",
 	"ItemSystemMessage",
 	"ItemSpace",

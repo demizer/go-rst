@@ -134,7 +134,7 @@ func (p *Parser) parse() {
 			//
 			if p.peekBack(1).Type == tok.ItemBlankLine && p.bqLevel == nil {
 				// Ignore if next item is a blockquote from the lexer
-				if pn := p.peek(1); pn != nil && pn.Type == tok.ItemBlockQuote {
+				if pn := p.peek(1); pn != nil && pn.Type == tok.BlockQuote {
 					log.Msg("Next item is blockquote; not creating empty blockquote")
 					continue
 				}
@@ -146,7 +146,7 @@ func (p *Parser) parse() {
 		case tok.ItemBlankLine, tok.Title, tok.ItemEscape:
 			// itemTitle is consumed when evaluating itemSectionAdornment
 			continue
-		case tok.ItemBlockQuote:
+		case tok.BlockQuote:
 			p.blockquote(token)
 		case tok.ItemDefinitionTerm:
 			p.definitionTerm(token)
@@ -181,7 +181,7 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 		p.enumList(token)
 	case tok.ItemSpace:
 	case tok.ItemBlankLine, tok.ItemEscape:
-	case tok.ItemBlockQuote:
+	case tok.BlockQuote:
 		p.blockquote(token)
 	default:
 		log.Msg(fmt.Sprintf("Token type: %q is not yet supported in the parser", token.Type.String()))
