@@ -11,7 +11,7 @@ type Type int
 
 const (
 	EOF Type = iota
-	ItemError
+	Error
 	ItemTitle
 	ItemSectionAdornment
 	ItemText
@@ -56,7 +56,7 @@ const (
 
 var elements = [...]string{
 	"EOF",
-	"ItemError",
+	"Error",
 	"ItemTitle",
 	"ItemSectionAdornment",
 	"ItemText",

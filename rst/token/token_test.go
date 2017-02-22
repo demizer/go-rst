@@ -21,7 +21,7 @@ func lexTest(t *testing.T, test *testutil.Test) []Item {
 	for {
 		item := l.NextItem()
 		items = append(items, *item)
-		if item.Type == EOF || item.Type == ItemError {
+		if item.Type == EOF || item.Type == Error {
 			break
 		}
 	}
