@@ -2,8 +2,10 @@ package token
 
 import (
 	"fmt"
-	"strings"
+	"unicode"
 	"unicode/utf8"
+
+	. "github.com/demizer/go-rst"
 )
 
 // Function prototype for scanner functions
@@ -11,72 +13,50 @@ type stateFn func(*Lexer) stateFn
 
 // The Lexer struct tracks the state of the Lexer
 type Lexer struct {
-	name             string    // The name of the current lexer
-	input            string    // The input text
-	line             int       // Line number of the parser, from 0
-	lines            []string  // The input split into lines
-	state            stateFn   // The current state of the lexer
-	start            int       // Start position of the token in the line
-	index            int       // Position in input
-	width            int       // The width of the current position
+	Name    string   // The name of the current lexer
+	input   string   // The input text
+	line    int      // Line number of the parser, from 0
+	numLine int      // Total number of input lines
+	state   stateFn  // The current state of the lexer
+	lines   []string // The input split into lines
+
+	id    int  // Unique ID for each item emitted
+	mark  rune // The current lexed rune
+	start int  // Start position of the token in the line
+	index int  // Position in input
+	width int  // The width of the current position
+
 	items            chan Item // The channel items are emitted to
 	lastItem         *Item     // The last item emitted to the channel
 	lastItemPosition *StartPosition
-	id               int    // Unique ID for each item emitted
-	mark             rune   // The current lexed rune
-	indentLevel      int    // For tracking indentation with indentable items
-	indentWidth      string // For tracking indent width
-}
 
-// // getu4 decodes a unicode literal from s length q
-// func getu4(s []byte, q int) rune {
-// r, _ := strconv.ParseUint(string(s[2:q]), 16, 64)
-// return rune(r)
-// }
+	indentLevel int    // For tracking indentation with indentable items
+	indentWidth string // For tracking indent width
+}
 
 func NewLexer(name string, input []byte) *Lexer {
 	if len(input) == 0 {
 		return nil
 	}
-	l := &Lexer{name: name}
-	// Convert unicode literals to runes and strip escaped whitespace
-	var tInput []byte
-	r := 0
-	// for r < len(input) {
-	// if input[r] == '\\' && input[r+1] == 'u' {
-	// tInput = append(tInput, []byte(string(getu4(input[r:], 6)))...)
-	// r += 6
-	// } else if input[r] == '\\' && input[r+1] == 'x' {
-	// tInput = append(tInput, []byte(string(getu4(input[r:], 4)))...)
-	// r += 4
-	// } else if input[r] == '\\' && (input[r+1] == '\\') {
-	// tInput = append(tInput, '\\')
-	// r += 2
-	// } else {
-	// tInput = append(tInput, input[r])
-	// r++
-	// }
-	// }
-	// var nInput []byte
-	// if !norm.NFC.IsNormal(tInput) {
-	// log.Msg("Normalizing input")
-	// nInput = norm.NFC.Bytes(tInput)
-	// tInput = nInput
-	// }
-	// fmt.Println(string(tInput))
-	// os.Exit(0)
+	l := &Lexer{Name: name}
+	// r := 0
 
-	lines := strings.Split(string(tInput), "\n")
+	// blah, err := normalize(input)
+	// if err != nil {
+	// // todo better error checking
+	// return nil
+	// }
+	// lines := strings.Split(string(tInput), "\n")
 
-	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	log.Log("mark", mark, "index", 0, "line", 1)
+	// mark, width := utf8.DecodeRuneInString(lines[0][0:])
+	// log.Log("mark", mark, "index", 0, "line", 1)
 
-	l.input = string(tInput) // stored string is never altered
-	l.lines = lines
-	l.items = make(chan Item)
-	l.index = 0
-	l.mark = mark
-	l.width = width
+	// l.input = string(tInput) // stored string is never altered
+	// l.lines = lines
+	// l.items = make(chan Item)
+	// l.index = 0
+	// l.mark = mark
+	// l.width = width
 	return l
 }
 

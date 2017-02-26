@@ -6,8 +6,6 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/demizer/go-rst/rst/testutil"
 )
 
@@ -108,16 +106,16 @@ func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
 		lex := NewLexer(tt.name, []byte(tt.input))
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.name, lex.index, tt.nIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.Name, lex.index, tt.nIndex)
 		}
 		if lex.mark != tt.nMark {
-			t.Errorf("Test: %q\n\tGot: lexer.mark == %#U, Expect: %#U", lex.name, lex.mark, tt.nMark)
+			t.Errorf("Test: %q\n\tGot: lexer.mark == %#U, Expect: %#U", lex.Name, lex.mark, tt.nMark)
 		}
 		if len(lex.lines) != tt.nLines {
-			t.Errorf("Test: %q\n\tGot: lexer.lineNumber == %d, Expect: %d", lex.name, lex.lineNumber(), tt.nLines)
+			t.Errorf("Test: %q\n\tGot: lexer.lineNumber == %d, Expect: %d", lex.Name, lex.lineNumber(), tt.nLines)
 		}
 		if lex.width != tt.nWidth {
-			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d", lex.name, lex.width, tt.nWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d", lex.Name, lex.width, tt.nWidth)
 		}
 	}
 }
@@ -326,16 +324,16 @@ func TestLexerNext(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		r, w := lex.next()
 		if lex.index != tt.nIndex {
-			t.Errorf("Test: %q\n\tGot: lexer.index = %d, Expect: %d", lex.name, lex.index, tt.nIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index = %d, Expect: %d", lex.Name, lex.index, tt.nIndex)
 		}
 		if r != tt.nMark {
-			t.Errorf("Test: %q\n\tGot: lexer.mark = %#U, Expect: %#U", lex.name, r, tt.nMark)
+			t.Errorf("Test: %q\n\tGot: lexer.mark = %#U, Expect: %#U", lex.Name, r, tt.nMark)
 		}
 		if w != tt.nWidth {
-			t.Errorf("Test: %q\n\tGot: lexer.width = %d, Expect: %d", lex.name, w, tt.nWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width = %d, Expect: %d", lex.Name, w, tt.nWidth)
 		}
 		if lex.lineNumber() != tt.nLine {
-			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.name, lex.lineNumber(), tt.nLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.Name, lex.lineNumber(), tt.nLine)
 		}
 	}
 }
@@ -403,19 +401,19 @@ func TestLexerPeek(t *testing.T) {
 		r := lex.peek(1)
 		w := utf8.RuneLen(r)
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.Name, lex.index, tt.lIndex)
 		}
 		if lex.width != tt.lWidth {
-			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d", lex.name, lex.width, tt.lWidth)
+			t.Errorf("Test: %q\n\tGot: lexer.width == %d, Expect: %d", lex.Name, lex.width, tt.lWidth)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.Name, lex.lineNumber(), tt.lLine)
 		}
 		if r != tt.pMark {
-			t.Errorf("Test: %q\n\tGot: peek().rune  == %q, Expect: %q", lex.name, r, tt.pMark)
+			t.Errorf("Test: %q\n\tGot: peek().rune  == %q, Expect: %q", lex.Name, r, tt.pMark)
 		}
 		if w != tt.pWidth {
-			t.Errorf("Test: %q\n\tGot: peek().width == %d, Expect: %d", lex.name, w, tt.pWidth)
+			t.Errorf("Test: %q\n\tGot: peek().width == %d, Expect: %d", lex.Name, w, tt.pWidth)
 		}
 	}
 }
@@ -425,17 +423,17 @@ func TestLexerIsLastLine(t *testing.T) {
 	lex := NewLexer("isLastLine test 1", []byte(input))
 	lex.gotoLocation(0, 1)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), false)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
 	lex = NewLexer("isLastLine test 2", []byte(input))
 	lex.gotoLocation(0, 2)
 	if lex.isLastLine() != false {
-		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), false)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
 	lex = NewLexer("isLastLine test 3", []byte(input))
 	lex.gotoLocation(0, 3)
 	if lex.isLastLine() != true {
-		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.name, lex.isLastLine(), true)
+		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), true)
 	}
 }
 
@@ -486,13 +484,13 @@ func TestLexerPeekNextLine(t *testing.T) {
 		lex.gotoLocation(tt.start, tt.startLine)
 		out := lex.peekNextLine()
 		if lex.index != tt.lIndex {
-			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.name, lex.index, tt.lIndex)
+			t.Errorf("Test: %q\n\tGot: lexer.index == %d, Expect: %d", lex.Name, lex.index, tt.lIndex)
 		}
 		if lex.lineNumber() != tt.lLine {
-			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.name, lex.lineNumber(), tt.lLine)
+			t.Errorf("Test: %q\n\tGot: lexer.line = %d, Expect: %d", lex.Name, lex.lineNumber(), tt.lLine)
 		}
 		if out != tt.nText {
-			t.Errorf("Test: %q\n\tGot: text == %s, Expect: %s", lex.name, out, tt.nText)
+			t.Errorf("Test: %q\n\tGot: text == %s, Expect: %s", lex.Name, out, tt.nText)
 		}
 	}
 }
@@ -531,8 +529,4 @@ func TestLexStartPosition(t *testing.T) {
 	if items[0].StartPosition.String() != "1" {
 		t.Error(`String StartPosition != "1"`)
 	}
-}
-
-func TestUnicodeLiteralDecode(t *testing.T) {
-	assert.Equal(t, '\u2000', getu4([]byte("\\u2000"), 6), "Should be EN QUAD space")
 }

@@ -1,7 +1,6 @@
 package token
 
 import (
-	"fmt"
 	"strconv"
 	"unicode"
 	"unicode/utf8"
