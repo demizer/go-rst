@@ -1,7 +1,6 @@
 package token
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -67,7 +66,7 @@ var normTests = [...]struct {
 
 func TestNormalize(t *testing.T) {
 	for _, test := range normTests {
-		fmt.Printf("Running test %q...\n", test.name)
+		// fmt.Printf("Running test %q...\n", test.name)
 		assert := assert.New(t)
 		o, err := normalize(test.test)
 		if len(test.err) > 0 && !assert.EqualError(err, test.err) {

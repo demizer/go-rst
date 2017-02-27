@@ -1,7 +1,9 @@
 package token
 
 import (
+	"errors"
 	"fmt"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 
@@ -34,41 +36,44 @@ type Lexer struct {
 	indentWidth string // For tracking indent width
 }
 
-func NewLexer(name string, input []byte) *Lexer {
+func newLexer(name string, input []byte) (l *Lexer, err error) {
 	if len(input) == 0 {
-		return nil
+		err = errors.New("no input given")
+		return
 	}
-	l := &Lexer{Name: name}
-	// r := 0
 
-	// blah, err := normalize(input)
-	// if err != nil {
-	// // todo better error checking
-	// return nil
-	// }
-	// lines := strings.Split(string(tInput), "\n")
+	l = &Lexer{Name: name}
 
-	// mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	// log.Log("mark", mark, "index", 0, "line", 1)
+	ni, err := normalize(input)
+	if err != nil {
+		err = fmt.Errorf("could not normalize input: %s", err)
+		return
+	}
 
-	// l.input = string(tInput) // stored string is never altered
-	// l.lines = lines
-	// l.items = make(chan Item)
-	// l.index = 0
-	// l.mark = mark
-	// l.width = width
-	return l
+	lines := strings.Split(string(ni), "\n")
+
+	mark, width := utf8.DecodeRuneInString(lines[0][0:])
+	log.Log("mark", mark, "index", 0, "line", 1)
+
+	l.input = string(ni) // stored string is never altered
+	l.lines = lines
+	l.items = make(chan Item)
+	l.index = 0
+	l.mark = mark
+	l.width = width
+
+	return
 }
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
 // to identify the lexing process in debugging.
-func Lex(name string, input []byte) *Lexer {
-	l := NewLexer(name, input)
-	if l == nil {
-		return nil
+func Lex(name string, input []byte) (l *Lexer, err error) {
+	l, err = newLexer(name, input)
+	if err != nil {
+		return
 	}
 	go l.run()
-	return l
+	return
 }
 
 // run is the engine of the lexing process.
