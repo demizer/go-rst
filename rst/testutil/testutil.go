@@ -29,9 +29,10 @@ func SetDebug() {
 	flag.StringVar(&excludeNamedContext, "exclude", "test", "Exclude context from output.")
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
-	if debug {
-		// logk.LogSetContext(logk.NewContext(logk.NewLogfmtLogger(os.Stdout)))
-	}
+	// if debug {
+	// log.SetStdContext(log.NewLogContext("test", logk.NewLogfmtLogger(os.Stdout)))
+	// fmt.Println(log.StdContext())
+	// }
 }
 
 func JsonDiff(expectedItems, parsedItems []interface{}) (string, error) {

@@ -10,44 +10,54 @@ import (
 	"github.com/go-stack/stack"
 )
 
-var logc **log.Context
+var loggers []*LogContext
 
-type LogCtx struct {
-	name                string
-	excludeNamedContext string
-	ctx                 *log.Context
+func init() {
+	loggers = make([]*LogContext, 0)
+	RegisterNewLogContext("default", log.NewNopLogger())
 }
 
-// NewLogCtx creates a new logging context with name and returns o LogCtx ready to use.
-func NewLogCtx(name string) *LogCtx {
-	return &LogCtx{name: name, ctx: log.NewContext(log.NewNopLogger())}
+type LogContext struct {
+	Name                string
+	ExcludeNamedContext string
+	Context             *log.Context
 }
 
-// LogSetContext sets a logger context.
-// func LogSetContext(l *log.Context) {
-// logp.ctx = l
-// // logl.ctx = l
-// logt.ctx = l
+// func NewLogContext(name string, l log.Logger) *LogContext {
+// return &LogContext{Name: name, Context: log.NewContext(l)}
 // }
 
+func RegisterNewLogContext(name string, l log.Logger) *LogContext {
+	ctx := &LogContext{Name: name, Context: log.NewContext(l)}
+	loggers = append(loggers, ctx)
+	return ctx
+}
+
+// func StdContext() *LogContext { return stdContext }
+
+func StdLogger() *log.Context { return loggers[0].Context }
+
+func SetStdLogger(l *log.Context) { loggers[0].Context = l }
+
 // NewColorLogCtx creates a new logger context with ansi coloring.
-func NewColorLogCtx(name string, colorFn func(keyvals ...interface{}) term.FgBgColor) *LogCtx {
-	return &LogCtx{name: name, ctx: log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))}
+func NewColorLogCtx(name string, colorFn func(keyvals ...interface{}) term.FgBgColor) *LogContext {
+	return &LogContext{Name: name, Context: log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))}
 }
 
 // Msg logs a message to the log context.
-func (l *LogCtx) Msg(message string) { l.Log("msg", message) }
+func (l *LogContext) Msg(message string) { l.Log("msg", message) }
 
 // Error logs an error to the log context.
-func (l *LogCtx) Err(err error) { l.Log("msg", err.Error()) }
+func (l *LogContext) Err(err error) { l.Log("msg", err.Error()) }
 
-// Log writes log output to the logCtx of the package with added context
-func (l *LogCtx) Log(keyvals ...interface{}) error {
-	if strings.Contains(l.excludeNamedContext, l.name) {
+// Log writes log output to the LogContext of the package with added context
+func (l *LogContext) Log(keyvals ...interface{}) error {
+	fmt.Printf("%+#v\n", l.Context)
+	if strings.Contains(l.ExcludeNamedContext, l.Name) {
 		return nil
 	}
 	cs := stack.Caller(2)
 	funcName := fmt.Sprintf("%s", cs)
 	file := cs.String()
-	return l.ctx.WithPrefix("name", l.name, "line", file, "func", funcName).Log(keyvals...)
+	return l.Context.WithPrefix("name", l.Name, "line", file, "func", funcName).Log(keyvals...)
 }

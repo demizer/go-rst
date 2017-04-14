@@ -8,10 +8,10 @@ import (
 	tok "github.com/demizer/go-rst/rst/token"
 )
 
-var log *LogCtx
+var log *LogContext
 
 func init() {
-	log = NewLogCtx("doc")
+	log = RegisterNewLogContext("ast", StdLogger())
 }
 
 // NodeType identifies the type of a parse tree node.

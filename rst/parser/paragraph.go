@@ -32,8 +32,8 @@ outer:
 		} else if ci.Type == tok.EOF {
 			log.Msg("current item type == tok.EOF")
 			break
-		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.ItemText {
-			log.Msg("Previous type == tok.Text, current type == tok.ItemText; Concatenating text!")
+		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
+			log.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue

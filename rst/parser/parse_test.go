@@ -191,7 +191,12 @@ func TestParserBackup(t *testing.T) {
 	for _, tt := range parserBackupTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = tok.Lex(tt.name, []byte(tt.input))
+		var err error
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		if err != nil {
+			t.Errorf("lexer error: %s", err)
+			t.Fail()
+		}
 		tr.next(tt.nextNum)
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
@@ -325,7 +330,12 @@ func TestParserNext(t *testing.T) {
 	for _, tt := range parserNextTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = tok.Lex(tt.name, []byte(tt.input))
+		var err error
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		if err != nil {
+			t.Errorf("lexer error: %s", err)
+			t.Fail()
+		}
 		tr.next(tt.nextNum)
 		checkTokens(tr, tt, isEqual)
 	}
@@ -415,7 +425,12 @@ func TestParserPeek(t *testing.T) {
 	for _, tt := range parserPeekTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = tok.Lex(tt.name, []byte(tt.input))
+		var err error
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		if err != nil {
+			t.Errorf("lexer error: %s", err)
+			t.Fail()
+		}
 		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		checkTokens(tr, tt, isEqual)
@@ -479,7 +494,12 @@ func TestParserClearTokens(t *testing.T) {
 	for _, tt := range testParserClearTokensTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
 		tr := New(tt.name, tt.input)
-		tr.lex = tok.Lex(tt.name, []byte(tt.input))
+		var err error
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		if err != nil {
+			t.Errorf("lexer error: %s", err)
+			t.Fail()
+		}
 		tr.next(tt.nextNum)
 		tr.peek(tt.peekNum)
 		tr.clearTokens(tt.clearBegin, tt.clearEnd)

@@ -8,10 +8,10 @@ import (
 	. "github.com/demizer/go-rst"
 )
 
-var log *LogCtx
+var log *LogContext
 
 func init() {
-	log = NewLogCtx("lexer")
+	log = RegisterNewLogContext("lexer", StdLogger())
 }
 
 // EOL is denoted by a utf8.RuneError

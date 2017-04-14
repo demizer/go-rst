@@ -11,10 +11,10 @@ import (
 	tok "github.com/demizer/go-rst/rst/token"
 )
 
-var log *LogCtx
+var log *LogContext
 
 func init() {
-	log = NewLogCtx("parser")
+	log = RegisterNewLogContext("parser", StdLogger())
 }
 
 // Used for debugging only
@@ -82,11 +82,15 @@ func (p *Parser) startParse(lex *tok.Lexer) {
 
 // Parse activates the parser using text as input data. A parse Parser is returned on success or failure. Users of the
 // Parse package should use the Top level Parse function.
-func (p *Parser) Parse(text string) *Parser {
-	p.startParse(tok.Lex(p.Name, []byte(text)))
+func (p *Parser) Parse(text string) (*Parser, error) {
+	l, err := tok.Lex(p.Name, []byte(text))
+	if err != nil {
+		err = fmt.Errorf("parsing error: %s", err)
+	}
+	p.startParse(l)
 	p.text = text
 	p.parse()
-	return p
+	return p, err
 }
 
 // parse is where items are retrieved from the parser and dispatched according to the itemElement type.
