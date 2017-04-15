@@ -96,12 +96,12 @@ var lexerTests = []struct {
 	},
 	{
 		name:   "Default with diacritic",
-		input:  "à Title",
+		input:  "à Title",
 		nIndex: 0, nMark: '\u00E0', nWidth: 2, nLines: 1,
 	},
 	{
 		name:   "Default with two lines",
-		input:  "à Title\n=======",
+		input:  "à Title\n=======",
 		nIndex: 0, nMark: '\u00E0', nWidth: 2, nLines: 2,
 	},
 }
