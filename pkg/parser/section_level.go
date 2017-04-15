@@ -1,7 +1,7 @@
 package parser
 
 import (
-	doc "github.com/demizer/go-rst/rst/document"
+	doc "github.com/demizer/go-rst/pkg/document"
 )
 
 // sectionLevel is a single section level. sections contains a list of pointers to doc.SectionNode that are dertermined to be a

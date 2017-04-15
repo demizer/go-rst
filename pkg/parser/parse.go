@@ -6,15 +6,15 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"golang.org/x/text/unicode/norm"
 
-	. "github.com/demizer/go-rst"
-	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/token"
+	doc "github.com/demizer/go-rst/pkg/document"
+	"github.com/demizer/go-rst/pkg/logging"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
-var log *LogContext
+var log logging.Logger
 
 func init() {
-	log = RegisterNewLogContext("parser", StdLogger())
+	log = logging.NewLogger("parser", logging.StdLogger())
 }
 
 // Used for debugging only

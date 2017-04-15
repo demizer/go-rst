@@ -4,14 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 
-	. "github.com/demizer/go-rst"
-	tok "github.com/demizer/go-rst/rst/token"
+	"github.com/demizer/go-rst/pkg/logging"
+	pos "github.com/demizer/go-rst/pkg/position"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
-var log *LogContext
+var log logging.Logger
 
 func init() {
-	log = RegisterNewLogContext("ast", StdLogger())
+	log = logging.NewLogger("ast", logging.StdLogger())
 }
 
 // NodeType identifies the type of a parse tree node.
@@ -318,12 +319,12 @@ func NewSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *
 
 // TitleNode contains the parsed data for a section titles.
 type TitleNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	IndentLength  int      `json:"indentLength"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	IndentLength      int      `json:"indentLength"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 // NodeType returns the Node type of the TitleNode.
@@ -335,12 +336,12 @@ func (t TitleNode) String() string { return fmt.Sprintf("%#v", t) }
 // MarshalJSON satisfies the Marshaler interface.
 func (t TitleNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		IndentLength  int    `json:"indentLength"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		IndentLength      int    `json:"indentLength"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[t.Type],
 		Text:          t.Text,
@@ -353,11 +354,11 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
-	Type          NodeType `json:"type"`
-	Rune          rune     `json:"rune"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Rune              rune     `json:"rune"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 // NodeType returns the Node type of the AdornmentNode.
@@ -369,11 +370,11 @@ func (a AdornmentNode) String() string { return fmt.Sprintf("%#v", a) }
 // MarshalJSON satisfies the Marshaler interface.
 func (a AdornmentNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Rune          rune   `json:"rune"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Rune              rune   `json:"rune"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[a.Type],
 		Rune:          a.Rune,
@@ -385,11 +386,11 @@ func (a AdornmentNode) MarshalJSON() ([]byte, error) {
 
 // TextNode is ordinary text. Typically added to the nodelist of parapgraphs.
 type TextNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line,omitempty"`
-	StartPosition `json:"startPosition,omitempty"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewText(i *tok.Item) *TextNode {
@@ -411,11 +412,11 @@ func (t TextNode) String() string { return fmt.Sprintf("%#v", t) }
 // MarshalJSON satisfies the Marshaler interface.
 func (t TextNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line,omitempty"`
-		StartPosition `json:"startPosition,omitempty"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[t.Type],
 		Text:          t.Text,
@@ -458,11 +459,11 @@ func (p ParagraphNode) MarshalJSON() ([]byte, error) {
 
 // InlineEmphasisNode is parsed inline italicized text.
 type InlineEmphasisNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewInlineEmphasis(i *tok.Item) *InlineEmphasisNode {
@@ -484,11 +485,11 @@ func (e InlineEmphasisNode) String() string { return fmt.Sprintf("%#v", e) }
 // MarshalJSON satisfies the Marshaler interface.
 func (e InlineEmphasisNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[e.Type],
 		Text:          e.Text,
@@ -500,11 +501,11 @@ func (e InlineEmphasisNode) MarshalJSON() ([]byte, error) {
 
 // InlineStrongNode is a parsed inline bold text.
 type InlineStrongNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewInlineStrong(i *tok.Item) *InlineStrongNode {
@@ -526,11 +527,11 @@ func (s InlineStrongNode) String() string { return fmt.Sprintf("%#v", s) }
 // MarshalJSON satisfies the Marshaler interface.
 func (s InlineStrongNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[s.Type],
 		Text:          s.Text,
@@ -542,11 +543,11 @@ func (s InlineStrongNode) MarshalJSON() ([]byte, error) {
 
 // InlineLiteralNode is a parsed inline literal node.
 type InlineLiteralNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewInlineLiteral(i *tok.Item) *InlineLiteralNode {
@@ -568,11 +569,11 @@ func (l InlineLiteralNode) String() string { return fmt.Sprintf("%#v", l) }
 // MarshalJSON satisfies the Marshaler interface.
 func (l InlineLiteralNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[l.Type],
 		Text:          l.Text,
@@ -584,11 +585,11 @@ func (l InlineLiteralNode) MarshalJSON() ([]byte, error) {
 
 // InlineInterpretedText is a parsed interpreted text role.
 type InlineInterpretedText struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
 	NodeList `json:"nodeList"`
 }
@@ -612,12 +613,12 @@ func (i InlineInterpretedText) String() string { return fmt.Sprintf("%#v", i) }
 // MarshalJSON satisfies the Marshaler interface.
 func (i InlineInterpretedText) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
-		NodeList      `json:"nodeList"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
+		NodeList          `json:"nodeList"`
 	}{
 		Type:          nodeTypes[i.Type],
 		Text:          i.Text,
@@ -630,11 +631,11 @@ func (i InlineInterpretedText) MarshalJSON() ([]byte, error) {
 
 // InlineInterpretedTextRole is a parsed interpreted text role.
 type InlineInterpretedTextRole struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewInlineInterpretedTextRole(i *tok.Item) *InlineInterpretedTextRole {
@@ -656,11 +657,11 @@ func (i InlineInterpretedTextRole) String() string { return fmt.Sprintf("%#v", i
 // MarshalJSON satisfies the Marshaler interface.
 func (i InlineInterpretedTextRole) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[i.Type],
 		Text:          i.Text,
@@ -672,9 +673,9 @@ func (i InlineInterpretedTextRole) MarshalJSON() ([]byte, error) {
 
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.
 type BlockQuoteNode struct {
-	Type          NodeType `json:"type"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
 	NodeList `json:"nodeList"`
 }
@@ -707,10 +708,10 @@ func (b BlockQuoteNode) String() string { return fmt.Sprintf("%#v", b) }
 // MarshalJSON satisfies the Marshaler interface.
 func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
-		NodeList      `json:"nodeList"`
+		Type              string `json:"type"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
+		NodeList          `json:"nodeList"`
 	}{
 		Type:          nodeTypes[b.Type],
 		Line:          b.Line,
@@ -722,8 +723,8 @@ func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
 // SystemMessageNode are messages generated by the parser. System messages are leveled by severity and can be one of either
 // Warning, Error, Info, and Severe.
 type SystemMessageNode struct {
-	Type NodeType `json:"type"`
-	Line `json:"line"`
+	Type     NodeType `json:"type"`
+	pos.Line `json:"line"`
 
 	// The type of parser message that generated the systemMessage.
 	MessageType string `json:"messageType"`
@@ -756,7 +757,7 @@ func (s SystemMessageNode) String() string { return fmt.Sprintf("%#v", s) }
 func (s SystemMessageNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type        string `json:"type"`
-		Line        `json:"line"`
+		pos.Line    `json:"line"`
 		MessageType string `json:"messageType"`
 		Severity    string `json:"severity"`
 		NodeList    `json:"nodeList"`
@@ -771,11 +772,11 @@ func (s SystemMessageNode) MarshalJSON() ([]byte, error) {
 
 // LiteralBlockNode is a parsed literal block element.
 type LiteralBlockNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewLiteralBlock(i *tok.Item) *LiteralBlockNode {
@@ -797,11 +798,11 @@ func (l LiteralBlockNode) String() string { return fmt.Sprintf("%#v", l) }
 // MarshalJSON satisfies the Marshaler interface.
 func (l LiteralBlockNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[l.Type],
 		Text:          l.Text,
@@ -813,11 +814,11 @@ func (l LiteralBlockNode) MarshalJSON() ([]byte, error) {
 
 // TransitionNode is a parsed transition element. Transition elements are very similar to AdornmentNodes.
 type TransitionNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewTransition(i *tok.Item) *TransitionNode {
@@ -839,11 +840,11 @@ func (t TransitionNode) String() string { return fmt.Sprintf("%#v", t) }
 // MarshalJSON satisfies the Marshaler interface.
 func (t TransitionNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[t.Type],
 		Text:          t.Text,
@@ -855,11 +856,11 @@ func (t TransitionNode) MarshalJSON() ([]byte, error) {
 
 // CommentNode is a parsed comment element. Comment elements do not appear as visible elements in document transformations.
 type CommentNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text,omitempty"`
-	Length        int      `json:"length,omitempty"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text,omitempty"`
+	Length            int      `json:"length,omitempty"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 func NewComment(i *tok.Item) *CommentNode {
@@ -881,11 +882,11 @@ func (c CommentNode) String() string { return fmt.Sprintf("%#v", c) }
 // MarshalJSON satisfies the Marshaler interface.
 func (c CommentNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text,omitempty"`
-		Length        int    `json:"length,omitempty"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text,omitempty"`
+		Length            int    `json:"length,omitempty"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[c.Type],
 		Text:          c.Text,
@@ -1081,11 +1082,11 @@ func (d DefinitionListItemNode) MarshalJSON() ([]byte, error) {
 
 // DefinitionTermNode defines a definition list term element.
 type DefinitionTermNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	Length        int      `json:"length"`
-	Line          `json:"line"`
-	StartPosition `json:"startPosition"`
+	Type              NodeType `json:"type"`
+	Text              string   `json:"text"`
+	Length            int      `json:"length"`
+	pos.Line          `json:"line"`
+	pos.StartPosition `json:"startPosition"`
 }
 
 // NodeType returns the Node type of DefinitionTermNode.
@@ -1097,11 +1098,11 @@ func (d DefinitionTermNode) String() string { return fmt.Sprintf("%#v", d) }
 // MarshalJSON satisfies the Marshaler interface.
 func (d DefinitionTermNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          `json:"line"`
-		StartPosition `json:"startPosition"`
+		Type              string `json:"type"`
+		Text              string `json:"text"`
+		Length            int    `json:"length"`
+		pos.Line          `json:"line"`
+		pos.StartPosition `json:"startPosition"`
 	}{
 		Type:          nodeTypes[d.Type],
 		Text:          d.Text,
@@ -1114,7 +1115,7 @@ func (d DefinitionTermNode) MarshalJSON() ([]byte, error) {
 // DefinitionNode defines a difinition element.
 type DefinitionNode struct {
 	Type     NodeType `json:"type"`
-	Line     `json:"line"`
+	pos.Line `json:"line"`
 	NodeList `json:"nodeList"`
 }
 
@@ -1128,7 +1129,7 @@ func (d DefinitionNode) String() string { return fmt.Sprintf("%#v", d) }
 func (d DefinitionNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type     string `json:"type"`
-		Line     `json:"line,omitempty"`
+		pos.Line `json:"line,omitempty"`
 		NodeList `json:"nodeList"`
 	}{
 		Type:     nodeTypes[d.Type],

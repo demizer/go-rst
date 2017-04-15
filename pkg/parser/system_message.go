@@ -1,8 +1,8 @@
 package parser
 
 import (
-	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/token"
+	doc "github.com/demizer/go-rst/pkg/document"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
 func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessage) *doc.LiteralBlockNode {

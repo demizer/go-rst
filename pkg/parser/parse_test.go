@@ -11,8 +11,8 @@ import (
 
 	"github.com/demizer/go-rst/pkg/testutil"
 
-	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/token"
+	doc "github.com/demizer/go-rst/pkg/document"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
 // tokEqualChecker compares the lexed tokens and the expected tokens and reports failures.

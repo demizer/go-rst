@@ -26,7 +26,13 @@ func SetDebug() {
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
 	if debug {
-		logging.SetStdLogger(logging.RegisterNewLogContext("test", kit.NewLogfmtLogger(os.Stdout)))
+		logging.SetStdLogger(kit.NewLogfmtLogger(os.Stdout))
+	}
+}
+
+func Log(vals ...interface{}) {
+	if debug {
+		fmt.Println(vals...)
 	}
 }
 

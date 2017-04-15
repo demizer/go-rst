@@ -1,61 +1,37 @@
 package logging
 
 import (
-	"fmt"
-	"os"
-
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/term"
-	"github.com/go-stack/stack"
 )
 
-var loggers []*LogContext
+// Used for debugging only
+var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //, DisableMethods: true}
+
+var stdLogger log.Logger
 
 func init() {
-	loggers = make([]*LogContext, 0)
-	RegisterNewLogContext("default", log.NewNopLogger())
+	stdLogger = Logger{l: log.NewNopLogger()}
 }
 
-type LogContext struct {
-	Name   string
-	Logger *log.Logger
+func NewLogger(name string, l log.Logger) Logger {
+	return Logger{log.With(l, "name", name, "caller", log.Caller(4))}
 }
 
-// func NewLogContext(name string, l log.Logger) *LogContext {
-// return &LogContext{Name: name, Context: log.NewContext(l)}
-// }
+func StdLogger() log.Logger { return stdLogger }
 
-func RegisterNewLogContext(name string, l log.Logger) *LogContext {
-	ctx := &LogContext{Name: name, Context: log.NewContext(l)}
-	loggers = append(loggers, ctx)
-	return ctx
-}
+func SetStdLogger(l log.Logger) { stdLogger = l }
 
-// func StdContext() *LogContext { return stdContext }
-
-func StdLogger() *log.Logger { return loggers[0].Context }
-
-func SetStdLogger(l *log.Logger) { loggers[0].Context = l }
-
-// NewColorLogCtx creates a new logger context with ansi coloring.
-func NewColorLogCtx(name string, colorFn func(keyvals ...interface{}) term.FgBgColor) *LogContext {
-	return &LogContext{Name: name, Context: log.NewContext(term.NewLogger(os.Stdout, log.NewLogfmtLogger, colorFn))}
+// Logger implements the go-kit logger type.
+type Logger struct {
+	l log.Logger
 }
 
 // Msg logs a message to the log context.
-func (l *LogContext) Msg(message string) { l.Log("msg", message) }
+func (r Logger) Msg(message string) { r.l.Log("msg", message) }
 
-// Error logs an error to the log context.
-func (l *LogContext) Err(err error) { l.Log("msg", err.Error()) }
+// Err logs an error to the log context.
+func (r Logger) Err(err error) { r.l.Log("msg", err.Error()) }
 
-// Log writes log output to the LogContext of the package with added context
-func (l *LogContext) Log(keyvals ...interface{}) error {
-	fmt.Printf("%+#v\n", l.Context)
-	// if strings.Contains(l.ExcludeNamedContext, l.Name) {
-	// return nil
-	// }
-	cs := stack.Caller(2)
-	funcName := fmt.Sprintf("%s", cs)
-	file := cs.String()
-	return l.Context.WithPrefix("name", l.Name, "line", file, "func", funcName).Log(keyvals...)
-}
+// Log satisfies the logger interface.
+func (r Logger) Log(keyvals ...interface{}) error { return r.l.Log(keyvals...) }

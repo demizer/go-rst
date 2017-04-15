@@ -3,9 +3,9 @@ package parser
 import (
 	"fmt"
 
-	. "github.com/demizer/go-rst"
-	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/token"
+	doc "github.com/demizer/go-rst/pkg/document"
+	pos "github.com/demizer/go-rst/pkg/position"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
 type indent struct {
@@ -26,10 +26,10 @@ func (i *indentQueue) add(t *tok.Item, n doc.Node) doc.Node {
 
 func (i *indentQueue) pop() { *i = (*i)[:len(*i)-1] }
 
-func (i *indentQueue) lastStartPosition() StartPosition {
+func (i *indentQueue) lastStartPosition() pos.StartPosition {
 	var n doc.Node
 	var nl *doc.NodeList
-	var sp StartPosition
+	var sp pos.StartPosition
 
 	// FIXME: Type system pain here
 

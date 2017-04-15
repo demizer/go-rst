@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	doc "github.com/demizer/go-rst/rst/document"
-	tok "github.com/demizer/go-rst/rst/token"
+	doc "github.com/demizer/go-rst/pkg/document"
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
 func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
