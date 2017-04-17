@@ -216,7 +216,7 @@ var lexerBackupTests = []struct {
 	},
 	{
 		name:  "Start after \u00E0, 2nd line",
-		input: "Title\nà diacritic",
+		input: "Title\nà diacritic",
 		pos:   1,
 		start: 2, startLine: 2,
 		lIndex: 0, lMark: '\u00E0', lWidth: 2, lLine: 2,
