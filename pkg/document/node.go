@@ -1018,14 +1018,14 @@ func (e EnumListNode) String() string { return fmt.Sprintf("%#v", e) }
 // MarshalJSON satisfies the Marshaler interface.
 func (e EnumListNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Type     string        `json:"type"`
-		EnumType EnumListType  `json:"enumType"`
-		Affix    EnumAffixType `json:"affix"`
+		Type     string `json:"type"`
+		EnumType string `json:"enumType"`
+		Affix    string `json:"affix"`
 		NodeList `json:"nodeList"`
 	}{
 		Type:     nodeTypes[e.Type],
-		EnumType: e.EnumType,
-		Affix:    e.Affix,
+		EnumType: e.EnumType.String(),
+		Affix:    e.Affix.String(),
 		NodeList: e.NodeList,
 	})
 }

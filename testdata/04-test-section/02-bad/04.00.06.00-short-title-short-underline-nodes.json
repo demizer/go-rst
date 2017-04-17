@@ -19,7 +19,8 @@
                 "type": "NodeText",
                 "text": "ABC\n==",
                 "line": 1,
-                "length": 6
+                "length": 6,
+                "startPosition": 1
             }
         ]
     },
@@ -30,7 +31,8 @@
                 "type": "NodeText",
                 "text": "Underline too short.",
                 "line": 4,
-                "length": 20
+                "length": 20,
+                "startPosition": 1
             }
         ]
     }

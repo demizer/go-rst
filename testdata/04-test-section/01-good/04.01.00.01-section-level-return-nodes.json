@@ -6,7 +6,8 @@
                 "type": "NodeText",
                 "text": "Test return to existing, highest-level section (Title 3).",
                 "line": 1,
-                "length": 57
+                "length": 57,
+                "startPosition": 1
             }
         ]
     },
@@ -17,13 +18,16 @@
             "type": "NodeTitle",
             "text": "Title 1",
             "line": 3,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -33,7 +37,8 @@
                         "type": "NodeText",
                         "text": "Paragraph 1.",
                         "line": 5,
-                        "length": 12
+                        "length": 12,
+                        "startPosition": 1
                     }
                 ]
             },
@@ -44,13 +49,16 @@
                     "type": "NodeTitle",
                     "text": "Title 2",
                     "line": 7,
-                    "length": 7
+                    "length": 7,
+                    "startPosition": 1
                 },
+                "overLine": null,
                 "underLine": {
                     "type": "NodeAdornment",
                     "rune": "-",
                     "line": 8,
-                    "length": 7
+                    "length": 7,
+                    "startPosition": 1
                 },
                 "nodeList": [
                     {
@@ -60,7 +68,8 @@
                                 "type": "NodeText",
                                 "text": "Paragraph 2.",
                                 "line": 9,
-                                "length": 12
+                                "length": 12,
+                                "startPosition": 1
                             }
                         ]
                     }
@@ -75,13 +84,16 @@
             "type": "NodeTitle",
             "text": "Title 3",
             "line": 11,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 12,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -91,7 +103,8 @@
                         "type": "NodeText",
                         "text": "Paragraph 3.",
                         "line": 13,
-                        "length": 12
+                        "length": 12,
+                        "startPosition": 1
                     }
                 ]
             },
@@ -102,13 +115,16 @@
                     "type": "NodeTitle",
                     "text": "Title 4",
                     "line": 15,
-                    "length": 7
+                    "length": 7,
+                    "startPosition": 1
                 },
+                "overLine": null,
                 "underLine": {
                     "type": "NodeAdornment",
                     "rune": "-",
                     "line": 16,
-                    "length": 7
+                    "length": 7,
+                    "startPosition": 1
                 },
                 "nodeList": [
                     {
@@ -118,7 +134,8 @@
                                 "type": "NodeText",
                                 "text": "Paragraph 4.",
                                 "line": 17,
-                                "length": 12
+                                "length": 12,
+                                "startPosition": 1
                             }
                         ]
                     }

@@ -3,13 +3,15 @@
         "type": "NodeTransition",
         "text": "========================",
         "line": 1,
-        "length": 24
+        "length": 24,
+        "startPosition": 1
     },
     {
         "type": "NodeTransition",
         "text": "========================",
         "line": 3,
-        "length": 24
+        "length": 24,
+        "startPosition": 1
     },
     {
         "type": "NodeParagraph",
@@ -18,7 +20,8 @@
                 "type": "NodeText",
                 "text": "Test missing titles; blank line in-between.",
                 "line": 5,
-                "length": 43
+                "length": 43,
+                "startPosition": 1
             }
         ]
     },
@@ -26,12 +29,14 @@
         "type": "NodeTransition",
         "text": "========================",
         "line": 7,
-        "length": 24
+        "length": 24,
+        "startPosition": 1
     },
     {
         "type": "NodeTransition",
         "text": "========================",
         "line": 9,
-        "length": 24
+        "length": 24,
+        "startPosition": 1
     }
 ]

@@ -19,7 +19,8 @@
                 "type": "NodeText",
                 "text": "==\nABC\n==",
                 "line": 1,
-                "length": 9
+                "length": 9,
+                "startPosition": 1
             }
         ]
     },
@@ -30,7 +31,8 @@
                 "type": "NodeText",
                 "text": "Over & underline too short.",
                 "line": 5,
-                "length": 27
+                "length": 27,
+                "startPosition": 1
             }
         ]
     }

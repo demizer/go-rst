@@ -6,13 +6,15 @@
                 "type": "NodeText",
                 "text": "Paragraph",
                 "line": 1,
-                "length": 9
+                "length": 9,
+                "startPosition": 1
             }
         ]
     },
     {
         "type": "NodeBlockQuote",
         "line": 3,
+        "startPosition": 1,
         "nodeList": [
             {
                 "type": "NodeSystemMessage",

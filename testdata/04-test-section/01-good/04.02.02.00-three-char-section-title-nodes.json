@@ -6,19 +6,22 @@
             "type": "NodeTitle",
             "text": "One",
             "line": 2,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -28,7 +31,8 @@
                         "type": "NodeText",
                         "text": "Paragraph 1.",
                         "line": 5,
-                        "length": 12
+                        "length": 12,
+                        "startPosition": 1
                     }
                 ]
             }
@@ -41,19 +45,22 @@
             "type": "NodeTitle",
             "text": "Two",
             "line": 8,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 7,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 9,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -63,7 +70,8 @@
                         "type": "NodeText",
                         "text": "Paragraph 2.",
                         "line": 11,
-                        "length": 12
+                        "length": 12,
+                        "startPosition": 1
                     }
                 ]
             }
