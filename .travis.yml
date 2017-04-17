@@ -4,5 +4,4 @@ before_install:
   - go get github.com/mattn/goveralls
 script:
   - go test -v ./pkg/...
-  - go test -covermode=count -coverprofile=profile.cov
-  - goveralls -coverprofile=profile.cov -service=travis-ci
+  - goveralls -service=travis-ci -v -package ./pkg/...
