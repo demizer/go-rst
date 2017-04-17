@@ -206,24 +206,25 @@ func TestParserBackup(t *testing.T) {
 }
 
 var parserNextTests = []struct {
-	name     string
-	input    string
-	nextNum  int       // Number of times to call Parser.next(). Value starts at 1.
-	Back4Tok *tok.Item // The item to expect at Parser.token[zed-4]
-	Back3Tok *tok.Item // The item to expect at Parser.token[zed-3]
-	Back2Tok *tok.Item // The item to expect at Parser.token[zed-2]
-	Back1Tok *tok.Item // The item to expect at Parser.token[zed-1]
-	ZedToken *tok.Item // The item to expect at Parser.token[zed]
-	Peek1Tok *tok.Item // Peek tokens should be blank on next tests.
-	Peek2Tok *tok.Item
-	Peek3Tok *tok.Item
-	Peek4Tok *tok.Item
+	name        string
+	input       string
+	nextNum     int // Number of times to call Parser.next(). Value starts at 1.
+	expectError bool
+	Back4Tok    *tok.Item // The item to expect at Parser.token[zed-4]
+	Back3Tok    *tok.Item // The item to expect at Parser.token[zed-3]
+	Back2Tok    *tok.Item // The item to expect at Parser.token[zed-2]
+	Back1Tok    *tok.Item // The item to expect at Parser.token[zed-1]
+	ZedToken    *tok.Item // The item to expect at Parser.token[zed]
+	Peek1Tok    *tok.Item // Peek tokens should be blank on next tests.
+	Peek2Tok    *tok.Item
+	Peek3Tok    *tok.Item
+	Peek4Tok    *tok.Item
 }{
 	{
-		name:    "Next no input",
-		input:   "",
-		nextNum: 1,
-		// ZedToken should be nil
+		name:        "Next no input",
+		input:       "",
+		nextNum:     1,
+		expectError: true,
 	},
 	{
 		name:     "Single next from start",
@@ -332,7 +333,7 @@ func TestParserNext(t *testing.T) {
 		tr := New(tt.name, tt.input)
 		var err error
 		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
-		if err != nil {
+		if err != nil && !tt.expectError {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
 		}
@@ -342,19 +343,20 @@ func TestParserNext(t *testing.T) {
 }
 
 var parserPeekTests = []struct {
-	name     string
-	input    string
-	nextNum  int // Number of times to call Parser.next() before peek
-	peekNum  int // position argument to Parser.peek()
-	Back4Tok *tok.Item
-	Back3Tok *tok.Item
-	Back2Tok *tok.Item
-	Back1Tok *tok.Item
-	ZedToken *tok.Item
-	Peek1Tok *tok.Item
-	Peek2Tok *tok.Item
-	Peek3Tok *tok.Item
-	Peek4Tok *tok.Item
+	name        string
+	input       string
+	nextNum     int // Number of times to call Parser.next() before peek
+	peekNum     int // position argument to Parser.peek()
+	expectError bool
+	Back4Tok    *tok.Item
+	Back3Tok    *tok.Item
+	Back2Tok    *tok.Item
+	Back1Tok    *tok.Item
+	ZedToken    *tok.Item
+	Peek1Tok    *tok.Item
+	Peek2Tok    *tok.Item
+	Peek3Tok    *tok.Item
+	Peek4Tok    *tok.Item
 }{
 	{
 		name:     "Single peek no next",
@@ -400,8 +402,9 @@ var parserPeekTests = []struct {
 		Peek4Tok: &tok.Item{Type: tok.BlankLine, Text: "\n"},
 	},
 	{
-		name:    "Peek on no input",
-		peekNum: 1,
+		name:        "Peek on no input",
+		peekNum:     1,
+		expectError: true,
 	},
 }
 
@@ -427,7 +430,7 @@ func TestParserPeek(t *testing.T) {
 		tr := New(tt.name, tt.input)
 		var err error
 		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
-		if err != nil {
+		if err != nil && !tt.expectError {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
 		}
