@@ -2,6 +2,8 @@ language: go
 before_install:
   - go get github.com/mattn/goveralls
 script:
-  - go test -v ./pkg/...
+  # - go test -v ./pkg/...
   - goveralls -service=travis-ci -v -package ./pkg/... -repotoken $COVERALLS_TOKEN
+  # - git log
+  - cd $GOPATH/src/github.com/mattn/goveralls
   - git log
