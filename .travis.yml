@@ -3,7 +3,6 @@ sudo: false
 before_install:
   - go get github.com/mattn/goveralls
 script:
-  - ls -lh
-  # - go test -v demizer/go-rst/...
-  # - go test -covermode=count -coverprofile=profile.cov
-  # - goveralls -coverprofile=profile.cov -service=travis-ci
+  - go test -v ./pkg/...
+  - go test -v ./pkg/... -covermode=count -coverprofile=profile.cov
+  - goveralls -coverprofile=profile.cov -service=travis-ci
