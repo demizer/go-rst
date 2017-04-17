@@ -6,7 +6,8 @@
                 "type": "NodeText",
                 "text": "Line 1: A paragraph with three lines.\nLine 2.\nLine 3.",
                 "line": 1,
-                "length": 53
+                "length": 53,
+                "startPosition": 1
             }
         ]
     }

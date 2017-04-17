@@ -259,7 +259,7 @@ func (a EnumAffixType) String() string { return enumAffixesTypes[a] }
 // SectionNode is a a single section node. It contains overline, title, and underline nodes. NodeList contains nodes that are
 // children of the section.
 type SectionNode struct {
-	Type NodeType `json:"type"`
+	Type NodeType `json:"type,string"`
 
 	// Level is the hierarchical level of the section. The first level is level 1, any further sections encountered after
 	// the first level are given consecutive level numbers.
@@ -316,11 +316,30 @@ func NewSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *
 	return n
 }
 
+// MarshalJSON satisfies the Marshaler interface.
+func (s SectionNode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type      string         `json:"type"`
+		Level     int            `json:"level"`
+		Title     *TitleNode     `json:"title"`
+		OverLine  *AdornmentNode `json:"overLine"`
+		UnderLine *AdornmentNode `json:"underLine"`
+		NodeList  `json:"nodeList"`
+	}{
+		Type:      nodeTypes[s.Type],
+		Level:     s.Level,
+		Title:     s.Title,
+		OverLine:  s.OverLine,
+		UnderLine: s.UnderLine,
+		NodeList:  s.NodeList,
+	})
+}
+
 // TitleNode contains the parsed data for a section titles.
 type TitleNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
-	IndentLength  int      `json:"indentLength"`
+	IndentLength  int      `json:"indentLength,omitempty"`
 	Length        int      `json:"length"`
 	Line          int      `json:"line"`
 	StartPosition int      `json:"startPosition"`
@@ -337,7 +356,7 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
-		IndentLength  int    `json:"indentLength"`
+		IndentLength  int    `json:"indentLength,omitempty"`
 		Length        int    `json:"length"`
 		Line          int    `json:"line"`
 		StartPosition int    `json:"startPosition"`
@@ -354,7 +373,7 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
 	Type          NodeType `json:"type"`
-	Rune          rune     `json:"rune"`
+	Rune          rune     `json:"rune,string"`
 	Length        int      `json:"length"`
 	Line          int      `json:"line"`
 	StartPosition int      `json:"startPosition"`
@@ -370,13 +389,13 @@ func (a AdornmentNode) String() string { return fmt.Sprintf("%#v", a) }
 func (a AdornmentNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type          string `json:"type"`
-		Rune          rune   `json:"rune"`
+		Rune          string `json:"rune"`
 		Length        int    `json:"length"`
 		Line          int    `json:"line"`
 		StartPosition int    `json:"startPosition"`
 	}{
 		Type:          nodeTypes[a.Type],
-		Rune:          a.Rune,
+		Rune:          string(a.Rune),
 		Length:        a.Length,
 		Line:          a.Line,
 		StartPosition: a.StartPosition,
