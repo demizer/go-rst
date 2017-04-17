@@ -52,7 +52,7 @@ outer:
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 		case tok.Text:
-			if pi != nil && pi.Type == tok.Escape && pi.StartPosition.Int() > ci.StartPosition.Int() {
+			if pi != nil && pi.Type == tok.Escape && pi.StartPosition > ci.StartPosition {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				log.Msg("Found newline escape!")
 				nt.Text += ci.Text

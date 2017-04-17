@@ -551,11 +551,8 @@ func TestLexLine(t *testing.T) {
 	testPath := testutil.TestPathFromName("04.00.00.00-title-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	if items[0].LineNumber() != 1 {
+	if items[0].Line != 1 {
 		t.Error("Line != 1")
-	}
-	if items[0].Line.String() != "1" {
-		t.Error(`String Line != "1"`)
 	}
 }
 
@@ -565,8 +562,5 @@ func TestLexStartPosition(t *testing.T) {
 	items := lexTest(t, test)
 	if items[0].StartPosition != 1 {
 		t.Error("StartPosition != 1")
-	}
-	if items[0].StartPosition.String() != "1" {
-		t.Error(`String StartPosition != "1"`)
 	}
 }

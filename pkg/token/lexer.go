@@ -6,8 +6,6 @@ import (
 	"strings"
 	"unicode"
 	"unicode/utf8"
-
-	pos "github.com/demizer/go-rst/pkg/position"
 )
 
 // Function prototype for scanner functions
@@ -30,7 +28,7 @@ type Lexer struct {
 
 	items            chan Item // The channel items are emitted to
 	lastItem         *Item     // The last item emitted to the channel
-	lastItemPosition *pos.StartPosition
+	lastItemPosition int
 
 	indentLevel int    // For tracking indentation with indentable items
 	indentWidth string // For tracking indent width
@@ -105,9 +103,9 @@ func (l *Lexer) emit(t Type) {
 		ID:   ID(l.id),
 		Type: t,
 		Text: tok,
-		Line: pos.Line(l.lineNumber()),
+		Line: l.lineNumber(),
 		// +1 because positions begin at 1, not 0
-		StartPosition: pos.StartPosition(l.start + 1),
+		StartPosition: l.start + 1,
 		Length:        length,
 	}
 
@@ -220,7 +218,7 @@ func (l *Lexer) NextItem() *Item {
 	if ok == false {
 		return nil
 	}
-	l.lastItemPosition = &item.StartPosition
+	l.lastItemPosition = item.StartPosition
 	return &item
 
 }

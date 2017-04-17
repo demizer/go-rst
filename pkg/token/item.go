@@ -3,8 +3,6 @@ package token
 import (
 	"encoding/json"
 	"fmt"
-
-	pos "github.com/demizer/go-rst/pkg/position"
 )
 
 // Type are the types that are emitted by the lexer.
@@ -114,12 +112,12 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 
 // Struct for tokens emitted by the scanning process
 type Item struct {
-	ID                `json:"id"`
-	Type              Type   `json:"type"`
-	Text              string `json:"text"`
-	pos.Line          `json:"line"`
-	pos.StartPosition `json:"startPosition"`
-	Length            int `json:"length"`
+	ID            `json:"id"`
+	Type          Type   `json:"type"`
+	Text          string `json:"text"`
+	Line          int    `json:"line"`
+	StartPosition int    `json:"startPosition"`
+	Length        int    `json:"length"`
 }
 
 // MarshalJSON satisfies the Marshaler interface.
@@ -135,8 +133,8 @@ func (i Item) MarshalJSON() ([]byte, error) {
 		ID:            int(i.IDNumber()),
 		Type:          i.Type.String(),
 		Text:          i.Text,
-		Line:          int(i.Line),
-		StartPosition: i.StartPosition.Int(),
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
 		Length:        i.Length,
 	})
 }

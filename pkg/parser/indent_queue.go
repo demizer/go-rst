@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	doc "github.com/demizer/go-rst/pkg/document"
-	pos "github.com/demizer/go-rst/pkg/position"
 	tok "github.com/demizer/go-rst/pkg/token"
 )
 
@@ -26,10 +25,9 @@ func (i *indentQueue) add(t *tok.Item, n doc.Node) doc.Node {
 
 func (i *indentQueue) pop() { *i = (*i)[:len(*i)-1] }
 
-func (i *indentQueue) lastStartPosition() pos.StartPosition {
+func (i *indentQueue) lastStartPosition() (sp int) {
 	var n doc.Node
 	var nl *doc.NodeList
-	var sp pos.StartPosition
 
 	// FIXME: Type system pain here
 
