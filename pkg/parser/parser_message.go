@@ -109,17 +109,17 @@ func (p parserMessage) Message() (s string) {
 }
 
 // Level returns the parserMessage level.
-func (p parserMessage) Level() (s systemMessageLevel) {
+func (p parserMessage) Level() (s string) {
 	lvl := int(p)
 	switch {
 	case lvl > 0 && lvl <= 3:
-		s = levelInfo
+		s = "INFO"
 	case lvl <= 6:
-		s = levelWarning
+		s = "WARNING"
 	case lvl == 7:
-		s = levelError
+		s = "ERROR"
 	case lvl >= 8:
-		s = levelSevere
+		s = "SEVERE"
 	}
 	return
 }
