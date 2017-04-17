@@ -6,13 +6,15 @@
                 "type": "NodeText",
                 "text": "Test unexpected section titles.",
                 "line": 1,
-                "length": 31
+                "length": 31,
+                "startPosition": 1
             }
         ]
     },
     {
         "type": "NodeBlockQuote",
         "line": 3,
+        "startPosition": 1,
         "nodeList": [
             {
                 "type": "NodeSystemMessage",

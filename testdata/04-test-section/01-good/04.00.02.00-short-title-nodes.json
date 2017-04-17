@@ -6,13 +6,16 @@
             "type": "NodeTitle",
             "text": "ABC",
             "line": 1,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 3
+            "length": 3,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -22,7 +25,8 @@
                         "type": "NodeText",
                         "text": "Short title.",
                         "line": 4,
-                        "length": 12
+                        "length": 12,
+                        "startPosition": 1
                     }
                 ]
             }

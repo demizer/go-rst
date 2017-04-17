@@ -5,15 +5,17 @@
         "overLine": null,
         "title": {
             "type": "NodeTitle",
-            "text": "à with combining varia",
+            "text": "à with combining varia",
             "line": 1,
-            "length": 22
+            "length": 22,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 22
+            "length": 22,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -23,7 +25,8 @@
                         "type": "NodeText",
                         "text": "Do not count combining chars in title column width.",
                         "line": 4,
-                        "length": 51
+                        "length": 51,
+                        "startPosition": 1
                     }
                 ]
             }

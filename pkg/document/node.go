@@ -341,8 +341,8 @@ type TitleNode struct {
 	Text          string   `json:"text"`
 	IndentLength  int      `json:"indentLength,omitempty"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 // NodeType returns the Node type of the TitleNode.
@@ -358,8 +358,8 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 		Text          string `json:"text"`
 		IndentLength  int    `json:"indentLength,omitempty"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[t.Type],
 		Text:          t.Text,
@@ -375,8 +375,8 @@ type AdornmentNode struct {
 	Type          NodeType `json:"type"`
 	Rune          rune     `json:"rune,string"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 // NodeType returns the Node type of the AdornmentNode.
@@ -391,8 +391,8 @@ func (a AdornmentNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Rune          string `json:"rune"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[a.Type],
 		Rune:          string(a.Rune),
@@ -480,8 +480,8 @@ type InlineEmphasisNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewInlineEmphasis(i *tok.Item) *InlineEmphasisNode {
@@ -506,8 +506,8 @@ func (e InlineEmphasisNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[e.Type],
 		Text:          e.Text,
@@ -522,8 +522,8 @@ type InlineStrongNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewInlineStrong(i *tok.Item) *InlineStrongNode {
@@ -548,8 +548,8 @@ func (s InlineStrongNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[s.Type],
 		Text:          s.Text,
@@ -564,8 +564,8 @@ type InlineLiteralNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewInlineLiteral(i *tok.Item) *InlineLiteralNode {
@@ -590,8 +590,8 @@ func (l InlineLiteralNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[l.Type],
 		Text:          l.Text,
@@ -606,8 +606,8 @@ type InlineInterpretedText struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
 	NodeList `json:"nodeList"`
 }
@@ -634,8 +634,8 @@ func (i InlineInterpretedText) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 		NodeList      `json:"nodeList"`
 	}{
 		Type:          nodeTypes[i.Type],
@@ -652,8 +652,8 @@ type InlineInterpretedTextRole struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewInlineInterpretedTextRole(i *tok.Item) *InlineInterpretedTextRole {
@@ -678,8 +678,8 @@ func (i InlineInterpretedTextRole) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[i.Type],
 		Text:          i.Text,
@@ -692,8 +692,8 @@ func (i InlineInterpretedTextRole) MarshalJSON() ([]byte, error) {
 // BlockQuoteNode contains a parsed blockquote Node. Any nodes that are children of the blockquote are contained in NodeList.
 type BlockQuoteNode struct {
 	Type          NodeType `json:"type"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 	// NodeList contains Nodes parsed as children of the BlockQuoteNode.
 	NodeList `json:"nodeList"`
 }
@@ -727,8 +727,8 @@ func (b BlockQuoteNode) String() string { return fmt.Sprintf("%#v", b) }
 func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type          string `json:"type"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 		NodeList      `json:"nodeList"`
 	}{
 		Type:          nodeTypes[b.Type],
@@ -742,7 +742,7 @@ func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
 // Warning, Error, Info, and Severe.
 type SystemMessageNode struct {
 	Type NodeType `json:"type"`
-	Line int      `json:"line"`
+	Line int      `json:"line,omitempty"`
 
 	// The type of parser message that generated the systemMessage.
 	MessageType string `json:"messageType"`
@@ -775,7 +775,7 @@ func (s SystemMessageNode) String() string { return fmt.Sprintf("%#v", s) }
 func (s SystemMessageNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type        string `json:"type"`
-		Line        int    `json:"line"`
+		Line        int    `json:"line,omitempty"`
 		MessageType string `json:"messageType"`
 		Severity    string `json:"severity"`
 		NodeList    `json:"nodeList"`
@@ -793,8 +793,8 @@ type LiteralBlockNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewLiteralBlock(i *tok.Item) *LiteralBlockNode {
@@ -819,8 +819,8 @@ func (l LiteralBlockNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[l.Type],
 		Text:          l.Text,
@@ -835,8 +835,8 @@ type TransitionNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewTransition(i *tok.Item) *TransitionNode {
@@ -861,8 +861,8 @@ func (t TransitionNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[t.Type],
 		Text:          t.Text,
@@ -877,8 +877,8 @@ type CommentNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text,omitempty"`
 	Length        int      `json:"length,omitempty"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 func NewComment(i *tok.Item) *CommentNode {
@@ -903,8 +903,8 @@ func (c CommentNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text,omitempty"`
 		Length        int    `json:"length,omitempty"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[c.Type],
 		Text:          c.Text,
@@ -1103,8 +1103,8 @@ type DefinitionTermNode struct {
 	Type          NodeType `json:"type"`
 	Text          string   `json:"text"`
 	Length        int      `json:"length"`
-	Line          int      `json:"line"`
-	StartPosition int      `json:"startPosition"`
+	Line          int      `json:"line,omitempty"`
+	StartPosition int      `json:"startPosition,omitempty"`
 }
 
 // NodeType returns the Node type of DefinitionTermNode.
@@ -1119,8 +1119,8 @@ func (d DefinitionTermNode) MarshalJSON() ([]byte, error) {
 		Type          string `json:"type"`
 		Text          string `json:"text"`
 		Length        int    `json:"length"`
-		Line          int    `json:"line"`
-		StartPosition int    `json:"startPosition"`
+		Line          int    `json:"line,omitempty"`
+		StartPosition int    `json:"startPosition,omitempty"`
 	}{
 		Type:          nodeTypes[d.Type],
 		Text:          d.Text,
@@ -1133,7 +1133,7 @@ func (d DefinitionTermNode) MarshalJSON() ([]byte, error) {
 // DefinitionNode defines a difinition element.
 type DefinitionNode struct {
 	Type     NodeType `json:"type"`
-	Line     int      `json:"line"`
+	Line     int      `json:"line,omitempty"`
 	NodeList `json:"nodeList"`
 }
 
