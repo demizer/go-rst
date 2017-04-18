@@ -2,6 +2,8 @@
 go-rst - reStructuredText for Go
 ================================
 
+.. image:: https://travis-ci.org/demizer/go-rst.svg?branch=master
+    :target: https://travis-ci.org/demizer/go-rst
 .. image:: https://coveralls.io/repos/github/demizer/go-rst/badge.svg?branch=master
     :target: https://coveralls.io/github/demizer/go-rst?branch=master
 .. image:: https://goreportcard.com/badge/github.com/demizer/go-rst
