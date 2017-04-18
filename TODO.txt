@@ -1,35 +1,8 @@
-* Mon Jan 23 21:50 2017: Remove custom json similarity checks and used jsondiff (jd)
-
-  The lexer/parser test checker is overly complex at about 2000 lines. We need to make sure the json output of the
-  lexer/parser match the expected results and that's it. This can be done with the json diff library.
-
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
-* Sun Jan 22 02:45 2017: Add MarshalJSON() to all Nodes in node.go
-
-  otherwise diff output on errors shows an index number and not the type!
-
-* Sun Jan 22 00:26 2017: Use travis.ci for building grst
-
-  drone.io went belly up, beta.drone.io doesn't allow me to login...
-
-* Sat Jan 21 23:50 2017: Split up the parse package intq lexer, parser, and document
-
-  * lexer package contains all the files starting with "lexer_"
-
-  * parser package containes all files starting with "parse_"
-
-  * document package containes all files starting with "node_"
-
-  The parse directory is becoming too large because it contains three packages...
-
-* Fri Feb 19 23:52 2016: Rename *Node to Node* in node.go
-
-  NodeSystemMessage becomes SystemMessageNode
-
-* Thu Oct 20 00:41 2016: CURRENTLY WORKING ON FINISHING GOOD TESTS FOR INLINE MARKUP
+* Thu Oct 20 00:41 2016: IMPLEMENT GOOD TESTS FOR INLINE MARKUP
 
 * Tue Oct 11 00:10 2016: Document creating new tests
 
@@ -37,9 +10,9 @@
 
   * document debugging tips
 
-* Mon Oct 10 17:53 2016: sectionLevels.Add() should do one thing
+* Mon Oct 10 17:53 2016: sectionLevels.Add() should be renamed to AddOrReuse()
 
-  In parse.go#399 a section is added or existing is returned. We should rename this function from Add() to AddOrReuse() for
+  In section.go#145 a section is added or existing is returned. We should rename this function from Add() to AddOrReuse() for
   self documentation.
 
 * Mon Oct 10 01:44 2016: Need to add blockquote levels
@@ -62,9 +35,3 @@
   From the spec:
 
   Other whitespace characters (form feeds [chr(12)] and vertical tabs [chr(11)]) are converted to single spaces before processing.
-
-* Sun Feb 28 09:00 2016: renumber-items.sh should only take the test name, it should intelligently find the test and
-  renumber.
-
-* Sun Feb 28 09:21 2016: If I run a lex test directly then "startPosition" is set to 0. It should always be specified in the
-  items.

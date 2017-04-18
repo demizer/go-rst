@@ -30,7 +30,7 @@ func lexTest(t *testing.T, test *testutil.Test) []Item {
 	return items
 }
 
-// Test equality between items and expected items from unmarshalled json data, field by field.  Returns error in case of
+// Test equality between items and expected items from unmarshalled json data, field by field. Returns error in case of
 // error during json unmarshalling, or mismatch between items and the expected output.
 func equal(t *testing.T, expectItems []interface{}, items []Item) {
 	lLen := len(items)
@@ -45,6 +45,7 @@ func equal(t *testing.T, expectItems []interface{}, items []Item) {
 	}
 
 	if lLen != eLen {
+		// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
 		o, err := testutil.JsonDiff(expectItems, toSlice(items))
 		if err != nil {
 			fmt.Println(o)
