@@ -6,13 +6,16 @@
             "type": "NodeTitle",
             "text": "1. Numbered Title",
             "line": 1,
-            "length": 17
+            "length": 17,
+            "startPosition": 1
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 17
+            "length": 17,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -22,7 +25,8 @@
                         "type": "NodeText",
                         "text": "Paragraph.",
                         "line": 4,
-                        "length": 10
+                        "length": 10,
+                        "startPosition": 1
                     }
                 ]
             }

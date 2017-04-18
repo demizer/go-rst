@@ -7,13 +7,15 @@
             "type": "NodeTitle",
             "text": "Title",
             "line": 1,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -23,7 +25,8 @@
                         "type": "NodeText",
                         "text": "Test section header and paragraph.",
                         "line": 4,
-                        "length": 34
+                        "length": 34,
+                        "startPosition": 1
                     }
                 ]
             }

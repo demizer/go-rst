@@ -24,7 +24,8 @@
                 "type": "NodeText",
                 "text": "Test missing titles; nothing in-between.",
                 "line": 4,
-                "length": 40
+                "length": 40,
+                "startPosition": 1
             }
         ]
     },

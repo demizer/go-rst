@@ -14,13 +14,15 @@
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
-            "length": 7
+            "length": 7,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -48,7 +50,8 @@
                         "type": "NodeText",
                         "text": "Test long title and space normalization.",
                         "line": 5,
-                        "length": 40
+                        "length": 40,
+                        "startPosition": 1
                     }
                 ]
             }

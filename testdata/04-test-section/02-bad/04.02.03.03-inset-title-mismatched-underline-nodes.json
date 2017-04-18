@@ -24,7 +24,8 @@
                 "type": "NodeText",
                 "text": "Paragraph.",
                 "line": 5,
-                "length": 10
+                "length": 10,
+                "startPosition": 1
             }
         ]
     }

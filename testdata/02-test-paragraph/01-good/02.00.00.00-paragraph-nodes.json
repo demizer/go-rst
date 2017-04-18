@@ -6,7 +6,8 @@
                 "type": "NodeText",
                 "text": "A paragraph.",
                 "line": 1,
-                "length": 12
+                "length": 12,
+                "startPosition": 1
             }
         ]
     }

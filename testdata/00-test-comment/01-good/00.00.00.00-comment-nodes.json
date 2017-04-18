@@ -12,6 +12,7 @@
             {
                 "type": "NodeText",
                 "text": "Paragraph.",
+                "startPosition": 1,
                 "line": 3,
                 "length": 10
             }

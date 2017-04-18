@@ -6,7 +6,8 @@
                 "type": "NodeText",
                 "text": "Test paragraph section header and paragraph.",
                 "line": 1,
-                "length": 44
+                "length": 44,
+                "startPosition": 1
             }
         ]
     },
@@ -18,13 +19,15 @@
             "type": "NodeTitle",
             "text": "Title",
             "line": 3,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 4,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -34,7 +37,8 @@
                         "type": "NodeText",
                         "text": "Paragraph.",
                         "line": 6,
-                        "length": 10
+                        "length": 10,
+                        "startPosition": 1
                     }
                 ]
             }

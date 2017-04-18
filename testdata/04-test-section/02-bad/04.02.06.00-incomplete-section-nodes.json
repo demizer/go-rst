@@ -20,7 +20,8 @@
                 "type": "NodeText",
                 "text": "==\nABC",
                 "line": 1,
-                "length": 6
+                "length": 6,
+                "startPosition": 1
             }
         ]
     }

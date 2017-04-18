@@ -6,7 +6,8 @@
                 "type": "NodeText",
                 "text": "Two paragraphs test.",
                 "line": 1,
-                "length": 20
+                "length": 20,
+                "startPosition": 1
             }
         ]
     },
@@ -17,7 +18,8 @@
                 "type": "NodeText",
                 "text": "Paragraph 2.",
                 "line": 3,
-                "length": 12
+                "length": 12,
+                "startPosition": 1
             }
         ]
     }

@@ -6,19 +6,22 @@
             "type": "NodeTitle",
             "text": "Title",
             "line": 2,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 1,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 3,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -28,7 +31,8 @@
                         "type": "NodeText",
                         "text": "Test overline title.",
                         "line": 5,
-                        "length": 20
+                        "length": 20,
+                        "startPosition": 1
                     }
                 ]
             }

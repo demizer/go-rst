@@ -6,13 +6,17 @@
             "type": "NodeTitle",
             "text": "Empty Section",
             "line": 1,
-            "length": 13
+            "length": 13,
+            "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 13
-        }
+            "length": 13,
+            "startPosition": 1
+        },
+        "nodeList": null,
+        "overLine": null
     }
 ]

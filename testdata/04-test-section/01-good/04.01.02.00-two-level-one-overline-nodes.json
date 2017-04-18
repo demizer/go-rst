@@ -6,13 +6,16 @@
             "type": "NodeTitle",
             "text": "Hello",
             "line": 1,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
             "line": 2,
-            "length": 5
+            "length": 5,
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -22,7 +25,8 @@
                         "type": "NodeText",
                         "text": "This is a section level one paragraph.",
                         "line": 4,
-                        "length": 38
+                        "length": 38,
+                        "startPosition": 1
                     }
                 ]
             },
@@ -33,19 +37,22 @@
                     "type": "NodeTitle",
                     "text": "World",
                     "line": 7,
-                    "length": 5
+                    "length": 5,
+                    "startPosition": 1
                 },
                 "overLine": {
                     "type": "NodeAdornment",
                     "rune": "=",
                     "line": 6,
-                    "length": 5
+                    "length": 5,
+                    "startPosition": 1
                 },
                 "underLine": {
                     "type": "NodeAdornment",
                     "rune": "=",
                     "line": 8,
-                    "length": 5
+                    "length": 5,
+                    "startPosition": 1
                 },
                 "nodeList": [
                     {
@@ -55,7 +62,8 @@
                                 "type": "NodeText",
                                 "text": "This is a section level two paragraph.",
                                 "line": 10,
-                                "length": 38
+                                "length": 38,
+                                "startPosition": 1
                             }
                         ]
                     }

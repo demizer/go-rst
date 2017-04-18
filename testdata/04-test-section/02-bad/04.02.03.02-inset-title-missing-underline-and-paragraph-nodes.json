@@ -24,7 +24,8 @@
                 "type": "NodeText",
                 "text": "Test missing underline, with paragraph.",
                 "line": 4,
-                "length": 39
+                "length": 39,
+                "startPosition": 1
             }
         ]
     }
