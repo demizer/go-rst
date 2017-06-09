@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"os"
 	"testing"
 
 	"github.com/demizer/go-rst/pkg/testutil"
@@ -80,9 +79,6 @@ func Test_00_00_00_07_ParseCommentNotSubstitutionDefinitionGood(t *testing.T) {
 }
 
 func Test_00_00_00_08_ParseCommentIsNotReferenceGood_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
 	testPath := testutil.TestPathFromName("00.00.00.08-comment-not-reference")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
