@@ -1,15 +1,15 @@
 package token
 
 func lexText(l *Lexer) stateFn {
-	log.Msg("lexText start")
+	l.Msg("lexText start")
 	for {
-		// log.Log.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
+		// l.Debugf("l.mark: %q, l.index: %d, l.width: %d, l.line: %d", l.mark, l.index, l.width, l.lineNumber())
 		if isEscaped(l) {
 			l.emit(Text)
 			lexEscape(l)
 		}
 		if isInlineMarkup(l) {
-			log.Msg("FOUND inline reference!")
+			l.Msg("FOUND inline reference!")
 			if l.index > l.start {
 				l.emit(Text)
 			}
@@ -19,7 +19,7 @@ func lexText(l *Lexer) stateFn {
 			}
 			continue
 		} else if isInlineReference(l) {
-			log.Msg("FOUND inline reference!")
+			l.Msg("FOUND inline reference!")
 			lexInlineReference(l)
 			continue
 		}

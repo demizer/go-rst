@@ -1,2 +1,9 @@
 [
+    {
+        "type": "NodeComment",
+        "text": "_",
+        "startPosition": 4,
+        "line": 1,
+        "length": 1
+    }
 ]

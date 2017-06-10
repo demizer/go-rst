@@ -8,7 +8,7 @@ import (
 )
 
 func (p *Parser) paragraph(i *tok.Item) doc.Node {
-	log.Log("msg", "Have token", "token", i)
+	p.Msgr("Have token", "token", i)
 	var np doc.ParagraphNode
 	if !p.nodeTarget.IsParagraphNode() {
 		np := doc.NewParagraph()
@@ -24,28 +24,28 @@ outer:
 		pi := p.peekBack(1) // previous item
 		// ni := p.peek(1)     // next item
 
-		log.Log("msg", "Have token", "token", ci)
+		p.Msgr("Have token", "token", ci)
 
 		if ci == nil {
-			log.Msg("ci == nil, breaking")
+			p.Msg("ci == nil, breaking")
 			break
 		} else if ci.Type == tok.EOF {
-			log.Msg("current item type == tok.EOF")
+			p.Msg("current item type == tok.EOF")
 			break
 		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
-			log.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
+			p.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
 			continue
 		}
 
-		log.Msg("Going into subparser...")
+		p.Msg("Going into subparser...")
 
 		switch ci.Type {
 		case tok.Space:
 			if pi != nil && pi.Type == tok.Escape {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
-				log.Msg("Found escaped space!")
+				p.Msg("Found escaped space!")
 				continue
 			}
 			// Parse Test 02.00.03.00 :: Emphasis wrapped in unicode spaces
@@ -54,7 +54,7 @@ outer:
 		case tok.Text:
 			if pi != nil && pi.Type == tok.Escape && pi.StartPosition > ci.StartPosition {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
-				log.Msg("Found newline escape!")
+				p.Msg("Found newline escape!")
 				nt.Text += ci.Text
 				nt.Length = utf8.RuneCountInString(nt.Text)
 			} else {
@@ -76,18 +76,18 @@ outer:
 		case tok.EnumListArabic:
 			p.nodeTarget.Append(p.enumList(ci))
 		case tok.BlankLine:
-			log.Msg("Found newline, closing paragraph")
+			p.Msg("Found newline, closing paragraph")
 			p.backup()
 			break outer
 		}
-		log.Msg("Continuing...")
+		p.Msg("Continuing...")
 	}
-	log.Log("msg", "number of indents", "p.indents.len", p.indents.len())
+	p.Msgr("number of indents", "p.indents.len", p.indents.len())
 	if p.indents.len() > 0 {
 		p.nodeTarget.SetParent(p.indents.topNode())
-		log.Log("msg", "Set node target to p.indents.topNodeList!", "nodePtr", p.nodeTarget)
+		p.Msgr("Set node target to p.indents.topNodeList!", "nodePtr", p.nodeTarget)
 	} else if len(p.sectionLevels.levels) == 0 {
-		log.Msg("Setting node target to p.nodes!")
+		p.Msg("Setting node target to p.nodes!")
 		p.nodeTarget.Reset()
 	}
 	return np

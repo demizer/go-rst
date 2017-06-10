@@ -1,7 +1,12 @@
 package parser
 
 import (
+	"github.com/demizer/go-rst/pkg/log"
+	"github.com/demizer/go-rst/pkg/testutil"
+
 	doc "github.com/demizer/go-rst/pkg/document"
+
+	klog "github.com/go-kit/kit/log"
 )
 
 // sectionLevel is a single section level. sections contains a list of pointers to doc.SectionNode that are dertermined to be a
@@ -18,6 +23,12 @@ type sectionLevel struct {
 type sectionLevels struct {
 	lastSectionNode *doc.SectionNode
 	levels          []*sectionLevel
+
+	log.Logger
+}
+
+func newSectionLevels(logr klog.Logger) *sectionLevels {
+	return &sectionLevels{Logger: log.NewLogger("sectionLvl", true, testutil.LogExcludes, logr)}
 }
 
 // FindByRune loops through the sectionLevels to find a section using a Rune as the key. If the section is found, a pointer
@@ -44,7 +55,7 @@ func (s *sectionLevels) Add(sec *doc.SectionNode) (err parserMessage) {
 		if sec.OverLine != nil {
 			oLine = true
 		}
-		log.Log("msg", "Creating new sectionLevel", "level", level)
+		s.Msgr("Creating new sectionLevel", "level", level)
 		secLvl = &sectionLevel{
 			rChar: sec.UnderLine.Rune,
 			level: level, overLine: oLine,
@@ -75,7 +86,7 @@ func (s *sectionLevels) Add(sec *doc.SectionNode) (err parserMessage) {
 			level = len(s.levels) + 1
 			newSectionLevel()
 		} else {
-			log.Log("msg", "using sectionLevel", "sectionLevel", secLvl.level)
+			s.Msgr("using sectionLevel", "sectionLevel", secLvl.level)
 			level = secLvl.level
 		}
 	}
@@ -105,7 +116,7 @@ exit:
 		for j := len((s.levels)[i].sections) - 1; j >= 0; j-- {
 			sec = (s.levels)[i].sections[j]
 			if sec.Level == level {
-				log.Log("msg", "found sectionLevel", "sectionLevel", sec.Level)
+				s.Msgr("found sectionLevel", "sectionLevel", sec.Level)
 				break exit
 			}
 		}

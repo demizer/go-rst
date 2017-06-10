@@ -7,26 +7,27 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/demizer/go-rst/pkg/logging"
-	kit "github.com/go-kit/kit/log"
+	"github.com/demizer/go-rst/pkg/log"
+	klog "github.com/go-kit/kit/log"
 	jd "github.com/josephburnett/jd/lib"
-)
-
-var (
-	debug               bool
-	excludeNamedContext string // Exclude a log context from being shown in the output
 )
 
 func init() { SetDebug() }
 
+var (
+	StdLogger   = klog.NewNopLogger()
+	debug       bool
+	LogExcludes log.LoggerExcludes
+)
+
 // SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test
 // binary and also sets the template for logging output.
 func SetDebug() {
-	flag.StringVar(&excludeNamedContext, "exclude", "test", "Exclude context from output.")
+	flag.Var(&LogExcludes, "exclude", "Exclude context from output.")
 	flag.BoolVar(&debug, "debug", false, "Enable debug output.")
 	flag.Parse()
 	if debug {
-		logging.SetStdLogger(kit.NewLogfmtLogger(os.Stdout))
+		StdLogger = klog.NewLogfmtLogger(os.Stdout)
 	}
 }
 

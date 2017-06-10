@@ -4,15 +4,7 @@ import (
 	"strconv"
 	"unicode"
 	"unicode/utf8"
-
-	"github.com/demizer/go-rst/pkg/logging"
 )
-
-var log logging.Logger
-
-func init() {
-	log = logging.NewLogger("lexer", logging.StdLogger())
-}
 
 // EOL is denoted by a utf8.RuneError
 var EOL rune = utf8.RuneError

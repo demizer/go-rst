@@ -1,3 +1,14 @@
+* Sat Jun 10 03:54 2017: fix logging FINAL
+
+  - fix logging in sectionLevels
+  - DONE fix logging in indentQueue
+  - DONE get rid of l.Log global in node.go
+  - DONE Verify output can be excluded by name. So --exclude-name=lexer to suppress lexer output. We should be able to use it multiple times.
+  - DONE add Dump() to pkg/log
+  - DONE add DumpExit() to pkg/log
+  - DONE Change l.log.msg to l.Msg
+  - DONE Change l.log.log to l.Log
+
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst

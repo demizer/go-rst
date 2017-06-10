@@ -15,16 +15,16 @@ func isSection(l *Lexer) bool {
 		for j := 0; j < len(input); j++ {
 			r, _ := utf8.DecodeRuneInString(input[j:])
 			if unicode.IsSpace(r) {
-				log.Msg("Skipping space rune")
+				l.Msg("Skipping space rune")
 				continue
 			}
 			if first == '\x00' {
 				first = r
 				last = r
 			}
-			// log.Log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
+			// l.Log.Debugf("first: %q, last: %q, r: %q, j: %d", first, last, r, j)
 			if !isSectionAdornment(r) || (r != first && last != first) {
-				log.Msg("Section not found")
+				l.Msg("Section not found")
 				return false
 			}
 			last = r
@@ -33,26 +33,26 @@ func isSection(l *Lexer) bool {
 	}
 
 	if isTransition(l) {
-		log.Msg("Returning (found transition)")
+		l.Msg("Returning (found transition)")
 		return false
 	}
 
-	log.Msg("Checking current line")
+	l.Msg("Checking current line")
 	if checkLine(l.currentLine()) {
-		log.Msg("Found section adornment")
+		l.Msg("Found section adornment")
 		return true
 	}
 
-	log.Msg("Checking next line")
+	l.Msg("Checking next line")
 
 	nLine := l.peekNextLine()
 	if nLine != "" {
 		if checkLine(nLine) {
-			log.Msg("Found section adornment (nextline)")
+			l.Msg("Found section adornment (nextline)")
 			return true
 		}
 	}
-	log.Msg("Section not found")
+	l.Msg("Section not found")
 	return false
 }
 
@@ -69,7 +69,7 @@ func isSectionAdornment(r rune) bool {
 // lexSection is used after isSection() has determined that the next runes of input are section.  From here, the lexTitle()
 // and lexSectionAdornment() are called based on the input.
 func lexSection(l *Lexer) stateFn {
-	// log.Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
+	// l.Log.Debugf("l.mark: %#U, l.index: %d, l.start: %d, l.width: %d, " + "l.line: %d", l.mark, l.index, l.start,
 	// l.width, l.lineNumber())
 	if isSectionAdornment(l.mark) {
 		if l.lastItem != nil && l.lastItem.Type != Title {

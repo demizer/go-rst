@@ -6,6 +6,11 @@ import (
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/demizer/go-rst/pkg/log"
+	"github.com/demizer/go-rst/pkg/testutil"
+
+	klog "github.com/go-kit/kit/log"
 )
 
 // Function prototype for scanner functions
@@ -32,15 +37,20 @@ type Lexer struct {
 
 	indentLevel int    // For tracking indentation with indentable items
 	indentWidth string // For tracking indent width
+
+	log.Logger
 }
 
-func newLexer(name string, input []byte) (l *Lexer, err error) {
+func newLexer(name string, input []byte, logr klog.Logger) (l *Lexer, err error) {
 	if len(input) == 0 {
 		err = errors.New("no input given")
 		return
 	}
 
-	l = &Lexer{Name: name}
+	l = &Lexer{
+		Name:   name,
+		Logger: log.NewLogger("lexer", true, testutil.LogExcludes, logr),
+	}
 
 	ni, err := normalize(input)
 	if err != nil {
@@ -51,7 +61,7 @@ func newLexer(name string, input []byte) (l *Lexer, err error) {
 	lines := strings.Split(string(ni), "\n")
 
 	mark, width := utf8.DecodeRuneInString(lines[0][0:])
-	log.Log("mark", mark, "index", 0, "line", 1)
+	l.Log("mark", mark, "index", 0, "line", 1)
 
 	l.input = string(ni) // stored string is never altered
 	l.lines = lines
@@ -65,8 +75,8 @@ func newLexer(name string, input []byte) (l *Lexer, err error) {
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
 // to identify the lexing process in debugging.
-func Lex(name string, input []byte) (l *Lexer, err error) {
-	l, err = newLexer(name, input)
+func Lex(name string, input []byte, logr klog.Logger) (l *Lexer, err error) {
+	l, err = newLexer(name, input, logr)
 	if err != nil {
 		return
 	}
@@ -109,13 +119,13 @@ func (l *Lexer) emit(t Type) {
 		Length:        length,
 	}
 
-	log.Log("ID", ID(l.id)+1, t.String(), fmt.Sprintf("%q", tok), "l.start+1", l.start+1, "l.index",
+	l.Log("ID", ID(l.id)+1, t.String(), fmt.Sprintf("%q", tok), "l.start+1", l.start+1, "l.index",
 		l.index, "line", l.lineNumber())
 
 	l.items <- nItem
 	l.lastItem = &nItem
 	l.start = l.index
-	log.Log("msg", "Position after EMIT", "l.mark", fmt.Sprintf("%q", l.mark), "l.start", l.start,
+	l.Log("msg", "Position after EMIT", "l.mark", fmt.Sprintf("%q", l.mark), "l.start", l.start,
 		"l.index", l.index, "line", l.lineNumber())
 }
 
@@ -272,14 +282,14 @@ func (l *Lexer) isEndOfLine() bool {
 func lexStart(l *Lexer) stateFn {
 	for {
 		if l.index == 0 && l.start == 0 {
-			log.Log("msg", "lexing line", "text", l.currentLine(), "line", l.lineNumber())
+			l.Log("msg", "lexing line", "text", l.currentLine(), "line", l.lineNumber())
 		}
 		if l.index-l.start <= l.width && l.width > 0 && !l.isEndOfLine() {
 			if l.index == 0 && l.mark != ' ' {
 				l.indentLevel = 0
 				l.indentWidth = ""
 			}
-			log.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
+			l.Log("mark", fmt.Sprintf("%#U", l.mark), "start", l.start, "index", l.index,
 				"width", l.width, "line", l.lineNumber())
 			if isComment(l) {
 				return lexComment
@@ -305,16 +315,16 @@ func lexStart(l *Lexer) stateFn {
 				return lexText
 			}
 		} else if l.isEndOfLine() {
-			log.Msg("isEndOfLine == true")
+			l.Msg("isEndOfLine == true")
 			if l.start == l.index {
 				if l.start == 0 && len(l.currentLine()) == 0 {
-					log.Msg("Found blank line")
+					l.Msg("Found blank line")
 					l.emit(BlankLine)
 					if l.isLastLine() {
 						break
 					}
 				} else if l.isLastLine() {
-					log.Msg("Found end of last line")
+					l.Msg("Found end of last line")
 					break
 				}
 			}
@@ -329,18 +339,18 @@ func lexStart(l *Lexer) stateFn {
 
 // lexSpace consumes space characters (space and tab) in the input and emits a Space token.
 func lexSpace(l *Lexer) stateFn {
-	log.Log("l.mark", l.mark)
+	l.Log("l.mark", l.mark)
 	for unicode.IsSpace(l.mark) {
-		log.Log("msg", "found space rune", "isSpace", unicode.IsSpace(l.mark))
+		l.Log("msg", "found space rune", "isSpace", unicode.IsSpace(l.mark))
 		if r := l.peek(1); unicode.IsSpace(r) {
 			l.next()
 		} else {
-			log.Msg("Next mark is not space!")
+			l.Msg("Next mark is not space!")
 			l.next()
 			break
 		}
 	}
-	log.Log("start", l.start, "index", l.index)
+	l.Log("start", l.start, "index", l.index)
 	if l.start < l.index {
 		l.emit(Space)
 	}

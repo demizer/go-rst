@@ -4,15 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/demizer/go-rst/pkg/logging"
 	tok "github.com/demizer/go-rst/pkg/token"
 )
-
-var log logging.Logger
-
-func init() {
-	log = logging.NewLogger("ast", logging.StdLogger())
-}
 
 // NodeType identifies the type of a parse tree node.
 type NodeType int
@@ -133,87 +126,6 @@ func (l *NodeList) Append(n ...Node) {
 
 // last returns the last item added to the slice
 func (l *NodeList) LastNode(n ...Node) Node { return (*l)[len(*l)-1] }
-
-// NodeTarget contains the NodeList where subsequent nodes will be added during parsing. It also contains a pointer to the
-// parent Node of the NodeTarget NodeList.
-type NodeTarget struct {
-	MainList *NodeList // The default NodeList for reset()
-	SubList  *NodeList // The nodelist contained in target
-	Parent   Node      // If set, a parent Node containing a NodeList. Can be nil.
-}
-
-func NewNodeTarget(pNodes *NodeList) *NodeTarget {
-	return &NodeTarget{MainList: pNodes, SubList: pNodes}
-}
-
-func (nt *NodeTarget) Reset() {
-	log.Log("msg", "Resetting Tree.Nodes", "nodePointer", fmt.Sprintf("%p", nt.MainList))
-	nt.SubList = nt.MainList
-	nt.Parent = nil
-}
-
-func (nt *NodeTarget) Append(n ...Node) {
-	for _, node := range n {
-		log.Log("msg", "Adding node", "nodePointer", fmt.Sprintf("%p", &node),
-			"nodeListPointer", fmt.Sprintf("%p", nt.SubList), "node", node.String())
-		nt.SubList.Append(node)
-	}
-}
-
-// setParent sets the NodeTarget to the NodeList of a Node
-func (nt *NodeTarget) SetParent(n Node) {
-	// log.Log("msg", "setParent have node", "node", n.(Node).String())
-	// log.Log("msg", "NodeTarget before", "nodeParentPointer", fmt.Sprintf("%p", nt.parent),
-	// "nodeListPointer", fmt.Sprintf("%p", nt.subList))
-	switch t := n.(type) {
-	case *ParagraphNode:
-		nt.SubList = &n.(*ParagraphNode).NodeList
-		nt.Parent = n
-	case *InlineInterpretedText:
-		nt.SubList = &n.(*InlineInterpretedText).NodeList
-		nt.Parent = n
-	case *BlockQuoteNode:
-		nt.SubList = &n.(*BlockQuoteNode).NodeList
-		nt.Parent = n
-	case *SystemMessageNode:
-		nt.SubList = &n.(*SystemMessageNode).NodeList
-		nt.Parent = n
-	case *BulletListNode:
-		nt.SubList = &n.(*BulletListNode).NodeList
-		nt.Parent = n
-	case *BulletListItemNode:
-		nt.SubList = &n.(*BulletListItemNode).NodeList
-		nt.Parent = n
-	case *EnumListNode:
-		nt.SubList = &n.(*EnumListNode).NodeList
-		nt.Parent = n
-	case *DefinitionListNode:
-		nt.SubList = &n.(*DefinitionListNode).NodeList
-		nt.Parent = n
-	case *DefinitionNode:
-		nt.SubList = &n.(*DefinitionNode).NodeList
-		nt.Parent = n
-	case *SectionNode:
-		nt.SubList = &n.(*SectionNode).NodeList
-		nt.Parent = n
-	default:
-		log.Log("msg", "WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
-	}
-	// log.Log("msg", "NodeTarget after", "nodeMainListPointer", fmt.Sprintf("%p", nt.mainList),
-	// "nodeSubListPointer", fmt.Sprintf("%p", nt.subList), "nodeParentPointer", fmt.Sprintf("%p", nt.parent))
-}
-
-// isParentParagraph will return true if the parent Node of the NodeTarget is a paragraph.
-func (nt *NodeTarget) IsParagraphNode() bool {
-	switch nt.Parent.(type) {
-	case *ParagraphNode:
-		log.Msg("nt.parent is type *ParagraphNode!")
-		return true
-	default:
-		log.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.Parent))
-	}
-	return false
-}
 
 // EnumListType identifies the type of the enumeration list element
 type EnumListType int

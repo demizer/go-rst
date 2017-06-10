@@ -23,18 +23,18 @@ func isReferenceNameSimple(l *Lexer, fromPos int) bool {
 		if p == ':' {
 			break
 		} else if unicode.IsSpace(p) {
-			log.Msg("NOT FOUND")
+			l.Msg("NOT FOUND")
 			return false
 		} else if p == EOL {
-			log.Msg("NOT FOUND")
+			l.Msg("NOT FOUND")
 			return false
 		} else if !isReferenceNameSimpleAllowedRune(p) {
-			log.Msg("NOT FOUND")
+			l.Msg("NOT FOUND")
 			return false
 		}
 		count++
 	}
-	log.Msg("FOUND")
+	l.Msg("FOUND")
 	return true
 }
 
@@ -46,7 +46,7 @@ func isReferenceNamePhrase(l *Lexer, fromPos int) bool {
 		p := l.peek(count)
 		if p == EOL && fromPos == count {
 			// At end of line, so ref is not possible
-			log.Msg("NOT FOUND")
+			l.Msg("NOT FOUND")
 			return false
 		}
 		if p == '`' {
@@ -56,7 +56,7 @@ func isReferenceNamePhrase(l *Lexer, fromPos int) bool {
 			openTick = true
 		} else if p == EOL {
 			if words == 0 {
-				log.Msg("NOT FOUND")
+				l.Msg("NOT FOUND")
 				return false
 			}
 			break
@@ -65,6 +65,6 @@ func isReferenceNamePhrase(l *Lexer, fromPos int) bool {
 		}
 		count++
 	}
-	log.Msg("FOUND")
+	l.Msg("FOUND")
 	return true
 }

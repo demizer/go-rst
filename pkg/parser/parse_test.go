@@ -113,8 +113,8 @@ func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *testutil.Test) *Parser {
 	testutil.Log(fmt.Sprintf("Test path: %s", test.Path))
-	testutil.Log(fmt.Sprintf("Test Input:\n\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n%s\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n", test.Data))
-	p, _ := Parse(test.Path, test.Data)
+	testutil.Log(fmt.Sprintf("Test Input:\n\n%s\n", test.Data))
+	p, _ := Parse(test.Path, test.Data, testutil.StdLogger)
 	return p
 }
 
@@ -190,9 +190,9 @@ func TestParserBackup(t *testing.T) {
 	}
 	for _, tt := range parserBackupTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		tr := New(tt.name, tt.input)
+		tr := New(tt.name, tt.input, testutil.StdLogger)
 		var err error
-		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input), testutil.StdLogger)
 		if err != nil {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
@@ -330,9 +330,9 @@ func TestParserNext(t *testing.T) {
 	}
 	for _, tt := range parserNextTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		tr := New(tt.name, tt.input)
+		tr := New(tt.name, tt.input, testutil.StdLogger)
 		var err error
-		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input), testutil.StdLogger)
 		if err != nil && !tt.expectError {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
@@ -427,9 +427,9 @@ func TestParserPeek(t *testing.T) {
 	}
 	for _, tt := range parserPeekTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		tr := New(tt.name, tt.input)
+		tr := New(tt.name, tt.input, testutil.StdLogger)
 		var err error
-		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input), testutil.StdLogger)
 		if err != nil && !tt.expectError {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
@@ -496,9 +496,9 @@ func TestParserClearTokens(t *testing.T) {
 	}
 	for _, tt := range testParserClearTokensTests {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		tr := New(tt.name, tt.input)
+		tr := New(tt.name, tt.input, testutil.StdLogger)
 		var err error
-		tr.lex, err = tok.Lex(tt.name, []byte(tt.input))
+		tr.lex, err = tok.Lex(tt.name, []byte(tt.input), testutil.StdLogger)
 		if err != nil {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
@@ -700,7 +700,7 @@ func testSectionLevelsAddCheckEqual(t *testing.T, testName string,
 }
 
 func TestSectionLevelsAdd(t *testing.T) {
-	var pSecLvls, eSecLvls sectionLevels
+	var pSecLvls, eSecLvls *sectionLevels
 	var testName string
 
 	addSection := func(s *testSectionLevelSectionNode) {
@@ -717,11 +717,11 @@ func TestSectionLevelsAdd(t *testing.T) {
 
 	for _, tt := range testSectionLevelsAdd {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		pSecLvls = *new(sectionLevels)
-		eSecLvls = *new(sectionLevels)
+		pSecLvls = newSectionLevels(testutil.StdLogger)
+		eSecLvls = newSectionLevels(testutil.StdLogger)
 		testName = tt.name
 
-		// pSecLvls := new(sectionLevels)
+		// pSecLvls := newSectionLevels(testutil.StdLogger)
 		for _, secNode := range tt.pSecs {
 			addSection(secNode)
 		}
@@ -811,7 +811,7 @@ var testSectionLevelsLast = []struct {
 func TestSectionLevelsLast(t *testing.T) {
 	for _, tt := range testSectionLevelsLast {
 		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		secLvls := new(sectionLevels)
+		secLvls := newSectionLevels(testutil.StdLogger)
 		for _, secNode := range tt.tSections {
 			secLvls.Add(secNode)
 		}

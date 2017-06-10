@@ -21,11 +21,11 @@ func (p *Parser) blockquote(i *tok.Item) {
 	//
 	if p.bqLevel != nil {
 		// Parser Test 03.02.07.00
-		log.Msg("Adding blockquote text as NodeText to existing blockquote")
+		p.Msg("Adding blockquote text as NodeText to existing blockquote")
 		p.bqLevel.NodeList.Append(doc.NewParagraphWithNodeText(i))
 		return
 	}
-	log.Msg("Creating blockquote")
+	p.Msg("Creating blockquote")
 	sec := doc.NewBlockQuote(i)
 	p.nodeTarget.Append(sec)
 	p.nodeTarget.SetParent(sec)

@@ -25,22 +25,20 @@ func (i *indentQueue) add(t *tok.Item, n doc.Node) doc.Node {
 
 func (i *indentQueue) pop() { *i = (*i)[:len(*i)-1] }
 
-func (i *indentQueue) lastStartPosition() (sp int) {
+func (i *indentQueue) lastStartPosition() (int, error) {
+	var sp int
 	var n doc.Node
 	var nl *doc.NodeList
-
-	// FIXME: Type system pain here
 
 	// Get the NodeList of the indent item
 	switch nt := (*i)[len(*i)-1].node.(type) {
 	case *doc.BulletListItemNode:
 		nl = &nt.NodeList
 		if len(*nl) == 0 {
-			return sp
+			return sp, nil
 		}
 	default:
-		log.Err(fmt.Errorf("Unhandled type = %T", nt))
-		return sp
+		return sp, fmt.Errorf("Unhandled type = %T", nt)
 	}
 
 	// Get node that isn't a comment
@@ -55,35 +53,33 @@ func (i *indentQueue) lastStartPosition() (sp int) {
 	switch nt := n.(type) {
 	case *doc.ParagraphNode:
 		if len(nt.NodeList) == 0 {
-			return sp
+			return sp, nil
 		}
 		// Get the first start position in the paragraph node list
 		switch nt2 := nt.NodeList[0].(type) {
 		case *doc.TextNode:
 			sp = nt2.StartPosition
 		default:
-			log.Err(fmt.Errorf("Unhandled sub Node type = %T", nt))
-			return sp
+			return sp, fmt.Errorf("Unhandled sub Node type = %T", nt)
 		}
 	default:
-		log.Err(fmt.Errorf("Unhandled child NodeList type = %T", n))
-		return sp
+		return sp, fmt.Errorf("Unhandled child NodeList type = %T", n)
 	}
 
-	return sp
+	return sp, nil
 }
 
-func (i *indentQueue) topNodeList() *doc.NodeList {
+func (i *indentQueue) topNodeList() (*doc.NodeList, error) {
 	l := (*i)[len(*i)-1]
 	switch n := l.node.(type) {
 	case *doc.BulletListItemNode:
-		return &n.NodeList
+		return &n.NodeList, nil
 	// case *ParagraphNode:
 	// return &n.NodeList
 	default:
-		log.Err(fmt.Errorf("Unhandled type = %T", n))
+		return nil, fmt.Errorf("Unhandled type = %T", n)
 	}
-	return nil
+	return nil, nil
 }
 
 func (i *indentQueue) topNode() doc.Node { return (*i)[len(*i)-1].node }

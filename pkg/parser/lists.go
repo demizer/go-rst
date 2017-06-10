@@ -3,7 +3,6 @@ package parser
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	doc "github.com/demizer/go-rst/pkg/document"
 	tok "github.com/demizer/go-rst/pkg/token"
@@ -29,20 +28,20 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 		if ni == nil {
 			break
 		}
-		log.Log("msg", "Have token", "token", ni)
+		p.Msgr("Have token", "token", ni)
 		pb := p.peekBack(1)
 		if ni.Type == tok.Space {
-			log.Msg("continue; ni.Type == Space")
+			p.Msg("continue; ni.Type == Space")
 			continue
 		} else if ni.Type == tok.EOF {
-			log.Msg("break; ni.Type == EOF")
+			p.Msg("break; ni.Type == EOF")
 			break
 		} else if ni.Type == tok.BlankLine {
-			log.Msg("Setting nodeTarget to dli")
+			p.Msg("Setting nodeTarget to dli")
 			p.nodeTarget.SetParent(dli.Definition)
 		} else if ni.Type == tok.CommentMark && (pb != nil && pb.Type != tok.Space) {
 			// Comment at start of the line breaks current definition list
-			log.Msg("Have tok.CommentMark at start of the line!")
+			p.Msg("Have tok.CommentMark at start of the line!")
 			p.nodeTarget.Reset()
 			p.backup()
 			break
@@ -51,14 +50,14 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 			np := doc.NewParagraphWithNodeText(ni)
 			p.nodeTarget.Append(np)
 			p.nodeTarget.SetParent(np)
-			log.Msg("continue; ni.Type == tok.DefinitionText")
+			p.Msg("continue; ni.Type == tok.DefinitionText")
 			continue
 		} else if ni.Type == tok.DefinitionTerm {
 			dli2 := doc.NewDefinitionListItem(ni, p.peek(2))
 			p.nodeTarget.SetParent(dl)
 			p.nodeTarget.Append(dli2)
 			p.nodeTarget.SetParent(dli2.Definition)
-			log.Msg("continue; ni.Type == tok.DefinitionTerm")
+			p.Msg("continue; ni.Type == tok.DefinitionTerm")
 			continue
 		}
 		p.subParseBodyElements(ni)
@@ -66,7 +65,7 @@ func (p *Parser) definitionTerm(i *tok.Item) doc.Node {
 	return dl
 }
 
-func (p *Parser) bulletList(i *tok.Item) {
+func (p *Parser) bulletList(i *tok.Item) error {
 	//
 	// FIXME: Bullet List Parsing is NOT fully implemented
 	//
@@ -87,30 +86,33 @@ func (p *Parser) bulletList(i *tok.Item) {
 	// Capture all bullet items until un-indent
 	for {
 		ni := p.next(1)
-		log.Log("msg", "Have token", "token", fmt.Sprintf("%+#v", ni))
+		topNodeList, err := p.indents.topNodeList()
+		if err != nil {
+			p.Err(err)
+		}
+		p.Msgr("Have token", "token", fmt.Sprintf("%+#v", ni))
 		if ni == nil {
-			log.Log("break next item == nil")
+			p.Log("break next item == nil")
 			break
 		} else if ni.Type == tok.EOF {
-			log.Log("break itemEOF")
+			p.Log("break itemEOF")
 			break
-		} else if p.indents.len() > 0 && len(*p.indents.topNodeList()) > 0 && p.peekBack(1).Type == tok.Space &&
+		} else if p.indents.len() > 0 && len(*topNodeList) > 0 && p.peekBack(1).Type == tok.Space &&
 			p.peekBack(2).Type != tok.CommentMark {
-			log.Log("msg", "Have indents",
-				"lastStartPosition", p.indents.lastStartPosition(),
-				"ni.StartPosition", ni.StartPosition)
-			if p.indents.lastStartPosition() != ni.StartPosition {
-				// FIXME: WE SHOULD NEVER EXIT IN LIBRARY !! This is just debug code, but we need to add
-				// proper handling for this ...
-				log.Log(errors.New("Unexpected un-indent!"))
-				spd.Dump(p.indents)
-				os.Exit(1)
+			lastStartPos, err := p.indents.lastStartPosition()
+			if err != nil {
+				p.Err(err)
+			}
+			p.Msgr("Have indents", "lastStartPosition", lastStartPos, "ni.StartPosition", ni.StartPosition)
+			if lastStartPos != ni.StartPosition {
+				return errors.New("Unexpected un-indent!")
 			}
 		}
 
 		p.subParseBodyElements(ni)
 	}
 	p.indents.pop()
+	return nil
 }
 
 var lastEnum *doc.EnumListNode

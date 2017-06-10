@@ -14,7 +14,7 @@ type sectionParseSubState struct {
 }
 
 func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.Node {
-	log.Msg("next type == tok.Title")
+	p.Msg("next type == tok.Title")
 	// Section with overline
 	pBack := p.peekBack(1)
 	tLen := p.token[zed].Length
@@ -62,7 +62,7 @@ loop:
 func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 	tLen := p.token[zed].Length
 	pBack := p.peekBack(1)
-	log.Log("msg", "last item type", "type", pBack.Type)
+	p.Msgr("last item type", "type", pBack.Type)
 	// Section with no overline Check for errors
 	if pBack.Type == tok.Space {
 		pBack := p.peekBack(2)
@@ -143,9 +143,9 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 
 func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) doc.Node {
 	msg := p.sectionLevels.Add(sec)
-	log.Log("msg", "Using section level", "level", len(p.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
+	p.Msgr("Using section level", "level", len(p.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
 	if msg != parserMessageNil {
-		log.Msg("Found inconsistent section level!")
+		p.Msg("Found inconsistent section level!")
 		sm := p.systemMessage(severeTitleLevelInconsistent)
 		// Parse Test 03.01.03.00: add the system message to the last section node's nodelist
 		p.sectionLevels.lastSectionNode.NodeList.Append(sm)
@@ -154,15 +154,15 @@ func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode)
 	}
 
 	if sec.Level == 1 {
-		log.Msg("Setting nodeTarget to Tree.Nodes!")
+		p.Msg("Setting nodeTarget to Tree.Nodes!")
 		p.nodeTarget.Reset()
 	} else {
 		lSec := p.sectionLevels.lastSectionNode
-		log.Log("msg", "have last section node", "secNode", lSec.Title.Text, "level", lSec.Level)
+		p.Msgr("have last section node", "secNode", lSec.Title.Text, "level", lSec.Level)
 		if sec.Level > 1 {
 			lSec = p.sectionLevels.LastSectionByLevel(sec.Level - 1)
 		}
-		log.Log("msg", "setting section node target", "Title", lSec.Title.Text, "level", lSec.Level)
+		p.Msgr("setting section node target", "Title", lSec.Title.Text, "level", lSec.Level)
 		p.nodeTarget.SetParent(lSec)
 	}
 	return nil
@@ -188,7 +188,7 @@ func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNod
 // section is responsible for parsing the title, overline, and underline tokens returned from the parser. If there are errors
 // parsing these elements, than a systemMessage is generated and added to Tree.Nodes.
 func (p *Parser) section(i *tok.Item) doc.Node {
-	log.Log("msg", "have item", "item", i)
+	p.Msgr("have item", "item", i)
 
 	s := &sectionParseSubState{sectionSpace: p.peekSkip(tok.Space)}
 

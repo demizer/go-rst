@@ -9,20 +9,21 @@ func isHyperlinkTarget(l *Lexer) bool {
 		nMark3 := l.peek(3)
 		if unicode.IsSpace(nMark2) && nMark3 == '_' {
 			if isReferenceNameSimple(l, 4) {
-				log.Msg("FOUND hyperlink simple target")
+				l.Msg("FOUND hyperlink simple target")
 				return true
 			} else if isReferenceNamePhrase(l, 4) {
-				log.Msg("FOUND hyperlink phrase target")
+				l.Msg("FOUND hyperlink phrase target")
+				return true
+			} else if len(l.currentLine()) > 4 {
+				l.Msg("FOUND malformed hyperlink target")
 				return true
 			}
-			log.Msg("FOUND malformed hyperlink target")
-			return true
 		}
 	} else if l.mark == '_' && nMark == '_' && unicode.IsSpace(nMark2) {
-		log.Msg("FOUND anonymous hyperlink target")
+		l.Msg("FOUND anonymous hyperlink target")
 		return true
 	}
-	log.Msg("NOT FOUND Hyperlink target")
+	l.Msg("NOT FOUND Hyperlink target")
 	return false
 }
 

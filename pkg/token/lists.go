@@ -17,7 +17,7 @@ func isEnumList(l *Lexer) (ret bool) {
 			bCount++
 			if nMark, _ := l.next(); !isArabic(nMark) {
 				if nMark == '.' || nMark == ' ' {
-					log.Msg("Found arabic enum list!")
+					l.Msg("Found arabic enum list!")
 					ret = true
 					goto exit
 				}
@@ -32,18 +32,18 @@ exit:
 func isBulletList(l *Lexer) bool {
 	for _, x := range bullets {
 		if l.mark == x && l.peek(1) == ' ' {
-			log.Msg("A bullet was found")
+			l.Msg("A bullet was found")
 			return true
 		}
 	}
-	log.Msg("A bullet was not found")
+	l.Msg("A bullet was not found")
 	return false
 }
 
 func isDefinitionTerm(l *Lexer) bool {
 	// Definition terms are preceded by a blankline
 	if l.line != 0 && !l.lastLineIsBlankLine() {
-		log.Msg("Not definition, lastLineIsBlankLine == false")
+		l.Msg("Not definition, lastLineIsBlankLine == false")
 		return false
 	}
 	nL := l.peekNextLine()
@@ -55,12 +55,12 @@ func isDefinitionTerm(l *Lexer) bool {
 			break
 		}
 	}
-	log.Log("msg", "Section count", "sCount", sCount)
+	l.Msgr("Section count", "sCount", sCount)
 	if sCount >= 2 {
-		log.Msg("FOUND definition term!")
+		l.Msg("FOUND definition term!")
 		return true
 	}
-	log.Msg("NOT FOUND definition term.")
+	l.Msg("NOT FOUND definition term.")
 	return false
 }
 
@@ -92,7 +92,7 @@ func lexDefinitionTerm(l *Lexer) stateFn {
 	}
 	l.nextLine()
 	l.next()
-	log.Log("msg", "Current line", "line", l.currentLine())
+	l.Msgr("Current line", "line", l.currentLine())
 	lexSpace(l)
 	for {
 		l.next()

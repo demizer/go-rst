@@ -133,7 +133,7 @@ func (p *Parser) systemMessage(err parserMessage) doc.Node {
 		Length: len(err.Message()),
 	})
 
-	log.Log("msg", "Adding msg to system message NodeList", "systemMessage", err)
+	p.Msgr("Adding msg to system message NodeList", "systemMessage", err)
 	s.NodeList.Append(msg)
 
 	appendOrDie := func(f func(s2 *doc.SystemMessageNode, err2 parserMessage) *doc.LiteralBlockNode) {

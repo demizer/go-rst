@@ -12,13 +12,13 @@ func isComment(l *Lexer) bool {
 	nMark2 := l.peek(2)
 	if l.mark == '.' && nMark == '.' && (unicode.IsSpace(nMark2) || nMark2 == EOL) {
 		if isHyperlinkTarget(l) {
-			log.Msg("Found hyperlink target!")
+			l.Msg("Found hyperlink target!")
 			return false
 		}
-		log.Msg("Found comment!")
+		l.Msg("Found comment!")
 		return true
 	}
-	log.Msg("Comment not found!")
+	l.Msg("Comment not found!")
 	return false
 }
 

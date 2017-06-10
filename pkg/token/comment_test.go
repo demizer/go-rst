@@ -1,7 +1,6 @@
 package token
 
 import (
-	"os"
 	"testing"
 
 	"github.com/demizer/go-rst/pkg/testutil"
@@ -72,9 +71,6 @@ func Test_00_00_00_07_LexCommentNotSubstitutionDefinitionGood(t *testing.T) {
 }
 
 func Test_00_00_00_08_LexCommentIsNotReferenceGood_NotImplemented(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
 	testPath := testutil.TestPathFromName("00.00.00.08-comment-not-reference")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
