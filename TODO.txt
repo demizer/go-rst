@@ -1,19 +1,29 @@
-* Sat Jun 10 16:58 2017: add a document listing the un-implemented tests
+* Tue Oct 11 00:10 2016: add a document listing the un-implemented tests
 
-  files with -xx in the names in testdata are tests that are not-implemented. Generate a table output of the tests with
-  github urls to the un-implemented tests. Publish a link in README.rst in the How to help section.
+  - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
+    How to help section.
+
+  - Finish writing how to implement an element (and test)
+
+    * The UltiSnips Snippets should be mentioned with snippets published to the repo.
+
+    * Document debugging tips
 
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
+* Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
+
+  From the spec:
+
+  Other whitespace characters (form feeds [chr(12)] and vertical tabs [chr(11)]) are converted to single spaces before processing.
+
+  - Complete whitespace handling. See the first three items in the implementation status doc
+
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
+* Sun Jun 11 11:03 2017: Get coverage reports above 95%
+
 * Thu Oct 20 00:41 2016: IMPLEMENT GOOD TESTS FOR INLINE MARKUP
-
-* Tue Oct 11 00:10 2016: Document creating new tests
-
-  * The UltiSnips Snippets should be mentioned.
-
-  * document debugging tips
 
 * Mon Oct 10 17:53 2016: sectionLevels.Add() should be renamed to AddOrReuse()
 
@@ -33,10 +43,4 @@
 
   Example:
 
-  rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --debug
-
-* Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
-
-  From the spec:
-
-  Other whitespace characters (form feeds [chr(12)] and vertical tabs [chr(11)]) are converted to single spaces before processing.
+  rst2pseudoxml testdata/04-test-section/02-bad/04.00.04.00-unexpected-titles.rst --debug
