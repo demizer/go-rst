@@ -26,14 +26,37 @@ go-rst implements **9%** of the official specification (26 of 283 Items)
 
 See https://github.com/demizer/go-rst/tree/master/doc/README.rst for complete details.
 
-Current Work
-------------
+Road Map
+========
 
-* **Translating the docutils tests from psuedo xml into JSON.**
-* **Inline markup parsing**
+0.1 (In Progress)
+-----------------
+
+* Parsing support:
+  - Hyperlink Reference
+  - inline markup
+  - bullet list
+* Translate document to HTML
+* Render basic documents using Hugo
+
+0.2
+---
+
+* Parsing support:
+  - CODE directive
+  - Enumerated list
+  - Literal blocks
+* Syntax highlighting using Sourcegraph's highlighting engine
+
+0.3
+---
+
+* Parsing support:
+  - Blockquote
+  - definition list
 
 TODO
-----
+====
 
 See TODO.txt (or issues) for current active work. The following list is in order of importance, but not yet in progress:
 
