@@ -11,7 +11,11 @@ go-rst - reStructuredText for Go
 .. image:: https://godoc.org/github.com/demizer/go-rst?status.svg
     :target: http://godoc.org/github.com/demizer/go-rst
 
+|
+
 A reStructuredText parser for the Go Programming Language.
+
+This project is not yet usable. See the Road Map below.
 
 ------
 Status
@@ -71,32 +75,25 @@ Road Map
 
 * CLI: confluence2rst: Tool to convert a Confluence page into reStructuredText
 
+0.5
+---
+
 * CLI: rst2confluence: Tool to convert reStructuredText to Confluence markup
 
 -----------------
 How to contribute
 -----------------
 
-See the `doc` directory for more documentation and tip and tricks.
+See the `doc`_ directory for more documentation and tip and tricks.
 
 * **Convert tests into JSON**
 
-  The docutils tests are implemented in a "psuedo xml" which is non-standard.
-  Translating the tests into JSON has the benefit of making the reStructuredText
-  tests programming language neutral so that reStructuredText parsers can be
-  implemented in other programming languages. See
-  https://github.com/demizer/go-rst/tree/master/testdata
-  for more information.
+  `How to convert tests`_
 
-* **Implement an element**
+* **Implement parsing for a document element**
 
-  Implement an element from the list above.
+  `How to implement an element`_
 
-* **Write documentation**
-
-  All projects need good documentation.
-
-* **Test and report**
-
-  Not actually possible in the current state, but using the library and writing
-  bug reports is always helpful.
+.. _Doc: https://github.com/demizer/go-rst/tree/master/doc
+.. _How to convert tests: https://github.com/demizer/go-rst/tree/master/doc/implementation.rst#test-conversion
+.. _How to implement an element: https://github.com/demizer/go-rst/tree/master/implementation.rst#elements
