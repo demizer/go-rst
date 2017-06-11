@@ -36,8 +36,8 @@ Road Map
   - Hyperlink Reference
   - inline markup
   - bullet list
-* Translate document to HTML
-* Render basic documents using Hugo
+* CLI: rst2html: Translate document to HTML
+* Render basic documents using Hugo (https://github.com/spf13/hugo/issues/1436)
 
 0.2
 ---
@@ -55,21 +55,11 @@ Road Map
   - Blockquote
   - definition list
 
-TODO
-====
+0.4
+---
 
-See TODO.txt (or issues) for current active work. The following list is in order of importance, but not yet in progress:
-
-* **Integration with Hugo**
-
-  Need to finish inline-markup parsing to have something worth while for Hugo. See https://github.com/spf13/hugo/issues/1436
-
-* **rst2html conversion tool**
-
-* **rst2confluence import/conversion tool**
-
-  Confluence is garbage, it would be so nice to be able to alleviate the pain using reStructuredText. This has the lowest
-  priority.
+* CLI: confluence2rst: Tool to convert a Confluence page into reStructuredText
+* CLI: rst2confluence: Tool to convert reStructuredText to Confluence markup
 
 -----------------
 How to contribute
