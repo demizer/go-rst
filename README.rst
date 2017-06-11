@@ -33,32 +33,44 @@ Road Map
 -----------------
 
 * Parsing support:
+
   - Hyperlink Reference
+
   - inline markup
+
   - bullet list
+
 * CLI: rst2html: Translate document to HTML
+
 * Render basic documents using Hugo (https://github.com/spf13/hugo/issues/1436)
 
 0.2
 ---
 
 * Parsing support:
+
   - CODE directive
+
   - Enumerated list
+
   - Literal blocks
+
 * Syntax highlighting using Sourcegraph's highlighting engine
 
 0.3
 ---
 
 * Parsing support:
+
   - Blockquote
+
   - definition list
 
 0.4
 ---
 
 * CLI: confluence2rst: Tool to convert a Confluence page into reStructuredText
+
 * CLI: rst2confluence: Tool to convert reStructuredText to Confluence markup
 
 -----------------
