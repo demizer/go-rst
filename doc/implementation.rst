@@ -1,7 +1,7 @@
 ============================================================
 Implementation of the Go reStructuredText Parser and Tooling
 ============================================================
-:Modified: Mon Jun 12 00:13 2017
+:Modified: Mon Jun 12 00:17 2017
 
 --------
 Overview
@@ -20,15 +20,27 @@ New tests are added using a combination of JSON and simple Go. The naming and di
 
 Tests are imported from docutils then implemented in the parser. This is a manual process.
 
+Conversion
+==========
+
+In the reference implementation of reStructuredText, the tests are implemented in a "psuedo xml". Not every language has a
+psuedo xml parser (like Go), so work was started to translating the tests into JSON. The tests for the Go reStructuredText
+parser are more accurate because the tokenizer tests are included. The tests tell the parser _how_ to parse a document.
+
+Converting and adding new tests is currently a manual process.
+
+Some of these tests have been changed to conform to the parser and lexer provided by the go-rst package. The docutils parser
+is much more complex, so some test results don't apply to the go-rst parser.
+
 Import
-======
+------
 
 The docutils reference implementation contains hundreds of tests. They can be seen at:
 
 http://repo.or.cz/docutils.git/tree/HEAD:/docutils/test/test_parsers/test_rst
 
 Status
-------
+~~~~~~
 
 The following table details tests that have been imported and implemented.
 
@@ -62,18 +74,6 @@ test_tables.py                          NO        NO
 test_targets.py                         YES       IN PROGRESS
 test_transitions.py                     NO        NO
 ======================================  ========  ===========
-
-Conversion
-==========
-
-In the reference implementation of reStructuredText, the tests are implemented in a "psuedo xml". Not every language has a
-psuedo xml parser (like Go), so work was started to translating the tests into JSON. The tests for the Go reStructuredText
-parser are more accurate because the tokenizer tests are included. The tests tell the parser _how_ to parse a document.
-
-Converting and adding new tests is currently a manual process.
-
-Some of these tests have been changed to conform to the parser and lexer provided by the go-rst package. The docutils parser
-is much more complex, so some test results don't apply to the go-rst parser.
 
 Test Layout Overview
 ====================
