@@ -1,16 +1,74 @@
 ============================================================
 Implementation of the Go reStructuredText Parser and Tooling
 ============================================================
-:Modified: Sun Jun 11 22:39 2017
+:Modified: Mon Jun 12 00:13 2017
+
+--------
+Overview
+--------
+
+Implementation details of the Go reStructuredText Parser are documented here. This document details setting up new tests and
+tips for debugging the parser engine.
 
 .. contents::
 
----------------
-Test conversion
----------------
+-------
+Testing
+-------
+
+New tests are added using a combination of JSON and simple Go. The naming and directory structure of the tests are important.
+
+Tests are imported from docutils then implemented in the parser. This is a manual process.
+
+Import
+======
+
+The docutils reference implementation contains hundreds of tests. They can be seen at:
+
+http://repo.or.cz/docutils.git/tree/HEAD:/docutils/test/test_parsers/test_rst
+
+Status
+------
+
+The following table details tests that have been imported and implemented.
+
+======================================  ========  ===========
+Test file                               Imported  Implemented
+test_SimpleTableParser.py               NO        NO
+test_TableParser.py                     NO        NO
+test_block_quotes.py                    YES       NO
+test_bullet_lists.py                    YES       NO
+test_character_level_inline_markup.py   NO        NO
+test_citations.py                       NO        NO
+test_comments.py                        YES       IN PROGRESS
+test_definition_lists.py                YES       NO
+test_doctest_blocks.py                  NO        NO
+test_east_asian_text.py                 NO        NO
+test_enumerated_lists.py                YES       NO
+test_field_lists.py                     NO        NO
+test_footnotes.py                       NO        NO
+test_functions.py                       NO        NO
+test_inline_markup.py                   YES       IN PROGRESS
+test_interpreted.py                     NO        NO
+test_interpreted_fr.py                  NO        NO
+test_line_blocks.py                     NO        NO
+test_literal_blocks.py                  YES       NO
+test_option_lists.py                    NO        NO
+test_outdenting.py                      NO        NO
+test_paragraphs.py                      YES       YES
+test_section_headers.py                 YES       YES
+test_substitutions.py                   NO        NO
+test_tables.py                          NO        NO
+test_targets.py                         YES       IN PROGRESS
+test_transitions.py                     NO        NO
+======================================  ========  ===========
+
+Conversion
+==========
 
 In the reference implementation of reStructuredText, the tests are implemented in a "psuedo xml". Not every language has a
-psuedo xml parser (like Go), so work was started to translating the tests into JSON.
+psuedo xml parser (like Go), so work was started to translating the tests into JSON. The tests for the Go reStructuredText
+parser are more accurate because the tokenizer tests are included. The tests tell the parser _how_ to parse a document.
 
 Converting and adding new tests is currently a manual process.
 
@@ -214,8 +272,33 @@ For example, `00.00.00.00-comment-nodes.json` contains:
 
 Notice a paragraph node contains child nodes.
 
-Differing Tests
-===============
+Converting an existing test
+===========================
+
+NOTE: See the table above for tests that have not yet been imported into go-rst
+
+The docutils reference implementation contains hundreds of tests, as of 2017-06-11 not all of the tests have been converted
+to JSON.
+
+NOTE: If importing tests from docutils, it's best to import all the tests in one commit so that tests are not forgotten.
+
+1. Download the docutils reference implementation from http://repo.or.cz/docutils.git
+
+#. Open the project in a text editor and go to the `test/test_parsers/test_rst` directory
+
+   http://repo.or.cz/docutils.git/tree/HEAD:/docutils/test/test_parsers/test_rst
+
+#. Inspect the testdata directory of the go-rst and determine which tests are not already imported.
+
+   See the _`Status` table for a quick overview of import/implementation status from the docutils reference parser.
+
+Adding a new test
+=================
+
+Adding a new test is easy.
+
+Test conflicts with reference implementation
+============================================
 
 While implementing the go-rst parser, differences found from the official implementation are noted here.
 
@@ -372,8 +455,8 @@ The test logging is configured in `parse_test.go`.
 
   rst2pseudoxml testdata/03-test-section/03.00.04.00-section-bad-unexpected-titles.rst --halt=5
 
--------------------
-Document conversion
--------------------
+---------------------------
+Document conversion tooling
+---------------------------
 
 To be written...

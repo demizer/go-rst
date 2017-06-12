@@ -96,5 +96,5 @@ See the `doc`_ directory for more documentation and tip and tricks.
 
 .. _implementation status: https://github.com/demizer/go-rst/tree/master/doc/README.rst
 .. _Doc: https://github.com/demizer/go-rst/tree/master/doc
-.. _How to convert tests: https://github.com/demizer/go-rst/tree/master/doc/implementation.rst#test-conversion
-.. _How to implement an element: https://github.com/demizer/go-rst/blob/master/doc/implementation.rst#implementation
+.. _How to convert tests: https://github.com/demizer/go-rst/tree/master/doc/implementation.rst#converting-an-existing-test
+.. _How to implement an element: https://github.com/demizer/go-rst/blob/master/doc/implementation.rst#adding-a-new-test
