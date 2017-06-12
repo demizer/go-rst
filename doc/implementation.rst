@@ -1,7 +1,7 @@
 ============================================================
 Implementation of the Go reStructuredText Parser and Tooling
 ============================================================
-:Modified: Sun Jun 11 22:33 2017
+:Modified: Sun Jun 11 22:39 2017
 
 .. contents::
 
@@ -222,8 +222,8 @@ While implementing the go-rst parser, differences found from the official implem
 Differences are mostly related to the style of parsing as the default docutils parser engine is based off of regular
 expresssions, and the go-rst parser is hand-written by the finesh artisans.
 
-Test: 03.02.06.01-section-bad-incomplete-sections-no-title.rst
---------------------------------------------------------------
+Test: 04.02.06.01-incomplete-sections-no-title.rst
+--------------------------------------------------
 
 From: docutils/test/test_parsers/test_rst/test_section_headers.py line: 787
 
@@ -231,8 +231,8 @@ The expected results by the docutils package do not make any sense at all.  It s
 does not crash. So I modified the expected results to conform to the current output of the go-rst parser. Naturally the
 output is very different.
 
-Test: 02.02.01.00-emphasis-good-emphasis-with-emphasis-apostrophe.rst
----------------------------------------------------------------------
+Test: 06.02.01.00-emphasis-with-emphasis-apostrophe.rst
+-------------------------------------------------------
 
 From: docutils/test/test_parsers/test_rst/test_inline_markup.py line: 33
 
@@ -244,8 +244,8 @@ rst2html shows the following output, which appears broken:
    <p>l'<em>emphasis</em> with the <em>emphasis</em>' apostrophe.
    lu2019*emphasis* with the <em>emphasis</em>u2019 apostrophe.</p>
 
-Test: 02.00.00.00-imrr-good-double-underscore.rst
--------------------------------------------------
+Test: 06.00.00.00-double-underscore.rst
+---------------------------------------
 
 From: http://repo.or.cz/w/docutils.git/blob/HEAD:/docutils/test/test_parsers/test_rst/test_inline_markup.py#l1594
 
@@ -268,7 +268,7 @@ literals.
 
 I have modified this test to remove the troublesome section.
 
-Test: 02.00.03.00-emphasis-wrapped-in-unicode.rst
+Test: 06.00.03.00-emphasis-wrapped-in-unicode.rst
 -------------------------------------------------
 
 The following test is clearly valid:
