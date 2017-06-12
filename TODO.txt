@@ -19,6 +19,37 @@
 
   - Complete whitespace handling. See the first three items in the implementation status doc
 
+  - This might require renumbering the tests because whitespace handling is defined first in the spec...
+
+    - If the tests are renumbered, the implementation doc test examples will need to be updated.
+
+* Sun Jun 11 12:35 2017: re-order tests
+
+  - Order should look like::
+
+    ▸ 00-test-whitespace/
+    ▸ 01-test-comment/
+    ▸ 02-test-reference-hyperlink-targets/
+    ▸ 03-test-paragraph/
+    ▸ 04-test-inline-markup/
+    ▸ 05-test-list-bullet/
+    ▸ 06-test-section/
+    ▸ 07-test-blockquote/
+    ▸ 08-test-literal-block/
+    ▸ 09-test-list-enumerated/
+    ▸ 10-test-list-definition/
+    ▸ 11-test-list-field/
+    ▸ 12-test-list-option/
+    ▸ 13-test-directives/
+    ▸ 14-test-reference-citations/
+    ▸ 15-test-reference-substitution-definitions/
+    ▸ 16-test-reference-footnotes/
+    ▸ 17-test-tables/
+    ▸ 18-test-transitions/
+    ▸ 19-test-doctest/
+
+  - Update examples in implementation.rst
+
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Sun Jun 11 11:03 2017: Get coverage reports above 95%
