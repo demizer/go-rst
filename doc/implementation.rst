@@ -1,7 +1,7 @@
 ============================================================
 Implementation of the Go reStructuredText Parser and Tooling
 ============================================================
-:Modified: Mon Jun 12 00:24 2017
+:Modified: Mon Jun 12 00:25 2017
 
 --------
 Overview
@@ -275,12 +275,12 @@ Notice a paragraph node contains child nodes.
 Converting an existing test
 ===========================
 
-NOTE: See the table `Status`_ above for tests that have not yet been imported into go-rst
+.. note:: See the table `Status`_ above for tests that have not yet been imported into go-rst
 
 The docutils reference implementation contains hundreds of tests, as of 2017-06-11 not all of the tests have been converted
 to JSON.
 
-NOTE: If importing tests from docutils, it's best to import all the tests in one commit so that tests are not forgotten.
+.. note:: If importing tests from docutils, it's best to import all the tests in one commit so that tests are not forgotten.
 
 1. Download the docutils reference implementation from http://repo.or.cz/docutils.git
 
