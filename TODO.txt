@@ -5,7 +5,11 @@
 
   - Finish writing how to implement an element (and test)
 
+    * Document example test import for option lists.
+
     * The UltiSnips Snippets should be mentioned with snippets published to the repo.
+
+      - Use some inline markup test as an example implementation.
 
     * Document debugging tips
 
