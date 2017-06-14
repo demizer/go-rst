@@ -1,7 +1,6 @@
 package token
 
 import (
-	"fmt"
 	"io/ioutil"
 	"testing"
 	"unicode/utf8"
@@ -35,7 +34,6 @@ func lexTest(t *testing.T, test *testutil.Test) []Item {
 func equal(t *testing.T, expectItems []interface{}, items []Item) {
 	lLen := len(items)
 	eLen := len(expectItems)
-
 	toSlice := func(v []Item) []interface{} {
 		s := make([]interface{}, len(v))
 		for i, j := range v {
@@ -43,18 +41,17 @@ func equal(t *testing.T, expectItems []interface{}, items []Item) {
 		}
 		return s
 	}
-
 	if lLen != eLen {
-		// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
-		o, err := testutil.JsonDiff(expectItems, toSlice(items))
-		if err != nil {
-			fmt.Println(o)
-			fmt.Println(err)
-		}
 		eTmp := "Number of expected Lex item values (len=%d) and lexed item values (len=%d) do not match"
 		t.Fatalf(eTmp, lLen, eLen)
 	}
-
+	// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
+	o, err := testutil.JsonDiff(expectItems, toSlice(items))
+	if err != nil {
+		t.Fatalf("%s\n%s", o, err)
+	} else if len(o) > 0 {
+		t.Fatalf("The Actual Lexer Tokens and the Expected Lexer tokens do not match!\n%s", o)
+	}
 	return
 }
 

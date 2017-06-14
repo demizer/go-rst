@@ -13,6 +13,28 @@
 
     * Document debugging tips
 
+    * section tests need to be moved into subgroups::
+
+        ▾ 04-test-section/
+          ▾ 01-good/
+              04.00.00.00-title-paragraph.rst
+              04.01.00.00-section-level-return.rst
+              04.02.00.00-title-overline.rst
+
+      Should be::
+
+        ▾ 04-test-section/
+          ▾ 00-simple-title/
+            ▾ 01-good/
+                04.00.00.00-title-paragraph.rst
+          ▾ 01-levels/
+            ▾ 01-good/
+                04.01.00.00-section-level-return.rst
+          ▾ 02-title-overline/
+            ▾ 01-good/
+                04.02.00.00-title-overline.rst
+
+
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
