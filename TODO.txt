@@ -44,6 +44,18 @@
         4 01.00.00.01
         4 01.00.00.00
 
+* Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
+
+  This will reduce the number of files in the project greatly and also make it slightly easier to refactor tests if needed.
+
+  The rst test files can be limited to:
+
+  - lexer_rst_test.go
+  - parser_rst_test.go
+
+  This CLI tool will get all the files in the test directories, sort the list, and generate a huge test file for Go
+  automatically.
+
 * Tue Oct 11 00:10 2016: add a document listing the un-implemented tests
 
   - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
@@ -60,6 +72,8 @@
 	* document naming of bad tests (should include -bads after id)
 
     * Document debugging tips
+
+    * Document regenerating the tests
 
     * section tests need to be moved into subgroups::
 
