@@ -49,70 +49,100 @@ func Test_01_00_01_00_LexHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_02_00_LexHyperlinkTargetGood(t *testing.T) {
+func Test_01_00_02_00_LexHyperlinkTargetGood_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.02.00-target-beginning-with-underscore")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_02_01_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_02_01_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.02.01-bad-beginning-with-underscore")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_03_00_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_03_00_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.03.00-bad-duplicate-implicit-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_03_01_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_03_01_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.03.01-bad-duplicate-implicit-explicit-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_03_02_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_03_02_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.03.02-bad-duplicate-implicit-directive-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_04_00_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_04_00_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.04.00-bad-duplicate-explicit-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_04_01_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_04_01_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.04.01-bad-duplicate-explicit-directive-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_04_02_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_04_02_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.04.02-bad-duplicate-implicit-explicit-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_05_00_LexHyperlinkTargetGood(t *testing.T) {
+func Test_01_00_05_00_LexHyperlinkTargetGood_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.05.00-escaped-colon-at-the-end")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_00_05_01_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_00_05_01_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.00.05.01-bad-unescaped-colon-at-the-end")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -140,14 +170,20 @@ func Test_01_01_01_00_LexHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_01_02_00_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_01_02_00_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.01.02.00-bad-duplicate-external-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_01_02_01_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_01_02_01_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.01.02.01-bad-duplicate-external-targets")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
@@ -203,7 +239,10 @@ func Test_01_02_01_01_LexHyperlinkTargetGood(t *testing.T) {
 	equal(t, test.ExpectItems(), items)
 }
 
-func Test_01_02_02_00_LexHyperlinkTargetBad(t *testing.T) {
+func Test_01_02_02_00_LexHyperlinkTargetBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("01.02.02.00-bad-anon-and-named-indirect-target")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
