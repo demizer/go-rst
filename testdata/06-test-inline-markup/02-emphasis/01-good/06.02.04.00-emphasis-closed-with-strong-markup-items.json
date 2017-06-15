@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "what about ",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 12,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "this*",
         "startPosition": 13,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 18,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "?",
         "startPosition": 19,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 20,
         "line": 1
     }

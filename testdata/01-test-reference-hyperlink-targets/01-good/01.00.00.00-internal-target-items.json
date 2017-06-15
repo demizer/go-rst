@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "target",
         "startPosition": 5,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 11,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "(Internal hyperlink target.)",
         "startPosition": 1,
         "line": 3,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 29,
         "line": 3
     }

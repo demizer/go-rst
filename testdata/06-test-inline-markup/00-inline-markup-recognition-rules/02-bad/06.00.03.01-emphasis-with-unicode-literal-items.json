@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "This test was originally part of test 02.00-lots-of-escaping-unicode.rst",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "According to the spec, whitespace is not allowed after the emphasis start",
         "startPosition": 1,
         "line": 3,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemText",
+        "type": "Text",
         "text": "string. So this test should produce errors when parsed because of the unclosed",
         "startPosition": 1,
         "line": 4,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "emphasis.",
         "startPosition": 1,
         "line": 5,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 6,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u00a1",
         "startPosition": 1,
         "line": 7,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 3,
         "line": 7,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "examples",
         "startPosition": 4,
         "line": 7,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 12,
         "line": 7,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemText",
+        "type": "Text",
         "text": "!\u00a0*\u00a0no-break-space\u00a0",
         "startPosition": 13,
         "line": 7,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 35,
         "line": 7,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": ".",
         "startPosition": 36,
         "line": 7,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 37,
         "line": 7
     }

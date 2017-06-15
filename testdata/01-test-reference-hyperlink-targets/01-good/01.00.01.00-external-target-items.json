@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "External hyperlink targets:",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
         "line": 3,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 3,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
         "line": 3,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "one-liner",
         "startPosition": 5,
         "line": 3,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 14,
         "line": 3,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 15,
         "line": 3,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "http://structuredtext.sourceforge.net",
         "startPosition": 16,
         "line": 3,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 4,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
         "line": 5,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 5,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
         "line": 5,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "starts-on-this-line",
         "startPosition": 5,
         "line": 5,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 24,
         "line": 5,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 25,
         "line": 5,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "http://",
         "startPosition": 26,
         "line": 5,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "                         ",
         "startPosition": 1,
         "line": 6,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "structuredtext.",
         "startPosition": 26,
         "line": 6,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "                         ",
         "startPosition": 1,
         "line": 7,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "sourceforge.net",
         "startPosition": 26,
         "line": 7,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 8,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
         "line": 9,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 9,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
         "line": 9,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "entirely-below",
         "startPosition": 5,
         "line": 9,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 19,
         "line": 9,
@@ -217,7 +217,7 @@
     },
     {
         "id": 28,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "   ",
         "startPosition": 1,
         "line": 10,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "http://structuredtext.",
         "startPosition": 4,
         "line": 10,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "   ",
         "startPosition": 1,
         "line": 11,
@@ -241,7 +241,7 @@
     },
     {
         "id": 31,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "sourceforge.net",
         "startPosition": 4,
         "line": 11,
@@ -249,7 +249,7 @@
     },
     {
         "id": 32,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 12,
@@ -257,7 +257,7 @@
     },
     {
         "id": 33,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "startPosition": 1,
         "line": 13,
@@ -265,7 +265,7 @@
     },
     {
         "id": 34,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 13,
@@ -273,7 +273,7 @@
     },
     {
         "id": 35,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "startPosition": 4,
         "line": 13,
@@ -281,7 +281,7 @@
     },
     {
         "id": 36,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "not-indirect",
         "startPosition": 5,
         "line": 13,
@@ -289,7 +289,7 @@
     },
     {
         "id": 37,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "startPosition": 17,
         "line": 13,
@@ -297,7 +297,7 @@
     },
     {
         "id": 38,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 18,
         "line": 13,
@@ -305,7 +305,7 @@
     },
     {
         "id": 39,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "uri\\_",
         "startPosition": 19,
         "line": 13,
@@ -313,7 +313,7 @@
     },
     {
         "id": 40,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 24,
         "line": 13
     }

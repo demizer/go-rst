@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "line": 1,
         "startPosition": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 1,
         "startPosition": 3,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "line": 1,
         "startPosition": 4,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "email",
         "line": 1,
         "startPosition": 5,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "line": 1,
         "startPosition": 10,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 1,
         "startPosition": 11,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "jdoe@example.com",
         "line": 1,
         "startPosition": 12,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 2,
         "startPosition": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "line": 3,
         "startPosition": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 3,
         "startPosition": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "line": 3,
         "startPosition": 4,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "multi-line email",
         "line": 3,
         "startPosition": 5,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "line": 3,
         "startPosition": 21,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 3,
         "startPosition": 22,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "jdoe",
         "line": 3,
         "startPosition": 23,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "   ",
         "line": 4,
         "startPosition": 1,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "@example.com",
         "line": 4,
         "startPosition": 4,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemEOF",
+        "type": "EOF",
         "line": 4,
         "startPosition": 16
     }

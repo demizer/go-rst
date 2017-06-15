@@ -42,15 +42,12 @@ func JsonDiff(expectedItems, parsedItems []interface{}) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("Failed to marshal expectedItems: %s", err.Error())
 	}
-
 	pJson, err := json.Marshal(parsedItems)
 	if err != nil {
 		return "", fmt.Errorf("Failed to marshal parsedItems: %s", err.Error())
 	}
-
 	a, _ := jd.ReadJsonString(string(eJson))
 	b, _ := jd.ReadJsonString(string(pJson))
-
 	return a.Diff(b).Render(), nil
 }
 

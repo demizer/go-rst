@@ -1,21 +1,23 @@
 [
     {
         "id": 1,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=======",
+        "startPosition": 1,
         "line": 1,
         "length": 7
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Long    Title",
         "startPosition": 2,
         "line": 2,
@@ -23,28 +25,31 @@
     },
     {
         "id": 4,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=======",
+        "startPosition": 1,
         "line": 3,
         "length": 7
     },
     {
         "id": 5,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
     {
         "id": 6,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test long title and space normalization.",
+        "startPosition": 1,
         "line": 5,
         "length": 40
     },
     {
         "id": 7,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 41,
         "line": 5
     }

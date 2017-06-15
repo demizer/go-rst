@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": ")*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemText",
+        "type": "Text",
         "text": "(*), [*], '*' or '\"*\"' (\"quoted\" start-string),",
         "startPosition": 1,
         "line": 2,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "x*2* or 2*x* (alphanumeric char before),",
         "startPosition": 1,
         "line": 3,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemText",
+        "type": "Text",
         "text": "\\*args or * (escaped, whitespace behind start-string),",
         "startPosition": 1,
         "line": 4,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "or ",
         "startPosition": 1,
         "line": 5,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 5,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "the\\* *stars\\* *inside",
         "startPosition": 5,
         "line": 5,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 27,
         "line": 5,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemText",
+        "type": "Text",
         "text": " (escaped, whitespace before end-string).",
         "startPosition": 28,
         "line": 5,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 69,
         "line": 5
     }

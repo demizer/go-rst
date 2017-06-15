@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Character-level m",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 18,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 19,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 20,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "a",
         "startPosition": 21,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 22,
         "line": 1,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 23,
         "line": 1,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 24,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 25,
         "line": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "r",
         "startPosition": 27,
         "line": 1,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 28,
         "line": 1,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 30,
         "line": 1,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 31,
         "line": 1,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 32,
         "line": 1,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "k",
         "startPosition": 34,
         "line": 1,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 35,
         "line": 1,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 37,
         "line": 1,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 38,
         "line": 1,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemInlineInterpretedTextOpen",
+        "type": "InlineInterpretedTextOpen",
         "text": "`",
         "startPosition": 39,
         "line": 1,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemInlineInterpretedText",
+        "type": "InlineInterpretedText",
         "text": "u",
         "startPosition": 40,
         "line": 1,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemInlineInterpretedTextClose",
+        "type": "InlineInterpretedTextClose",
         "text": "`",
         "startPosition": 41,
         "line": 1,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemInlineInterpretedTextRoleOpen",
+        "type": "InlineInterpretedTextRoleOpen",
         "text": ":",
         "startPosition": 42,
         "line": 1,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemInlineInterpretedTextRole",
+        "type": "InlineInterpretedTextRole",
         "text": "title",
         "startPosition": 43,
         "line": 1,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemInlineInterpretedTextRoleClose",
+        "type": "InlineInterpretedTextRoleClose",
         "text": ":",
         "startPosition": 48,
         "line": 1,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 49,
         "line": 1,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemText",
+        "type": "Text",
         "text": "p",
         "startPosition": 50,
         "line": 1,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemText",
+        "type": "Text",
         "text": "with backslash-escaped whitespace, including new",
         "startPosition": 1,
         "line": 2,
@@ -217,7 +217,7 @@
     },
     {
         "id": 28,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 49,
         "line": 2,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemText",
+        "type": "Text",
         "text": "lines. A literal backslash is \\.",
         "startPosition": 1,
         "line": 3,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 33,
         "line": 3
     }

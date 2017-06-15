@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemCommentMark",
+        "type": "CommentMark",
         "text": "..",
         "line": 1,
         "length": 2,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 1,
         "length": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "A comment.",
         "line": 1,
         "length": 10,
@@ -25,21 +25,23 @@
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 2,
-        "length": 1
+        "length": 1,
+        "startPosition": 1
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph.",
         "line": 3,
-        "length": 10
+        "length": 10,
+        "startPosition": 1
     },
     {
         "id": 6,
-        "type": "itemEOF",
+        "type": "EOF",
         "line": 3,
         "startPosition": 11
     }

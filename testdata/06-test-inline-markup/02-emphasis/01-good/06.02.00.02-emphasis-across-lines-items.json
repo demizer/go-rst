@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasized sentence",
         "startPosition": 2,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 21,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "across lines",
         "startPosition": 1,
         "line": 2,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 2,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 14,
         "line": 2
     }

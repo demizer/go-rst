@@ -1,35 +1,39 @@
 [
     {
         "id": 1,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "==",
+        "startPosition": 1,
         "line": 1,
         "length": 2
     },
     {
         "id": 2,
-        "type": "itemText",
+        "type": "Text",
         "text": "ABC",
+        "startPosition": 1,
         "line": 2,
         "length": 3
     },
     {
         "id": 3,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 3,
         "length": 1
     },
     {
         "id": 4,
-        "type": "itemText",
+        "type": "Text",
         "text": "Overline too short, no underline.",
+        "startPosition": 1,
         "line": 4,
         "length": 33
     },
     {
         "id": 5,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 34,
         "line": 4
     }

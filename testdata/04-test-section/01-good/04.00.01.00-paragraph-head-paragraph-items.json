@@ -1,49 +1,55 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test paragraph section header and paragraph.",
+        "startPosition": 1,
         "line": 1,
         "length": 44
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Title",
+        "startPosition": 1,
         "line": 3,
         "length": 5
     },
     {
         "id": 4,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=====",
+        "startPosition": 1,
         "line": 4,
         "length": 5
     },
     {
         "id": 5,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 5,
         "length": 1
     },
     {
         "id": 6,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph.",
+        "startPosition": 1,
         "line": 6,
         "length": 10
     },
     {
         "id": 7,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 11,
         "line": 6
     }

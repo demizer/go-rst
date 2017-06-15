@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "text-",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 6,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "separated",
         "startPosition": 7,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 16,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2010",
         "startPosition": 17,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 20,
         "line": 1,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "by",
         "startPosition": 21,
         "line": 1,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 23,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2011",
         "startPosition": 24,
         "line": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 27,
         "line": 1,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "various",
         "startPosition": 28,
         "line": 1,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 35,
         "line": 1,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2012",
         "startPosition": 36,
         "line": 1,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 39,
         "line": 1,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "dashes",
         "startPosition": 40,
         "line": 1,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 46,
         "line": 1,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2013",
         "startPosition": 47,
         "line": 1,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 50,
         "line": 1,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "and",
         "startPosition": 51,
         "line": 1,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 54,
         "line": 1,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2014",
         "startPosition": 55,
         "line": 1,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 58,
         "line": 1,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "hyphens",
         "startPosition": 59,
         "line": 1,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 66,
         "line": 1,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemText",
+        "type": "Text",
         "text": ".",
         "startPosition": 67,
         "line": 1,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u00bf",
         "startPosition": 1,
         "line": 2,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 3,
         "line": 2,
@@ -217,7 +217,7 @@
     },
     {
         "id": 28,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "punctuation",
         "startPosition": 4,
         "line": 2,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 15,
         "line": 2,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemText",
+        "type": "Text",
         "text": "?",
         "startPosition": 16,
         "line": 2,
@@ -241,7 +241,7 @@
     },
     {
         "id": 31,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 17,
         "line": 2
     }

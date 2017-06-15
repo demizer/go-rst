@@ -1,70 +1,79 @@
 [
     {
         "id": 1,
-        "type": "itemTransition",
+        "type": "Transition",
         "text": "========================",
+        "startPosition": 1,
         "line": 1,
         "length": 24
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemTransition",
+        "type": "Transition",
         "text": "========================",
+        "startPosition": 1,
         "line": 3,
         "length": 24
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test missing titles; blank line in-between.",
+        "startPosition": 1,
         "line": 5,
         "length": 43
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
     {
         "id": 7,
-        "type": "itemTransition",
+        "type": "Transition",
         "text": "========================",
+        "startPosition": 1,
         "line": 7,
         "length": 24
     },
     {
         "id": 8,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 8,
         "length": 1
     },
     {
         "id": 9,
-        "type": "itemTransition",
+        "type": "Transition",
         "text": "========================",
+        "startPosition": 1,
         "line": 9,
         "length": 24
     },
     {
         "id": 10,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 25,
         "line": 9
     }

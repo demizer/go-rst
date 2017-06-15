@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal without closing backquotes",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 37,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "a second line.",
         "startPosition": 1,
         "line": 2,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 3,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemText",
+        "type": "Text",
         "text": "Oh a new paragraph!",
         "startPosition": 1,
         "line": 4,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 20,
         "line": 4
     }

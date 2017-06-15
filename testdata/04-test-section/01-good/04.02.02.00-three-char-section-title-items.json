@@ -1,84 +1,95 @@
 [
     {
         "id": 1,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "===",
+        "startPosition": 1,
         "line": 1,
         "length": 3
     },
     {
         "id": 2,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "One",
+        "startPosition": 1,
         "line": 2,
         "length": 3
     },
     {
         "id": 3,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "===",
+        "startPosition": 1,
         "line": 3,
         "length": 3
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph 1.",
+        "startPosition": 1,
         "line": 5,
         "length": 12
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
     {
         "id": 7,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "===",
+        "startPosition": 1,
         "line": 7,
         "length": 3
     },
     {
         "id": 8,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Two",
+        "startPosition": 1,
         "line": 8,
         "length": 3
     },
     {
         "id": 9,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "===",
+        "startPosition": 1,
         "line": 9,
         "length": 3
     },
     {
         "id": 10,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 10,
         "length": 1
     },
     {
         "id": 11,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph 2.",
+        "startPosition": 1,
         "line": 11,
         "length": 12
     },
     {
         "id": 12,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 13,
         "line": 11
     }

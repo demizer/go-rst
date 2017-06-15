@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "standalone TeX quotes'' will trigger a warning",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 49,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "and may be problematic)",
         "startPosition": 1,
         "line": 2,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 24,
         "line": 2
     }

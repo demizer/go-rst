@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemCommentMark",
+        "type": "CommentMark",
         "text": "..",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "_",
         "startPosition": 4,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 5,
         "line": 1
     }

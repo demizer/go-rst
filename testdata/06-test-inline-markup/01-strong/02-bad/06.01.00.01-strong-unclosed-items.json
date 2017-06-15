@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "strong without closing asterisks",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 35,
         "line": 1
     }

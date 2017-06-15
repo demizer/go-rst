@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineReferenceText",
+        "type": "InlineReferenceText",
         "text": "ref",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineReferenceClose",
+        "type": "InlineReferenceClose",
         "text": "_",
         "startPosition": 4,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 5,
         "line": 1
     }

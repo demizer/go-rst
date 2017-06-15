@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "strong",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 9,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 11,
         "line": 1
     }

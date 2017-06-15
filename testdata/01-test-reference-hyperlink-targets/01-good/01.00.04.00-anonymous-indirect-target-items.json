@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Anonymous indirect hyperlink targets",
         "line": 1,
         "startPosition": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 2,
         "startPosition": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "When reference name includes spaces, the trailing underscore is included in the name.",
         "line": 3,
         "startPosition": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 4,
         "startPosition": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "line": 5,
         "startPosition": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 5,
         "startPosition": 3,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "__",
         "line": 5,
         "startPosition": 4,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "line": 5,
         "startPosition": 6,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 5,
         "startPosition": 7,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "underscore is preserved in the name here_",
         "line": 5,
         "startPosition": 8,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 6,
         "startPosition": 1,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "__",
         "line": 7,
         "startPosition": 1,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 7,
         "startPosition": 3,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemHyperlinkTargetURI",
+        "type": "HyperlinkTargetURI",
         "text": "underscore is preserved in the name here aswell_",
         "line": 7,
         "startPosition": 4,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 8,
         "startPosition": 1,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "__",
         "line": 9,
         "startPosition": 1,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 9,
         "startPosition": 3,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemInlineReferenceText",
+        "type": "InlineReferenceText",
         "text": "no_spaces_so_this_becomes_a_target",
         "line": 9,
         "startPosition": 4,
@@ -145,7 +145,7 @@
     },
 	{
         "id": 19,
-	    "type": "itemInlineReferenceClose",
+	    "type": "InlineReferenceClose",
 	    "text": "_",
 	    "startPosition": 38,
 	    "line": 9,
@@ -153,7 +153,7 @@
 	},
     {
         "id": 20,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 10,
         "startPosition": 1,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemHyperlinkTargetStart",
+        "type": "HyperlinkTargetStart",
         "text": "..",
         "line": 11,
         "startPosition": 1,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "line": 11,
         "startPosition": 3,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemHyperlinkTargetPrefix",
+        "type": "HyperlinkTargetPrefix",
         "text": "_",
         "line": 11,
         "startPosition": 4,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemHyperlinkTargetName",
+        "type": "HyperlinkTargetName",
         "text": "no_spaces_so_this_becomes_a_target",
         "line": 11,
         "startPosition": 5,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemHyperlinkTargetSuffix",
+        "type": "HyperlinkTargetSuffix",
         "text": ":",
         "line": 11,
         "startPosition": 39,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 12,
         "startPosition": 1,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemInlineReferenceText",
+        "type": "InlineReferenceText",
         "text": "target1",
         "line": 13,
         "startPosition": 1,
@@ -217,7 +217,7 @@
     },
     {
         "id": 28,
-        "type": "itemInlineReferenceClose",
+        "type": "InlineReferenceClose",
         "text": "__",
         "line": 13,
         "startPosition": 8,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 14,
         "startPosition": 1,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemInlineReferenceText",
+        "type": "InlineReferenceText",
         "text": "target2",
         "line": 15,
         "startPosition": 1,
@@ -241,7 +241,7 @@
     },
     {
         "id": 31,
-        "type": "itemInlineReferenceClose",
+        "type": "InlineReferenceClose",
         "text": "__",
         "line": 15,
         "startPosition": 8,
@@ -249,7 +249,7 @@
     },
     {
         "id": 32,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "line": 16,
         "startPosition": 1,
@@ -257,7 +257,7 @@
     },
     {
         "id": 33,
-        "type": "itemInlineReferenceText",
+        "type": "InlineReferenceText",
         "text": "target3",
         "line": 17,
         "startPosition": 1,
@@ -265,7 +265,7 @@
     },
     {
         "id": 34,
-        "type": "itemInlineReferenceClose",
+        "type": "InlineReferenceClose",
         "text": "__",
         "line": 17,
         "startPosition": 8,
@@ -273,7 +273,7 @@
     },
     {
         "id": 35,
-        "type": "itemEOF",
+        "type": "EOF",
         "line": 17,
         "startPosition": 10
     }

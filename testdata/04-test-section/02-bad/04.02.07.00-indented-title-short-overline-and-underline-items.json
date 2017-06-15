@@ -1,28 +1,31 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph",
+        "startPosition": 1,
         "line": 1,
         "length": 9
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 3,
         "length": 4
     },
     {
         "id": 4,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "==",
         "startPosition": 5,
         "line": 3,
@@ -30,14 +33,15 @@
     },
     {
         "id": 5,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 4,
         "length": 4
     },
     {
         "id": 6,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "ABC",
         "startPosition": 5,
         "line": 4,
@@ -45,14 +49,15 @@
     },
     {
         "id": 7,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 5,
         "length": 4
     },
     {
         "id": 8,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "==",
         "startPosition": 5,
         "line": 5,
@@ -60,21 +65,23 @@
     },
     {
         "id": 9,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
     {
         "id": 10,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 7,
         "length": 4
     },
     {
         "id": 11,
-        "type": "itemBlockQuote",
+        "type": "BlockQuote",
         "text": "Over & underline too short.",
         "startPosition": 5,
         "line": 7,
@@ -82,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 32,
         "line": 7
     }

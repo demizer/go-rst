@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "(",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 2,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "strong",
         "startPosition": 4,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 10,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": ") but not (**) or '(** ' or x**2 or \\**kwargs or **",
         "startPosition": 12,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 63,
         "line": 1
     }

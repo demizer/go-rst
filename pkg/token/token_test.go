@@ -1,6 +1,7 @@
 package token
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"testing"
 	"unicode/utf8"
@@ -50,7 +51,10 @@ func equal(t *testing.T, expectItems []interface{}, items []Item) {
 	if err != nil {
 		t.Fatalf("%s\n%s", o, err)
 	} else if len(o) > 0 {
-		t.Fatalf("The Actual Lexer Tokens and the Expected Lexer tokens do not match!\n%s", o)
+		eJson, _ := json.MarshalIndent(expectItems, "", "  ")
+		iJson, _ := json.MarshalIndent(toSlice(items), "", "  ")
+		errs := "The Lexer tokens and the Expected Lexer tokens do not match!"
+		t.Fatalf("%s\n\nLEXER TOKENS:\n\n%s\n\nEXPECTED TOKENS:\n\n%s\n\nDIFF:\n\n%s", errs, iJson, eJson, o)
 	}
 	return
 }

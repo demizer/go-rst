@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Quotes around inline markup:",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "'",
         "startPosition": 1,
         "line": 3,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 2,
         "line": 3,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 3,
         "line": 3,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 11,
         "line": 3,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "' \"",
         "startPosition": 12,
         "line": 3,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 15,
         "line": 3,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 16,
         "line": 3,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 24,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemText",
+        "type": "Text",
         "text": "\" Straight,",
         "startPosition": 25,
         "line": 3,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemText",
+        "type": "Text",
         "text": "‘",
         "startPosition": 1,
         "line": 4,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 4,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 4,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 4,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemText",
+        "type": "Text",
         "text": "’ “",
         "startPosition": 14,
         "line": 4,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 4,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 4,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 4,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemText",
+        "type": "Text",
         "text": "” English, ...,",
         "startPosition": 31,
         "line": 4,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemText",
+        "type": "Text",
         "text": "«\u202f",
         "startPosition": 1,
         "line": 5,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 6,
         "line": 5,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 7,
         "line": 5,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 15,
         "line": 5,
@@ -193,7 +193,7 @@
     },
     {
         "id": 25,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u202f» ‹\u202f",
         "startPosition": 16,
         "line": 5,
@@ -201,7 +201,7 @@
     },
     {
         "id": 26,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 28,
         "line": 5,
@@ -209,7 +209,7 @@
     },
     {
         "id": 27,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 29,
         "line": 5,
@@ -217,7 +217,7 @@
     },
     {
         "id": 28,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 37,
         "line": 5,
@@ -225,7 +225,7 @@
     },
     {
         "id": 29,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u202f› «\u00a0",
         "startPosition": 38,
         "line": 5,
@@ -233,7 +233,7 @@
     },
     {
         "id": 30,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 49,
         "line": 5,
@@ -241,7 +241,7 @@
     },
     {
         "id": 31,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 50,
         "line": 5,
@@ -249,7 +249,7 @@
     },
     {
         "id": 32,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 58,
         "line": 5,
@@ -257,7 +257,7 @@
     },
     {
         "id": 33,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u00a0» ‹\u00a0",
         "startPosition": 59,
         "line": 5,
@@ -265,7 +265,7 @@
     },
     {
         "id": 34,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 69,
         "line": 5,
@@ -273,7 +273,7 @@
     },
     {
         "id": 35,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 70,
         "line": 5,
@@ -281,7 +281,7 @@
     },
     {
         "id": 36,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 78,
         "line": 5,
@@ -289,7 +289,7 @@
     },
     {
         "id": 37,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u00a0›",
         "startPosition": 79,
         "line": 5,
@@ -297,7 +297,7 @@
     },
     {
         "id": 38,
-        "type": "itemText",
+        "type": "Text",
         "text": "«\u2005",
         "startPosition": 1,
         "line": 6,
@@ -305,7 +305,7 @@
     },
     {
         "id": 39,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 6,
         "line": 6,
@@ -313,7 +313,7 @@
     },
     {
         "id": 40,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 7,
         "line": 6,
@@ -321,7 +321,7 @@
     },
     {
         "id": 41,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 15,
         "line": 6,
@@ -329,7 +329,7 @@
     },
     {
         "id": 42,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2005» ‹\u2005",
         "startPosition": 16,
         "line": 6,
@@ -337,7 +337,7 @@
     },
     {
         "id": 43,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 28,
         "line": 6,
@@ -345,7 +345,7 @@
     },
     {
         "id": 44,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 29,
         "line": 6,
@@ -353,7 +353,7 @@
     },
     {
         "id": 45,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 37,
         "line": 6,
@@ -361,7 +361,7 @@
     },
     {
         "id": 46,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2005› French,",
         "startPosition": 38,
         "line": 6,
@@ -369,7 +369,7 @@
     },
     {
         "id": 47,
-        "type": "itemText",
+        "type": "Text",
         "text": "„",
         "startPosition": 1,
         "line": 7,
@@ -377,7 +377,7 @@
     },
     {
         "id": 48,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 7,
@@ -385,7 +385,7 @@
     },
     {
         "id": 49,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 7,
@@ -393,7 +393,7 @@
     },
     {
         "id": 50,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 7,
@@ -401,7 +401,7 @@
     },
     {
         "id": 51,
-        "type": "itemText",
+        "type": "Text",
         "text": "“ ‚",
         "startPosition": 14,
         "line": 7,
@@ -409,7 +409,7 @@
     },
     {
         "id": 52,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 7,
@@ -417,7 +417,7 @@
     },
     {
         "id": 53,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 7,
@@ -425,7 +425,7 @@
     },
     {
         "id": 54,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 7,
@@ -433,7 +433,7 @@
     },
     {
         "id": 55,
-        "type": "itemText",
+        "type": "Text",
         "text": "‘ »",
         "startPosition": 31,
         "line": 7,
@@ -441,7 +441,7 @@
     },
     {
         "id": 56,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 37,
         "line": 7,
@@ -449,7 +449,7 @@
     },
     {
         "id": 57,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 38,
         "line": 7,
@@ -457,7 +457,7 @@
     },
     {
         "id": 58,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 46,
         "line": 7,
@@ -465,7 +465,7 @@
     },
     {
         "id": 59,
-        "type": "itemText",
+        "type": "Text",
         "text": "« ›",
         "startPosition": 47,
         "line": 7,
@@ -473,7 +473,7 @@
     },
     {
         "id": 60,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 53,
         "line": 7,
@@ -481,7 +481,7 @@
     },
     {
         "id": 61,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 54,
         "line": 7,
@@ -489,7 +489,7 @@
     },
     {
         "id": 62,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 62,
         "line": 7,
@@ -497,7 +497,7 @@
     },
     {
         "id": 63,
-        "type": "itemText",
+        "type": "Text",
         "text": "‹ German, Czech, ...,",
         "startPosition": 63,
         "line": 7,
@@ -505,7 +505,7 @@
     },
     {
         "id": 64,
-        "type": "itemText",
+        "type": "Text",
         "text": "„",
         "startPosition": 1,
         "line": 8,
@@ -513,7 +513,7 @@
     },
     {
         "id": 65,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 8,
@@ -521,7 +521,7 @@
     },
     {
         "id": 66,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 8,
@@ -529,7 +529,7 @@
     },
     {
         "id": 67,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 8,
@@ -537,7 +537,7 @@
     },
     {
         "id": 68,
-        "type": "itemText",
+        "type": "Text",
         "text": "” «",
         "startPosition": 14,
         "line": 8,
@@ -545,7 +545,7 @@
     },
     {
         "id": 69,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 20,
         "line": 8,
@@ -553,7 +553,7 @@
     },
     {
         "id": 70,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 21,
         "line": 8,
@@ -561,7 +561,7 @@
     },
     {
         "id": 71,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 29,
         "line": 8,
@@ -569,7 +569,7 @@
     },
     {
         "id": 72,
-        "type": "itemText",
+        "type": "Text",
         "text": "» Romanian,",
         "startPosition": 30,
         "line": 8,
@@ -577,7 +577,7 @@
     },
     {
         "id": 73,
-        "type": "itemText",
+        "type": "Text",
         "text": "“",
         "startPosition": 1,
         "line": 9,
@@ -585,7 +585,7 @@
     },
     {
         "id": 74,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 9,
@@ -593,7 +593,7 @@
     },
     {
         "id": 75,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 9,
@@ -601,7 +601,7 @@
     },
     {
         "id": 76,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 9,
@@ -609,7 +609,7 @@
     },
     {
         "id": 77,
-        "type": "itemText",
+        "type": "Text",
         "text": "„ ‘",
         "startPosition": 14,
         "line": 9,
@@ -617,7 +617,7 @@
     },
     {
         "id": 78,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 9,
@@ -625,7 +625,7 @@
     },
     {
         "id": 79,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 9,
@@ -633,7 +633,7 @@
     },
     {
         "id": 80,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 9,
@@ -641,7 +641,7 @@
     },
     {
         "id": 81,
-        "type": "itemText",
+        "type": "Text",
         "text": "‚ Greek,",
         "startPosition": 31,
         "line": 9,
@@ -649,7 +649,7 @@
     },
     {
         "id": 82,
-        "type": "itemText",
+        "type": "Text",
         "text": "「",
         "startPosition": 1,
         "line": 10,
@@ -657,7 +657,7 @@
     },
     {
         "id": 83,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 10,
@@ -665,7 +665,7 @@
     },
     {
         "id": 84,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 10,
@@ -673,7 +673,7 @@
     },
     {
         "id": 85,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 10,
@@ -681,7 +681,7 @@
     },
     {
         "id": 86,
-        "type": "itemText",
+        "type": "Text",
         "text": "」 『",
         "startPosition": 14,
         "line": 10,
@@ -689,7 +689,7 @@
     },
     {
         "id": 87,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 10,
@@ -697,7 +697,7 @@
     },
     {
         "id": 88,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 10,
@@ -705,7 +705,7 @@
     },
     {
         "id": 89,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 10,
@@ -713,7 +713,7 @@
     },
     {
         "id": 90,
-        "type": "itemText",
+        "type": "Text",
         "text": "』traditional Chinese,",
         "startPosition": 31,
         "line": 10,
@@ -721,7 +721,7 @@
     },
     {
         "id": 91,
-        "type": "itemText",
+        "type": "Text",
         "text": "”",
         "startPosition": 1,
         "line": 11,
@@ -729,7 +729,7 @@
     },
     {
         "id": 92,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 11,
@@ -737,7 +737,7 @@
     },
     {
         "id": 93,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 11,
@@ -745,7 +745,7 @@
     },
     {
         "id": 94,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 11,
@@ -753,7 +753,7 @@
     },
     {
         "id": 95,
-        "type": "itemText",
+        "type": "Text",
         "text": "” ’",
         "startPosition": 14,
         "line": 11,
@@ -761,7 +761,7 @@
     },
     {
         "id": 96,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 11,
@@ -769,7 +769,7 @@
     },
     {
         "id": 97,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 11,
@@ -777,7 +777,7 @@
     },
     {
         "id": 98,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 11,
@@ -785,7 +785,7 @@
     },
     {
         "id": 99,
-        "type": "itemText",
+        "type": "Text",
         "text": "’ »",
         "startPosition": 31,
         "line": 11,
@@ -793,7 +793,7 @@
     },
     {
         "id": 100,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 37,
         "line": 11,
@@ -801,7 +801,7 @@
     },
     {
         "id": 101,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 38,
         "line": 11,
@@ -809,7 +809,7 @@
     },
     {
         "id": 102,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 46,
         "line": 11,
@@ -817,7 +817,7 @@
     },
     {
         "id": 103,
-        "type": "itemText",
+        "type": "Text",
         "text": "» ›",
         "startPosition": 47,
         "line": 11,
@@ -825,7 +825,7 @@
     },
     {
         "id": 104,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 53,
         "line": 11,
@@ -833,7 +833,7 @@
     },
     {
         "id": 105,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 54,
         "line": 11,
@@ -841,7 +841,7 @@
     },
     {
         "id": 106,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 62,
         "line": 11,
@@ -849,7 +849,7 @@
     },
     {
         "id": 107,
-        "type": "itemText",
+        "type": "Text",
         "text": "› Swedish, Finnish,",
         "startPosition": 63,
         "line": 11,
@@ -857,7 +857,7 @@
     },
     {
         "id": 108,
-        "type": "itemText",
+        "type": "Text",
         "text": "„",
         "startPosition": 1,
         "line": 12,
@@ -865,7 +865,7 @@
     },
     {
         "id": 109,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 12,
@@ -873,7 +873,7 @@
     },
     {
         "id": 110,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 12,
@@ -881,7 +881,7 @@
     },
     {
         "id": 111,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 12,
@@ -889,7 +889,7 @@
     },
     {
         "id": 112,
-        "type": "itemText",
+        "type": "Text",
         "text": "” ‚",
         "startPosition": 14,
         "line": 12,
@@ -897,7 +897,7 @@
     },
     {
         "id": 113,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 21,
         "line": 12,
@@ -905,7 +905,7 @@
     },
     {
         "id": 114,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 22,
         "line": 12,
@@ -913,7 +913,7 @@
     },
     {
         "id": 115,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 30,
         "line": 12,
@@ -921,7 +921,7 @@
     },
     {
         "id": 116,
-        "type": "itemText",
+        "type": "Text",
         "text": "’ Polish,",
         "startPosition": 31,
         "line": 12,
@@ -929,7 +929,7 @@
     },
     {
         "id": 117,
-        "type": "itemText",
+        "type": "Text",
         "text": "„",
         "startPosition": 1,
         "line": 13,
@@ -937,7 +937,7 @@
     },
     {
         "id": 118,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 4,
         "line": 13,
@@ -945,7 +945,7 @@
     },
     {
         "id": 119,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 5,
         "line": 13,
@@ -953,7 +953,7 @@
     },
     {
         "id": 120,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 13,
         "line": 13,
@@ -961,7 +961,7 @@
     },
     {
         "id": 121,
-        "type": "itemText",
+        "type": "Text",
         "text": "” »",
         "startPosition": 14,
         "line": 13,
@@ -969,7 +969,7 @@
     },
     {
         "id": 122,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 20,
         "line": 13,
@@ -977,7 +977,7 @@
     },
     {
         "id": 123,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 21,
         "line": 13,
@@ -985,7 +985,7 @@
     },
     {
         "id": 124,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 29,
         "line": 13,
@@ -993,7 +993,7 @@
     },
     {
         "id": 125,
-        "type": "itemText",
+        "type": "Text",
         "text": "« ’",
         "startPosition": 30,
         "line": 13,
@@ -1001,7 +1001,7 @@
     },
     {
         "id": 126,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 36,
         "line": 13,
@@ -1009,7 +1009,7 @@
     },
     {
         "id": 127,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "emphasis",
         "startPosition": 37,
         "line": 13,
@@ -1017,7 +1017,7 @@
     },
     {
         "id": 128,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 45,
         "line": 13,
@@ -1025,7 +1025,7 @@
     },
     {
         "id": 129,
-        "type": "itemText",
+        "type": "Text",
         "text": "’ Hungarian,",
         "startPosition": 46,
         "line": 13,
@@ -1033,7 +1033,7 @@
     },
     {
         "id": 130,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 60,
         "line": 13
     }

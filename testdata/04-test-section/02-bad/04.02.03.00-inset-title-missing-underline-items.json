@@ -1,21 +1,23 @@
 [
     {
         "id": 1,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "========================",
+        "startPosition": 1,
         "line": 1,
         "length": 24
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test Missing Underline",
         "startPosition": 2,
         "line": 2,
@@ -23,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 24,
         "line": 2
     }

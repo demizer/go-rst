@@ -1,28 +1,31 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test unexpected section titles.",
+        "startPosition": 1,
         "line": 1,
         "length": 31
     },
     {
         "id": 2,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 3,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 3,
         "length": 4
     },
     {
         "id": 4,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Title",
         "startPosition": 5,
         "line": 3,
@@ -30,14 +33,15 @@
     },
     {
         "id": 5,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 4,
         "length": 4
     },
     {
         "id": 6,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=====",
         "startPosition": 5,
         "line": 4,
@@ -45,14 +49,15 @@
     },
     {
         "id": 7,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 5,
         "length": 4
     },
     {
         "id": 8,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph.",
         "startPosition": 5,
         "line": 5,
@@ -60,21 +65,23 @@
     },
     {
         "id": 9,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 6,
         "length": 1
     },
     {
         "id": 10,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 7,
         "length": 4
     },
     {
         "id": 11,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "-----",
         "startPosition": 5,
         "line": 7,
@@ -82,14 +89,15 @@
     },
     {
         "id": 12,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 8,
         "length": 4
     },
     {
         "id": 13,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Title",
         "startPosition": 5,
         "line": 8,
@@ -97,14 +105,15 @@
     },
     {
         "id": 14,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 9,
         "length": 4
     },
     {
         "id": 15,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "-----",
         "startPosition": 5,
         "line": 9,
@@ -112,14 +121,15 @@
     },
     {
         "id": 16,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
+        "startPosition": 1,
         "line": 10,
         "length": 4
     },
     {
         "id": 17,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph.",
         "startPosition": 5,
         "line": 10,
@@ -127,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 15,
         "line": 10
     }

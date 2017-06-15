@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Python ",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 8,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "list",
         "startPosition": 10,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 14,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemEscape",
+        "type": "Escape",
         "text": "\\",
         "startPosition": 16,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemText",
+        "type": "Text",
         "text": "s use square bracket syntax.",
         "startPosition": 17,
         "line": 1,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 45,
         "line": 1
     }

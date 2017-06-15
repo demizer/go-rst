@@ -1,70 +1,79 @@
 [
     {
         "id": 1,
-        "type": "itemCommentMark",
+        "type": "CommentMark",
         "text": "..",
+        "startPosition": 1,
         "line": 1,
         "length": 2
     },
     {
         "id": 2,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Hi",
+        "startPosition": 1,
         "line": 2,
         "length": 2
     },
     {
         "id": 3,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "..",
+        "startPosition": 1,
         "line": 3,
         "length": 2
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
     {
         "id": 5,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "...",
+        "startPosition": 1,
         "line": 5,
         "length": 3
     },
     {
         "id": 6,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Yo",
+        "startPosition": 1,
         "line": 6,
         "length": 2
     },
     {
         "id": 7,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "...",
+        "startPosition": 1,
         "line": 7,
         "length": 3
     },
     {
         "id": 8,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 8,
         "length": 1
     },
     {
         "id": 9,
-        "type": "itemText",
+        "type": "Text",
         "text": "Ho",
+        "startPosition": 1,
         "line": 9,
         "length": 2
     },
     {
         "id": 10,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 3,
         "line": 9
     }

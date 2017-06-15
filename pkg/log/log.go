@@ -94,10 +94,11 @@ func (l Logger) Log(keyvals ...interface{}) error {
 	return logr.Log(keyvals...)
 }
 
+// Sdump returns a pretty printed string of v.
+func Sdump(v interface{}) string { return spd.Sdump(v) }
+
 // Dump pretty prints the var interface to standard output.
-func Dump(v interface{}) {
-	spd.Dump(v)
-}
+func Dump(v interface{}) { spd.Dump(v) }
 
 // DumpExit pretty prints the var interface to standard output and terminates program execution.
 func DumpExit(v interface{}) {

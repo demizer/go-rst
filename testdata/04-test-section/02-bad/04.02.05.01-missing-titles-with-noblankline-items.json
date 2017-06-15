@@ -1,56 +1,63 @@
 [
     {
         "id": 1,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "========================",
+        "startPosition": 1,
         "line": 1,
         "length": 24
     },
     {
         "id": 2,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "========================",
+        "startPosition": 1,
         "line": 2,
         "length": 24
     },
     {
         "id": 3,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 3,
         "length": 1
     },
     {
         "id": 4,
-        "type": "itemText",
+        "type": "Text",
         "text": "Test missing titles; nothing in-between.",
+        "startPosition": 1,
         "line": 4,
         "length": 40
     },
     {
         "id": 5,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 5,
         "length": 1
     },
     {
         "id": 6,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "========================",
+        "startPosition": 1,
         "line": 6,
         "length": 24
     },
     {
         "id": 7,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "========================",
+        "startPosition": 1,
         "line": 7,
         "length": 24
     },
     {
         "id": 8,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 25,
         "line": 7
     }

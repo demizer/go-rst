@@ -1,14 +1,15 @@
 [
     {
         "id": 1,
-        "type": "itemEnumListArabic",
+        "type": "EnumListArabic",
         "text": "1",
+        "startPosition": 1,
         "line": 1,
         "length": 1
     },
     {
         "id": 2,
-        "type": "itemEnumListAffix",
+        "type": "EnumListAffix",
         "text": ".",
         "startPosition": 2,
         "line": 1,
@@ -16,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 1,
@@ -24,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemText",
+        "type": "Text",
         "text": "Item 1.",
         "startPosition": 4,
         "line": 1,
@@ -32,14 +33,15 @@
     },
     {
         "id": 5,
-        "type": "itemEnumListArabic",
+        "type": "EnumListArabic",
         "text": "2",
+        "startPosition": 1,
         "line": 2,
         "length": 1
     },
     {
         "id": 6,
-        "type": "itemEnumListAffix",
+        "type": "EnumListAffix",
         "text": ".",
         "startPosition": 2,
         "line": 2,
@@ -47,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 2,
@@ -55,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemText",
+        "type": "Text",
         "text": "Item 2.",
         "startPosition": 4,
         "line": 2,
@@ -63,35 +65,39 @@
     },
     {
         "id": 9,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "3. Numbered Title",
+        "startPosition": 1,
         "line": 3,
         "length": 17
     },
     {
         "id": 10,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=================",
+        "startPosition": 1,
         "line": 4,
         "length": 17
     },
     {
         "id": 11,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 5,
         "length": 1
     },
     {
         "id": 12,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph.",
+        "startPosition": 1,
         "line": 6,
         "length": 10
     },
     {
         "id": 13,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 11,
         "line": 6
     }

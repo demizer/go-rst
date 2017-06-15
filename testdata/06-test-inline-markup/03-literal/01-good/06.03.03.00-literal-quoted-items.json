@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "quoted '",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 9,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal",
         "startPosition": 11,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 18,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "', quoted \"",
         "startPosition": 20,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 31,
         "line": 1,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal",
         "startPosition": 33,
         "line": 1,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 40,
         "line": 1,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemText",
+        "type": "Text",
         "text": "\",",
         "startPosition": 42,
         "line": 1,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemText",
+        "type": "Text",
         "text": "quoted \u2018",
         "startPosition": 1,
         "line": 2,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 11,
         "line": 2,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal",
         "startPosition": 13,
         "line": 2,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 20,
         "line": 2,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u2019, quoted \u201c",
         "startPosition": 22,
         "line": 2,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 37,
         "line": 2,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal",
         "startPosition": 39,
         "line": 2,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 46,
         "line": 2,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemText",
+        "type": "Text",
         "text": "\u201d,",
         "startPosition": 48,
         "line": 2,
@@ -145,7 +145,7 @@
     },
     {
         "id": 19,
-        "type": "itemText",
+        "type": "Text",
         "text": "quoted «",
         "startPosition": 1,
         "line": 3,
@@ -153,7 +153,7 @@
     },
     {
         "id": 20,
-        "type": "itemInlineLiteralOpen",
+        "type": "InlineLiteralOpen",
         "text": "``",
         "startPosition": 10,
         "line": 3,
@@ -161,7 +161,7 @@
     },
     {
         "id": 21,
-        "type": "itemInlineLiteral",
+        "type": "InlineLiteral",
         "text": "literal",
         "startPosition": 12,
         "line": 3,
@@ -169,7 +169,7 @@
     },
     {
         "id": 22,
-        "type": "itemInlineLiteralClose",
+        "type": "InlineLiteralClose",
         "text": "``",
         "startPosition": 19,
         "line": 3,
@@ -177,7 +177,7 @@
     },
     {
         "id": 23,
-        "type": "itemText",
+        "type": "Text",
         "text": "»",
         "startPosition": 21,
         "line": 3,
@@ -185,7 +185,7 @@
     },
     {
         "id": 24,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 23,
         "line": 3
     }

@@ -1,21 +1,23 @@
 [
     {
         "id": 1,
-        "type": "itemTitle",
+        "type": "Title",
         "text": "Empty Section",
+        "startPosition": 1,
         "line": 1,
         "length": 13
     },
     {
         "id": 2,
-        "type": "itemSectionAdornment",
+        "type": "SectionAdornment",
         "text": "=============",
+        "startPosition": 1,
         "line": 2,
         "length": 13
     },
     {
         "id": 3,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 14,
         "line": 2
     }

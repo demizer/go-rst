@@ -48,7 +48,7 @@ func Test_04_00_02_00_LexSectionTitleGood(t *testing.T) {
 }
 
 // Tests a single section with no other element surrounding it.
-func Test_04_00_06_00_LexSectionTitleGood(t *testing.T) {
+func Test_04_00_03_00_LexSectionTitleGood(t *testing.T) {
 	testPath := testutil.TestPathFromName("04.00.03.00-empty-section")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)

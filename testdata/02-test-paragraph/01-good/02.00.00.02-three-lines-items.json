@@ -1,28 +1,31 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 1: A paragraph with three lines.",
+        "startPosition": 1,
         "line": 1,
         "length": 37
     },
     {
         "id": 2,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 2.",
+        "startPosition": 1,
         "line": 2,
         "length": 7
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 3.",
+        "startPosition": 1,
         "line": 3,
         "length": 7
     },
     {
         "id": 4,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 8,
         "line": 3
     }

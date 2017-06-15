@@ -114,10 +114,10 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 type Item struct {
 	ID            `json:"id"`
 	Type          Type   `json:"type"`
-	Text          string `json:"text"`
+	Text          string `json:"text,omitempty"`
 	Line          int    `json:"line"`
 	StartPosition int    `json:"startPosition"`
-	Length        int    `json:"length"`
+	Length        int    `json:"length,omitempty"`
 }
 
 // MarshalJSON satisfies the Marshaler interface.
@@ -125,10 +125,10 @@ func (i Item) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		ID            int    `json:"id"`
 		Type          string `json:"type"`
-		Text          string `json:"text"`
+		Text          string `json:"text,omitempty"`
 		Line          int    `json:"line"`
 		StartPosition int    `json:"startPosition"`
-		Length        int    `json:"length"`
+		Length        int    `json:"length,omitempty"`
 	}{
 		ID:            int(i.IDNumber()),
 		Type:          i.Type.String(),

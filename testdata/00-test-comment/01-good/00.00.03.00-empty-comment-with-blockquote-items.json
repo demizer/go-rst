@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemCommentMark",
+        "type": "CommentMark",
         "text": "..",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemSpace",
+        "type": "Space",
         "text": " ",
         "startPosition": 3,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "Next is an empty comment, which serves to end this comment and",
         "startPosition": 4,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "   ",
         "startPosition": 1,
         "line": 2,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "prevents the following block quote being swallowed up.",
         "startPosition": 4,
         "line": 2,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 3,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemCommentMark",
+        "type": "CommentMark",
         "text": "..",
         "startPosition": 1,
         "line": 4,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 5,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemSpace",
+        "type": "Space",
         "text": "    ",
         "startPosition": 1,
         "line": 6,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemBlockQuote",
+        "type": "BlockQuote",
         "text": "A block quote.",
         "startPosition": 5,
         "line": 6,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 19,
         "line": 6
     }

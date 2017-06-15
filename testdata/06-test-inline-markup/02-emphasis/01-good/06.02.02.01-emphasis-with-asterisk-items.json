@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Emphasized ",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 12,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "\\*blah\\*",
         "startPosition": 13,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 21,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": " asterisk.",
         "startPosition": 22,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "Emphasized ",
         "startPosition": 1,
         "line": 3,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineEmphasisOpen",
+        "type": "InlineEmphasisOpen",
         "text": "*",
         "startPosition": 12,
         "line": 3,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemInlineEmphasis",
+        "type": "InlineEmphasis",
         "text": "\\**blah\\**",
         "startPosition": 13,
         "line": 3,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineEmphasisClose",
+        "type": "InlineEmphasisClose",
         "text": "*",
         "startPosition": 23,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemText",
+        "type": "Text",
         "text": " double asterisk.",
         "startPosition": 24,
         "line": 3,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 41,
         "line": 3
     }

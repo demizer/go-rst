@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Strong ",
         "startPosition": 1,
         "line": 1,
@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 8,
         "line": 1,
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "*",
         "startPosition": 10,
         "line": 1,
@@ -25,7 +25,7 @@
     },
     {
         "id": 4,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 11,
         "line": 1,
@@ -33,7 +33,7 @@
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": " asterisk.",
         "startPosition": 13,
         "line": 1,
@@ -41,7 +41,7 @@
     },
     {
         "id": 6,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 2,
@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "Strong ",
         "startPosition": 1,
         "line": 3,
@@ -57,7 +57,7 @@
     },
     {
         "id": 8,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 8,
         "line": 3,
@@ -65,7 +65,7 @@
     },
     {
         "id": 9,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "**",
         "startPosition": 10,
         "line": 3,
@@ -73,7 +73,7 @@
     },
     {
         "id": 10,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 12,
         "line": 3,
@@ -81,7 +81,7 @@
     },
     {
         "id": 11,
-        "type": "itemText",
+        "type": "Text",
         "text": " double asterisk.",
         "startPosition": 14,
         "line": 3,
@@ -89,7 +89,7 @@
     },
     {
         "id": 12,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
         "line": 4,
@@ -97,7 +97,7 @@
     },
     {
         "id": 13,
-        "type": "itemText",
+        "type": "Text",
         "text": "Strong ",
         "startPosition": 1,
         "line": 5,
@@ -105,7 +105,7 @@
     },
     {
         "id": 14,
-        "type": "itemInlineStrongOpen",
+        "type": "InlineStrongOpen",
         "text": "**",
         "startPosition": 8,
         "line": 5,
@@ -113,7 +113,7 @@
     },
     {
         "id": 15,
-        "type": "itemInlineStrong",
+        "type": "InlineStrong",
         "text": "********************",
         "startPosition": 10,
         "line": 5,
@@ -121,7 +121,7 @@
     },
     {
         "id": 16,
-        "type": "itemInlineStrongClose",
+        "type": "InlineStrongClose",
         "text": "**",
         "startPosition": 30,
         "line": 5,
@@ -129,7 +129,7 @@
     },
     {
         "id": 17,
-        "type": "itemText",
+        "type": "Text",
         "text": " asterisk gone to plaid!",
         "startPosition": 32,
         "line": 5,
@@ -137,7 +137,7 @@
     },
     {
         "id": 18,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 56,
         "line": 5
     }

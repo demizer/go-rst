@@ -1,56 +1,63 @@
 [
     {
         "id": 1,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 1: Two paragraphs with three lines each.",
+        "startPosition": 1,
         "line": 1,
         "length": 45
     },
     {
         "id": 2,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 2.",
+        "startPosition": 1,
         "line": 2,
         "length": 7
     },
     {
         "id": 3,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 3.",
+        "startPosition": 1,
         "line": 3,
         "length": 7
     },
     {
         "id": 4,
-        "type": "itemBlankLine",
+        "type": "BlankLine",
         "text": "\n",
+        "startPosition": 1,
         "line": 4,
         "length": 1
     },
     {
         "id": 5,
-        "type": "itemText",
+        "type": "Text",
         "text": "Paragraph 2, Line 1.",
+        "startPosition": 1,
         "line": 5,
         "length": 20
     },
     {
         "id": 6,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 2.",
+        "startPosition": 1,
         "line": 6,
         "length": 7
     },
     {
         "id": 7,
-        "type": "itemText",
+        "type": "Text",
         "text": "Line 3.",
+        "startPosition": 1,
         "line": 7,
         "length": 7
     },
     {
         "id": 8,
-        "type": "itemEOF",
+        "type": "EOF",
         "startPosition": 8,
         "line": 7
     }
