@@ -8,6 +8,104 @@
 
   Nodes parse as correct with no system messages, but pseduo xml shows system messages.
 
+* Wed Jun 14 16:07 2017: test IDs not completely unique (merge good and bad tests) into single directory
+
+  Make thes tests have a unique ID.
+
+  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors.rst
+  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors-nodes-xx.json
+  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors-items-xx.json
+  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms-nodes-xx.json
+  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms-items-xx.json
+  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms.rst
+
+  Merge
+
+  testdata/09-test-list-definition/09.00.02.02.00-bad-def-list-with-inline-markup-errors.rst
+
+  testdata/09-test-list-definition/09.00.01.02.00-def-list-two-terms.rst
+
+
+  $ find testdata -iname "*.json" -exec basename {} \; | sort -t , -k 1 | grep -o -P "[\d\.]{4,}" | uniq -c | sort -rn
+        4 09.00.02.00
+        4 09.00.01.00
+        4 09.00.00.01
+        4 09.00.00.00
+        4 08.00.05.00
+        4 08.00.04.00
+        4 08.00.03.00
+        4 08.00.02.00
+        4 08.00.01.00
+        4 08.00.00.00
+        4 07.00.01.00
+        4 07.00.00.00
+        4 05.00.02.00
+        4 05.00.01.00
+        4 05.00.00.02
+        4 05.00.00.01
+        4 05.00.00.00
+        4 01.00.04.01
+        4 01.00.04.00
+        4 01.00.03.00
+        4 01.00.02.00
+        4 01.00.01.00
+        4 01.00.00.03
+        4 01.00.00.02
+        4 01.00.00.01
+        4 01.00.00.00
+
+* Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
+
+  This will reduce the number of files in the project greatly and also make it slightly easier to refactor tests if needed.
+
+  The rst test files can be limited to:
+
+  - lexer_rst_test.go
+  - parser_rst_test.go
+
+  This CLI tool will get all the files in the test directories, sort the list, and generate a huge test file for Go
+  automatically.
+
+* Tue Oct 11 00:10 2016: add a document listing the un-implemented tests
+
+  - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
+    How to help section.
+
+  - Finish writing how to implement an element (and test)
+
+    * Document example test import for option lists.
+
+    * The UltiSnips Snippets should be mentioned with snippets published to the repo.
+
+      - Use some inline markup test as an example implementation.
+
+	* document naming of bad tests (should include -bads after id)
+
+    * Document debugging tips
+
+    * Document regenerating the tests
+
+    * section tests need to be moved into subgroups::
+
+        ▾ 04-test-section/
+          ▾ 01-good/
+              04.00.00.00-title-paragraph.rst
+              04.01.00.00-section-level-return.rst
+              04.02.00.00-title-overline.rst
+
+      Should be::
+
+        ▾ 04-test-section/
+          ▾ 00-simple-title/
+            ▾ 01-good/
+                04.00.00.00-title-paragraph.rst
+          ▾ 01-levels/
+            ▾ 01-good/
+                04.01.00.00-section-level-return.rst
+          ▾ 02-title-overline/
+            ▾ 01-good/
+                04.02.00.00-title-overline.rst
+
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
