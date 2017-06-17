@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"os"
 	"testing"
 
 	"github.com/demizer/go-rst/pkg/testutil"
@@ -78,7 +79,10 @@ func Test_04_00_04_00_ParseSectionGood(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func Test_04_00_04_01_ParseSectionBad(t *testing.T) {
+func Test_04_00_04_01_ParseSectionBad_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("04.00.04.01-bad-enum-list-with-numbered-title")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
@@ -86,7 +90,10 @@ func Test_04_00_04_01_ParseSectionBad(t *testing.T) {
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
 }
 
-func Test_04_00_05_00_ParseSectionGood(t *testing.T) {
+func Test_04_00_05_00_ParseSectionGood_NotImplemented(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("04.00.05.00-title-with-imu")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)

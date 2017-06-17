@@ -9,15 +9,15 @@ func isInlineMarkup(l *Lexer) bool {
 	isOpenerRune := func(r rune) bool {
 		for _, x := range inlineMarkupStartStringOpeners {
 			if x == r {
-				l.Msg("Found inline markup!")
+				l.Msgr("Found inline markup!", "rune", string(l.mark))
 				return true
 			}
 		}
 		if unicode.In(r, unicode.Pd, unicode.Po, unicode.Pi, unicode.Pf, unicode.Ps, unicode.Zs, unicode.Zl) {
-			l.Msg("Found inline markup!")
+			l.Msgr("Found inline markup!", "rune", string(l.mark))
 			return true
 		}
-		l.Msg("Not inline markup!")
+		l.Msgr("Not inline markup!", "rune", string(l.mark))
 		return false
 	}
 	isSurrounded := func(back, front rune) bool {
@@ -60,11 +60,11 @@ func isInlineMarkup(l *Lexer) bool {
 		}
 		if b != '\\' && (isOpenerRune(b) || l.start == l.index) && !isSurrounded(b, f) &&
 			!unicode.IsSpace(f) && f != EOL {
-			l.Msg("Found inline markup!")
+			l.Msgr("Found inline markup!", "rune", string(l.mark))
 			return true
 		}
 	}
-	l.Msg("Not inline markup!")
+	l.Msgr("Not inline markup!", "rune", string(l.mark))
 	return false
 }
 

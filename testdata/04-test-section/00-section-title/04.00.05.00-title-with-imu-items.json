@@ -2,16 +2,16 @@
     {
         "id": 1,
         "type": "Title",
-        "text": "Title containing",
+        "text": "Title containing ",
         "startPosition": 1,
         "line": 1,
-        "length": 16
+        "length": 17
     },
     {
         "id": 2,
-        "type": "Space",
-        "text": " ",
-        "startPosition": 17,
+        "type": "InlineEmphasisOpen",
+        "text": "*",
+        "startPosition": 18,
         "line": 1,
         "length": 1
     },
@@ -19,28 +19,52 @@
         "id": 3,
         "type": "InlineEmphasis",
         "text": "inline",
-        "startPosition": 18,
+        "startPosition": 19,
         "line": 1,
         "length": 6
     },
     {
         "id": 4,
-        "type": "Space",
+        "type": "InlineEmphasisClose",
+        "text": "*",
+        "startPosition": 25,
+        "line": 1,
+        "length": 1
+    },
+    {
+        "id": 5,
+        "type": "Title",
         "text": " ",
         "startPosition": 26,
         "line": 1,
         "length": 1
     },
     {
-        "id": 5,
+        "id": 6,
+        "type": "InlineLiteralOpen",
+        "text": "``",
+        "startPosition": 27,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 7,
         "type": "InlineLiteral",
         "text": "markup",
-        "startPosition": 27,
+        "startPosition": 29,
         "line": 1,
         "length": 6
     },
     {
-        "id": 6,
+        "id": 8,
+        "type": "InlineLiteralClose",
+        "text": "``",
+        "startPosition": 35,
+        "line": 1,
+        "length": 2
+    },
+    {
+        "id": 9,
         "type": "SectionAdornment",
         "text": "====================================",
         "startPosition": 1,
@@ -48,7 +72,7 @@
         "length": 36
     },
     {
-        "id": 7,
+        "id": 10,
         "type": "BlankLine",
         "text": "\n",
         "startPosition": 1,
@@ -56,7 +80,7 @@
         "length": 1
     },
     {
-        "id": 8,
+        "id": 11,
         "type": "Text",
         "text": "Paragraph.",
         "startPosition": 1,
@@ -64,7 +88,7 @@
         "length": 10
     },
     {
-        "id": 9,
+        "id": 12,
         "type": "EOF",
         "startPosition": 11,
         "line": 4
