@@ -381,7 +381,7 @@ func Test_09_00_00_01_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.00.01-def-list-with-paragraph")
+	testPath := testutil.TestPathFromName("09.00.00.01-with-paragraph")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -391,7 +391,7 @@ func Test_09_00_00_02_LexDefinitionListBad_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.00.02-bad-def-list-noblankline")
+	testPath := testutil.TestPathFromName("09.00.00.02-bad-noblankline")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -401,7 +401,7 @@ func Test_09_00_00_03_LexDefinitionListBad_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.00.03-bad-def-list-not-def-term")
+	testPath := testutil.TestPathFromName("09.00.00.03-bad-not-def-term")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -411,7 +411,7 @@ func Test_09_00_01_00_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.01.00-def-list-two-terms")
+	testPath := testutil.TestPathFromName("09.00.01.00-two-terms")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -421,7 +421,7 @@ func Test_09_00_01_01_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.01.01-def-list-two-terms-noblankline")
+	testPath := testutil.TestPathFromName("09.00.01.01-two-terms-noblankline")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -431,7 +431,7 @@ func Test_09_00_01_02_LexDefinitionListBad_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.01.02-bad-def-list-noblankline-after-two-terms")
+	testPath := testutil.TestPathFromName("09.00.01.02-bad-noblankline-after-two-terms")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -441,7 +441,7 @@ func Test_09_00_02_00_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.02.00-def-list-nested-terms")
+	testPath := testutil.TestPathFromName("09.00.02.00-nested-terms")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -451,7 +451,7 @@ func Test_09_00_03_00_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.03.00-def-list-term-with-classifier")
+	testPath := testutil.TestPathFromName("09.00.03.00-term-with-classifier")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -461,7 +461,7 @@ func Test_09_00_04_00_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.04.00-def-list-term-not-classifier")
+	testPath := testutil.TestPathFromName("09.00.04.00-term-not-classifier")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -471,7 +471,7 @@ func Test_09_00_04_01_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.04.01-def-list-term-not-classifier-literal")
+	testPath := testutil.TestPathFromName("09.00.04.01-term-not-classifier-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -481,7 +481,7 @@ func Test_09_00_04_02_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.04.02-def-list-two-classifiers")
+	testPath := testutil.TestPathFromName("09.00.04.02-two-classifiers")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -491,7 +491,7 @@ func Test_09_00_05_00_LexDefinitionListGood_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.05.00-def-list-not-literal")
+	testPath := testutil.TestPathFromName("09.00.05.00-not-literal")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
@@ -501,7 +501,7 @@ func Test_09_00_06_00_LexDefinitionListBad_NotImplemented(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
-	testPath := testutil.TestPathFromName("09.00.06.00-bad-def-list-with-inline-markup-errors")
+	testPath := testutil.TestPathFromName("09.00.06.00-bad-with-inline-markup-errors")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)

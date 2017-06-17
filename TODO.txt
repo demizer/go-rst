@@ -1,7 +1,3 @@
-* Sat Jun 17 01:10 2017: remove -def-list- from test names
-
-  do the same for enum list
-
 * Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
 
   This will reduce the number of files in the project greatly and also make it slightly easier to refactor tests if needed.
@@ -19,7 +15,9 @@
   - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
     How to help section.
 
-  * Add usage instructions to README.rst
+  * Add library get/usage instructions to README.rst
+
+  * move roadmap to roadmap.rst and link to it in README.rst
 
   - Finish writing how to implement an element (and test)
 
