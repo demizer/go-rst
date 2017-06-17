@@ -2,6 +2,7 @@ package token
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"testing"
 	"unicode/utf8"
@@ -42,17 +43,17 @@ func equal(t *testing.T, expectItems []interface{}, items []Item) {
 		}
 		return s
 	}
-	if lLen != eLen {
-		eTmp := "Number of expected Lex item values (len=%d) and lexed item values (len=%d) do not match"
-		t.Fatalf(eTmp, lLen, eLen)
-	}
 	// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
 	o, err := testutil.JsonDiff(expectItems, toSlice(items))
 	if err != nil {
 		t.Fatalf("%s\n%s", o, err)
+	}
+	eJson, _ := json.MarshalIndent(expectItems, "", "  ")
+	iJson, _ := json.MarshalIndent(toSlice(items), "", "  ")
+	if lLen != eLen {
+		eTmp := "Number of expected Lex item values (len=%d) and lexed item values (len=%d) do not match"
+		t.Fatalf("%s\n\nLEXER TOKENS:\n\n%s\n\nEXPECTED TOKENS:\n\n%s\n\nDIFF:\n\n%s", fmt.Sprintf(eTmp, eLen), iJson, eJson, o)
 	} else if len(o) > 0 {
-		eJson, _ := json.MarshalIndent(expectItems, "", "  ")
-		iJson, _ := json.MarshalIndent(toSlice(items), "", "  ")
 		errs := "The Lexer tokens and the Expected Lexer tokens do not match!"
 		t.Fatalf("%s\n\nLEXER TOKENS:\n\n%s\n\nEXPECTED TOKENS:\n\n%s\n\nDIFF:\n\n%s", errs, iJson, eJson, o)
 	}

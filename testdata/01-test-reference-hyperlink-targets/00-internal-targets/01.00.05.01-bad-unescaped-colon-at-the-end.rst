@@ -1,0 +1,3 @@
+.. _unescaped colon at end:: no good
+
+.. _:: no good either

@@ -37,13 +37,10 @@ func isSection(l *Lexer) bool {
 		return false
 	}
 
-	l.Msg("Checking current line")
 	if checkLine(l.currentLine()) {
 		l.Msg("Found section adornment")
 		return true
 	}
-
-	l.Msg("Checking next line")
 
 	nLine := l.peekNextLine()
 	if nLine != "" {
@@ -91,11 +88,20 @@ func lexSection(l *Lexer) stateFn {
 // lexSection.
 func lexTitle(l *Lexer) stateFn {
 	for {
-		l.next()
-		if l.isEndOfLine() {
+		if isInlineMarkup(l) {
+			if l.index > l.start {
+				l.emit(Title)
+			}
+			lexInlineMarkup(l)
+			if l.isEndOfLine() {
+				l.next()
+				break
+			}
+		} else if l.isEndOfLine() {
 			l.emit(Title)
 			break
 		}
+		l.next()
 	}
 	return lexSection
 }

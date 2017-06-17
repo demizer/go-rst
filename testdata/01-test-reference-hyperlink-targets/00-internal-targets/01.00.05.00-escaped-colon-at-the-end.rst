@@ -1,0 +1,3 @@
+.. _escaped colon\:: OK
+
+.. _`unescaped colon, quoted:`: OK

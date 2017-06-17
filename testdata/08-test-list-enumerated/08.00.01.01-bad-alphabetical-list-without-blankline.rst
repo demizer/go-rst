@@ -1,0 +1,4 @@
+A. Einstein was a great influence on
+B. Physicist, who was a colleague of
+C. Chemist.  They all worked in
+Princeton, NJ.

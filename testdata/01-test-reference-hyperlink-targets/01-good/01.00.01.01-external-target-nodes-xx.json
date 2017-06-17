@@ -1,4 +1,0 @@
-<document source="test data">
-    <paragraph>
-        External hyperlink:
-    <target ids="target" names="target" refuri="http://www.python.org/">
