@@ -1,8 +1,0 @@
-<document source="test data">
-    <bullet_list bullet="-">
-        <list_item>
-    <system_message level="2" line="2" source="test data" type="WARNING">
-        <paragraph>
-            Bullet list ends without a blank line; unexpected unindent.
-    <paragraph>
-        empty item above, no blank line

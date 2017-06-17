@@ -1,48 +1,14 @@
-* Wed Jun 14 16:07 2017: test IDs not completely unique (merge good and bad tests) into single directory
+* Sat Jun 17 01:10 2017: remove -def-list- from test names
 
-  Make thes tests have a unique ID.
+  do the same for enum list
 
-  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors.rst
-  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors-nodes-xx.json
-  testdata/09-test-list-definition/02-bad/09.00.02.00-bad-def-list-with-inline-markup-errors-items-xx.json
-  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms-nodes-xx.json
-  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms-items-xx.json
-  testdata/09-test-list-definition/01-good/09.00.02.00-def-list-two-terms.rst
+* Fri Jun 16 15:22 2017: test may be incorrect
 
-  Merge
+  04.00.06.00-enum-list-with-numbered-title-items.json
+  04.00.06.00-enum-list-with-numbered-title-nodes.json
+  04.00.06.00-enum-list-with-numbered-title.rst
 
-  testdata/09-test-list-definition/09.00.02.02.00-bad-def-list-with-inline-markup-errors.rst
-
-  testdata/09-test-list-definition/09.00.01.02.00-def-list-two-terms.rst
-
-
-  $ find testdata -iname "*.json" -exec basename {} \; | sort -t , -k 1 | grep -o -P "[\d\.]{4,}" | uniq -c | sort -rn
-        4 09.00.02.00
-        4 09.00.01.00
-        4 09.00.00.01
-        4 09.00.00.00
-        4 08.00.05.00
-        4 08.00.04.00
-        4 08.00.03.00
-        4 08.00.02.00
-        4 08.00.01.00
-        4 08.00.00.00
-        4 07.00.01.00
-        4 07.00.00.00
-        4 05.00.02.00
-        4 05.00.01.00
-        4 05.00.00.02
-        4 05.00.00.01
-        4 05.00.00.00
-        4 01.00.04.01
-        4 01.00.04.00
-        4 01.00.03.00
-        4 01.00.02.00
-        4 01.00.01.00
-        4 01.00.00.03
-        4 01.00.00.02
-        4 01.00.00.01
-        4 01.00.00.00
+  nvim is showing syntax errors, but nodes.json has no system messages.
 
 * Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
 
@@ -60,6 +26,8 @@
 
   - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
     How to help section.
+
+  * Add usage instructions to README.rst
 
   - Finish writing how to implement an element (and test)
 
