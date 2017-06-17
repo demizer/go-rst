@@ -53,6 +53,17 @@
         4 01.00.00.02
         4 01.00.00.01
         4 01.00.00.00
+* Sat Jun 17 01:10 2017: remove -def-list- from test names
+
+  do the same for enum list
+
+* Fri Jun 16 15:22 2017: test may be incorrect
+
+  04.00.06.00-enum-list-with-numbered-title-items.json
+  04.00.06.00-enum-list-with-numbered-title-nodes.json
+  04.00.06.00-enum-list-with-numbered-title.rst
+
+  nvim is showing syntax errors, but nodes.json has no system messages.
 
 * Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
 
@@ -70,6 +81,8 @@
 
   - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
     How to help section.
+
+  * Add usage instructions to README.rst
 
   - Finish writing how to implement an element (and test)
 

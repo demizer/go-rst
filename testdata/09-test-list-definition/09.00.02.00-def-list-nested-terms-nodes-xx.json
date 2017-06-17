@@ -1,0 +1,29 @@
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term 1
+            <definition>
+                <paragraph>
+                    definition 1
+                <definition_list>
+                    <definition_list_item>
+                        <term>
+                            term 1a
+                        <definition>
+                            <paragraph>
+                                definition 1a
+                    <definition_list_item>
+                        <term>
+                            term 1b
+                        <definition>
+                            <paragraph>
+                                definition 1b
+        <definition_list_item>
+            <term>
+                term 2
+            <definition>
+                <paragraph>
+                    definition 2
+    <paragraph>
+        paragraph

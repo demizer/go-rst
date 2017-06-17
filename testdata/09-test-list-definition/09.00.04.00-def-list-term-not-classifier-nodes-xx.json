@@ -1,0 +1,20 @@
+<document source="test data">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                Term: not a classifier
+            <definition>
+                <paragraph>
+                    Because there's no space before the colon.
+        <definition_list_item>
+            <term>
+                Term :not a classifier
+            <definition>
+                <paragraph>
+                    Because there's no space after the colon.
+        <definition_list_item>
+            <term>
+                Term : not a classifier
+            <definition>
+                <paragraph>
+                    Because the colon is escaped.
