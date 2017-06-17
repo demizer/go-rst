@@ -57,14 +57,6 @@
 
   do the same for enum list
 
-* Fri Jun 16 15:22 2017: test may be incorrect
-
-  04.00.06.00-enum-list-with-numbered-title-items.json
-  04.00.06.00-enum-list-with-numbered-title-nodes.json
-  04.00.06.00-enum-list-with-numbered-title.rst
-
-  nvim is showing syntax errors, but nodes.json has no system messages.
-
 * Thu Jun 15 03:12 2017: Write a tool to regen the rst tests automatically
 
   This will reduce the number of files in the project greatly and also make it slightly easier to refactor tests if needed.
@@ -118,6 +110,16 @@
           ▾ 02-title-overline/
             ▾ 01-good/
                 04.02.00.00-title-overline.rst
+
+* Sat Jun 17 03:06 2017: Implement section parse test
+
+  04.00.05.00-title-with-imu-nodes-xx.json
+
+* Sat Jun 17 03:13 2017: Fix incorrect test
+
+  04.00.04.01-bad-enum-list-with-numbered-title-nodes-xx.json
+
+  Nodes parse as correct with no system messages, but pseduo xml shows system messages.
 
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
