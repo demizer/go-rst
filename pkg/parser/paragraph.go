@@ -26,11 +26,8 @@ outer:
 
 		p.Msgr("Have token", "token", ci)
 
-		if ci == nil {
-			p.Msg("ci == nil, breaking")
-			break
-		} else if ci.Type == tok.EOF {
-			p.Msg("current item type == tok.EOF")
+		if ci == nil || ci.Type == tok.EOF {
+			p.Msg("current token == nil or current item type == tok.EOF")
 			break
 		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
 			p.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")

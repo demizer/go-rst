@@ -222,7 +222,7 @@ func lexHyperlinkTargetStart(l *Lexer) stateFn {
 		if l.mark != '.' {
 			break
 		}
-		l.next()
+		// l.next()
 	}
 	l.emit(HyperlinkTargetStart)
 	lexSpace(l)

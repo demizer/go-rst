@@ -97,9 +97,9 @@ func (l *Lexer) emit(t Type) {
 
 	if t == BlankLine {
 		tok = "\n"
-	} else if t == Space && l.start == l.index {
-		// For linebreaks and vertical tabs at the end of the line in a paragraph
-		tok = " "
+		// } else if t == Space && l.start == l.index {
+		// // For linebreaks and vertical tabs at the end of the line in a paragraph
+		// tok = " "
 	} else if t == EOF {
 		tok = ""
 	} else {
@@ -231,13 +231,6 @@ func (l *Lexer) NextItem() *Item {
 	l.lastItemPosition = item.StartPosition
 	return &item
 
-}
-
-func (l *Lexer) skip(locs int) {
-	for x := 1; x <= locs; x++ {
-		l.next()
-	}
-	l.start = l.index
 }
 
 // gotoLine advances the lexer to a line and index within that line. Line numbers start at 1.
