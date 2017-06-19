@@ -38,11 +38,11 @@ type test struct {
 	Implemented  bool
 }
 
-var testTemplate = `//
+var testTemplate = `package {{.Name}}
+
+//
 // AUTO-GENERATED using tools/gentests.go
 //
-
-package {{.Name}}
 
 import (
 	"os"
@@ -53,17 +53,18 @@ import (
 
 {{ range .Tests -}}
 func Test_{{.ID}}_{{.Type}}{{.Name}}{{.Outcome}}(t *testing.T) {
-	{{- if .Implemented}}
+	{{- if not .Implemented}}
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	{{- end }}
 	testPath := testutil.TestPathFromName("{{.FileBaseName}}")
-	test := LoadParserTest(t, testPath)
 	{{- if eq .Type "Lexer"}}
+	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItems(), items)
 	{{- else}}
+	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	eNodes := test.ExpectNodes()
 	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
@@ -104,6 +105,7 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 		if js[6] == "" {
 			m.implemented = true
 		}
+		// fmt.Printf("%#v\n", m)
 		testFiles = append(testFiles, m)
 	}
 	return err
