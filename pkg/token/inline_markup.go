@@ -161,10 +161,10 @@ func lexInlineMarkup(l *Lexer) stateFn {
 			lexInlineLiteral(l)
 			break
 		} else if l.mark == '`' {
-			if isInlineReference(l) {
-				lexInlineReference(l)
-				break
-			}
+			// if isInlineReference(l) {
+			// lexInlineReference(l)
+			// break
+			// }
 			lexInlineInterpretedText(l)
 			break
 		}
