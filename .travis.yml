@@ -1,7 +1,7 @@
 language: go
 go:
   - 1.7.x
-before_install:
+install:
   - go get github.com/mattn/goveralls
 script:
   - go test -v ./pkg/...
