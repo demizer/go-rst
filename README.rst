@@ -28,57 +28,24 @@ go-rst implements **9%** of the official specification (26 of 283 Items)
 
 .. STATUS END
 
-See `implementation status`_ for complete details.
+See `implementation status`_ for complete details and a Road Map.
 
-Road Map
-========
+-----
+Usage
+-----
 
-0.1 (In Progress)
------------------
+This library does not have any functionality beyond running parser tests.
 
-* Parsing support:
+Tests
+=====
 
-  - Hyperlink Reference
+From the root of the project,
 
-  - inline markup
+::
 
-  - bullet list
+    GO_RST_SKIP_NOT_IMPLEMENTED=1 go test -v ./pkg/...
 
-* CLI: rst2html: Translate document to HTML
-
-* Render basic documents using Hugo (https://github.com/spf13/hugo/issues/1436)
-
-0.2
----
-
-* Parsing support:
-
-  - CODE directive
-
-  - Enumerated list
-
-  - Literal blocks
-
-* Syntax highlighting using Sourcegraph's highlighting engine
-
-0.3
----
-
-* Parsing support:
-
-  - Blockquote
-
-  - definition list
-
-0.4
----
-
-* CLI: confluence2rst: Tool to convert a Confluence page into reStructuredText
-
-0.5
----
-
-* CLI: rst2confluence: Tool to convert reStructuredText to Confluence markup
+There are many tests that are imported from docutils, but not implemented yet.
 
 -----------------
 How to contribute

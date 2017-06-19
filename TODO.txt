@@ -3,23 +3,23 @@
   - DONE - Files with -xx in the names in testdata are tests that are not-implemented. Publish a link in README.rst in the
     How to help section.
 
-  * Add library get/usage instructions to README.rst
+  - DONE - move roadmap to roadmap.rst and link to it in README.rst
 
-  * move roadmap to roadmap.rst and link to it in README.rst
+  * DONE - Add library get/usage instructions to README.rst
 
   - Finish writing how to implement an element (and test)
 
-    * Document example test import for option lists.
+    * DONE - Document example test import for option lists.
 
-    * The UltiSnips Snippets should be mentioned with snippets published to the repo.
+	* DONE - document naming of bad tests (should include -bads after id)
 
-      - Use some inline markup test as an example implementation.
+    * DONE - Document regenerating the tests
 
-	* document naming of bad tests (should include -bads after id)
+    * DONE - Document debugging tips
 
-    * Document debugging tips
+* Mon Jun 19 00:56 2017: The UltiSnips Snippets should be mentioned with snippets published to the repo.
 
-    * Document regenerating the tests
+  - Use some inline markup test as an example implementation.
 
 * Sun Jun 18 18:24 2017: make progress dumper run with go generate
 
