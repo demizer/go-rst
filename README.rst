@@ -28,7 +28,9 @@ go-rst implements **9%** of the official specification (26 of 283 Items)
 
 .. STATUS END
 
-See `implementation status`_ for complete details and a Road Map.
+See `implementation status`_ for a breakdown of what's implemented.
+
+There is also a `Road Map`_.
 
 -----
 Usage
@@ -61,6 +63,7 @@ See the `doc`_ directory for more documentation and tip and tricks.
 
   `How to implement an element`_
 
+.. _Road Map: https://github.com/demizer/go-rst/blob/master/doc/implementation.rst#roadmap
 .. _implementation status: https://github.com/demizer/go-rst/tree/master/doc/README.rst
 .. _Doc: https://github.com/demizer/go-rst/tree/master/doc
 .. _Import a test suite from docutils: https://github.com/demizer/go-rst/tree/master/doc/implementation.rst#testing
