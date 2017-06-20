@@ -1,7 +1,3 @@
-* Mon Jun 19 00:56 2017: The UltiSnips Snippets should be mentioned with snippets published to the repo.
-
-  - Use some inline markup test as an example implementation.
-
 * Sun Jun 18 18:24 2017: make progress dumper run with go generate
 
 * Sat Jun 17 03:06 2017: Implement section parse test
@@ -33,6 +29,10 @@
 * Sun Jun 11 11:03 2017: Get coverage reports above 95%
 
 * Thu Oct 20 00:41 2016: IMPLEMENT GOOD TESTS FOR INLINE MARKUP
+
+* Mon Jun 19 00:56 2017: The UltiSnips Snippets should be mentioned with snippets published to the repo.
+
+  - Use some inline markup test as an example implementation.
 
 * Mon Oct 10 17:53 2016: sectionLevels.Add() should be renamed to AddOrReuse()
 
