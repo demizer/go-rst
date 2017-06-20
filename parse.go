@@ -5,3 +5,4 @@
 package rst
 
 //go:generate go run tools/gentests.go
+//go:generate bash tools/update-progress.sh

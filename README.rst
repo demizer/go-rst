@@ -24,7 +24,7 @@ Status
 .. The following is auto-generated using the tools/update-progress.sh
 .. STATUS START
 
-go-rst implements **9%** of the official specification (26 of 283 Items)
+go-rst implements **10%** of the official specification (28 of 283 Items)
 
 .. STATUS END
 
