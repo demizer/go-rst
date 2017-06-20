@@ -1,5 +1,3 @@
-* Sun Jun 18 18:24 2017: make progress dumper run with go generate
-
 * Sat Jun 17 03:06 2017: Implement section parse test
 
   04.00.05.00-title-with-imu-nodes-xx.json
