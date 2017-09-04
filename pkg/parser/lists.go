@@ -122,14 +122,14 @@ func (p *Parser) enumList(i *tok.Item) (n doc.Node) {
 	var affix *tok.Item
 	if lastEnum == nil {
 		p.next(1)
-		affix = p.token[zed]
+		affix = p.token
 		p.next(1)
 		eNode = doc.NewEnumListNode(i, affix)
 		p.next(1)
-		eNode.NodeList.Append(doc.NewParagraphWithNodeText(p.token[zed]))
+		eNode.NodeList.Append(doc.NewParagraphWithNodeText(p.token))
 	} else {
 		p.next(3)
-		lastEnum.NodeList.Append(doc.NewParagraphWithNodeText(p.token[zed]))
+		lastEnum.NodeList.Append(doc.NewParagraphWithNodeText(p.token))
 		return nil
 	}
 	lastEnum = eNode
