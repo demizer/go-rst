@@ -80,6 +80,9 @@ func (nt *NodeTarget) SetParent(n Node) {
 	case *SectionNode:
 		nt.SubList = &n.(*SectionNode).NodeList
 		nt.Parent = n
+	case *TitleNode:
+		nt.SubList = &n.(*TitleNode).NodeList
+		nt.Parent = n
 	default:
 		nt.Msgr("WARNING: type not supported or doesn't have a NodeList!", "type", fmt.Sprintf("%T", t))
 	}

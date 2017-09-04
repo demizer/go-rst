@@ -192,20 +192,17 @@ func (s *SectionNode) NodeType() NodeType { return s.Type }
 // String satisfies the Stringer interface
 func (s *SectionNode) String() string { return fmt.Sprintf("%#v", s) }
 
-func NewSection(title *tok.Item, overSec *tok.Item, underSec *tok.Item, indent *tok.Item) *SectionNode {
+func NewSection(title *TitleNode, overSec *tok.Item, underSec *tok.Item, indent *tok.Item) *SectionNode {
 	var indentLen int
 	n := &SectionNode{Type: NodeSection}
 	if indent != nil {
 		indentLen = indent.Length
 	}
-	n.Title = &TitleNode{
-		Type:          NodeTitle,
-		Text:          title.Text,
-		StartPosition: title.StartPosition,
-		IndentLength:  indentLen,
-		Length:        title.Length,
-		Line:          title.Line,
+	if title != nil {
+		// n.Title = NewTitleNodeWithNodeText(title)
+		n.Title.IndentLength = indentLen
 	}
+
 	if overSec != nil && overSec.Text != "" {
 		Rune := rune(overSec.Text[0])
 		n.OverLine = &AdornmentNode{
@@ -249,12 +246,13 @@ func (s SectionNode) MarshalJSON() ([]byte, error) {
 
 // TitleNode contains the parsed data for a section titles.
 type TitleNode struct {
-	Type          NodeType `json:"type"`
-	Text          string   `json:"text"`
-	IndentLength  int      `json:"indentLength,omitempty"`
-	Length        int      `json:"length"`
-	Line          int      `json:"line,omitempty"`
-	StartPosition int      `json:"startPosition,omitempty"`
+	// Text          string   `json:"text"`
+	Type          NodeType          `json:"type"`
+	IndentLength  int               `json:"indentLength,omitempty"`
+	Length        int               `json:"length"`
+	Line          int               `json:"line,omitempty"`
+	StartPosition int               `json:"startPosition,omitempty"`
+	NodeList      `json:"nodeList"` // NodeList contains children of the ParagraphNode, even other ParagraphNodes!
 }
 
 // NodeType returns the Node type of the TitleNode.
@@ -267,19 +265,27 @@ func (t TitleNode) String() string { return fmt.Sprintf("%#v", t) }
 func (t TitleNode) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type          string `json:"type"`
-		Text          string `json:"text"`
 		IndentLength  int    `json:"indentLength,omitempty"`
 		Length        int    `json:"length"`
 		Line          int    `json:"line,omitempty"`
 		StartPosition int    `json:"startPosition,omitempty"`
+		NodeList      `json:"nodeList"`
 	}{
 		Type:          nodeTypes[t.Type],
-		Text:          t.Text,
 		IndentLength:  t.IndentLength,
 		Length:        t.Length,
 		Line:          t.Line,
 		StartPosition: t.StartPosition,
+		NodeList:      t.NodeList,
 	})
+}
+
+func NewTitleNode() *TitleNode { return &TitleNode{Type: NodeTitle} }
+
+func NewTitleNodeWithNodeText(i *tok.Item) *TitleNode {
+	pn := &TitleNode{Type: NodeTitle}
+	pn.Append(NewText(i))
+	return pn
 }
 
 // AdornmentNode contains the parsed data for a section overline or underline.
