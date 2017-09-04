@@ -94,14 +94,21 @@ func (l Logger) Log(keyvals ...interface{}) error {
 	return logr.Log(keyvals...)
 }
 
-// Sdump returns a pretty printed string of v.
-func Sdump(v interface{}) string { return spd.Sdump(v) }
+// Dump pretty prints the v interface into the msg field
+//
+// The output is a string containing escaped newlines. It is possoble to show the structured output in one line using:
+//
+// echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
+//
+func (l Logger) Dump(v interface{}) { l.Msg(spd.Sdump(v)) }
 
-// Dump pretty prints the var interface to standard output.
-func Dump(v interface{}) { spd.Dump(v) }
-
-// DumpExit pretty prints the var interface to standard output and terminates program execution.
-func DumpExit(v interface{}) {
-	spd.Dump(v)
+// DumpExit pretty prints the v interface to msg field and terminates program execution.
+//
+// The output is a string containing escaped newlines. It is possoble to show the structured output in one line using:
+//
+// echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
+//
+func (l Logger) DumpExit(v interface{}) {
+	l.Msgr("dump", "obj", spd.Sdump(v))
 	os.Exit(1)
 }
