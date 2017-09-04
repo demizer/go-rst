@@ -17,7 +17,7 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 	p.Msg("next type == tok.Title")
 	// Section with overline
 	pBack := p.peekBack(1)
-	tLen := p.token[zed].Length
+	tLen := p.token.Length
 	// Check for errors
 	if tLen < 3 && tLen != s.sectionSpace.Length {
 		p.next(2)
@@ -43,7 +43,7 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 
 loop:
 	for {
-		switch tTok := p.token[zed]; tTok.Type {
+		switch tTok := p.token; tTok.Type {
 		case tok.Title:
 			// s.sectionTitle = tTok
 			// p.DumpExit(p.nodeTarget)
@@ -65,7 +65,7 @@ loop:
 }
 
 func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
-	tLen := p.token[zed].Length
+	tLen := p.token.Length
 	pBack := p.peekBack(1)
 	p.Msgr("last item type", "type", pBack.Type)
 	// Section with no overline Check for errors
@@ -95,17 +95,17 @@ func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *
 	var pb *tok.Item
 	for {
 		p.backup()
-		if p.token[zed] == nil {
+		if p.token == nil {
 			p.next(1)
 			break
 		}
 		pb = p.peekBack(1)
-		if p.token[zed].Type == tok.Title && (pb == nil || (pb.Type == tok.SectionAdornment || pb.Type == tok.BlankLine)) {
+		if p.token.Type == tok.Title && (pb == nil || (pb.Type == tok.SectionAdornment || pb.Type == tok.BlankLine)) {
 			break
 		}
 	}
-	title := p.token[zed]
-	// tLen := p.token[zed].Length
+	title := p.token
+	// tLen := p.token.Length
 	p.Msgr("have title", "exists", title != nil)
 	// p.Msgr("item before title", "exists", beforeTitle != nil)
 	// if beforeTitle != nil {
@@ -137,7 +137,7 @@ func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *
 func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 	// If a section contains an tok.Text, it is because the underline is missing, therefore we generate an error based on
 	// what follows the tok.Text.
-	tLen := p.token[zed].Length
+	tLen := p.token.Length
 	p.next(2) // Move the token buffer past the error tokens
 	if tLen < 3 && tLen != s.sectionSpace.Length {
 		p.backup()

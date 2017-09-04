@@ -1,7 +1,10 @@
 package parser
 
 import (
+	"github.com/demizer/go-rst/pkg/log"
+	"github.com/demizer/go-rst/pkg/testutil"
 	tok "github.com/demizer/go-rst/pkg/token"
+	klog "github.com/go-kit/kit/log"
 )
 
 var (
@@ -9,23 +12,25 @@ var (
 )
 
 type tokenBuffer struct {
+	index int
 	token *tok.Item
 	buf   []*tok.Item
 	lex   *tok.Lexer
-	index int
+	log.Logger
 }
 
-func newTokenBuffer(l *tok.Lexer) *tokenBuffer {
-	return &tokenBuffer{
-		buf: make([]*tok.Item, initialCapacity),
-		lex: l,
+func newTokenBuffer(l *tok.Lexer, logr klog.Logger) tokenBuffer {
+	return tokenBuffer{
+		buf:    make([]*tok.Item, initialCapacity),
+		lex:    l,
+		Logger: log.NewLogger("token_buffer", true, testutil.LogExcludes, logr),
 	}
 }
 
 func (t *tokenBuffer) append(item *tok.Item) {
 	t.buf = append(t.buf, item)
 	t.index = len(t.buf) - 1
-	t.token = t.buf(t.index)
+	t.token = t.buf[t.index]
 }
 
 // backup shifts the token buf right one position.
@@ -33,8 +38,9 @@ func (t *tokenBuffer) backup() (tok *tok.Item) {
 	if t.index > 0 {
 		t.index--
 	}
-	tok = t.buf[t.index]
-	p.Msgr("buffer index item", "index", t.index, "token", t.buf[t.index])
+	t.token = t.buf[t.index]
+	tok = t.token
+	t.Msgr("buffer index item", "index", t.index, "token", t.token)
 	return
 }
 
@@ -72,12 +78,12 @@ func (t *tokenBuffer) peek(pos int) *tok.Item {
 			if t.lex == nil {
 				continue
 			}
-			// p.Msg("Getting next item")
+			// t.Msg("Getting next item")
 			t.buf[t.index+i] = t.lex.NextItem()
 			nItem = t.buf[t.index+i]
 		}
 	}
-	p.Msgr("peek token", "index", t.index, "token", nItem)
+	t.Msgr("peek token", "index", t.index, "token", nItem)
 	return nItem
 }
 
@@ -87,7 +93,7 @@ func (t *tokenBuffer) peekSkip(iSkip tok.Type) *tok.Item {
 	var nItem *tok.Item
 	count := 1
 	for {
-		nItem = p.peek(count)
+		nItem = t.peek(count)
 		if nItem.Type != iSkip {
 			break
 		}
@@ -98,7 +104,7 @@ func (t *tokenBuffer) peekSkip(iSkip tok.Type) *tok.Item {
 
 func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos == 0 {
-		return t.buf[t.index]
+		return t.token
 	}
 	t.index++
 	if t.buf[t.index] == nil && t.lex != nil {
@@ -108,7 +114,8 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos > 0 {
 		t.next(pos)
 	}
-	return t.buf[t.index]
+	t.token = t.buf[t.index]
+	return t.token
 }
 
 // reset clears the token buf

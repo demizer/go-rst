@@ -2,62 +2,72 @@ package parser
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/demizer/go-rst/pkg/testutil"
+
+	tok "github.com/demizer/go-rst/pkg/token"
 )
 
-// tokEqualChecker compares the lexed tokens and the expected tokens and reports failures.
-type tokEqualChecker func(*Parser, reflect.Value, int, string)
-
-// checkTokens checks the lexed tokens against the expected tokens and uses isEqual to perform the actual checks and report
-// errors.
-func checkTokens(tr *Parser, trExp interface{}, isEqual tokEqualChecker) {
-	for i := 0; i < len(tr.tokens); i++ {
-		tr.Msgr("have token", "token", tr.tokens[i])
-		// tokenPos := i - zed
-		// zedPos := "zed"
-		// tPi := int(math.Abs(float64(i - zed)))
-		// tokenPosStr := strconv.Itoa(tPi)
-		// var fName string
-		// if tokenPos < 0 {
-		// fName = "Back" + tokenPosStr + "Tok"
-		// zedPos = "zed-" + tokenPosStr
-		// } else if tokenPos == 0 {
-		// fName = "ZedToken"
-		// } else {
-		// fName = "Peek" + tokenPosStr + "Tok"
-		// zedPos = "zed+" + tokenPosStr
-		// }
-		// tField := reflect.ValueOf(trExp).FieldByName(fName)
-		// if tField.IsValid() {
-		// isEqual(tr, tField, i, zedPos)
-		// }
-	}
+type bufferTest interface {
+	previousToken() *tok.Item
+	currentToken() *tok.Item
+	nextToken() *tok.Item
 }
 
-var parserBackupTests = []struct {
-	name      string
-	input     string
-	nextNum   int       // The number of times to call Parser.next().
-	backupNum int       // Number of calls to Parser.backup(). Value starts at 1.
-	Back4Tok  *tok.Item // The fourth backup token.
-	Back3Tok  *tok.Item // The third backup token.
-	Back2Tok  *tok.Item // The second backup token.
-	Back1Tok  *tok.Item // The first backup token.
-	ZedToken  *tok.Item // The item to expect at Parser.token.
-	Peek1Tok  *tok.Item // The first peek token.
-	Peek2Tok  *tok.Item // The second peek token.
-	Peek3Tok  *tok.Item // The third peek token.
-	Peek4Tok  *tok.Item // The fourth peek token.
-}{
+func tokenIsEqual(t *testing.T, name string, actual *tok.Item, expect *tok.Item) {
+	if actual == nil && expect == nil {
+		return
+	}
+	if actual == nil && expect != nil {
+		t.Fatalf("Test: %q\tGot: token = %s\tExpect: %s", name, actual, expect)
+	}
+	if actual != nil && expect == nil {
+		t.Fatalf("Test: %q\tGot: token = %s\tExpect: %s", name, actual, expect)
+	}
+	if actual.ID != expect.ID {
+		t.Fatalf("Test: %q\tGot: ID = %d\tExpect: %d", name, actual.ID, expect.ID)
+	}
+	if actual.Type != expect.Type {
+		t.Fatalf("Test: %q\tGot: Type = %q\tExpect: %q", name, actual.Type, expect.Type)
+	}
+	if actual.Text != expect.Text && expect.Text != "" {
+		t.Fatalf("Test: %q\tGot: Text = %q\tExpect: %q", name, actual.Text, expect.Text)
+	}
+
+}
+
+// checkTokens checks the position of the buffer using three points: the index token, the previous token, and the next token.
+func checkTokens(t *testing.T, testName string, p *Parser, bt bufferTest) {
+	tokenIsEqual(t, testName, p.peekBack(1), bt.previousToken())
+	tokenIsEqual(t, testName, p.token, bt.currentToken())
+	tokenIsEqual(t, testName, p.peek(1), bt.nextToken())
+}
+
+type parserBackupTest struct {
+	name       string
+	input      string
+	nextNum    int       // The number of times to call Parser.next().
+	backupNum  int       // Number of calls to Parser.backup(). Value starts at 1.
+	backToken  *tok.Item // The expected token before index token
+	indexToken *tok.Item // The item to expect at Parser.token
+	peekToken  *tok.Item // The expected token after index token
+}
+
+func (p parserBackupTest) previousToken() *tok.Item { return p.backToken }
+
+func (p parserBackupTest) currentToken() *tok.Item { return p.indexToken }
+
+func (p parserBackupTest) nextToken() *tok.Item { return p.peekToken }
+
+var parserBackupTests = [...]parserBackupTest{
 	{
 		name:    "Single backup",
 		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
 		nextNum: 2, backupNum: 1,
-		ZedToken: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
-		Peek1Tok: &tok.Item{ID: 2, Type: tok.SectionAdornment},
+		// backToken should be nil
+		indexToken: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
+		peekToken:  &tok.Item{ID: 2, Type: tok.SectionAdornment},
 	},
 	// {
 	// name:    "Double backup",
@@ -88,39 +98,18 @@ var parserBackupTests = []struct {
 }
 
 func TestParserBackup(t *testing.T) {
-	isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
-		val := tExp.Interface().(*tok.Item)
-		if val == nil && tr.token[tPos] == nil {
-			return
-		}
-		if val == nil && tr.token[tPos] != nil {
-			t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
-			return
-		}
-		if tr.token[tPos].ID != val.ID {
-			t.Errorf("Test: %q\n\tGot: token[%s].ID = %d, Expect: %d", tr.Name, tName, tr.token[tPos].Type, val.ID)
-		}
-		if tr.token[tPos].Type != val.Type {
-			t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Type, val.Type)
-		}
-		if tr.token[tPos].Text != val.Text && val.Text != "" {
-			t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
-		}
-	}
 	for _, tt := range parserBackupTests {
-		testutil.Log(fmt.Sprintf("\n\n\n\n RUNNING TEST %q \n\n\n\n", tt.name))
-		tr := New(tt.name, tt.input, testutil.StdLogger)
-		var err error
-		tr.lex, err = tok.Lex(tt.name, []byte(tt.input), testutil.StdLogger)
+		testutil.Log(fmt.Sprintf("\nRUNNING TEST %q\n", tt.name))
+		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil {
-			t.Errorf("lexer error: %s", err)
+			t.Errorf("error: %s", err)
 			t.Fail()
 		}
 		tr.next(tt.nextNum)
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
 		}
-		checkTokens(tr, tt, isEqual)
+		checkTokens(t, tt.name, tr, tt)
 	}
 }
 
@@ -129,10 +118,10 @@ func TestParserBackup(t *testing.T) {
 // input       string
 // nextNum     int // Number of times to call Parser.next(). Value starts at 1.
 // expectError bool
-// Back4Tok    *tok.Item // The item to expect at Parser.token[zed-4]
-// Back3Tok    *tok.Item // The item to expect at Parser.token[zed-3]
-// Back2Tok    *tok.Item // The item to expect at Parser.token[zed-2]
-// Back1Tok    *tok.Item // The item to expect at Parser.token[zed-1]
+// Back4Tok    *tok.Item // The item to expect at Parser.buf[zed-4]
+// Back3Tok    *tok.Item // The item to expect at Parser.buf[zed-3]
+// Back2Tok    *tok.Item // The item to expect at Parser.buf[zed-2]
+// Back1Tok    *tok.Item // The item to expect at Parser.buf[zed-1]
 // ZedToken    *tok.Item // The item to expect at Parser.token
 // Peek1Tok    *tok.Item // Peek tokens should be blank on next tests.
 // Peek2Tok    *tok.Item
@@ -233,18 +222,18 @@ func TestParserBackup(t *testing.T) {
 // func TestParserNext(t *testing.T) {
 // isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
 // val := tExp.Interface().(*tok.Item)
-// if val == nil && tr.token[tPos] == nil {
+// if val == nil && tr.buf[tPos] == nil {
 // return
 // }
-// if val == nil && tr.token[tPos] != nil {
-// t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
+// if val == nil && tr.buf[tPos] != nil {
+// t.Errorf("Test: %q\n\tGot: buf[%s] == %#+v, Expect: nil", tr.Name, tName, tr.buf[tPos])
 // return
 // }
-// if tr.token[tPos].Type != val.Type {
-// t.Errorf("Test: %q\n\tGot: token[%d].Type = %q, Expect: %q", tr.Name, tPos, tr.token[tPos].Type, val.Type)
+// if tr.buf[tPos].Type != val.Type {
+// t.Errorf("Test: %q\n\tGot: buf[%d].Type = %q, Expect: %q", tr.Name, tPos, tr.buf[tPos].Type, val.Type)
 // }
-// if tr.token[tPos].Text != val.Text && val.Text != "" {
-// t.Errorf("Test: %q\n\tGot: token[%d].Text = %q, Expect: %q", tr.Name, tPos, tr.token[tPos].Text, val.Text)
+// if tr.buf[tPos].Text != val.Text && val.Text != "" {
+// t.Errorf("Test: %q\n\tGot: buf[%d].Text = %q, Expect: %q", tr.Name, tPos, tr.buf[tPos].Text, val.Text)
 // }
 // }
 // for _, tt := range parserNextTests {
@@ -330,18 +319,18 @@ func TestParserBackup(t *testing.T) {
 // func TestParserPeek(t *testing.T) {
 // isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
 // val := tExp.Interface().(*tok.Item)
-// if val == nil && tr.token[tPos] == nil {
+// if val == nil && tr.buf[tPos] == nil {
 // return
 // }
-// if val == nil && tr.token[tPos] != nil {
-// t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
+// if val == nil && tr.buf[tPos] != nil {
+// t.Errorf("Test: %q\n\tGot: buf[%s] == %#+v, Expect: nil", tr.Name, tName, tr.buf[tPos])
 // return
 // }
-// if tr.token[tPos].Type != val.Type {
-// t.Errorf("Test: %q\n\tGot: token[%s].Type = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Type, val.Type)
+// if tr.buf[tPos].Type != val.Type {
+// t.Errorf("Test: %q\n\tGot: buf[%s].Type = %q, Expect: %q", tr.Name, tName, tr.buf[tPos].Type, val.Type)
 // }
-// if tr.token[tPos].Text != val.Text && val.Text != "" {
-// t.Errorf("Test: %q\n\tGot: token[%s].Text = %q, Expect: %q", tr.Name, tName, tr.token[tPos].Text, val.Text)
+// if tr.buf[tPos].Text != val.Text && val.Text != "" {
+// t.Errorf("Test: %q\n\tGot: buf[%s].Text = %q, Expect: %q", tr.Name, tName, tr.buf[tPos].Text, val.Text)
 // }
 // }
 // for _, tt := range parserPeekTests {
@@ -409,8 +398,8 @@ func TestParserBackup(t *testing.T) {
 // func TestParserClearTokens(t *testing.T) {
 // isEqual := func(tr *Parser, tExp reflect.Value, tPos int, tName string) {
 // val := tExp.Interface().(*tok.Item)
-// if tr.token[tPos] != nil && val == nil {
-// t.Errorf("Test: %q\n\tGot: token[%s] == %#+v, Expect: nil", tr.Name, tName, tr.token[tPos])
+// if tr.buf[tPos] != nil && val == nil {
+// t.Errorf("Test: %q\n\tGot: buf[%s] == %#+v, Expect: nil", tr.Name, tName, tr.buf[tPos])
 // }
 // }
 // for _, tt := range testParserClearTokensTests {
