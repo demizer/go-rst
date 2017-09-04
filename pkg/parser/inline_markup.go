@@ -93,18 +93,18 @@ main:
 
 func (p *Parser) inlineInterpretedText(i *tok.Item) {
 	p.next(1)
-	n := doc.NewInlineInterpretedText(p.token[zed])
+	n := doc.NewInlineInterpretedText(p.token)
 	p.nodeTarget.Append(n)
 	p.next(1)
 	if p.peek(1).Type == tok.InlineInterpretedTextRoleOpen {
 		p.next(2)
-		n.NodeList.Append(doc.NewInlineInterpretedTextRole(p.token[zed]))
+		n.NodeList.Append(doc.NewInlineInterpretedTextRole(p.token))
 		p.next(1)
 	}
 }
 
 func (p *Parser) inlineInterpretedTextRole(i *tok.Item) {
 	p.next(1)
-	p.nodeTarget.Append(doc.NewInlineInterpretedTextRole(p.token[zed]))
+	p.nodeTarget.Append(doc.NewInlineInterpretedTextRole(p.token))
 	p.next(1)
 }

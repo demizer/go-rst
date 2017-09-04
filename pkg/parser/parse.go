@@ -15,10 +15,6 @@ import (
 )
 
 const (
-	// The middle of the Parser.token buffer so that there are three possible "backup" token positions and three
-	// forward "peek" positions.
-	zed = 4
-
 	// Default indent width
 	indentWidth = 4
 )
@@ -32,7 +28,6 @@ type Parser struct {
 	nodeTarget *doc.NodeTarget // Used to append nodes to a target NodeList
 	text       string          // The input text
 	lex        *tok.Lexer      // The place where tokens come from
-	token      [9]*tok.Item    // Token buffer, number 4 is the middle. AKA the "zed" token
 	indents    *indentQueue    // Indent level tracking
 
 	bqLevel *doc.BlockQuoteNode // FIXME: will be replaced with blockquoteLevels
@@ -41,6 +36,8 @@ type Parser struct {
 	sections      []*doc.SectionNode // Pointers to encountered sections
 
 	openList doc.Node // Open Bullet List, Enum List, or Definition List
+
+	tokenBuffer // Buffered tokens from the scanner to allow going forward and back in the stream
 
 	log.Logger
 }
@@ -56,6 +53,7 @@ func New(name, text string, logr klog.Logger) *Parser {
 		indents:       new(indentQueue),
 		nodeTarget:    doc.NewNodeTarget(&nl, logr),
 		Logger:        log.NewLogger("parser", true, testutil.LogExcludes, logr),
+		tokenBuffer:   newTokenBuffer(),
 	}
 	t.Msgr("Parser.Nodes pointer", "nodeListPointer", fmt.Sprintf("%p", nl))
 	return t
@@ -190,97 +188,22 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 	return n
 }
 
-// backup shifts the token buffer right one position.
-func (p *Parser) backup() {
-	p.token[0] = nil
-	for x := len(p.token) - 1; x > 0; x-- {
-		p.token[x] = p.token[x-1]
-		p.token[x-1] = nil
+func (p *Parser) subParseInlineMarkup(token *tok.Item) doc.Node {
+	p.Msgr("Have token", "tokenType", token.Type, "tokenText", fmt.Sprintf("%q", token.Text))
+	var n doc.Node
+	switch token.Type {
+	case tok.InlineEmphasisOpen:
+		p.inlineEmphasis(token)
+	case tok.InlineStrongOpen:
+		p.inlineStrong(token)
+	case tok.InlineLiteralOpen:
+		p.inlineLiteral(token)
+	case tok.InlineInterpretedTextOpen:
+		p.inlineInterpretedText(token)
+	case tok.InlineInterpretedTextRoleOpen:
+		p.inlineInterpretedTextRole(token)
+	default:
+		p.Msg(fmt.Sprintf("Token type: %q is not inline markup", token.Type.String()))
 	}
-	if p.token[zed] == nil {
-		p.Msg("Current token is: <nil>")
-	} else {
-		p.Msg(fmt.Sprintf("Current token is: %T", p.token[zed].Type))
-	}
-}
-
-// peekBack uses the token buffer to "look back" a number of positions (pos). Looking back more positions than the
-// Parser.token
-// buffer allows (3) will generate a panic.
-func (p *Parser) peekBack(pos int) *tok.Item {
-	return p.token[zed-pos]
-}
-
-func (p *Parser) peekBackTo(item tok.Type) (tok *tok.Item) {
-	for i := zed - 1; i >= 0; i-- {
-		if p.token[i] != nil && p.token[i].Type == item {
-			tok = p.token[i]
-			break
-		}
-	}
-	return
-}
-
-// peek looks ahead in the token stream a number of positions (pos) and gets the next token from the lexer. A pointer to the
-// token is kept in the Parser.token buffer. If a token pointer already exists in the buffer, that token is used instead
-// and no tokens are received the the lexer stream (channel).
-func (p *Parser) peek(pos int) *tok.Item {
-	nItem := p.token[zed]
-	for i := 1; i <= pos; i++ {
-		if p.token[zed+i] != nil {
-			nItem = p.token[zed+i]
-			p.Msgr("Have token", "token", nItem)
-			continue
-		} else {
-			if p.lex == nil {
-				continue
-			}
-			p.Msg("Getting next item")
-			p.token[zed+i] = p.lex.NextItem()
-			nItem = p.token[zed+i]
-		}
-	}
-	return nItem
-}
-
-// peekSkip looks ahead one position skipiing a specified itemElement. If that element is found, a pointer is returned,
-// otherwise nil is returned.
-func (p *Parser) peekSkip(iSkip tok.Type) *tok.Item {
-	var nItem *tok.Item
-	count := 1
-	for {
-		nItem = p.peek(count)
-		if nItem.Type != iSkip {
-			break
-		}
-		count++
-	}
-	return nItem
-}
-
-// next token already exists in the token buffer, than the token buffer is shifted left and the pointer to the "zed" token is
-// returned. pos specifies the number of times to call next.
-func (p *Parser) next(pos int) *tok.Item {
-	if pos == 0 {
-		return p.token[zed]
-	}
-	for x := 0; x < len(p.token)-1; x++ {
-		p.token[x] = p.token[x+1]
-		p.token[x+1] = nil
-	}
-	if p.token[zed] == nil && p.lex != nil {
-		p.token[zed] = p.lex.NextItem()
-	}
-	pos--
-	if pos > 0 {
-		p.next(pos)
-	}
-	return p.token[zed]
-}
-
-// clearTokens sets tokens from begin to end to nil.
-func (p *Parser) clearTokens(begin, end int) {
-	for i := begin; i <= end; i++ {
-		p.token[i] = nil
-	}
+	return n
 }

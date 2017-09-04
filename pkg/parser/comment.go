@@ -29,13 +29,13 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 	if nPara != nil && nPara.Type == tok.Text {
 		// Skip the tok.Space
 		p.next(2)
-		p.Msgr("have token", "token", p.token[zed])
+		p.Msgr("have token", "token", p.token)
 		// See if next line is indented, if so, it is part of the comment
 		if p.peek(1).Type == tok.Space && p.peek(2).Type == tok.Text {
 			p.Msg("Found NodeComment block")
 			p.next(2)
 			for {
-				nPara.Text += "\n" + p.token[zed].Text
+				nPara.Text += "\n" + p.token.Text
 				if p.peek(1).Type == tok.Space && p.peek(2).Type == tok.Text {
 					p.next(2)
 				} else {
