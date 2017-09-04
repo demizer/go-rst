@@ -2,6 +2,25 @@
 
   04.00.05.00-title-with-imu-nodes-xx.json
 
+  - Make p.token size dynamically. Instead of being a fixed size, the token buffer will keep all tokens received.
+
+    - This is needed because it is not possible to go back far enough to get the start of a title in a section with inline
+      markup. The buffer is overrun.
+
+  - Add test section title with inline markup and overline
+
+  - Add test for peekBackFrom()
+
+  - Add test with inline markup and short underline
+
+* Sun Sep 03 00:13 2017: RENAME NODE TARGET
+
+  Perhaps DocumentBranchNode. NodeTarget is not self documenting.
+
+  Fix node_target documentation
+
+* Sun Sep 03 00:44 2017: Rename TitleNode, AdornmentNode to SectionTitleNode and SectionAdornmentNode
+
 * Sat Jun 17 03:13 2017: Fix incorrect test
 
   04.00.04.01-bad-enum-list-with-numbered-title-nodes-xx.json
