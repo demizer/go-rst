@@ -24,13 +24,16 @@ func newTokenBuffer(l *tok.Lexer, logr klog.Logger) tokenBuffer {
 		buf:    make([]*tok.Item, initialCapacity),
 		lex:    l,
 		index:  -1, // Index is unset until next() is called
-		Logger: log.NewLogger("token_buffer", true, testutil.LogExcludes, logr),
+		Logger: log.NewLogger("buffer", true, testutil.LogExcludes, logr),
 	}
 }
 
 // append a new token to the buffer but do not set the index or current token. This function should not be used directly,
-// instead use next(). Returns the index where the token was set.
+// instead use next(). Returns the index where the token was set, or -1 if nothing was set.
 func (t *tokenBuffer) append(item *tok.Item) int {
+	if item == nil {
+		return -1
+	}
 	for i := 0; i < len(t.buf)-1; i++ {
 		if t.buf[i] == nil {
 			t.buf[i] = item
@@ -44,11 +47,9 @@ func (t *tokenBuffer) append(item *tok.Item) int {
 
 // backup shifts the token buf right one position.
 func (t *tokenBuffer) backup() (tok *tok.Item) {
-	t.Msgr("have t.index", "index", t.index)
 	if t.index > 0 {
 		t.index--
 	}
-	t.Msgr("have t.index", "index", t.index)
 	t.token = t.buf[t.index]
 	tok = t.token
 	t.Msgr("buffer index item", "index", t.index, "token", t.token)
@@ -83,13 +84,11 @@ func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
 	for i := t.index + 1; i <= t.index+pos; i++ {
 		if t.buf[i] != nil {
 			pi = t.buf[i]
-			// t.Msg("PONG22222222222222222222222")
 			continue
 		} else {
 			ind := t.append(t.lex.NextItem())
 			pi = t.buf[ind]
 		}
-		// t.Msg("PONG!!!!!!!!!!!!!!!!!!!!!!!")
 	}
 	t.Msgr("peek token", "index", t.index, "token", pi)
 
@@ -119,11 +118,18 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos == 0 {
 		return t.token
 	}
-	if t.token != nil && t.token.Type == tok.EOF {
-		return t.token
+
+	if t.index+1 < len(t.buf) && t.buf[t.index+1] != nil {
+		t.index++
+		t.token = t.buf[t.index]
+	} else {
+		if ind := t.append(t.lex.NextItem()); ind != -1 {
+			t.Msgr("got token from lexer", "token", t.buf[ind])
+			t.index = ind
+			t.token = t.buf[t.index]
+		}
 	}
-	t.index = t.append(t.lex.NextItem())
-	t.token = t.buf[t.index]
+
 	pos--
 	if pos > 0 {
 		t.next(pos)
