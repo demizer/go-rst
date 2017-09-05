@@ -80,11 +80,11 @@ func (p *Parser) Parse() bool {
 		var n doc.Node
 
 		token := p.next(1)
+		p.Msgr("Parser got token", "token", token)
+
 		if token == nil || token.Type == tok.EOF {
 			break
 		}
-
-		p.Msgr("Parser got token", "token", token)
 
 		switch token.Type {
 		case tok.Text:

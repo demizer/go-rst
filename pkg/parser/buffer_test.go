@@ -7,6 +7,8 @@ import (
 	"github.com/demizer/go-rst/pkg/testutil"
 
 	tok "github.com/demizer/go-rst/pkg/token"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type bufferTest interface {
@@ -21,19 +23,21 @@ func tokenIsEqual(t *testing.T, name string, actual *tok.Item, expect *tok.Item)
 		return
 	}
 	if actual == nil && expect != nil {
-		t.Fatalf("Test: %q\tGot: %s\tExpect: %s", name, actual, expect)
+		assert.Equal(t, expect, actual, name)
 	}
 	if actual != nil && expect == nil {
-		t.Fatalf("Test: %q\tGot: %s\tExpect: %s", name, actual, expect)
+		assert.Equal(t, expect, actual, name)
 	}
-	if actual.ID != expect.ID {
-		t.Errorf("Test: %q\tGot: ID = %d\tExpect: %d", name, actual.ID, expect.ID)
-	}
-	if actual.Type != expect.Type {
-		t.Errorf("Test: %q\tGot: Type = %q\tExpect: %q", name, actual.Type, expect.Type)
-	}
-	if actual.Text != expect.Text && expect.Text != "" {
-		t.Errorf("Test: %q\tGot: Text = %q\tExpect: %q", name, actual.Text, expect.Text)
+	if actual != nil && expect != nil {
+		if actual.ID != expect.ID {
+			assert.Equal(t, expect.ID, actual.ID, name)
+		}
+		if actual.Type != expect.Type {
+			assert.Equal(t, expect.Type, actual.Type, name)
+		}
+		if actual.Text != expect.Text && expect.Text != "" {
+			assert.Equal(t, expect.Text, actual.Type, name)
+		}
 	}
 }
 
@@ -106,7 +110,7 @@ var parserBackupTests = [...]parserBackupTest{
 
 func TestParserBackup(t *testing.T) {
 	for _, tt := range parserBackupTests {
-		fmt.Printf("RUNNING TEST %q\n", tt.name)
+		fmt.Printf("RUN  %s\n", tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil {
 			t.Errorf("error: %s", err)
@@ -121,6 +125,10 @@ func TestParserBackup(t *testing.T) {
 			tr.backup()
 		}
 		checkTokens(t, 1, 1, tr, tt)
+
+		if !t.Failed() {
+			fmt.Printf("PASS %s\n", tt.name)
+		}
 	}
 }
 
@@ -216,17 +224,25 @@ var parserNextTests = [...]parserNextTest{
 
 func TestParserNext(t *testing.T) {
 	for _, tt := range parserNextTests {
-		fmt.Printf("RUNNING TEST %q\n", tt.name)
+		fmt.Printf("RUN  %s\n", tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil && tt.expectError {
+			fmt.Printf("PASS %s\n", tt.name)
 			continue
 		}
+
 		if err != nil && !tt.expectError {
 			t.Errorf("lexer error: %s", err)
 			t.Fail()
 		}
+
 		tr.next(tt.nextNum)
+		tr.Msgr("haz index", "index", tr.index)
+
 		checkTokens(t, 1, 1, tr, tt)
+		if !t.Failed() {
+			fmt.Printf("PASS %s\n", tt.name)
+		}
 	}
 }
 
@@ -293,9 +309,10 @@ var parserPeekTests = [...]parserPeekTest{
 
 func TestParserPeek(t *testing.T) {
 	for _, tt := range parserPeekTests {
-		fmt.Printf("RUNNING TEST %q\n", tt.name)
+		fmt.Printf("RUN  %s\n", tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil && tt.expectError {
+			fmt.Printf("PASS %s\n", tt.name)
 			continue
 		}
 		if err != nil && !tt.expectError {
@@ -306,5 +323,54 @@ func TestParserPeek(t *testing.T) {
 		tr.peek(tt.peekNum)
 
 		checkTokens(t, 1, tt.peekNum, tr, tt)
+
+		if !t.Failed() {
+			fmt.Printf("PASS %s\n", tt.name)
+		}
 	}
+}
+
+func TestParserNextAfterPeekAtEOF(t *testing.T) {
+	input := "Test\n=====\n\nParagraph."
+
+	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.StdLogger)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+
+	n := tr.next(3)
+	assert.Equal(t, &tok.Item{ID: 3, Type: tok.BlankLine, Text: "\n", Line: 3, StartPosition: 1, Length: 1}, n, "expect token from next(3)")
+
+	pk := tr.peek(2)
+	assert.Equal(t, &tok.Item{ID: 5, Type: tok.EOF, Line: 4, StartPosition: 11}, pk, "expect token from peek(2)")
+
+	nt := tr.next(1)
+	assert.Equal(t, &tok.Item{ID: 4, Type: tok.Text, Text: "Paragraph.", Line: 4, StartPosition: 1, Length: 10}, nt, "expect token from next() after peek()")
+}
+
+func TestParserNextPeekNextInComment(t *testing.T) {
+	input := ".. A comment.\n\nParagraph.\n"
+
+	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.StdLogger)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+
+	assert.Equal(t, -1, tr.index, "expect index to equal -1")
+
+	n := tr.next(1)
+	assert.Equal(t, &tok.Item{ID: 1, Type: tok.CommentMark, Text: "..", Line: 1, StartPosition: 1, Length: 2}, n, "expect token from next(1)")
+
+	assert.Equal(t, 0, tr.index, "expect index to equal 0")
+
+	pk := tr.peek(2)
+	assert.Equal(t, &tok.Item{ID: 3, Type: tok.Text, Text: "A comment.", Line: 1, StartPosition: 4, Length: 10}, pk, "expect token from peek(2)")
+	assert.Equal(t, 0, tr.index, "expect index to equal 0")
+
+	nt := tr.next(2)
+	assert.Equal(t, &tok.Item{ID: 3, Type: tok.Text, Text: "A comment.", Line: 1, StartPosition: 4, Length: 10}, nt, "expect token from next(2) after peek(2)")
+	assert.Equal(t, 2, tr.index, "expect index to equal 2")
+
 }
