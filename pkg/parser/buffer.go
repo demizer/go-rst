@@ -23,6 +23,7 @@ func newTokenBuffer(l *tok.Lexer, logr klog.Logger) tokenBuffer {
 	return tokenBuffer{
 		buf:    make([]*tok.Item, initialCapacity),
 		lex:    l,
+		index:  -1, // Index is unset until next() is called
 		Logger: log.NewLogger("token_buffer", true, testutil.LogExcludes, logr),
 	}
 }
@@ -78,23 +79,25 @@ func (t *tokenBuffer) peekBackTo(item tok.Type) (tok *tok.Item) {
 // peek looks ahead in the token stream a number of positions (pos) and gets the next token from the lexer. A pointer to the
 // token is kept in the Parser.token buf. If a token pointer already exists in the buf, that token is used instead
 // and no buf are received the the lexer stream (channel).
-func (t *tokenBuffer) peek(pos int) *tok.Item {
-	nItem := t.buf[t.index]
-	for i := 1; i <= pos; i++ {
-		if t.buf[t.index+i] != nil {
-			nItem = t.buf[t.index+i]
+func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
+	for i := t.index + 1; i <= t.index+pos; i++ {
+		if t.buf[i] != nil {
+			pi = t.buf[i]
+			// t.Msg("PONG22222222222222222222222")
 			continue
 		} else {
-			if t.lex == nil {
-				continue
-			}
-			// t.Msg("Getting next item")
-			t.buf[t.index+i] = t.lex.NextItem()
-			nItem = t.buf[t.index+i]
+			ind := t.append(t.lex.NextItem())
+			pi = t.buf[ind]
 		}
+		// t.Msg("PONG!!!!!!!!!!!!!!!!!!!!!!!")
 	}
-	t.Msgr("peek token", "index", t.index, "token", nItem)
-	return nItem
+	t.Msgr("peek token", "index", t.index, "token", pi)
+
+	// XXX: remove this before merging to master
+	// t.Dump(t.buf)
+	// t.Msgr("haz index", "index", pos)
+
+	return
 }
 
 // peekSkip looks ahead one position skipiing a specified itemElement. If that element is found, a pointer is returned,
@@ -116,18 +119,18 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos == 0 {
 		return t.token
 	}
+	if t.token != nil && t.token.Type == tok.EOF {
+		return t.token
+	}
 	t.index = t.append(t.lex.NextItem())
 	t.token = t.buf[t.index]
 	pos--
 	if pos > 0 {
 		t.next(pos)
 	}
-	return t.token
-}
 
-// reset clears the token buf
-func (t *tokenBuffer) reset(begin, end int) {
-	t.index = 0
-	t.buf = nil
-	t.buf = make([]*tok.Item, initialCapacity)
+	// XXX: Remove this before merging to master
+	// t.Dump(t.buf)
+
+	return t.token
 }

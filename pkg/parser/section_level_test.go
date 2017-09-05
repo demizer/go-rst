@@ -327,3 +327,22 @@ type testSectionLevelExpectLevels struct {
 // // }
 // }
 // }
+
+// func TestSystemMessageLevelFrom(t *testing.T) {
+// name := "Test systemMessageLevel with levelInfo"
+// test0 := ""
+// if -1 != systemMessageLevelFromString(test0) {
+// t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
+// systemMessageLevelFromString(test0), -1)
+// }
+// test1 := "INFO"
+// if levelInfo != systemMessageLevelFromString(test1) {
+// t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
+// systemMessageLevelFromString(test1), levelInfo)
+// }
+// test2 := "SEVERE"
+// if levelInfo != systemMessageLevelFromString(test1) {
+// t.Errorf("Test: %q\n\tGot: systemMessageLevel = %q, Expect: %q", name,
+// systemMessageLevelFromString(test2), levelSevere)
+// }
+// }
