@@ -27,17 +27,27 @@ func newTokenBuffer(l *tok.Lexer, logr klog.Logger) tokenBuffer {
 	}
 }
 
-func (t *tokenBuffer) append(item *tok.Item) {
+// append a new token to the buffer but do not set the index or current token. This function should not be used directly,
+// instead use next(). Returns the index where the token was set.
+func (t *tokenBuffer) append(item *tok.Item) int {
+	for i := 0; i < len(t.buf)-1; i++ {
+		if t.buf[i] == nil {
+			t.buf[i] = item
+			return i
+		}
+	}
+	// The buffer has reached capacity
 	t.buf = append(t.buf, item)
-	t.index = len(t.buf) - 1
-	t.token = t.buf[t.index]
+	return len(t.buf) - 1
 }
 
 // backup shifts the token buf right one position.
 func (t *tokenBuffer) backup() (tok *tok.Item) {
+	t.Msgr("have t.index", "index", t.index)
 	if t.index > 0 {
 		t.index--
 	}
+	t.Msgr("have t.index", "index", t.index)
 	t.token = t.buf[t.index]
 	tok = t.token
 	t.Msgr("buffer index item", "index", t.index, "token", t.token)
@@ -106,15 +116,12 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos == 0 {
 		return t.token
 	}
-	t.index++
-	if t.buf[t.index] == nil && t.lex != nil {
-		t.buf[t.index] = t.lex.NextItem()
-	}
+	t.index = t.append(t.lex.NextItem())
+	t.token = t.buf[t.index]
 	pos--
 	if pos > 0 {
 		t.next(pos)
 	}
-	t.token = t.buf[t.index]
 	return t.token
 }
 
