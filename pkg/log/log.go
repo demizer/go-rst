@@ -100,7 +100,7 @@ func (l Logger) Log(keyvals ...interface{}) error {
 //
 // echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
 //
-func (l Logger) Dump(v interface{}) { l.Msg(spd.Sdump(v)) }
+func (l Logger) Dump(v interface{}) { l.Msgr("dump", "obj", spd.Sdump(v)) }
 
 // DumpExit pretty prints the v interface to msg field and terminates program execution.
 //

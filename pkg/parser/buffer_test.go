@@ -20,10 +20,10 @@ func tokenIsEqual(t *testing.T, name string, actual *tok.Item, expect *tok.Item)
 		return
 	}
 	if actual == nil && expect != nil {
-		t.Fatalf("Test: %q\tGot: token = %s\tExpect: %s", name, actual, expect)
+		t.Fatalf("Test: %q\tGot: %s\tExpect: %s", name, actual, expect)
 	}
 	if actual != nil && expect == nil {
-		t.Fatalf("Test: %q\tGot: token = %s\tExpect: %s", name, actual, expect)
+		t.Fatalf("Test: %q\tGot: %s\tExpect: %s", name, actual, expect)
 	}
 	if actual.ID != expect.ID {
 		t.Fatalf("Test: %q\tGot: ID = %d\tExpect: %d", name, actual.ID, expect.ID)
@@ -39,9 +39,9 @@ func tokenIsEqual(t *testing.T, name string, actual *tok.Item, expect *tok.Item)
 
 // checkTokens checks the position of the buffer using three points: the index token, the previous token, and the next token.
 func checkTokens(t *testing.T, testName string, p *Parser, bt bufferTest) {
-	tokenIsEqual(t, testName, p.peekBack(1), bt.previousToken())
-	tokenIsEqual(t, testName, p.token, bt.currentToken())
-	tokenIsEqual(t, testName, p.peek(1), bt.nextToken())
+	tokenIsEqual(t, fmt.Sprintf("%s (Previous Token)", testName), p.peekBack(1), bt.previousToken())
+	tokenIsEqual(t, fmt.Sprintf("%s (Current Token)", testName), p.token, bt.currentToken())
+	tokenIsEqual(t, fmt.Sprintf("%s (Next Token)", testName), p.peek(1), bt.nextToken())
 }
 
 type parserBackupTest struct {
@@ -69,47 +69,48 @@ var parserBackupTests = [...]parserBackupTest{
 		indexToken: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
 		peekToken:  &tok.Item{ID: 2, Type: tok.SectionAdornment},
 	},
-	// {
-	// name:    "Double backup",
-	// input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
-	// nextNum: 2, backupNum: 2,
-	// // ZedToken is nil
-	// Peek1Tok: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
-	// Peek2Tok: &tok.Item{ID: 2, Type: tok.SectionAdornment},
-	// },
-	// {
-	// name:    "Triple backup",
-	// input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
-	// nextNum: 2, backupNum: 3,
-	// // ZedToken is nil
-	// Peek2Tok: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
-	// Peek3Tok: &tok.Item{ID: 2, Type: tok.SectionAdornment},
-	// },
-	// {
-	// name:    "Quadruple backup",
-	// input:   "Title\n=====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
-	// nextNum: 13, backupNum: 4,
-	// // Back tokens 4 - 1 and ZedToken are nil
-	// Peek1Tok: &tok.Item{ID: 10, Type: tok.Text, Text: "Four"},
-	// Peek2Tok: &tok.Item{ID: 11, Type: tok.BlankLine, Text: "\n"},
-	// Peek3Tok: &tok.Item{ID: 12, Type: tok.Text, Text: "Five"},
-	// Peek4Tok: &tok.Item{ID: 13, Type: tok.EOF},
-	// },
+	{
+		name:    "Double backup",
+		input:   "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
+		nextNum: 2, backupNum: 2,
+		// backToken is nil
+		indexToken: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
+		peekToken:  &tok.Item{ID: 2, Type: tok.SectionAdornment},
+	},
+	{
+		name:  "Triple backup",
+		input: "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2.",
+		// With backupNum = 3, we try to backup past the beginning of the slice
+		nextNum: 2, backupNum: 3,
+		// BackToken is nil
+		indexToken: &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1"},
+		peekToken:  &tok.Item{ID: 2, Type: tok.SectionAdornment},
+	},
+	{
+		name:  "Quadruple backup",
+		input: "Title\n=====\n\nOne\n\nTwo\n\nThree\n\nFour\n\nFive",
+		// cycle next() until the end of the lexing
+		nextNum: 13, backupNum: 4,
+		backToken:  &tok.Item{ID: 8, Type: tok.Text, Text: "Three"},
+		indexToken: &tok.Item{ID: 9, Type: tok.BlankLine, Text: "\n"},
+		peekToken:  &tok.Item{ID: 10, Type: tok.Text, Text: "Four"},
+	},
 }
 
 func TestParserBackup(t *testing.T) {
 	for _, tt := range parserBackupTests {
-		testutil.Log(fmt.Sprintf("\nRUNNING TEST %q\n", tt.name))
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
 		}
 		tr.next(tt.nextNum)
+		tr.Dump(tr.buf)
 		for j := 0; j < tt.backupNum; j++ {
 			tr.backup()
 		}
 		checkTokens(t, tt.name, tr, tt)
+		fmt.Printf("PASSED %q\n", tt.name)
 	}
 }
 
