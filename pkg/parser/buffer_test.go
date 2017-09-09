@@ -85,7 +85,7 @@ var parserBackupTests = [...]parserBackupTest{
 
 func TestParserBackup(t *testing.T) {
 	for _, tt := range parserBackupTests {
-		fmt.Printf("RUN  %s\n", tt.name)
+		testutil.LogRun(tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil {
 			t.Errorf("error: %s", err)
@@ -103,7 +103,7 @@ func TestParserBackup(t *testing.T) {
 		checkTokens(t, tr.peekBack(1), tr.token, tr.peek(1), tt)
 
 		if !t.Failed() {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 		}
 	}
 }
@@ -207,10 +207,10 @@ var parserNextTests = [...]parserNextTest{
 
 func TestParserNext(t *testing.T) {
 	for _, tt := range parserNextTests {
-		fmt.Printf("RUN  %s\n", tt.name)
+		testutil.LogRun(tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil && tt.expectError {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 			continue
 		}
 
@@ -227,7 +227,7 @@ func TestParserNext(t *testing.T) {
 		checkTokens(t, tr.peekBack(1), tr.token, tr.peek(1), tt)
 
 		if !t.Failed() {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 		}
 	}
 }
@@ -296,10 +296,10 @@ var parserPeekTests = [...]parserPeekTest{
 
 func TestParserPeek(t *testing.T) {
 	for _, tt := range parserPeekTests {
-		fmt.Printf("RUN  %s\n", tt.name)
+		testutil.LogRun(tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil && tt.expectError {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 			continue
 		}
 		if err != nil && !tt.expectError {
@@ -314,7 +314,7 @@ func TestParserPeek(t *testing.T) {
 		checkTokens(t, tr.peekBack(1), tr.token, pt, tt)
 
 		if !t.Failed() {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 		}
 	}
 }
@@ -372,10 +372,10 @@ var parserPeekBackTests = [...]parserPeekBackTest{
 
 func TestParserPeekBack(t *testing.T) {
 	for _, tt := range parserPeekBackTests {
-		fmt.Printf("RUN  %s\n", tt.name)
+		testutil.LogRun(tt.name)
 		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger)
 		if err != nil && tt.expectError {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 			continue
 		}
 		if err != nil && !tt.expectError {
@@ -389,7 +389,7 @@ func TestParserPeekBack(t *testing.T) {
 		assert.Equal(t, tt.backToken, pb, fmt.Sprintf("Expect token from peekBack(1) for test: %q", tt.name))
 
 		if !t.Failed() {
-			fmt.Printf("PASS %s\n", tt.name)
+			testutil.LogPass(tt.name)
 		}
 	}
 }
@@ -444,7 +444,6 @@ func TestParserAppend(t *testing.T) {
 	for x := 0; x < 100; x++ {
 		input += "\na line\n"
 	}
-	testutil.Log(fmt.Sprintf("input: %s", input))
 	tr, err := NewParser("fillcapacitytest", input, testutil.StdLogger)
 	if err != nil {
 		t.Errorf("error: %s", err)

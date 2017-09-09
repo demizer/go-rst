@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"testing"
 
 	"github.com/demizer/go-rst/pkg/log"
 	klog "github.com/go-kit/kit/log"
@@ -31,9 +32,33 @@ func SetDebug() {
 	}
 }
 
+func LogRun(name string) {
+	if testing.Verbose() {
+		fmt.Printf("+++ RUN   %s\n", name)
+	}
+}
+
+func LogPass(name string) {
+	if testing.Verbose() {
+		fmt.Printf("+++ PASS  %s\n", name)
+	}
+}
+
 func Log(vals ...interface{}) {
+	if testing.Verbose() {
+		fmt.Println(vals...)
+	}
+}
+
+func LogDebug(vals ...interface{}) {
 	if debug {
 		fmt.Println(vals...)
+	}
+}
+
+func Logf(s string, vals ...interface{}) {
+	if testing.Verbose() {
+		fmt.Printf(s, vals...)
 	}
 }
 
