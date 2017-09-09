@@ -438,3 +438,44 @@ func TestParserNextPeekNextInComment(t *testing.T) {
 	assert.Equal(t, 2, tr.index, "expect index to equal 2")
 
 }
+
+func TestParserAppend(t *testing.T) {
+	var input string
+	for x := 0; x < 100; x++ {
+		input += "\na line\n"
+	}
+	testutil.Log(fmt.Sprintf("input: %s", input))
+	tr, err := NewParser("fillcapacitytest", input, testutil.StdLogger)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	tr.next(203)
+	assert.Equal(t, 201, tr.index, "expect index to equal 201")
+	assert.Equal(t, &tok.Item{ID: 202, Type: tok.EOF, Line: 201, StartPosition: 1, Length: 0}, tr.token, "expect index token")
+}
+
+func TestParserPeekSkip(t *testing.T) {
+	input := "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2."
+	tr, err := NewParser("peekSkip", input, testutil.StdLogger)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	ps := tr.peekSkip(tok.Title)
+	assert.Equal(t, -1, tr.index, "expect index to equal -1")
+	assert.Equal(t, &tok.Item{ID: 2, Type: tok.SectionAdornment, Text: "=======", Line: 2, StartPosition: 1, Length: 7}, ps, "expect peek skip token")
+}
+
+func TestParserPeekBackTo(t *testing.T) {
+	input := "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2."
+	tr, err := NewParser("peekSkip", input, testutil.StdLogger)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	tr.next(4)
+	pb := tr.peekBackTo(tok.Title)
+	assert.Equal(t, 3, tr.index, "expect index to equal 3")
+	assert.Equal(t, &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1", Line: 1, StartPosition: 1, Length: 7}, pb, "expect peek back token")
+}
