@@ -81,12 +81,12 @@ func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
 
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *testutil.Test) *Parser {
-	testutil.LogDebug(fmt.Sprintf("Test path: %s", test.Path))
-	testutil.LogDebug(fmt.Sprintf("Test Input:\n\n%s\n", test.Data))
 	p, err := NewParser(test.Path, test.Data, testutil.StdLogger, testutil.CallDepth)
 	if err != nil {
 		panic(err)
 	}
+	p.Msgr("test path", "path", test.Path)
+	p.Msgr("test input", "input", test.Data)
 	p.Parse()
 	return p
 }
