@@ -2,5 +2,6 @@
 *.test
 c.out
 .cover/
+coverage.out
 *-session.vim
 refactor*

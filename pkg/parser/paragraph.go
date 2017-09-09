@@ -20,10 +20,16 @@ func (p *Parser) paragraph(i *tok.Item) doc.Node {
 outer:
 	// Paragraphs can contain many different types of elements, so we'll need to loop until blank line or nil
 	for {
-		ci := p.next(1)     // current item
+		ci := p.next(1) // current item
+		// p.DumpExit(p.index)
+		// p.DumpExit(ci)
+		// p.DumpExit(p.buf)
+
 		pi := p.peekBack(1) // previous item
+		p.DumpExit(pi)
 		// ni := p.peek(1)     // next item
 
+		p.Msgr("Previous token", "token", pi)
 		p.Msgr("Have token", "token", ci)
 
 		if ci == nil || ci.Type == tok.EOF {

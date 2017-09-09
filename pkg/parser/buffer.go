@@ -59,7 +59,7 @@ func (t *tokenBuffer) backup() (tok *tok.Item) {
 // peekBack uses the token buf to "look back" a number of positions (pos). Looking back more positions than the
 // Parser.token buf allows (3) will generate a panic.
 func (t *tokenBuffer) peekBack(pos int) (tok *tok.Item) {
-	if t.index-pos > 0 {
+	if t.index-pos >= 0 {
 		tok = t.buf[t.index-pos]
 	}
 	return
@@ -87,7 +87,9 @@ func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
 			continue
 		} else {
 			ind := t.append(t.lex.NextItem())
-			pi = t.buf[ind]
+			if ind >= 0 {
+				pi = t.buf[ind]
+			}
 		}
 	}
 	t.Msgr("peek token", "index", t.index, "token", pi)
