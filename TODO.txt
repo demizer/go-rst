@@ -63,6 +63,8 @@ Mon Sep 04 22:23 2017: I was last finishing up the buffer_test code for all of t
 
     - If the tests are renumbered, the implementation doc test examples will need to be updated.
 
+* Sat Sep 09 14:58 2017: use testutil.LogRun and testutil.LogPass in all table tests.
+
 * Sun Feb 14 22:38 2016: Fix gocyclo on https://goreportcard.com/report/github.com/demizer/go-rst
 
 * Sun Jun 11 11:03 2017: Get coverage reports above 95%
