@@ -10,23 +10,25 @@ import (
 // Used for debugging only
 var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //, DisableMethods: true}
 
-// NewLogger wraps a logger with a name context and caller information. If a named context is specified in the excludes
-// slice, then any logging to that context will be ignored.
-func NewLogger(name string, caller bool, excludes []string, logr klog.Logger) Logger {
-	return Logger{
-		ctx:      name,
-		caller:   caller,
-		log:      logr,
-		excludes: excludes,
-	}
-}
-
 // Logger implements the go-kit logger type.
 type Logger struct {
-	ctx      string      // Shows up in the log output as field "name".
-	caller   bool        // Include the caller field name in the log output.
-	log      klog.Logger // The standard logger for which wrapped loggers are based
-	excludes []string    // exclude named contexts from output
+	ctx       string      // Shows up in the log output as field "name".
+	caller    bool        // Include the caller field name in the log output.
+	callDepth int         // Call stack depth for logging
+	log       klog.Logger // The standard logger for which wrapped loggers are based
+	excludes  []string    // exclude named contexts from output
+}
+
+// NewLogger wraps a logger with a name context and caller information. If a named context is specified in the excludes
+// slice, then any logging to that context will be ignored.
+func NewLogger(name string, caller bool, callDepth int, excludes []string, logr klog.Logger) Logger {
+	return Logger{
+		ctx:       name,
+		caller:    caller,
+		callDepth: callDepth,
+		log:       logr,
+		excludes:  excludes,
+	}
 }
 
 func (l Logger) isExcluded() bool {
@@ -53,7 +55,7 @@ func (l Logger) Msg(message string) error {
 	}
 	logr := klog.WithPrefix(l.log, "name", l.ctx)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(4))
+		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log("msg", message)
 }
@@ -65,7 +67,7 @@ func (l Logger) Msgr(message string, keyvals ...interface{}) error {
 	}
 	logr := klog.WithPrefix(l.log, "name", l.ctx, "msg", message)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(4), "msg", message)
+		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth), "msg", message)
 	}
 	return logr.Log(keyvals...)
 }
@@ -77,7 +79,7 @@ func (l Logger) Err(err error) error {
 	}
 	logr := klog.WithPrefix(l.log, "name", l.ctx)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(4))
+		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log("error", err.Error())
 }
@@ -89,7 +91,7 @@ func (l Logger) Log(keyvals ...interface{}) error {
 	}
 	logr := klog.WithPrefix(l.log, "name", l.ctx)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(4))
+		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log(keyvals...)
 }
@@ -100,7 +102,9 @@ func (l Logger) Log(keyvals ...interface{}) error {
 //
 // echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
 //
-func (l Logger) Dump(v interface{}) { l.Msgr("dump", "obj", spd.Sdump(v)) }
+func (l Logger) Dump(v interface{}) {
+	WithCallDepth(l, l.callDepth+1).Msgr("dump", "obj", spd.Sdump(v))
+}
 
 // DumpExit pretty prints the v interface to msg field and terminates program execution.
 //
@@ -109,6 +113,10 @@ func (l Logger) Dump(v interface{}) { l.Msgr("dump", "obj", spd.Sdump(v)) }
 // echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
 //
 func (l Logger) DumpExit(v interface{}) {
-	l.Msgr("dump", "obj", spd.Sdump(v))
+	WithCallDepth(l, l.callDepth+1).Msgr("dump", "obj", spd.Sdump(v))
 	os.Exit(1)
+}
+
+func WithCallDepth(l Logger, callDepth int) Logger {
+	return NewLogger(l.ctx, true, callDepth, l.excludes, l.log)
 }

@@ -19,6 +19,7 @@ var (
 	StdLogger   = klog.NewNopLogger()
 	debug       bool
 	LogExcludes log.LoggerExcludes
+	CallDepth   = 4
 )
 
 // SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test

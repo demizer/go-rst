@@ -41,7 +41,7 @@ type Lexer struct {
 	log.Logger
 }
 
-func newLexer(name string, input []byte, logr klog.Logger) (l *Lexer, err error) {
+func newLexer(name string, input []byte, logr klog.Logger, logCallDepth int) (l *Lexer, err error) {
 	if len(input) == 0 {
 		err = errors.New("no input given")
 		return
@@ -49,7 +49,7 @@ func newLexer(name string, input []byte, logr klog.Logger) (l *Lexer, err error)
 
 	l = &Lexer{
 		Name:   name,
-		Logger: log.NewLogger("lexer", true, testutil.LogExcludes, logr),
+		Logger: log.NewLogger("lexer", true, logCallDepth, testutil.LogExcludes, logr),
 	}
 
 	ni, err := normalize(input)
@@ -75,8 +75,8 @@ func newLexer(name string, input []byte, logr klog.Logger) (l *Lexer, err error)
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
 // to identify the lexing process in debugging.
-func Lex(name string, input []byte, logr klog.Logger) (l *Lexer, err error) {
-	l, err = newLexer(name, input, logr)
+func Lex(name string, input []byte, logr klog.Logger, logCallDepth int) (l *Lexer, err error) {
+	l, err = newLexer(name, input, logr, logCallDepth)
 	if err != nil {
 		return
 	}

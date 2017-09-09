@@ -43,7 +43,7 @@ type Parser struct {
 }
 
 // New returns a fresh parser Parser.
-func NewParser(name, text string, logr klog.Logger) (*Parser, error) {
+func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, error) {
 	var ntext string
 	if !norm.NFC.IsNormalString(text) {
 		ntext = norm.NFC.String(text)
@@ -51,7 +51,7 @@ func NewParser(name, text string, logr klog.Logger) (*Parser, error) {
 		ntext = text
 	}
 
-	l, err := tok.Lex(name, []byte(ntext), logr)
+	l, err := tok.Lex(name, []byte(ntext), logr, logCallDepth)
 	if err != nil {
 		return nil, fmt.Errorf("error initializing lexer: %s", err)
 	}
@@ -62,11 +62,11 @@ func NewParser(name, text string, logr klog.Logger) (*Parser, error) {
 		Nodes:         &nl,
 		text:          ntext,
 		lex:           l,
-		sectionLevels: newSectionLevels(testutil.StdLogger),
+		sectionLevels: newSectionLevels(testutil.StdLogger, logCallDepth),
 		indents:       new(indentQueue),
-		nodeTarget:    doc.NewNodeTarget(&nl, logr),
-		Logger:        log.NewLogger("parser", true, testutil.LogExcludes, logr),
-		tokenBuffer:   newTokenBuffer(l, logr),
+		nodeTarget:    doc.NewNodeTarget(&nl, logr, logCallDepth),
+		Logger:        log.NewLogger("parser", true, logCallDepth, testutil.LogExcludes, logr),
+		tokenBuffer:   newTokenBuffer(l, logr, logCallDepth),
 	}
 
 	p.Msgr("Parser.Nodes pointer", "nodeListPointer", fmt.Sprintf("%p", nl))

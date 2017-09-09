@@ -19,12 +19,12 @@ type tokenBuffer struct {
 	log.Logger
 }
 
-func newTokenBuffer(l *tok.Lexer, logr klog.Logger) tokenBuffer {
+func newTokenBuffer(l *tok.Lexer, logr klog.Logger, logCallDepth int) tokenBuffer {
 	return tokenBuffer{
 		buf:    make([]*tok.Item, initialCapacity),
 		lex:    l,
 		index:  -1, // Index is unset until next() is called
-		Logger: log.NewLogger("buffer", true, testutil.LogExcludes, logr),
+		Logger: log.NewLogger("buffer", true, logCallDepth, testutil.LogExcludes, logr),
 	}
 }
 

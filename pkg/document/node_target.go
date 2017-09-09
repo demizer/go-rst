@@ -20,11 +20,11 @@ type NodeTarget struct {
 }
 
 // NewNodeTarget creates a NodeTarget with a context logger.
-func NewNodeTarget(pNodes *NodeList, logr klog.Logger) *NodeTarget {
+func NewNodeTarget(pNodes *NodeList, logr klog.Logger, logCallDepth int) *NodeTarget {
 	return &NodeTarget{
 		MainList: pNodes,
 		SubList:  pNodes,
-		Logger:   log.NewLogger("document", true, testutil.LogExcludes, logr),
+		Logger:   log.NewLogger("document", true, logCallDepth, testutil.LogExcludes, logr),
 	}
 }
 
