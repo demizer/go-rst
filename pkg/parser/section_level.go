@@ -27,8 +27,8 @@ type sectionLevels struct {
 	log.Logger
 }
 
-func newSectionLevels(logr klog.Logger) *sectionLevels {
-	return &sectionLevels{Logger: log.NewLogger("sectionLvl", true, testutil.LogExcludes, logr)}
+func newSectionLevels(logr klog.Logger, logCallDepth int) *sectionLevels {
+	return &sectionLevels{Logger: log.NewLogger("sectionLvl", true, logCallDepth, testutil.LogExcludes, logr)}
 }
 
 // FindByRune loops through the sectionLevels to find a section using a Rune as the key. If the section is found, a pointer
