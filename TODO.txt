@@ -1,3 +1,8 @@
+
+
+Mon Sep 04 22:23 2017: I was last finishing up the buffer_test code for all of the token buffer functions.
+
+
 * Sat Jun 17 03:06 2017: Implement section parse test
 
   04.00.05.00-title-with-imu-nodes-xx.json
@@ -20,6 +25,10 @@
   Fix node_target documentation
 
 * Sun Sep 03 00:44 2017: Rename TitleNode, AdornmentNode to SectionTitleNode and SectionAdornmentNode
+
+* Sat Sep 09 02:42 2017: Create dump_parse.sh to pretty print dumped structs
+
+  Script should live in tools directory.
 
 * Sat Jun 17 03:13 2017: Fix incorrect test
 
@@ -144,6 +153,19 @@
 
 * Sun Feb 26 14:09 2017: Convert test checks to use testify package
 
+* Mon Sep 04 22:02 2017: rewrite systemMessage handling
+
+  It's attrocious
+
+  Changing line 122 fixed a broken test after the tokenBuffer refactor
+
+  119 func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err parserMessage) *doc.LiteralBlockNode {
+  120         switch err {
+  121         case warningExplicitMarkupWithUnIndent:
+  122                 s.Line = p.peek(1).Line
+  123         }
+  124         return nil
+  125 }
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
 
   From the spec:
@@ -185,3 +207,4 @@
   Example:
 
   rst2pseudoxml testdata/04-test-section/02-bad/04.00.04.00-unexpected-titles.rst --debug
+

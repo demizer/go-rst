@@ -117,10 +117,10 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessag
 }
 
 func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err parserMessage) *doc.LiteralBlockNode {
-	// switch err {
-	// case warningExplicitMarkupWithUnIndent:
-	// s.Line = p.token[zed+1].Line
-	// }
+	switch err {
+	case warningExplicitMarkupWithUnIndent:
+		s.Line = p.peek(1).Line
+	}
 	return nil
 }
 
