@@ -84,9 +84,8 @@ func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item
 		return sm
 	}
 	// Section OKAY
-	// s.sectionTitle = p.peekBack(1)
+	s.sectionTitle = doc.NewTitleNodeWithNodeText(pBack)
 	s.sectionUnderAdorn = i
-
 	return nil
 }
 
@@ -160,31 +159,35 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 	pBackIsInlineMarkup := pBack.Type >= tok.InlineStrongOpen && pBack.Type <= tok.InlineLiteralClose
 
 	// p.DumpExit(p.token)
+	// p.DumpExit(pBackTitle)
 	// p.DumpExit(pBack)
-	p.Msgr("poop", "Plop", pBackTitle != nil)
 	// p.Msgr("poop", "Plop", pBackIsInlineMarkup)
-	p.Msgr("poop", "Plop", pBack.Type >= tok.InlineStrongOpen && pBack.Type <= tok.InlineLiteralClose)
+	p.Msgr("peek back is inline markup", "value", pBack.Type >= tok.InlineStrongOpen && pBack.Type <= tok.InlineLiteralClose)
 
 	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Title {
+		p.Msg("IN HERE 1")
 		// TODO: why would s.sectionSpace.Type == tok.Title ?
 		if sm := parseSectionTitle(s, p, i); sm != nil {
 			return sm
 		}
 	} else if pBackTitle != nil && pBackIsInlineMarkup {
+		p.Msg("IN HERE 2")
 		// Token before underline is inline markup and looking backwards, there is a section title
 		if sm := parseSectionTitleWithInlineMarkupAndNoOverline(s, p, i); sm != nil {
 			return sm
 		}
 	} else if pBack != nil && (pBack.Type == tok.Title || pBack.Type == tok.Space) {
-		// TODO: why would s.sectionSpace.Type == tok.Text ?
+		p.Msg("IN HERE 3")
 		if sm := parseSectionTitleNoOverline(s, p, i); sm != nil {
 			return sm
 		}
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.Text {
+		p.Msg("IN HERE 4")
 		if sm := parseSectionText(s, p, i); sm != nil {
 			return sm
 		}
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.SectionAdornment {
+		p.Msg("IN HERE 5")
 		// TODO: why would s.sectionSpace.Type == tok.SectionAdornment ?
 		// panic("SHOW ME THE STACKS!")
 		// Missing section title
@@ -193,12 +196,14 @@ func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
 		p.nodeTarget.Append(sm)
 		return sm
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.EOF {
+		p.Msg("IN HERE 6")
 		// Missing underline and at EOF
 		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)
 		p.nodeTarget.Append(sm)
 		return sm
 	}
 
+	p.Msg("IN HERE 7")
 	if s.sectionOverAdorn != nil && s.sectionOverAdorn.Text != s.sectionUnderAdorn.Text {
 		sm := p.systemMessage(severeOverlineUnderlineMismatch)
 		p.nodeTarget.Append(sm)
@@ -244,11 +249,9 @@ func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNod
 	}
 
 	if s.sectionOverAdorn != nil && oLen > s.sectionOverAdorn.Length {
-		m := warningShortOverline
-		sec.NodeList = append(sec.NodeList, p.systemMessage(m))
+		sec.NodeList = append(sec.NodeList, p.systemMessage(warningShortOverline))
 	} else if s.sectionOverAdorn == nil && s.sectionTitle.Length != s.sectionUnderAdorn.Length {
-		m := warningShortUnderline
-		sec.NodeList = append(sec.NodeList, p.systemMessage(m))
+		sec.NodeList = append(sec.NodeList, p.systemMessage(warningShortUnderline))
 	}
 }
 

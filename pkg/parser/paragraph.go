@@ -26,16 +26,19 @@ outer:
 		// p.DumpExit(p.buf)
 
 		pi := p.peekBack(1) // previous item
-		p.DumpExit(pi)
+		// p.DumpExit(pi)
 		// ni := p.peek(1)     // next item
 
+		// p.DumpExit(p.Messages)
 		p.Msgr("Previous token", "token", pi)
 		p.Msgr("Have token", "token", ci)
 
 		if ci == nil || ci.Type == tok.EOF {
 			p.Msg("current token == nil or current item type == tok.EOF")
 			break
+			// } else if pi != nil && nt.Text != pi.Text && pi.Type == tok.Text && ci.Type == tok.Text {
 		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
+			// p.DumpExit(ci)
 			p.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)

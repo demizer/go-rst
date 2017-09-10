@@ -4,10 +4,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Empty Section",
-            "line": 1,
             "length": 13,
-            "startPosition": 1
+            "line": 1,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Empty Section",
+                    "length": 13,
+                    "line": 1,
+                    "startPosition": 1
+                }
+            ]
         },
         "underLine": {
             "type": "NodeAdornment",

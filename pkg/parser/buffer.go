@@ -142,3 +142,10 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 
 	return t.token
 }
+
+// clearTokens sets tokens from begin to end to nil.
+func (t *tokenBuffer) clearTokens(begin, end int) {
+	for i := begin; i <= end; i++ {
+		t.buf[i] = nil
+	}
+}

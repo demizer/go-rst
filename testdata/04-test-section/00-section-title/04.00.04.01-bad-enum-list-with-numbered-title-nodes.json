@@ -35,10 +35,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "3. Numbered Title",
-            "line": 3,
             "length": 17,
-            "startPosition": 1
+            "line": 3,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "3. Numbered Title",
+                    "length": 17,
+                    "line": 3,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
