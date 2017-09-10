@@ -5,10 +5,18 @@
         "overLine": null,
         "title": {
             "type": "NodeTitle",
-            "text": "à with combining varia",
-            "line": 1,
             "length": 22,
-            "startPosition": 1
+            "line": 1,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "à with combining varia",
+                    "length": 22,
+                    "line": 1,
+                    "startPosition": 1
+                }
+            ]
         },
         "underLine": {
             "type": "NodeAdornment",

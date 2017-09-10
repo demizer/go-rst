@@ -199,7 +199,7 @@ func NewSection(title *TitleNode, overSec *tok.Item, underSec *tok.Item, indent 
 		indentLen = indent.Length
 	}
 	if title != nil {
-		// n.Title = NewTitleNodeWithNodeText(title)
+		n.Title = title
 		n.Title.IndentLength = indentLen
 	}
 
@@ -283,7 +283,12 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 func NewTitleNode() *TitleNode { return &TitleNode{Type: NodeTitle} }
 
 func NewTitleNodeWithNodeText(i *tok.Item) *TitleNode {
-	pn := &TitleNode{Type: NodeTitle}
+	pn := &TitleNode{
+		Type:          NodeTitle,
+		Length:        i.Length,
+		Line:          i.Line,
+		StartPosition: i.StartPosition,
+	}
 	pn.Append(NewText(i))
 	return pn
 }

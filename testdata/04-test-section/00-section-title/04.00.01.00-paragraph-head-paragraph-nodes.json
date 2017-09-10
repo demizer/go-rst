@@ -17,10 +17,18 @@
         "overLine": null,
         "title": {
             "type": "NodeTitle",
-            "text": "Title",
-            "line": 3,
             "length": 5,
-            "startPosition": 1
+            "line": 3,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title",
+                    "length": 5,
+                    "line": 3,
+                    "startPosition": 1
+                }
+            ]
         },
         "underLine": {
             "type": "NodeAdornment",

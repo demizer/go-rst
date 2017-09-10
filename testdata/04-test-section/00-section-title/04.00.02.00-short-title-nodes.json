@@ -4,10 +4,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "ABC",
-            "line": 1,
             "length": 3,
-            "startPosition": 1
+            "line": 1,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "ABC",
+                    "length": 3,
+                    "line": 1,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
