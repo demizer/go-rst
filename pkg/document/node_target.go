@@ -38,6 +38,7 @@ func (nt *NodeTarget) Reset() {
 // Append add a node to the NodeTarget list.
 func (nt *NodeTarget) Append(n ...Node) {
 	for _, node := range n {
+		// panic("SHOW ME THE STACKS!")
 		nt.Msgr("Adding node", "nodePointer", fmt.Sprintf("%p", &node),
 			"nodeListPointer", fmt.Sprintf("%p", nt.SubList), "node", node.String())
 		nt.SubList.Append(node)

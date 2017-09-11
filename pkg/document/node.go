@@ -282,17 +282,6 @@ func (t TitleNode) MarshalJSON() ([]byte, error) {
 
 func NewTitleNode() *TitleNode { return &TitleNode{Type: NodeTitle} }
 
-func NewTitleNodeWithNodeText(i *tok.Item) *TitleNode {
-	pn := &TitleNode{
-		Type:          NodeTitle,
-		Length:        i.Length,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-	}
-	pn.Append(NewText(i))
-	return pn
-}
-
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
 	Type          NodeType `json:"type"`

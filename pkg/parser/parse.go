@@ -90,11 +90,11 @@ func (p *Parser) Parse() bool {
 		case tok.Text:
 			p.paragraph(token)
 		case tok.InlineEmphasisOpen:
-			p.inlineEmphasis(token)
+			p.inlineEmphasis(token, true)
 		case tok.InlineStrongOpen:
-			p.inlineStrong(token)
+			p.inlineStrong(token, true)
 		case tok.InlineLiteralOpen:
-			p.inlineLiteral(token)
+			p.inlineLiteral(token, true)
 		case tok.InlineInterpretedTextOpen:
 			p.inlineInterpretedText(token)
 		case tok.InlineInterpretedTextRoleOpen:
@@ -155,11 +155,11 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 	case tok.Text:
 		n = p.paragraph(token)
 	case tok.InlineEmphasisOpen:
-		p.inlineEmphasis(token)
+		p.inlineEmphasis(token, false)
 	case tok.InlineStrongOpen:
-		p.inlineStrong(token)
+		p.inlineStrong(token, false)
 	case tok.InlineLiteralOpen:
-		p.inlineLiteral(token)
+		p.inlineLiteral(token, false)
 	case tok.InlineInterpretedTextOpen:
 		p.inlineInterpretedText(token)
 	case tok.InlineInterpretedTextRoleOpen:
@@ -178,16 +178,15 @@ func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {
 	return n
 }
 
-func (p *Parser) subParseInlineMarkup(token *tok.Item) doc.Node {
+func (p *Parser) subParseInlineMarkup(token *tok.Item) {
 	p.Msgr("Have token", "tokenType", token.Type, "tokenText", fmt.Sprintf("%q", token.Text))
-	var n doc.Node
 	switch token.Type {
 	case tok.InlineEmphasisOpen:
-		p.inlineEmphasis(token)
+		p.inlineEmphasis(token, false)
 	case tok.InlineStrongOpen:
-		p.inlineStrong(token)
+		p.inlineStrong(token, false)
 	case tok.InlineLiteralOpen:
-		p.inlineLiteral(token)
+		p.inlineLiteral(token, false)
 	case tok.InlineInterpretedTextOpen:
 		p.inlineInterpretedText(token)
 	case tok.InlineInterpretedTextRoleOpen:
@@ -195,5 +194,4 @@ func (p *Parser) subParseInlineMarkup(token *tok.Item) doc.Node {
 	default:
 		p.Msg(fmt.Sprintf("Token type: %q is not inline markup", token.Type.String()))
 	}
-	return n
 }

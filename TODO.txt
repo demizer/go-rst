@@ -1,17 +1,10 @@
-* Sat Jun 17 03:06 2017: Implement section parse test
-
-  04.00.05.00-title-with-imu-nodes-xx.json
-
-  - Make p.token size dynamically. Instead of being a fixed size, the token buffer will keep all tokens received.
-
-    - This is needed because it is not possible to go back far enough to get the start of a title in a section with inline
-      markup. The buffer is overrun.
-
-  - Add test section title with inline markup and overline
-
-  - Add test for peekBackFrom()
+* Sat Jun 17 03:06 2017: Implement section parse test 04.00.05.00
 
   - Add test with inline markup and short underline
+
+  - Add test for severeUnexpectedSectionTitle in title with Inline Markup
+
+  - Add test for overline title with inline markup
 
 * Sat Sep 09 18:12 2017: create config package with Config type for configuring parser and lexer
 

@@ -7,9 +7,14 @@ import (
 	tok "github.com/demizer/go-rst/pkg/token"
 )
 
-func (p *Parser) inlineEmphasis(i *tok.Item) {
+func (p *Parser) inlineEmphasis(i *tok.Item, titleCheck bool) {
+	// Make sure inline markup is not in a section title
+	isInTitle := p.isInlineMarkupInSectionTitle(i)
+	if titleCheck && isInTitle {
+		return
+	}
 	ni := p.next(1)
-	if len(*p.Nodes) == 0 {
+	if len(*p.Nodes) == 0 && !isInTitle {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)
@@ -35,9 +40,14 @@ main:
 	p.next(1)
 }
 
-func (p *Parser) inlineStrong(i *tok.Item) {
+func (p *Parser) inlineStrong(i *tok.Item, titleCheck bool) {
+	// Make sure inline markup is not in a section title
+	isInTitle := p.isInlineMarkupInSectionTitle(i)
+	if titleCheck && isInTitle {
+		return
+	}
 	ni := p.next(1)
-	if len(*p.Nodes) == 0 {
+	if len(*p.Nodes) == 0 && !isInTitle {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)
@@ -63,9 +73,14 @@ main:
 	p.next(1)
 }
 
-func (p *Parser) inlineLiteral(i *tok.Item) {
+func (p *Parser) inlineLiteral(i *tok.Item, titleCheck bool) {
+	// Make sure inline markup is not in a section title
+	isInTitle := p.isInlineMarkupInSectionTitle(i)
+	if titleCheck && isInTitle {
+		return
+	}
 	ni := p.next(1)
-	if len(*p.Nodes) == 0 {
+	if len(*p.Nodes) == 0 && !isInTitle {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)

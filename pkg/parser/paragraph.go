@@ -68,11 +68,11 @@ outer:
 				p.nodeTarget.Append(nt)
 			}
 		case tok.InlineEmphasisOpen:
-			p.inlineEmphasis(ci)
+			p.inlineEmphasis(ci, true)
 		case tok.InlineStrongOpen:
-			p.inlineStrong(ci)
+			p.inlineStrong(ci, true)
 		case tok.InlineLiteralOpen:
-			p.inlineLiteral(ci)
+			p.inlineLiteral(ci, true)
 		case tok.InlineInterpretedTextOpen:
 			p.inlineInterpretedText(ci)
 		case tok.InlineInterpretedTextRoleOpen:
