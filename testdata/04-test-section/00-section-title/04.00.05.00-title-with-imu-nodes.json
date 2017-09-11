@@ -4,42 +4,47 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
+            "length": 36,
             "line": 1,
             "startPosition": 1,
-            "length": 36,
             "nodeList": [
                 {
                     "type": "NodeText",
                     "text": "Title containing ",
-                    "startPosition": 1,
-                    "length": 17
+                    "length": 17,
+                    "line": 1,
+                    "startPosition": 1
                 },
                 {
-                    "type": "NodeEmphasis",
+                    "type": "NodeInlineEmphasis",
                     "text": "inline",
-                    "startPosition": 18,
-                    "length": 6
+                    "length": 6,
+                    "line": 1,
+                    "startPosition": 19
                 },
                 {
-                    "type": "NodeSpace",
+                    "type": "NodeText",
                     "text": " ",
-                    "startPosition": 19,
-                    "length": 1
+                    "length": 1,
+                    "line": 1,
+                    "startPosition": 26
                 },
                 {
                     "type": "NodeInlineLiteral",
                     "text": "markup",
-                    "startPosition": 20,
-                    "length": 6
+                    "length": 6,
+                    "line": 1,
+                    "startPosition": 29
                 }
             ]
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "startPosition": 1,
+            "length": 36,
             "line": 2,
-            "length": 36
+            "startPosition": 1
         },
         "nodeList": [
             {
@@ -48,9 +53,9 @@
                     {
                         "type": "NodeText",
                         "text": "Paragraph.",
-                        "startPosition": 1,
+                        "length": 10,
                         "line": 4,
-                        "length": 10
+                        "startPosition": 1
                     }
                 ]
             }

@@ -478,3 +478,29 @@ func TestParserPeekBackTo(t *testing.T) {
 	assert.Equal(t, 3, tr.index, "expect index to equal 3")
 	assert.Equal(t, &tok.Item{ID: 1, Type: tok.Title, Text: "Title 1", Line: 1, StartPosition: 1, Length: 7}, pb, "expect peek back token")
 }
+
+func TestParserPeekLine(t *testing.T) {
+	expect := [4]*tok.Item{
+		&tok.Item{ID: 1, Type: tok.Text, Text: "Title containing ", Line: 1, StartPosition: 1, Length: 17},
+		&tok.Item{ID: 2, Type: tok.InlineEmphasisOpen, Text: "*", Line: 1, StartPosition: 18, Length: 1},
+		&tok.Item{ID: 3, Type: tok.InlineEmphasis, Text: "inline", Line: 1, StartPosition: 19, Length: 6},
+		&tok.Item{ID: 4, Type: tok.InlineEmphasisClose, Text: "*", Line: 1, StartPosition: 25, Length: 1},
+	}
+
+	input := "Title containing *inline*\nParagraph."
+	tr, err := NewParser("peekSkip", input, testutil.StdLogger, testutil.CallDepth)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	tr.next(10)
+	toks := tr.peekLine(1)
+
+	if len(toks) != 4 {
+		assert.FailNow(t, fmt.Sprintf("len(toks) = %d", len(toks)), "length should be 4")
+	}
+
+	for k, v := range toks {
+		assert.Equal(t, expect[k], v, "expect match")
+	}
+}

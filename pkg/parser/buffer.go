@@ -143,9 +143,28 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	return t.token
 }
 
+func (t *tokenBuffer) peekLine(line int) (toks []*tok.Item) {
+	for x := 0; x < len(t.buf)-1; x++ {
+		if t.buf[x] != nil && t.buf[x].Line == line {
+			toks = append(toks, t.buf[x])
+		}
+	}
+	return
+}
+
 // clearTokens sets tokens from begin to end to nil.
 func (t *tokenBuffer) clearTokens(begin, end int) {
 	for i := begin; i <= end; i++ {
 		t.buf[i] = nil
 	}
+}
+
+func (t *tokenBuffer) indexFromToken(tok *tok.Item) int {
+	for k, v := range t.buf {
+		if tok == v {
+			t.Msgr("indexFromToken found match", "index", k, "token", v)
+			return k
+		}
+	}
+	return -1
 }
