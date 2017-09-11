@@ -16,7 +16,7 @@ var (
 
 func lexTest(t *testing.T, test *testutil.Test) []Item {
 	var items []Item
-	l, err := Lex(test.Path, []byte(test.Data), testutil.StdLogger)
+	l, err := Lex(test.Path, []byte(test.Data), testutil.StdLogger, testutil.CallDepth)
 	if err != nil {
 		t.Errorf("error from lexer: %s", err)
 		t.Fail()
@@ -111,7 +111,7 @@ var lexerTests = []struct {
 
 func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -157,7 +157,7 @@ var lexerGotoLocationTests = []struct {
 
 func TestLexerGotoLocation(t *testing.T) {
 	for _, tt := range lexerGotoLocationTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -249,7 +249,7 @@ var lexerBackupTests = []struct {
 
 func TestLexerBackup(t *testing.T) {
 	for _, tt := range lexerBackupTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -339,7 +339,7 @@ var lexerNextTests = []struct {
 
 func TestLexerNext(t *testing.T) {
 	for _, tt := range lexerNextTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -419,7 +419,7 @@ var lexerPeekTests = []struct {
 
 func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -447,7 +447,7 @@ func TestLexerPeek(t *testing.T) {
 
 func TestLexerIsLastLine(t *testing.T) {
 	input := "==============\nTitle\n=============="
-	lex, err := newLexer("isLastLine test 1", []byte(input), testutil.StdLogger)
+	lex, err := newLexer("isLastLine test 1", []byte(input), testutil.StdLogger, testutil.CallDepth)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -456,7 +456,7 @@ func TestLexerIsLastLine(t *testing.T) {
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
-	lex, err = newLexer("isLastLine test 2", []byte(input), testutil.StdLogger)
+	lex, err = newLexer("isLastLine test 2", []byte(input), testutil.StdLogger, testutil.CallDepth)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -465,7 +465,7 @@ func TestLexerIsLastLine(t *testing.T) {
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
-	lex, err = newLexer("isLastLine test 3", []byte(input), testutil.StdLogger)
+	lex, err = newLexer("isLastLine test 3", []byte(input), testutil.StdLogger, testutil.CallDepth)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -519,7 +519,7 @@ var peekNextLineTests = []struct {
 
 func TestLexerPeekNextLine(t *testing.T) {
 	for _, tt := range peekNextLineTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
