@@ -2,11 +2,8 @@ package parser
 
 import (
 	"github.com/demizer/go-rst/pkg/log"
-	"github.com/demizer/go-rst/pkg/testutil"
 
 	doc "github.com/demizer/go-rst/pkg/document"
-
-	klog "github.com/go-kit/kit/log"
 )
 
 // sectionLevel is a single section level. sections contains a list of pointers to doc.SectionNode that are dertermined to be a
@@ -24,11 +21,17 @@ type sectionLevels struct {
 	lastSectionNode *doc.SectionNode
 	levels          []*sectionLevel
 
+	logConf log.Config
 	log.Logger
 }
 
-func newSectionLevels(logr klog.Logger, logCallDepth int) *sectionLevels {
-	return &sectionLevels{Logger: log.NewLogger("sectionLvl", true, logCallDepth, testutil.LogExcludes, logr)}
+func newSectionLevels(logConf log.Config) *sectionLevels {
+	conf := logConf
+	conf.Name = "section_level"
+	return &sectionLevels{
+		logConf: conf,
+		Logger:  log.NewLogger(conf),
+	}
 }
 
 // FindByRune loops through the sectionLevels to find a section using a Rune as the key. If the section is found, a pointer

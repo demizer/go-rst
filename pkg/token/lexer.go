@@ -8,9 +8,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/demizer/go-rst/pkg/log"
-	"github.com/demizer/go-rst/pkg/testutil"
-
-	klog "github.com/go-kit/kit/log"
 )
 
 // Function prototype for scanner functions
@@ -38,18 +35,24 @@ type Lexer struct {
 	indentLevel int    // For tracking indentation with indentable items
 	indentWidth string // For tracking indent width
 
+	logConf log.Config
+
 	log.Logger
 }
 
-func newLexer(name string, input []byte, logr klog.Logger, logCallDepth int) (l *Lexer, err error) {
+func newLexer(name string, input []byte, logConf log.Config) (l *Lexer, err error) {
 	if len(input) == 0 {
 		err = errors.New("no input given")
 		return
 	}
 
+	conf := logConf
+	conf.Name = "lexer"
+
 	l = &Lexer{
-		Name:   name,
-		Logger: log.NewLogger("lexer", true, logCallDepth, testutil.LogExcludes, logr),
+		Name:    name,
+		logConf: conf,
+		Logger:  log.NewLogger(conf),
 	}
 
 	ni, err := normalize(input)
@@ -75,8 +78,8 @@ func newLexer(name string, input []byte, logr klog.Logger, logCallDepth int) (l 
 
 // lex is the entry point of the lexer. Name should be any name that signifies the purporse of the lexer. It is mostly used
 // to identify the lexing process in debugging.
-func Lex(name string, input []byte, logr klog.Logger, logCallDepth int) (l *Lexer, err error) {
-	l, err = newLexer(name, input, logr, logCallDepth)
+func Lex(name string, input []byte, logConf log.Config) (l *Lexer, err error) {
+	l, err = newLexer(name, input, logConf)
 	if err != nil {
 		return
 	}

@@ -12,7 +12,7 @@ var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //
 
 // Logger implements the go-kit logger type.
 type Logger struct {
-	ctx       string      // Shows up in the log output as field "name".
+	name      string      // Shows up in the log output as field "name".
 	caller    bool        // Include the caller field name in the log output.
 	callDepth int         // Call stack depth for logging
 	log       klog.Logger // The standard logger for which wrapped loggers are based
@@ -21,20 +21,20 @@ type Logger struct {
 
 // NewLogger wraps a logger with a name context and caller information. If a named context is specified in the excludes
 // slice, then any logging to that context will be ignored.
-func NewLogger(name string, caller bool, callDepth int, excludes []string, logr klog.Logger) Logger {
+func NewLogger(conf Config) Logger {
 	return Logger{
-		ctx:       name,
-		caller:    caller,
-		callDepth: callDepth,
-		log:       logr,
-		excludes:  excludes,
+		name:      conf.Name,
+		caller:    conf.Caller,
+		callDepth: conf.CallDepth,
+		log:       conf.Logger,
+		excludes:  conf.Excludes,
 	}
 }
 
 func (l Logger) isExcluded() bool {
 	if len(l.excludes) > 0 {
 		for _, v := range l.excludes {
-			if v == l.ctx {
+			if v == l.name {
 				return true
 			}
 		}
@@ -53,9 +53,9 @@ func (l Logger) Msg(message string) error {
 	if l.isExcluded() {
 		return nil
 	}
-	logr := klog.WithPrefix(l.log, "name", l.ctx)
+	logr := klog.WithPrefix(l.log, "name", l.name)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log("msg", message)
 }
@@ -65,9 +65,9 @@ func (l Logger) Msgr(message string, keyvals ...interface{}) error {
 	if l.isExcluded() {
 		return nil
 	}
-	logr := klog.WithPrefix(l.log, "name", l.ctx, "msg", message)
+	logr := klog.WithPrefix(l.log, "name", l.name, "msg", message)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth), "msg", message)
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth), "msg", message)
 	}
 	return logr.Log(keyvals...)
 }
@@ -77,9 +77,9 @@ func (l Logger) Err(err error) error {
 	if l.isExcluded() {
 		return nil
 	}
-	logr := klog.WithPrefix(l.log, "name", l.ctx)
+	logr := klog.WithPrefix(l.log, "name", l.name)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log("error", err.Error())
 }
@@ -89,9 +89,9 @@ func (l Logger) Log(keyvals ...interface{}) error {
 	if l.isExcluded() {
 		return nil
 	}
-	logr := klog.WithPrefix(l.log, "name", l.ctx)
+	logr := klog.WithPrefix(l.log, "name", l.name)
 	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.ctx, "caller", klog.Caller(l.callDepth))
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
 	}
 	return logr.Log(keyvals...)
 }
@@ -118,5 +118,11 @@ func (l Logger) DumpExit(v interface{}) {
 }
 
 func WithCallDepth(l Logger, callDepth int) Logger {
-	return NewLogger(l.ctx, true, callDepth, l.excludes, l.log)
+	return NewLogger(Config{
+		Name:      l.name,
+		Logger:    l.log,
+		Caller:    true,
+		CallDepth: callDepth,
+		Excludes:  l.excludes,
+	})
 }

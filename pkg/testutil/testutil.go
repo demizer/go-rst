@@ -16,10 +16,10 @@ import (
 func init() { SetDebug() }
 
 var (
-	StdLogger   = klog.NewNopLogger()
-	debug       bool
-	LogExcludes log.LoggerExcludes
-	CallDepth   = 4
+	StdLogger    = klog.NewNopLogger()
+	debug        bool
+	LogExcludes  log.LoggerExcludes
+	LoggerConfig log.Config
 )
 
 // SetDebug is typically called from the init() function in a test file.  SetDebug parses debug flags passed to the test
@@ -30,6 +30,13 @@ func SetDebug() {
 	flag.Parse()
 	if debug {
 		StdLogger = klog.NewLogfmtLogger(os.Stdout)
+	}
+	LoggerConfig = log.Config{
+		Name:      "test",
+		Logger:    StdLogger,
+		Caller:    true,
+		CallDepth: 4,
+		Excludes:  LogExcludes,
 	}
 }
 
