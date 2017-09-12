@@ -6,9 +6,9 @@
     {
         "type": "NodeComment",
         "text": "A comment.",
-        "startPosition": 4,
+        "length": 10,
         "line": 1,
-        "length": 10
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -16,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "Paragraph.",
-                "startPosition": 1,
+                "length": 10,
                 "line": 3,
-                "length": 10
+                "startPosition": 1
             }
         ]
     }

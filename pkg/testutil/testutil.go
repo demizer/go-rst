@@ -1,7 +1,6 @@
 package testutil
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -70,44 +69,18 @@ func Logf(s string, vals ...interface{}) {
 	}
 }
 
-func JsonDiff(expectedItems, parsedItems []interface{}) (string, error) {
-	eJson, err := json.Marshal(expectedItems)
-	if err != nil {
-		return "", fmt.Errorf("Failed to marshal expectedItems: %s", err.Error())
-	}
-	pJson, err := json.Marshal(parsedItems)
-	if err != nil {
-		return "", fmt.Errorf("Failed to marshal parsedItems: %s", err.Error())
-	}
-	a, _ := jd.ReadJsonString(string(eJson))
-	b, _ := jd.ReadJsonString(string(pJson))
+func JsonDiff(expectedData string, parsedData string) (string, error) {
+	a, _ := jd.ReadJsonString(expectedData)
+	b, _ := jd.ReadJsonString(parsedData)
 	return a.Diff(b).Render(), nil
 }
 
 // Contains a single test with data loaded from test files in the testdata directory
 type Test struct {
-	Path     string // The path including directory and basename
-	Data     string // The input data to be parsed
-	ItemData string // The expected lex items output in json
-	NodeData string // The expected parse nodes in json
-}
-
-// ExpectNodes returns the expected parse_tree values from the tests as unmarshaled JSON. A panic occurs if there is an error
-// unmarshaling the JSON data.
-func (l Test) ExpectNodes() (nl []interface{}) {
-	if err := json.Unmarshal([]byte(l.NodeData), &nl); err != nil {
-		panic(fmt.Sprintln("JSON error: ", err))
-	}
-	return
-}
-
-// ExpectItems unmarshals the expected lex_items into a silce of items. A panic occurs if there is an error decoding the JSON
-// data.
-func (l Test) ExpectItems() (lexItems []interface{}) {
-	if err := json.Unmarshal([]byte(l.ItemData), &lexItems); err != nil {
-		panic(fmt.Sprintln("JSON error: ", err))
-	}
-	return
+	Path       string // The path including directory and basename
+	Data       string // The input data to be parsed
+	ItemData   string // The expected lex items output in json
+	ExpectData string // The expected parse nodes in json
 }
 
 // Contains absolute file paths for the test data

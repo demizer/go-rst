@@ -66,8 +66,7 @@ func Test_{{.ID}}_{{.Type}}{{.Name}}{{.Outcome}}(t *testing.T) {
 	{{- else}}
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
-	eNodes := test.ExpectNodes()
-	checkParseNodes(t, eNodes, pTree.Nodes, testPath)
+	checkParseNodes(t, test.ExpectData, pTree, testPath)
 	{{- end}}
 }
 

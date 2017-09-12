@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"testing"
@@ -21,17 +20,17 @@ func nodeListToInterface(v *doc.NodeList) []interface{} {
 }
 
 // checkParseNodes compares the expected parser output (*_nodes.json) against the actual parser output using the jd library.
-func checkParseNodes(t *testing.T, eParser []interface{}, pNodes *doc.NodeList, testPath string) {
-	pJson, err := json.MarshalIndent(pNodes, "", "    ")
+func checkParseNodes(t *testing.T, expectNodes string, p *Parser, testPath string) {
+	pJson, err := doc.JsonRenderer(testutil.LoggerConfig, p.Messages, p.Nodes).Bytes()
 	if err != nil {
 		t.Errorf("Error Marshalling JSON: %s", err.Error())
 		return
 	}
 
-	// Json diff output has a syntax:
-
-	// https://github.com/josephburnett/jd#diff-language
-	o, err := testutil.JsonDiff(eParser, nodeListToInterface(pNodes))
+	//
+	// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
+	//
+	o, err := testutil.JsonDiff(expectNodes, string(pJson))
 	if err != nil {
 		fmt.Println(o)
 		fmt.Printf("Error diffing JSON: %s", err.Error())
@@ -65,17 +64,17 @@ func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
 		t.Fatalf("\"%s\" is empty!", iDPath)
 	}
 	nDPath := path + "-nodes.json"
-	nodeData, err := ioutil.ReadFile(nDPath)
+	eNodes, err := ioutil.ReadFile(nDPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(nodeData) == 0 {
+	if len(eNodes) == 0 {
 		t.Fatalf("\"%s\" is empty!", nDPath)
 	}
 	return &testutil.Test{
-		Path:     path,
-		Data:     string(inputData[:len(inputData)-1]),
-		NodeData: string(nodeData),
+		Path:       path,
+		Data:       string(inputData[:len(inputData)-1]),
+		ExpectData: string(eNodes),
 	}
 }
 

@@ -1,5 +1,5 @@
 package document
 
 type Renderer interface {
-	Bytes() (error, []byte) // Render to bytes
+	Bytes() ([]byte, error) // Render to bytes
 }

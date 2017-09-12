@@ -87,7 +87,7 @@ func (p *Parser) systemMessage(err parserMessage) (ok bool) {
 	mesAppend := func(f func(s2 *doc.SystemMessageNode, err2 parserMessage) *doc.LiteralBlockNode) {
 		if lb := f(s, err); lb != nil {
 			p.Msgr("Adding msg to system message NodeList", "systemMessage", err)
-			p.Messages = append(p.Messages, lb)
+			p.Messages.Append(lb)
 		}
 	}
 
