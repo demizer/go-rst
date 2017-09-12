@@ -2,9 +2,7 @@ package parser
 
 import (
 	"github.com/demizer/go-rst/pkg/log"
-	"github.com/demizer/go-rst/pkg/testutil"
 	tok "github.com/demizer/go-rst/pkg/token"
-	klog "github.com/go-kit/kit/log"
 )
 
 var (
@@ -16,15 +14,20 @@ type tokenBuffer struct {
 	token *tok.Item
 	buf   []*tok.Item
 	lex   *tok.Lexer
+
+	logConf log.Config
 	log.Logger
 }
 
-func newTokenBuffer(l *tok.Lexer, logr klog.Logger, logCallDepth int) tokenBuffer {
+func newTokenBuffer(l *tok.Lexer, logConf log.Config) tokenBuffer {
+	conf := logConf
+	conf.Name = "buffer"
 	return tokenBuffer{
-		buf:    make([]*tok.Item, initialCapacity),
-		lex:    l,
-		index:  -1, // Index is unset until next() is called
-		Logger: log.NewLogger("buffer", true, logCallDepth, testutil.LogExcludes, logr),
+		buf:     make([]*tok.Item, initialCapacity),
+		lex:     l,
+		index:   -1, // Index is unset until next() is called
+		logConf: conf,
+		Logger:  log.NewLogger(conf),
 	}
 }
 

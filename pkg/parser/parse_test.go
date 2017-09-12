@@ -81,7 +81,7 @@ func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
 
 // parseTest initiates the parser and parses a test using test.data is input.
 func parseTest(t *testing.T, test *testutil.Test) *Parser {
-	p, err := NewParser(test.Path, test.Data, testutil.StdLogger, testutil.CallDepth)
+	p, err := NewParser(test.Path, test.Data, testutil.LoggerConfig)
 	if err != nil {
 		panic(err)
 	}

@@ -86,7 +86,7 @@ var parserBackupTests = [...]parserBackupTest{
 func TestParserBackup(t *testing.T) {
 	for _, tt := range parserBackupTests {
 		testutil.LogRun(tt.name)
-		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger, testutil.CallDepth)
+		tr, err := NewParser(tt.name, tt.input, testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -208,7 +208,7 @@ var parserNextTests = [...]parserNextTest{
 func TestParserNext(t *testing.T) {
 	for _, tt := range parserNextTests {
 		testutil.LogRun(tt.name)
-		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger, testutil.CallDepth)
+		tr, err := NewParser(tt.name, tt.input, testutil.LoggerConfig)
 		if err != nil && tt.expectError {
 			testutil.LogPass(tt.name)
 			continue
@@ -297,7 +297,7 @@ var parserPeekTests = [...]parserPeekTest{
 func TestParserPeek(t *testing.T) {
 	for _, tt := range parserPeekTests {
 		testutil.LogRun(tt.name)
-		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger, testutil.CallDepth)
+		tr, err := NewParser(tt.name, tt.input, testutil.LoggerConfig)
 		if err != nil && tt.expectError {
 			testutil.LogPass(tt.name)
 			continue
@@ -373,7 +373,7 @@ var parserPeekBackTests = [...]parserPeekBackTest{
 func TestParserPeekBack(t *testing.T) {
 	for _, tt := range parserPeekBackTests {
 		testutil.LogRun(tt.name)
-		tr, err := NewParser(tt.name, tt.input, testutil.StdLogger, testutil.CallDepth)
+		tr, err := NewParser(tt.name, tt.input, testutil.LoggerConfig)
 		if err != nil && tt.expectError {
 			testutil.LogPass(tt.name)
 			continue
@@ -397,7 +397,7 @@ func TestParserPeekBack(t *testing.T) {
 func TestParserNextAfterPeekAtEOF(t *testing.T) {
 	input := "Test\n=====\n\nParagraph."
 
-	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -416,7 +416,7 @@ func TestParserNextAfterPeekAtEOF(t *testing.T) {
 func TestParserNextPeekNextInComment(t *testing.T) {
 	input := ".. A comment.\n\nParagraph.\n"
 
-	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("nextAfterPeekAtEOF", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -444,7 +444,7 @@ func TestParserAppend(t *testing.T) {
 	for x := 0; x < 100; x++ {
 		input += "\na line\n"
 	}
-	tr, err := NewParser("fillcapacitytest", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("fillcapacitytest", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -456,7 +456,7 @@ func TestParserAppend(t *testing.T) {
 
 func TestParserPeekSkip(t *testing.T) {
 	input := "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2."
-	tr, err := NewParser("peekSkip", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("peekSkip", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -468,7 +468,7 @@ func TestParserPeekSkip(t *testing.T) {
 
 func TestParserPeekBackTo(t *testing.T) {
 	input := "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2."
-	tr, err := NewParser("peekSkip", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("peekSkip", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -488,7 +488,7 @@ func TestParserPeekLine(t *testing.T) {
 	}
 
 	input := "Title containing *inline*\nParagraph."
-	tr, err := NewParser("peekSkip", input, testutil.StdLogger, testutil.CallDepth)
+	tr, err := NewParser("peekSkip", input, testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()

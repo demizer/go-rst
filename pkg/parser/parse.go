@@ -6,9 +6,6 @@ import (
 	"golang.org/x/text/unicode/norm"
 
 	"github.com/demizer/go-rst/pkg/log"
-	"github.com/demizer/go-rst/pkg/testutil"
-
-	klog "github.com/go-kit/kit/log"
 
 	doc "github.com/demizer/go-rst/pkg/document"
 	tok "github.com/demizer/go-rst/pkg/token"
@@ -39,11 +36,12 @@ type Parser struct {
 
 	tokenBuffer // Buffered tokens from the scanner to allow going forward and back in the stream
 
+	logConf log.Config
 	log.Logger
 }
 
 // New returns a fresh parser Parser.
-func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, error) {
+func NewParser(name, text string, logConf log.Config) (*Parser, error) {
 	var ntext string
 	if !norm.NFC.IsNormalString(text) {
 		ntext = norm.NFC.String(text)
@@ -51,7 +49,10 @@ func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, 
 		ntext = text
 	}
 
-	l, err := tok.Lex(name, []byte(ntext), logr, logCallDepth)
+	conf := logConf
+	conf.Name = "parser"
+
+	l, err := tok.Lex(name, []byte(ntext), conf)
 	if err != nil {
 		return nil, fmt.Errorf("error initializing lexer: %s", err)
 	}
@@ -62,11 +63,12 @@ func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, 
 		Nodes:         &nl,
 		text:          ntext,
 		lex:           l,
-		sectionLevels: newSectionLevels(testutil.StdLogger, logCallDepth),
+		logConf:       conf,
+		sectionLevels: newSectionLevels(conf),
 		indents:       new(indentQueue),
-		nodeTarget:    doc.NewNodeTarget(&nl, logr, logCallDepth),
-		Logger:        log.NewLogger("parser", true, logCallDepth, testutil.LogExcludes, logr),
-		tokenBuffer:   newTokenBuffer(l, logr, logCallDepth),
+		nodeTarget:    doc.NewNodeTarget(&nl, conf),
+		Logger:        log.NewLogger(conf),
+		tokenBuffer:   newTokenBuffer(l, conf),
 	}
 
 	p.Msgr("Parser.Nodes pointer", "nodeListPointer", fmt.Sprintf("%p", nl))

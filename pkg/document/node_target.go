@@ -4,9 +4,6 @@ import (
 	"fmt"
 
 	"github.com/demizer/go-rst/pkg/log"
-	"github.com/demizer/go-rst/pkg/testutil"
-
-	klog "github.com/go-kit/kit/log"
 )
 
 // NodeTarget contains the NodeList where subsequent nodes will be added during parsing. It also contains a pointer to the
@@ -16,15 +13,19 @@ type NodeTarget struct {
 	SubList  *NodeList // The nodelist contained in target
 	Parent   Node      // If set, a parent Node containing a NodeList. Can be nil.
 
+	logConf log.Config
 	log.Logger
 }
 
 // NewNodeTarget creates a NodeTarget with a context logger.
-func NewNodeTarget(pNodes *NodeList, logr klog.Logger, logCallDepth int) *NodeTarget {
+func NewNodeTarget(pNodes *NodeList, logConf log.Config) *NodeTarget {
+	conf := logConf
+	conf.Name = "document"
 	return &NodeTarget{
 		MainList: pNodes,
 		SubList:  pNodes,
-		Logger:   log.NewLogger("document", true, logCallDepth, testutil.LogExcludes, logr),
+		logConf:  conf,
+		Logger:   log.NewLogger(conf),
 	}
 }
 
