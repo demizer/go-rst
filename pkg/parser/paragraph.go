@@ -24,6 +24,7 @@ outer:
 		// p.DumpExit(p.index)
 		// p.DumpExit(ci)
 		// p.DumpExit(p.buf)
+		// p.DumpExit(p.Nodes)
 
 		pi := p.peekBack(1) // previous item
 		// p.DumpExit(pi)
@@ -39,6 +40,7 @@ outer:
 			// } else if pi != nil && nt.Text != pi.Text && pi.Type == tok.Text && ci.Type == tok.Text {
 		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
 			// p.DumpExit(ci)
+			// p.DumpExit(p.buf)
 			p.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)

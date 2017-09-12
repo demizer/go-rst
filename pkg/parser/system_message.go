@@ -6,108 +6,62 @@ import (
 )
 
 func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err parserMessage) *doc.LiteralBlockNode {
-	var overLine, indent, title, underLine, newLine string
-	var lbText string
-	var lbTextLen int
+	var lbText, overLine, indent, title, underLine, newLine string
+	var lbLine, lbSPos int
 
 	literalBlock := func() *doc.LiteralBlockNode {
-		return doc.NewLiteralBlock(&tok.Item{Type: tok.LiteralBlock, Text: lbText, Length: lbTextLen})
+		return doc.NewLiteralBlock(&tok.Item{Type: tok.LiteralBlock, Text: lbText, Length: len(lbText), Line: lbLine, StartPosition: lbSPos})
 	}
 
 	switch err {
 	case infoOverlineTooShortForTitle:
-		var inText string
-		inText = p.buf[p.index-1].Text + "\n" + p.token.Text
-		s.Line = p.buf[p.index-1].Line
-		if p.buf[p.index-2] != nil {
-			inText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + "\n" + p.token.Text
-			s.Line = p.buf[p.index-2].Line
-			p.buf[p.index-2] = nil
-
+		if p.index-2 >= 0 && p.buf[p.index-2] != nil && p.buf[p.index-2].Type == tok.SectionAdornment {
+			// For title with overline and underline, combine 3 tokens and insert into buffer
+			lbText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + "\n" + p.token.Text
+			lbSPos = p.buf[p.index-2].StartPosition
+		} else {
+			// For title with only overline, combine two tokens and insert into buffer
+			lbText = p.buf[p.index-1].Text + "\n" + p.token.Text
+			lbSPos = p.buf[p.index-1].StartPosition
 		}
-		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a tok.Text then backup the token buffer so the
-		// next loop gets the new paragraph
-		p.buf[p.index-1] = nil
-		p.token.Type = tok.Text
-		p.token.Text = inText
-		p.token.Length = infoTextLen
-		p.token.Line = s.Line
-		p.backup()
 	case infoUnexpectedTitleOverlineOrTransition:
-		oLin := p.peekBackTo(tok.SectionAdornment)
-		titl := p.peekBackTo(tok.Title)
-		uLin := p.token
-		inText := oLin.Text + "\n" + titl.Text + "\n" + uLin.Text
-		s.Line = oLin.Line
-		p.clearTokens(p.index-4, p.index-1)
-		infoTextLen := len(inText)
-		// Modify the token buffer to change the current token to a tok.Text then backup the token buffer so the
-		// next loop gets the new paragraph
-		p.token.Type = tok.Text
-		p.token.Text = inText
-		p.token.Length = infoTextLen
-		p.token.Line = s.Line
-		p.token.StartPosition = oLin.StartPosition
-		p.backup()
+		lbText = p.peekBackTo(tok.SectionAdornment).Text + "\n" + p.peekBackTo(tok.Title).Text + "\n" + p.token.Text
 	case infoUnderlineTooShortForTitle:
-		inText := p.buf[p.index-1].Text + "\n" + p.buf[p.index].Text
-		infoTextLen := len(inText)
-		s.Line = p.buf[p.index-1].Line
-		p.buf[p.index].Type = tok.Text
-		p.buf[p.index].Text = inText
-		p.buf[p.index].Length = infoTextLen
-		p.buf[p.index].Line = s.Line
-		p.backup()
+		lbText = p.buf[p.index-1].Text + "\n" + p.buf[p.index].Text
 	case warningShortOverline, severeOverlineUnderlineMismatch:
-		backToken := p.index - 2
+		backIndex := p.index - 2
 		if p.peekBack(2).Type == tok.Space {
-			backToken = p.index - 3
+			backIndex = p.index - 3
 			indent = p.buf[p.index-2].Text
 		}
-		overLine = p.buf[backToken].Text
+		overLine = p.buf[backIndex].Text
 		title = p.buf[p.index-1].Text
 		underLine = p.token.Text
 		newLine = "\n"
 		lbText = overLine + newLine + indent + title + newLine + underLine
-		s.Line = p.buf[backToken].Line
-		lbTextLen = len(lbText)
-		return literalBlock()
 	case warningShortUnderline, severeUnexpectedSectionTitle:
-		backToken := p.index - 1
+		backIndex := p.index - 1
 		if p.peekBack(1).Type == tok.Space {
-			backToken = p.index - 2
+			backIndex = p.index - 2
 		}
-		lbText = p.buf[backToken].Text + "\n" + p.token.Text
-		lbTextLen = len(lbText)
-		s.Line = p.buf[p.index-1].Line
-		return literalBlock()
+		lbText = p.buf[backIndex].Text + "\n" + p.token.Text
+		s.Line = p.buf[backIndex].Line
 	case errorInvalidSectionOrTransitionMarker:
 		lbText = p.buf[p.index-1].Text + "\n" + p.token.Text
-		s.Line = p.buf[p.index-1].Line
-		lbTextLen = len(lbText)
-		return literalBlock()
 	case severeIncompleteSectionTitle,
 		severeMissingMatchingUnderlineForOverline:
 		lbText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + p.token.Text
-		s.Line = p.buf[p.index-2].Line
-		lbTextLen = len(lbText)
-		return literalBlock()
 	case severeUnexpectedSectionTitleOrTransition:
 		lbText = p.token.Text
-		lbTextLen = len(lbText)
-		s.Line = p.token.Line
-		return literalBlock()
 	case severeTitleLevelInconsistent:
 		if p.peekBack(2).Type == tok.SectionAdornment {
 			lbText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + "\n" + p.token.Text
-			lbTextLen = len(lbText)
-			s.Line = p.buf[p.index-2].Line
-			return literalBlock()
+			break
 		}
 		lbText = p.buf[p.index-1].Text + "\n" + p.token.Text
-		lbTextLen = len(lbText)
-		s.Line = p.buf[p.index-1].Line
+	}
+	if len(lbText) > 0 {
+
 		return literalBlock()
 	}
 	return nil
@@ -123,24 +77,22 @@ func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err parserM
 
 // systemMessage generates a Node based on the passed parserMessage. The generated message is returned as a
 // SystemMessageNode.
-func (p *Parser) systemMessage(err parserMessage) doc.Node {
-	s := doc.NewSystemMessage(&tok.Item{Type: tok.SystemMessage, Line: p.token.Line}, err.String(), err.Level())
-	msg := doc.NewText(&tok.Item{
-		Text:   err.Message(),
-		Length: len(err.Message()),
-	})
+func (p *Parser) systemMessage(err parserMessage) (ok bool) {
+	s := doc.NewSystemMessage(&tok.Item{Type: tok.SystemMessage}, err.String(), err.Level())
+	// msg := doc.NewText(&tok.Item{
+	// Text:   err.Message(),
+	// Length: len(err.Message()),
+	// })
 
-	p.Msgr("Adding msg to system message NodeList", "systemMessage", err)
-	s.NodeList.Append(msg)
-
-	appendOrDie := func(f func(s2 *doc.SystemMessageNode, err2 parserMessage) *doc.LiteralBlockNode) {
+	mesAppend := func(f func(s2 *doc.SystemMessageNode, err2 parserMessage) *doc.LiteralBlockNode) {
 		if lb := f(s, err); lb != nil {
-			s.NodeList = append(s.NodeList, lb)
+			p.Msgr("Adding msg to system message NodeList", "systemMessage", err)
+			p.Messages = append(p.Messages, lb)
 		}
 	}
 
-	appendOrDie(p.systemMessageSection)
-	appendOrDie(p.systemMessageInlineMarkup)
+	mesAppend(p.systemMessageSection)
+	mesAppend(p.systemMessageInlineMarkup)
 
-	return s
+	return false
 }

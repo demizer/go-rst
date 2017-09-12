@@ -168,3 +168,9 @@ func (t *tokenBuffer) indexFromToken(tok *tok.Item) int {
 	}
 	return -1
 }
+
+func (t *tokenBuffer) insert(tok *tok.Item, index int) {
+	// t.buf = append(t.buf, 0)
+	copy(t.buf[index+1:], t.buf[index:])
+	t.buf[index] = tok
+}

@@ -19,8 +19,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
 		p.Msg("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
 		n = doc.NewComment(&tok.Item{Line: i.Line})
-		sm := p.systemMessage(warningExplicitMarkupWithUnIndent)
-		p.nodeTarget.Append(n, sm)
+		p.systemMessage(warningExplicitMarkupWithUnIndent)
 		return n
 	}
 
@@ -48,8 +47,7 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 			p.Msg("Found warningExplicitMarkupWithUnIndent")
 			n = doc.NewComment(nPara)
 			p.nodeTarget.Append(n)
-			sm := p.systemMessage(warningExplicitMarkupWithUnIndent)
-			p.nodeTarget.Append(sm)
+			p.systemMessage(warningExplicitMarkupWithUnIndent)
 			return n
 		} else {
 			// Just a regular single lined comment

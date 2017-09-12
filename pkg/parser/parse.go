@@ -74,8 +74,8 @@ func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, 
 	return p, err
 }
 
-// Parse starts parsing the document. Returns false if the parser generated messages during the parse.
-func (p *Parser) Parse() bool {
+// Parse starts parsing the document.
+func (p *Parser) Parse() {
 	for {
 		var n doc.Node
 
@@ -106,6 +106,7 @@ func (p *Parser) Parse() bool {
 			p.comment(token)
 		case tok.SectionAdornment:
 			p.section(token)
+			// p.DumpExit(p.buf)
 		case tok.EnumListArabic:
 			n = p.enumList(token)
 			// FIXME: This is only until enumerated list are properly implemented.
@@ -142,10 +143,6 @@ func (p *Parser) Parse() bool {
 		}
 
 	}
-	if len(p.Messages) > 0 {
-		return false
-	}
-	return true
 }
 
 func (p *Parser) subParseBodyElements(token *tok.Item) doc.Node {

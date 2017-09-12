@@ -29,6 +29,9 @@ const (
 	// NodeSystemMessage contains an error encountered by the parser.
 	NodeSystemMessage
 
+	// NodeSystemMessages contains a list of NodeSystemMessage
+	NodeSystemMessages
+
 	// NodeLiteralBlock is a literal block element.
 	NodeLiteralBlock
 
@@ -86,6 +89,7 @@ var nodeTypes = [...]string{
 	"NodeAdornment",
 	"NodeBlockQuote",
 	"NodeSystemMessage",
+	"NodeSystemMessages",
 	"NodeLiteralBlock",
 	"NodeTransition",
 	"NodeTitle",
@@ -647,6 +651,31 @@ func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
 		Line:          b.Line,
 		StartPosition: b.StartPosition,
 		NodeList:      b.NodeList,
+	})
+}
+
+// SystemMessages contains system messages if present
+type SystemMessagesNode struct {
+	Type     NodeType          `json:"type"`
+	NodeList `json:"nodeList"` // NodeList contains a list of system messages generated while parsing
+}
+
+func NewSystemMessagesNode() *SystemMessagesNode { return &SystemMessagesNode{Type: NodeSystemMessages} }
+
+// NodeType returns the Node type of the SystemMessagesNode.
+func (s SystemMessagesNode) NodeType() NodeType { return s.Type }
+
+// String satisfies the Stringer interface
+func (s SystemMessagesNode) String() string { return fmt.Sprintf("%#v", s) }
+
+// MarshalJSON satisfies the Marshaler interface.
+func (s SystemMessagesNode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type     string `json:"type"`
+		NodeList `json:"nodeList"`
+	}{
+		Type:     nodeTypes[s.Type],
+		NodeList: s.NodeList,
 	})
 }
 

@@ -1,14 +1,19 @@
 [
     {
-        "type": "NodeSystemMessage",
-        "messageType": "infoUnderlineTooShortForTitle",
-        "severity": "INFO",
-        "line": 1,
+        "type": "NodeSystemMessages",
         "nodeList": [
             {
-                "type": "NodeText",
-                "text": "Possible title underline, too short for the title.\nTreating it as ordinary text because it's so short.",
-                "length": 102
+                "type": "NodeSystemMessage",
+                "messageType": "infoUnderlineTooShortForTitle",
+                "severity": "INFO",
+                "line": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Possible title underline, too short for the title.\nTreating it as ordinary text because it's so short.",
+                        "length": 102
+                    }
+                ]
             }
         ]
     },
