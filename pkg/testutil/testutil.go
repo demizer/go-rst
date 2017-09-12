@@ -77,10 +77,10 @@ func JsonDiff(expectedData string, parsedData string) (string, error) {
 
 // Contains a single test with data loaded from test files in the testdata directory
 type Test struct {
-	Path       string // The path including directory and basename
-	Data       string // The input data to be parsed
-	ItemData   string // The expected lex items output in json
-	ExpectData string // The expected parse nodes in json
+	Path            string // The path including directory and basename
+	Data            string // The input data to be parsed
+	ExpectItemData  string // The expected lex items output in json
+	ExpectParseData string // The expected parse nodes in json
 }
 
 // Contains absolute file paths for the test data

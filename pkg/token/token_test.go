@@ -2,7 +2,6 @@ package token
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"testing"
 	"unicode/utf8"
@@ -16,7 +15,7 @@ var (
 
 func lexTest(t *testing.T, test *testutil.Test) []Item {
 	var items []Item
-	l, err := Lex(test.Path, []byte(test.Data), testutil.StdLogger, testutil.CallDepth)
+	l, err := Lex(test.Path, []byte(test.Data), testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error from lexer: %s", err)
 		t.Fail()
@@ -33,30 +32,25 @@ func lexTest(t *testing.T, test *testutil.Test) []Item {
 
 // Test equality between items and expected items from unmarshalled json data, field by field. Returns error in case of
 // error during json unmarshalling, or mismatch between items and the expected output.
-func equal(t *testing.T, expectItems []interface{}, items []Item) {
-	lLen := len(items)
-	eLen := len(expectItems)
-	toSlice := func(v []Item) []interface{} {
-		s := make([]interface{}, len(v))
-		for i, j := range v {
-			s[i] = j
-		}
-		return s
-	}
+func equal(t *testing.T, expectItemData string, items []Item) {
+	pJson, _ := json.MarshalIndent(items, "", "  ")
+
 	// Json diff output has a syntax: https://github.com/josephburnett/jd#diff-language
-	o, err := testutil.JsonDiff(expectItems, toSlice(items))
+	o, err := testutil.JsonDiff(expectItemData, string(pJson))
 	if err != nil {
-		t.Fatalf("%s\n%s", o, err)
+		t.Errorf("%s\n%s", o, err)
 	}
-	eJson, _ := json.MarshalIndent(expectItems, "", "  ")
-	iJson, _ := json.MarshalIndent(toSlice(items), "", "  ")
-	if lLen != eLen {
-		eTmp := "Number of expected Lex item values (len=%d) and lexed item values (len=%d) do not match"
-		t.Fatalf("%s\n\nLEXER TOKENS:\n\n%s\n\nEXPECTED TOKENS:\n\n%s\n\nDIFF:\n\n%s", fmt.Sprintf(eTmp, eLen), iJson, eJson, o)
-	} else if len(o) > 0 {
-		errs := "The Lexer tokens and the Expected Lexer tokens do not match!"
-		t.Fatalf("%s\n\nLEXER TOKENS:\n\n%s\n\nEXPECTED TOKENS:\n\n%s\n\nDIFF:\n\n%s", errs, iJson, eJson, o)
+
+	// There should be no output from the diff
+	if len(o) != 0 {
+		testutil.Log("\nFAIL: parsed items do not match expected items!")
+		testutil.Log("\n[Parsed Items JSON]\n\n")
+		testutil.Log(string(pJson))
+		testutil.Log("\n\n[JSON DIFF]\n\n")
+		testutil.Log(o)
+		t.FailNow()
 	}
+
 	return
 }
 
@@ -78,9 +72,9 @@ func LoadLexTest(t *testing.T, path string) (test *testutil.Test) {
 		t.Fatalf("\"%s\" is empty!", itemFPath)
 	}
 	return &testutil.Test{
-		Path:     path,
-		Data:     string(inputData[:len(inputData)-1]),
-		ItemData: string(itemData),
+		Path:           path,
+		Data:           string(inputData[:len(inputData)-1]),
+		ExpectItemData: string(itemData),
 	}
 }
 
@@ -111,7 +105,7 @@ var lexerTests = []struct {
 
 func TestLexerNew(t *testing.T) {
 	for _, tt := range lexerTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -157,7 +151,7 @@ var lexerGotoLocationTests = []struct {
 
 func TestLexerGotoLocation(t *testing.T) {
 	for _, tt := range lexerGotoLocationTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -249,7 +243,7 @@ var lexerBackupTests = []struct {
 
 func TestLexerBackup(t *testing.T) {
 	for _, tt := range lexerBackupTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -339,7 +333,7 @@ var lexerNextTests = []struct {
 
 func TestLexerNext(t *testing.T) {
 	for _, tt := range lexerNextTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -419,7 +413,7 @@ var lexerPeekTests = []struct {
 
 func TestLexerPeek(t *testing.T) {
 	for _, tt := range lexerPeekTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
@@ -447,7 +441,7 @@ func TestLexerPeek(t *testing.T) {
 
 func TestLexerIsLastLine(t *testing.T) {
 	input := "==============\nTitle\n=============="
-	lex, err := newLexer("isLastLine test 1", []byte(input), testutil.StdLogger, testutil.CallDepth)
+	lex, err := newLexer("isLastLine test 1", []byte(input), testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -456,7 +450,7 @@ func TestLexerIsLastLine(t *testing.T) {
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
-	lex, err = newLexer("isLastLine test 2", []byte(input), testutil.StdLogger, testutil.CallDepth)
+	lex, err = newLexer("isLastLine test 2", []byte(input), testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -465,7 +459,7 @@ func TestLexerIsLastLine(t *testing.T) {
 	if lex.isLastLine() != false {
 		t.Errorf("Test: %q\n\tGot: isLastLine == %t, Expect: %t", lex.Name, lex.isLastLine(), false)
 	}
-	lex, err = newLexer("isLastLine test 3", []byte(input), testutil.StdLogger, testutil.CallDepth)
+	lex, err = newLexer("isLastLine test 3", []byte(input), testutil.LoggerConfig)
 	if err != nil {
 		t.Errorf("error: %s", err)
 		t.Fail()
@@ -519,7 +513,7 @@ var peekNextLineTests = []struct {
 
 func TestLexerPeekNextLine(t *testing.T) {
 	for _, tt := range peekNextLineTests {
-		lex, err := newLexer(tt.name, []byte(tt.input), testutil.StdLogger, testutil.CallDepth)
+		lex, err := newLexer(tt.name, []byte(tt.input), testutil.LoggerConfig)
 		if err != nil {
 			t.Errorf("error: %s", err)
 			t.Fail()
