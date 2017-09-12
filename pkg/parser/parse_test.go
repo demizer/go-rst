@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -32,24 +31,17 @@ func checkParseNodes(t *testing.T, expectNodes string, p *Parser, testPath strin
 	//
 	o, err := testutil.JsonDiff(expectNodes, string(pJson))
 	if err != nil {
-		fmt.Println(o)
-		fmt.Printf("Error diffing JSON: %s", err.Error())
+		t.Errorf("Error diffing JSON: %s", err.Error())
 		return
 	}
 
 	// There should be no output from the diff
 	if len(o) != 0 {
-		// Give all other output time to print
-		// time.Sleep(time.Second / 2)
-
 		testutil.Log("\nFAIL: parsed nodes do not match expected nodes!")
-
 		testutil.Log("\n[Parsed Nodes JSON]\n\n")
 		testutil.Log(string(pJson))
-
 		testutil.Log("\n\n[JSON DIFF]\n\n")
 		testutil.Log(o)
-
 		t.FailNow()
 	}
 }
@@ -72,9 +64,9 @@ func LoadParserTest(t *testing.T, path string) (test *testutil.Test) {
 		t.Fatalf("\"%s\" is empty!", nDPath)
 	}
 	return &testutil.Test{
-		Path:       path,
-		Data:       string(inputData[:len(inputData)-1]),
-		ExpectData: string(eNodes),
+		Path:            path,
+		Data:            string(inputData[:len(inputData)-1]),
+		ExpectParseData: string(eNodes),
 	}
 }
 

@@ -62,11 +62,11 @@ func Test_{{.ID}}_{{.Type}}{{.Name}}{{.Outcome}}(t *testing.T) {
 	{{- if eq .Type "Lexer"}}
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
-	equal(t, test.ExpectItems(), items)
+	equal(t, test.ExpectItemData, items)
 	{{- else}}
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
-	checkParseNodes(t, test.ExpectData, pTree, testPath)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 	{{- end}}
 }
 
