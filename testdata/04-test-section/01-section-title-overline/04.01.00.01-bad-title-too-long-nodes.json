@@ -4,11 +4,19 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Long    Title",
-            "startPosition": 2,
-            "line": 2,
+            "indentLength": 1,
             "length": 13,
-            "indentLength": 1
+            "line": 2,
+            "startPosition": 2,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Long    Title",
+                    "length": 13,
+                    "line": 2,
+                    "startPosition": 2
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",

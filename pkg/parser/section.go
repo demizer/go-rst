@@ -13,7 +13,7 @@ type sectionParseSubState struct {
 	sectionSpace      *tok.Item      // The whitespace after a section title and section adornment
 }
 
-func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.Node {
+func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) bool {
 	p.Msg("next type == tok.Title")
 
 	// Section with overline
@@ -25,18 +25,12 @@ func parseSectionTitle(s *sectionParseSubState, p *Parser, item *tok.Item) doc.N
 		bTok := p.peekBack(1)
 		if bTok != nil && bTok.Type == tok.Space {
 			p.next(2)
-			sm := p.systemMessage(infoUnexpectedTitleOverlineOrTransition)
-			p.nodeTarget.Append(sm)
-			return sm
+			return p.systemMessage(infoUnexpectedTitleOverlineOrTransition)
 		}
-		sm := p.systemMessage(infoOverlineTooShortForTitle)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(infoOverlineTooShortForTitle)
 	} else if pBack != nil && pBack.Type == tok.Space {
 		// Indented section (error) The section title has an indented overline
-		sm := p.systemMessage(severeUnexpectedSectionTitleOrTransition)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(severeUnexpectedSectionTitleOrTransition)
 	}
 
 	s.sectionOverAdorn = item
@@ -46,6 +40,11 @@ loop:
 	for {
 		switch tTok := p.token; tTok.Type {
 		case tok.Title:
+			s.sectionTitle = doc.NewTitleNode()
+			s.sectionTitle.Append(doc.NewText(tTok))
+			s.sectionTitle.Length = tTok.Length
+			s.sectionTitle.StartPosition = tTok.StartPosition
+			s.sectionTitle.Line = tTok.Line
 			p.next(1)
 		case tok.Space:
 			s.sectionIndent = tTok
@@ -53,15 +52,12 @@ loop:
 		case tok.SectionAdornment:
 			s.sectionUnderAdorn = tTok
 			break loop
-		default:
-			p.subParseInlineMarkup(tTok)
 		}
 	}
-
-	return nil
+	return true
 }
 
-func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
+func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) bool {
 	tLen := p.token.Length
 	pBack := p.peekBack(1)
 	p.Msgr("last item type", "type", pBack.Type)
@@ -70,24 +66,22 @@ func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item
 		pBack := p.peekBack(2)
 		if pBack != nil && pBack.Type == tok.Title {
 			// The section underline is indented
-			sm := p.systemMessage(severeUnexpectedSectionTitle)
-			p.nodeTarget.Append(sm)
-			return sm
+			return p.systemMessage(severeUnexpectedSectionTitle)
 		}
 	} else if tLen < 3 && tLen != pBack.Length {
 		// Short underline
-		sm := p.systemMessage(infoUnderlineTooShortForTitle)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(infoUnderlineTooShortForTitle)
 	}
+
 	// Section OKAY
 	s.sectionTitle = doc.NewTitleNode()
 	s.sectionTitle.Append(doc.NewText(pBack))
 	s.sectionUnderAdorn = i
-	return nil
+
+	return true
 }
 
-func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
+func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	var titleLen int
 	titleToks := p.peekLine(p.token.Line - 1)
 	secAdorn := p.token
@@ -118,97 +112,71 @@ func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *
 	// pBack := p.peekBack(2)
 	// if pBack != nil && pBack.Type == tok.Title {
 	// // The section underline is indented
-	// sm := p.systemMessage(severeUnexpectedSectionTitle)
-	// p.nodeTarget.Append(sm)
-	// return sm
+	// return p.systemMessage(severeUnexpectedSectionTitle)
 	// }
 
 	if p.token.Length < 3 && p.token.Length != tn.Length {
 		// Short underline
-		sm := p.systemMessage(infoUnderlineTooShortForTitle)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(infoUnderlineTooShortForTitle)
 	}
 
 	// Section OKAY
 	s.sectionTitle = tn
 	s.sectionUnderAdorn = p.token
 
-	return nil
+	return true
 }
 
-func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
+func parseSectionText(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	// If a section contains an tok.Text, it is because the underline is missing, therefore we generate an error based on
 	// what follows the tok.Text.
 	tLen := p.token.Length
 	p.next(2) // Move the token buffer past the error tokens
 	if tLen < 3 && tLen != s.sectionSpace.Length {
 		p.backup()
-		sm := p.systemMessage(infoOverlineTooShortForTitle)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(infoOverlineTooShortForTitle)
 	} else if t := p.peek(1); t != nil && t.Type == tok.BlankLine {
-		sm := p.systemMessage(severeMissingMatchingUnderlineForOverline)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(severeMissingMatchingUnderlineForOverline)
 	}
-	sm := p.systemMessage(severeIncompleteSectionTitle)
-	p.nodeTarget.Append(sm)
-	return sm
+	return p.systemMessage(severeIncompleteSectionTitle)
 }
 
-func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) doc.Node {
+func checkSection(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	pBack := p.peekBack(1)
 	pBackTitle := p.peekBackTo(tok.Title)
-
 	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Title {
-		if sm := parseSectionTitle(s, p, i); sm != nil {
-			return sm
-		}
+		parseSectionTitle(s, p, i)
 	} else if pBackTitle != nil && p.isInlineMarkupInSectionTitle(pBackTitle) {
-		if sm := parseSectionTitleWithInlineMarkupAndNoOverline(s, p, i); sm != nil {
-			return sm
-		}
+		parseSectionTitleWithInlineMarkupAndNoOverline(s, p, i)
 	} else if pBack != nil && (pBack.Type == tok.Title || pBack.Type == tok.Space) {
-		if sm := parseSectionTitleNoOverline(s, p, i); sm != nil {
-			return sm
-		}
+		parseSectionTitleNoOverline(s, p, i)
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.Text {
-		if sm := parseSectionText(s, p, i); sm != nil {
-			return sm
-		}
+		parseSectionText(s, p, i)
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.SectionAdornment {
 		// Missing section title
 		p.next(1) // Move the token buffer past the error token
-		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(errorInvalidSectionOrTransitionMarker)
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.EOF {
 		// Missing underline and at EOF
-		sm := p.systemMessage(errorInvalidSectionOrTransitionMarker)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(errorInvalidSectionOrTransitionMarker)
 	}
 
 	if s.sectionOverAdorn != nil && s.sectionOverAdorn.Text != s.sectionUnderAdorn.Text {
-		sm := p.systemMessage(severeOverlineUnderlineMismatch)
-		p.nodeTarget.Append(sm)
-		return sm
+		return p.systemMessage(severeOverlineUnderlineMismatch)
 	}
-
-	return nil
+	return true
 }
 
-func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) doc.Node {
+func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) (ok bool) {
 	msg := p.sectionLevels.Add(sec)
 	p.Msgr("Using section level", "level", len(p.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
 	if msg != parserMessageNil {
 		p.Msg("Found inconsistent section level!")
-		sm := p.systemMessage(severeTitleLevelInconsistent)
+		return p.systemMessage(severeTitleLevelInconsistent)
 		// Parse Test 03.01.03.00: add the system message to the last section node's nodelist
-		p.sectionLevels.lastSectionNode.NodeList.Append(sm)
-		p.nodeTarget.SetParent(p.sectionLevels.lastSectionNode)
-		return sm
+		// p.sectionLevels.lastSectionNode.NodeList.Append(sm)
+		// p.nodeTarget.SetParent(p.sectionLevels.lastSectionNode)
+		// return
 	}
 
 	if sec.Level == 1 {
@@ -223,48 +191,39 @@ func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode)
 		// p.Msgr("setting section node target", "Title", lSec.Title.Text, "level", lSec.Level)
 		p.nodeTarget.SetParent(lSec)
 	}
-	return nil
+	return true
 }
 
-func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) {
+func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) (ok bool) {
 	// The following checks have to be made after the doc.SectionNode has been initialized so that any parserMessages can be
 	// appended to the doc.SectionNode.NodeList.
 	oLen := s.sectionTitle.Length
 	if s.sectionIndent != nil {
 		oLen = s.sectionIndent.Length + s.sectionTitle.Length
 	}
-
 	if s.sectionOverAdorn != nil && oLen > s.sectionOverAdorn.Length {
-		sec.NodeList = append(sec.NodeList, p.systemMessage(warningShortOverline))
+		return p.systemMessage(warningShortOverline)
 	} else if s.sectionOverAdorn == nil && s.sectionTitle.Length != s.sectionUnderAdorn.Length {
-		sec.NodeList = append(sec.NodeList, p.systemMessage(warningShortUnderline))
+		return p.systemMessage(warningShortUnderline)
 	}
+	return true
 }
 
 // section is responsible for parsing the title, overline, and underline tokens returned from the parser. If there are errors
 // parsing these elements, than a systemMessage is generated and added to Tree.Nodes.
-func (p *Parser) section(i *tok.Item) doc.Node {
+func (p *Parser) section(i *tok.Item) {
 	p.Msgr("have item", "item", i)
 
 	s := &sectionParseSubState{sectionSpace: p.peekSkip(tok.Space)}
-
-	if sm := checkSection(s, p, i); sm != nil {
-		return sm
-	}
+	checkSection(s, p, i)
 
 	// Determine the level of the section and where to append it to in p.Nodes
 	sec := doc.NewSection(s.sectionTitle, s.sectionOverAdorn, s.sectionUnderAdorn, s.sectionIndent)
-
-	if sm := checkSectionLevel(s, p, sec); sm != nil {
-		return sm
-	}
-
+	checkSectionLevel(s, p, sec)
 	checkSectionLengths(s, p, sec)
 
 	p.nodeTarget.Append(sec)
 	p.nodeTarget.SetParent(sec)
-
-	return sec
 }
 
 func (p *Parser) isInlineMarkupInSectionTitle(i *tok.Item) bool {
