@@ -1,10 +1,14 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "_comment: http://example.org",
-        "startPosition": 4,
+        "length": 28,
         "line": 2,
-        "length": 28
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -12,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "The extra newline before the comment text prevents\nthe parser from recognizing a hyperlink target.",
-                "startPosition": 1,
+                "length": 98,
                 "line": 4,
-                "length": 98
+                "startPosition": 1
             }
         ]
     }
