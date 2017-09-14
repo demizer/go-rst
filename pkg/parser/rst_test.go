@@ -1429,6 +1429,36 @@ func Test_06_04_00_00_ParserInlineMarkupGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_06_04_00_00_ParserInlineMarkupGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("06.04.00.00-ref")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_06_04_00_00_ParserInlineMarkupGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("06.04.00.00-ref")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_06_04_00_00_ParserInlineMarkupGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("06.04.00.00-ref")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_06_04_00_01_ParserInlineMarkupBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
@@ -2049,11 +2079,101 @@ func Test_07_00_00_00_ParserListBulletGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_07_00_00_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.00-bullet-list")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.00-bullet-list")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.00-bullet-list")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_07_00_00_01_ParserListBulletGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("07.00.00.01-bullet-list-with-two-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.01-bullet-list-with-two-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.01-bullet-list-with-two-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.01-bullet-list-with-two-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_02_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.02-bullet-list-noblankline-between-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_02_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.02-bullet-list-noblankline-between-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_02_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.02-bullet-list-noblankline-between-items")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2079,11 +2199,101 @@ func Test_07_00_00_03_ParserListBulletBad(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_07_00_00_03_ParserListBulletBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.03-bad-bullet-list-noblankline-at-end")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_03_ParserListBulletBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.03-bad-bullet-list-noblankline-at-end")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_00_03_ParserListBulletBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.00.03-bad-bullet-list-noblankline-at-end")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_07_00_01_00_ParserListBulletGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("07.00.01.00-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.00-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.00-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.00-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.01-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.01-bullet-list-item-with-paragraph")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_01_01_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.01.01-bullet-list-item-with-paragraph")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2109,6 +2319,46 @@ func Test_07_00_02_00_ParserListBulletGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_07_00_02_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.02.00-bullet-list-different-bullets")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_02_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.02.00-bullet-list-different-bullets")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_02_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.02.00-bullet-list-different-bullets")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_02_01_ParserListBulletBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.02.01-bad-bullet-list-different-bullets-missing-blankline")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_07_00_02_01_ParserListBulletBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
@@ -2129,11 +2379,41 @@ func Test_07_00_03_00_ParserListBulletGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_07_00_03_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.03.00-bullet-list-empty-item")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_07_00_03_01_ParserListBulletBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("07.00.03.01-bad-bullet-list-empty-item-noblankline")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_03_01_ParserListBulletBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.03.01-bad-bullet-list-empty-item-noblankline")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_07_00_04_00_ParserListBulletGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("07.00.04.00-bullet-list-unicode")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2189,11 +2469,41 @@ func Test_08_00_00_03_ParserListEnumeratedBad(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_08_00_00_03_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.00.03-bad-enum-list-empty-item-noblankline")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_08_00_00_04_ParserListEnumeratedBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("08.00.00.04-bad-enum-list-scrambled-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_08_00_00_04_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.00.04-bad-enum-list-scrambled-items")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_08_00_00_05_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.00.05-bad-enum-list-skipped-item")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2219,11 +2529,41 @@ func Test_08_00_00_06_ParserListEnumeratedBad(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_08_00_00_06_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.00.06-bad-enum-list-not-ordinal-1")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_08_00_01_00_ParserListEnumeratedGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("08.00.01.00-alphabetical-list")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_08_00_01_00_ParserListEnumeratedGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.01.00-alphabetical-list")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_08_00_01_01_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.01.01-bad-alphabetical-list-without-blankline")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2249,11 +2589,31 @@ func Test_08_00_01_02_ParserListEnumeratedGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
+func Test_08_00_01_02_ParserListEnumeratedGood(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.01.02-alphabetical-list-nbsp-workaround")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
 func Test_08_00_02_00_ParserListEnumeratedGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("08.00.02.00-items-with-paragraphs")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_08_00_02_01_ParserListEnumeratedBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
+	testPath := testutil.TestPathFromName("08.00.02.01-bad-enum-list-unexpected-unindent")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
@@ -2534,6 +2894,13 @@ func Test_10_00_00_00_ParserListOptionGood(t *testing.T) {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("10.00.00.00-three-short-options")
+	test := LoadParserTest(t, testPath)
+	pTree := parseTest(t, test)
+	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
+}
+
+func Test_11_00_00_00_ParserListOptionGood(t *testing.T) {
+	testPath := testutil.TestPathFromName("11.00.00.00-three-short-options")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
