@@ -24,7 +24,6 @@ outer:
 		// p.DumpExit(p.index)
 		// p.DumpExit(ci)
 		// p.DumpExit(p.buf)
-		// p.DumpExit(p.Nodes)
 
 		pi := p.peekBack(1) // previous item
 		// p.DumpExit(pi)
@@ -88,6 +87,7 @@ outer:
 			p.backup()
 			break outer
 		}
+		p.DumpExit(p.Nodes)
 		p.Msg("Continuing...")
 	}
 	p.Msgr("number of indents", "p.indents.len", p.indents.len())

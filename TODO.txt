@@ -177,6 +177,11 @@
   123         }
   124         return nil
   125 }
+
+* Wed Sep 13 23:40 2017: remove "null" from nodes tests.
+
+  There should be no null.
+
 * Sat Feb 20 01:10 2016: Should we convert char12 and vert tab to spaces before proccessing?
 
   From the spec:
