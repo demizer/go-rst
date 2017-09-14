@@ -1,10 +1,14 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "|comment| image:: bogus.png",
-        "startPosition": 4,
+        "length": 27,
         "line": 2,
-        "length": 27
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -12,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "The extra newline before the comment text prevents\nthe parser from recognizing a substitution definition.",
-                "startPosition": 1,
+                "length": 105,
                 "line": 4,
-                "length": 105
+                "startPosition": 1
             }
         ]
     }
