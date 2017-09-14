@@ -64,7 +64,6 @@
 
   testdata/09-test-list-definition/09.00.01.02.00-def-list-two-terms.rst
 
-
   $ find testdata -iname "*.json" -exec basename {} \; | sort -t , -k 1 | grep -o -P "[\d\.]{4,}" | uniq -c | sort -rn
         4 09.00.02.00
         4 09.00.01.00
@@ -92,6 +91,7 @@
         4 01.00.00.02
         4 01.00.00.01
         4 01.00.00.00
+
 * Sat Jun 17 01:10 2017: remove -def-list- from test names
 
   do the same for enum list
