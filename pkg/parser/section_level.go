@@ -4,6 +4,7 @@ import (
 	"github.com/demizer/go-rst/pkg/log"
 
 	doc "github.com/demizer/go-rst/pkg/document"
+	mes "github.com/demizer/go-rst/pkg/messages"
 )
 
 // sectionLevel is a single section level. sections contains a list of pointers to doc.SectionNode that are dertermined to be a
@@ -46,9 +47,9 @@ func (s *sectionLevels) FindByRune(rChar rune) *sectionLevel {
 }
 
 // Add determines if the underline rune in the sec argument matches any existing sectionLevel in sectionLevels. Add also
-// checks the section level ordering is correct and returns a severeTitleLevelInconsistent parserMessage if inconsistencies
+// checks the section level ordering is correct and returns a mes.SectionErrorTitleLevelInconsistent ParserMessage if inconsistencies
 // are found.
-func (s *sectionLevels) Add(sec *doc.SectionNode) (err parserMessage) {
+func (s *sectionLevels) Add(sec *doc.SectionNode) (err mes.MessageType) {
 	level := 1
 	secLvl := s.FindByRune(sec.UnderLine.Rune)
 
@@ -75,7 +76,7 @@ func (s *sectionLevels) Add(sec *doc.SectionNode) (err parserMessage) {
 			nextLevel := s.SectionLevelByLevel(level)
 			if nextLevel != nil &&
 				nextLevel.rChar != sec.UnderLine.Rune {
-				return severeTitleLevelInconsistent
+				return mes.SectionErrorTitleLevelInconsistent
 			}
 		} else {
 			level = len(s.levels) + 1
