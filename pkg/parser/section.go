@@ -130,17 +130,27 @@ func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *
 
 func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Text {
-		// If a section contains an tok.Text, it is because the underline is missing, therefore we generate an error based on
-		// what follows the tok.Text.
+		//
+		// If sectionSpace is set to a tok.Text,
+		// * The underline is missing, therefore we generate an error based on what follows the tok.Text
+		// * There is no blankline after the underline
+		//
+		// Check for an underline...
+		if und := p.peekLine(s.sectionSpace.Line - 1); len(und) == 1 && und[0].Type == tok.SectionAdornment {
+			// There is no blankline after the underline, this is a good section
+			return true
+		}
 		p.Msg("IN HERE 4")
 		tLen := p.token.Length
 		p.next(2) // Move the token buffer past the error tokens
+
 		if tLen < 3 && tLen != s.sectionSpace.Length {
 			p.backup()
 			return p.systemMessage(mes.SectionWarningOverlineTooShortForTitle)
 		} else if t := p.peek(1); t != nil && t.Type == tok.BlankLine {
 			return p.systemMessage(mes.SectionErrorMissingMatchingUnderlineForOverline)
 		}
+
 		return p.systemMessage(mes.SectionErrorIncompleteSectionTitle)
 	} else if s.sectionSpace != nil && s.sectionSpace.Type == tok.SectionAdornment {
 		p.Msg("IN HERE 5")
@@ -155,6 +165,7 @@ func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 		p.Msg("IN HERE 7")
 		return p.systemMessage(mes.SectionErrorOverlineUnderlineMismatch)
 	}
+
 	p.Msg("IN HERE OMEGA")
 	return true
 }
@@ -162,9 +173,11 @@ func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 func parseSection(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	pBack := p.peekBack(1)
 	pBackTitle := p.peekBackTo(tok.Title)
+
 	if !sectionOK(s, p, i) {
 		return false
 	}
+
 	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Title {
 		p.Msg("IN HERE 1")
 		return parseSectionTitle(s, p, i)
@@ -175,6 +188,7 @@ func parseSection(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 		p.Msg("IN HERE 3")
 		return parseSectionTitleNoOverline(s, p, i)
 	}
+
 	p.Msg("IN HERE 8")
 	return
 }
