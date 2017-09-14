@@ -1,10 +1,14 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "[comment] Not a citation.",
-        "startPosition": 4,
+        "length": 25,
         "line": 2,
-        "length": 25
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -12,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "The extra newline before the comment text prevents\nthe parser from recognizing a citation.",
-                "startPosition": 1,
+                "length": 90,
                 "line": 4,
-                "length": 90
+                "startPosition": 1
             }
         ]
     }
