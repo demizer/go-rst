@@ -1,9 +1,13 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "_",
-        "startPosition": 4,
+        "length": 1,
         "line": 1,
-        "length": 1
+        "startPosition": 4
     }
 ]
