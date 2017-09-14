@@ -1,10 +1,14 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "comment::",
-        "startPosition": 4,
+        "length": 9,
         "line": 2,
-        "length": 9
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -12,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "The extra newline before the comment text prevent\nthe parser from recognizing a directive.",
-                "startPosition": 1,
+                "length": 90,
                 "line": 4,
-                "length": 90
+                "startPosition": 1
             }
         ]
     }
