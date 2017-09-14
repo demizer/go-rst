@@ -66,12 +66,15 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 	}
 }
 
-func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err *mes.ParserMessage) *doc.LiteralBlockNode {
+func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err *mes.ParserMessage) {
 	switch err.Type {
 	case mes.InlineMarkupWarningExplicitMarkupWithUnIndent:
-		s.Line = p.peek(1).Line
+		tok := p.peek(1)
+		err.StartLine = tok.Line
+		err.EndLine = tok.Line
+		err.MessageLine = tok.Line
+		err.StartPosition = tok.StartPosition
 	}
-	return nil
 }
 
 // systemMessage generates a Node based on the passed mes.ParserMessage. The generated message is returned as a
@@ -80,6 +83,7 @@ func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
 	nm := mes.NewParserMessage(err)
 	s := doc.NewSystemMessage(nm, p.token.Line)
 
+	// Insert text into the next buffer position to be picked up in the next pass of the parser
 	insertText := func() {
 		p.insert(&tok.Item{
 			Type:          tok.Text,
@@ -98,6 +102,7 @@ func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
 	}
 
 	s.Line = nm.MessageLine
+	s.StartPosition = nm.StartPosition
 	p.Messages.Append(s)
 
 	// p.DumpExit(p.Messages)
