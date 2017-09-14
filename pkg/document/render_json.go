@@ -20,6 +20,7 @@ type JSON struct {
 func (j JSON) Bytes() ([]byte, error) {
 	var tmp NodeList
 
+	// j.DumpExit(j.Messages)
 	tmp.Append(NewSystemMessagesNode())
 	tmp.LastNode().(*SystemMessagesNode).NodeList.Append(*j.Messages...)
 	tmp.Append(*j.Nodes...)
@@ -35,11 +36,13 @@ func (j JSON) Bytes() ([]byte, error) {
 func JsonRenderer(logConf log.Config, messages, nodes *NodeList) Renderer {
 	conf := logConf
 	conf.Name = "document_json"
-	ml := make(NodeList, 0)
-	return JSON{
-		Messages: &ml,
+	// ml := make(NodeList, 0)
+	t := JSON{
+		Messages: messages,
 		Nodes:    nodes,
 		logConf:  conf,
 		Logger:   log.NewLogger(conf),
 	}
+	// t.DumpExit(messages)
+	return t
 }

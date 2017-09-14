@@ -17,12 +17,20 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		if p.index-2 >= 0 && overline != nil && overline.Type == tok.SectionAdornment {
 			err.LiteralText = overline.Text + "\n" + title.Text + "\n" + p.token.Text
 		}
-		err.Line = overline.Line
+		err.StartLine = overline.Line
+		err.EndLine = title.Line
+		err.MessageLine = overline.Line
 		err.StartPosition = overline.StartPosition
 	case mes.SectionWarningUnexpectedTitleOverlineOrTransition:
 		err.LiteralText = p.peekBackTo(tok.SectionAdornment).Text + "\n" + p.peekBackTo(tok.Title).Text + "\n" + p.token.Text
 	case mes.SectionWarningUnderlineTooShortForTitle:
-		err.LiteralText = p.buf[p.index-1].Text + "\n" + p.buf[p.index].Text
+		title := p.buf[p.index-1]
+		underline := p.buf[p.index]
+		err.LiteralText = title.Text + "\n" + underline.Text
+		err.StartLine = title.Line
+		err.EndLine = underline.Line
+		err.MessageLine = underline.Line
+		err.StartPosition = underline.StartPosition
 	case mes.SectionWarningShortOverline, mes.SectionErrorOverlineUnderlineMismatch:
 		var indent string
 		backIndex := p.index - 2
@@ -71,7 +79,27 @@ func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err *mes.Pa
 func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
 	nm := mes.NewParserMessage(err)
 	s := doc.NewSystemMessage(nm, p.token.Line)
-	p.systemMessageSection(s, nm)
-	p.systemMessageInlineMarkup(s, nm)
+
+	insertText := func() {
+		p.insert(&tok.Item{
+			Type:          tok.Text,
+			Text:          nm.LiteralText,
+			Length:        len(nm.LiteralText),
+			Line:          nm.StartLine,
+			StartPosition: nm.StartPosition,
+		}, p.index+1)
+	}
+
+	if mes.IsSectionMessage(err) {
+		p.systemMessageSection(s, nm)
+		insertText()
+	} else if mes.IsInlineMarkupMessage(err) {
+		p.systemMessageInlineMarkup(s, nm)
+	}
+
+	s.Line = nm.MessageLine
+	p.Messages.Append(s)
+
+	// p.DumpExit(p.Messages)
 	return false
 }

@@ -2,7 +2,9 @@ package messages
 
 type ParserMessage struct {
 	Type          MessageType
-	Line          int    // The line in the input that caused the message
+	StartLine     int    // The line where literal text begins
+	EndLine       int    // The line where literal text ends
+	MessageLine   int    // The line in the input that caused the message
 	LiteralText   string // Additional text
 	StartPosition int    // The start position of the problem resulting in a message
 }
