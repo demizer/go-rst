@@ -3,7 +3,9 @@
   - use p.messages, it should always be the first item in parse nodes json output. If there are no messages, then nodelist
     will be empty.
 
-  - Levels should be removed, all messages are errors
+  - Only info and error levels should be used.
+
+    See https://gcc.gnu.org/onlinedocs/gcc-5.2.0/gcc/Warnings-and-Errors.html
 
 * Sat Jun 17 03:06 2017: Implement section parse test 04.00.05.00
 
@@ -24,6 +26,8 @@
     func NewParser(name, text string, logr klog.Logger, logCallDepth int) (*Parser, error) {
 
   See Go Spew for example
+
+* Wed Sep 13 20:55 2017: uncomment section_level_test.go
 
 * Sun Sep 03 00:13 2017: RENAME NODE TARGET
 

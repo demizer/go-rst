@@ -2,6 +2,7 @@ package parser
 
 import (
 	doc "github.com/demizer/go-rst/pkg/document"
+	mes "github.com/demizer/go-rst/pkg/messages"
 	tok "github.com/demizer/go-rst/pkg/token"
 )
 
@@ -17,10 +18,9 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 
 	if nSpace := p.peek(1); nSpace != nil && nSpace.Type != tok.Space {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
-		p.Msg("Missing space after comment mark! (warningExplicitMarkupWithUnIndent)")
-		n = doc.NewComment(&tok.Item{Line: i.Line})
-		p.systemMessage(warningExplicitMarkupWithUnIndent)
-		return n
+		p.Msg("Missing space after comment mark! (mes.InlineMarkupWarningExplicitMarkupWithUnIndent)")
+		p.systemMessage(mes.InlineMarkupWarningExplicitMarkupWithUnIndent)
+		return doc.NewComment(&tok.Item{Line: i.Line})
 	}
 
 	nPara := p.peek(2)
@@ -44,10 +44,10 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 			nPara.Length = len(nPara.Text)
 		} else if z := p.peek(1); z != nil && z.Type != tok.BlankLine && z.Type != tok.CommentMark && z.Type != tok.EOF {
 			// A valid comment contains a blank line after the comment block
-			p.Msg("Found warningExplicitMarkupWithUnIndent")
+			p.Msg("Found mes.InlineMarkupWarningExplicitMarkupWithUnIndent")
 			n = doc.NewComment(nPara)
 			p.nodeTarget.Append(n)
-			p.systemMessage(warningExplicitMarkupWithUnIndent)
+			p.systemMessage(mes.InlineMarkupWarningExplicitMarkupWithUnIndent)
 			return n
 		} else {
 			// Just a regular single lined comment

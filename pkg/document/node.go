@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/demizer/go-rst/pkg/messages"
 	tok "github.com/demizer/go-rst/pkg/token"
 )
 
@@ -696,13 +697,19 @@ type SystemMessageNode struct {
 	NodeList `json:"nodeList"`
 }
 
-func NewSystemMessage(i *tok.Item, m string, l string) *SystemMessageNode {
-	return &SystemMessageNode{
+func NewSystemMessage(pm *messages.ParserMessage, line int) *SystemMessageNode {
+	sm := &SystemMessageNode{
 		Type:        NodeSystemMessage,
-		MessageType: m,
-		Severity:    l,
-		Line:        i.Line,
+		MessageType: pm.Type.String(),
+		Severity:    pm.Level(),
+		Line:        line,
 	}
+	msg := NewText(&tok.Item{
+		Text:   pm.Message(),
+		Length: len(pm.Message()),
+	})
+	sm.Append(msg)
+	return sm
 }
 
 // NodeType returns the Node type of the SystemMessageNode.

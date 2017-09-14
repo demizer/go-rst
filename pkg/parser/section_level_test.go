@@ -1,5 +1,7 @@
 package parser
 
+import mes "github.com/demizer/go-rst/pkg/messages"
+
 type shortSectionNode struct {
 	level int  // SectionNode level
 	oRune rune // SectionNode Overline Rune
@@ -8,7 +10,7 @@ type shortSectionNode struct {
 
 // The section nodes to add to fill sectionLevels
 type testSectionLevelSectionNode struct {
-	eMessage parserMessage // Expected parser message
+	eMessage mes.ParserMessage // Expected parser message
 	node     shortSectionNode
 }
 
@@ -200,8 +202,8 @@ type testSectionLevelExpectLevels struct {
 // n.OverLine = &doc.AdornmentNode{Rune: s.node.oRune}
 // }
 // msg := pSecLvls.Add(n)
-// if msg > parserMessageNil && msg != s.eMessage {
-// t.Fatalf("Test: %q\n\tGot: parserMessage = %q, "+"Expect: %q", testName, msg, s.eMessage)
+// if msg > mes.ParserMessageNil && msg != s.eMessage {
+// t.Fatalf("Test: %q\n\tGot: mes.ParserMessage = %q, "+"Expect: %q", testName, msg, s.eMessage)
 // }
 // }
 
