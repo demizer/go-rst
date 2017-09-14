@@ -221,21 +221,39 @@ func NewSection(title *TitleNode, overSec *tok.Item, underSec *tok.Item, indent 
 
 // MarshalJSON satisfies the Marshaler interface.
 func (s SectionNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type      string         `json:"type"`
-		Level     int            `json:"level"`
-		Title     *TitleNode     `json:"title"`
-		OverLine  *AdornmentNode `json:"overLine"`
-		UnderLine *AdornmentNode `json:"underLine"`
-		NodeList  `json:"nodeList"`
-	}{
-		Type:      nodeTypes[s.Type],
-		Level:     s.Level,
-		Title:     s.Title,
-		OverLine:  s.OverLine,
-		UnderLine: s.UnderLine,
-		NodeList:  s.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", s.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"level\": %d,", s.Level))
+
+	t, err := json.Marshal(s.Title)
+	if err != nil {
+		return nil, err
+	}
+	buffer.WriteString(fmt.Sprintf("\"title\": %s,", string(t)))
+
+	o, err := json.Marshal(s.OverLine)
+	if err != nil {
+		return nil, err
+	}
+	buffer.WriteString(fmt.Sprintf("\"overLine\": %s,", string(o)))
+
+	u, err := json.Marshal(s.UnderLine)
+	if err != nil {
+		return nil, err
+	}
+	buffer.WriteString(fmt.Sprintf("\"underLine\": %s,", string(u)))
+
+	b, err := json.Marshal(s.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+
+	return buffer.Bytes(), nil
 }
 
 // TitleNode contains the parsed data for a section titles.
@@ -257,24 +275,40 @@ func (t TitleNode) String() string { return fmt.Sprintf("%#v", t) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (t TitleNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		IndentLength  int    `json:"indentLength,omitempty"`
-		Length        int    `json:"length"`
-		Line          int    `json:"line,omitempty"`
-		StartPosition int    `json:"startPosition,omitempty"`
-		NodeList      `json:"nodeList"`
-	}{
-		Type:          nodeTypes[t.Type],
-		IndentLength:  t.IndentLength,
-		Length:        t.Length,
-		Line:          t.Line,
-		StartPosition: t.StartPosition,
-		NodeList:      t.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", t.Type.String()))
+	if t.IndentLength > 0 {
+		buffer.WriteString(fmt.Sprintf("\"indentLength\": %d,", t.IndentLength))
+	}
+	buffer.WriteString(fmt.Sprintf("\"length\": %d,", t.Length))
+	buffer.WriteString(fmt.Sprintf("\"line\": %d,", t.Line))
+	buffer.WriteString(fmt.Sprintf("\"startPosition\": %d,", t.StartPosition))
+
+	b, err := json.Marshal(t.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+
+	return buffer.Bytes(), nil
 }
 
 func NewTitleNode() *TitleNode { return &TitleNode{Type: NodeTitle} }
+
+func NewTitleNodeWithText(i *tok.Item) *TitleNode {
+	tn := &TitleNode{
+		Type:          NodeTitle,
+		Length:        i.Length,
+		StartPosition: i.StartPosition,
+		Line:          i.Line,
+	}
+	tn.Append(NewText(i))
+	return tn
+}
 
 // AdornmentNode contains the parsed data for a section overline or underline.
 type AdornmentNode struct {
@@ -541,21 +575,22 @@ func (i InlineInterpretedText) String() string { return fmt.Sprintf("%#v", i) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (i InlineInterpretedText) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Text          string `json:"text"`
-		Length        int    `json:"length"`
-		Line          int    `json:"line,omitempty"`
-		StartPosition int    `json:"startPosition,omitempty"`
-		NodeList      `json:"nodeList"`
-	}{
-		Type:          nodeTypes[i.Type],
-		Text:          i.Text,
-		Length:        i.Length,
-		Line:          i.Line,
-		StartPosition: i.StartPosition,
-		NodeList:      i.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", i.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"text\": %q,", i.Text))
+	buffer.WriteString(fmt.Sprintf("\"length\": %d,", i.Length))
+	buffer.WriteString(fmt.Sprintf("\"line\": %d,", i.Line))
+	buffer.WriteString(fmt.Sprintf("\"startPosition\": %d,", i.StartPosition))
+	b, err := json.Marshal(i.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // InlineInterpretedTextRole is a parsed interpreted text role.
@@ -636,17 +671,20 @@ func (b BlockQuoteNode) String() string { return fmt.Sprintf("%#v", b) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (b BlockQuoteNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type          string `json:"type"`
-		Line          int    `json:"line,omitempty"`
-		StartPosition int    `json:"startPosition,omitempty"`
-		NodeList      `json:"nodeList"`
-	}{
-		Type:          nodeTypes[b.Type],
-		Line:          b.Line,
-		StartPosition: b.StartPosition,
-		NodeList:      b.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", b.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"line\": %d,", b.Line))
+	buffer.WriteString(fmt.Sprintf("\"startPosition\": %d,", b.StartPosition))
+	n, err := json.Marshal(b.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(n) == "null" {
+		n = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(n)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // SystemMessages contains system messages if present
@@ -728,7 +766,7 @@ func (s SystemMessageNode) MarshalJSON() ([]byte, error) {
 		buffer.WriteString(fmt.Sprintf("\"line\": %d,", s.Line))
 	}
 	if s.StartPosition > 0 {
-		buffer.WriteString(fmt.Sprintf("\"StartPosition\": %d,", s.StartPosition))
+		buffer.WriteString(fmt.Sprintf("\"startPosition\": %d,", s.StartPosition))
 	}
 	b, err := json.Marshal(s.NodeList)
 	if err != nil {
@@ -891,15 +929,19 @@ func (b BulletListNode) String() string { return fmt.Sprintf("%#v", b) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (b BulletListNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type     string `json:"type"`
-		Bullet   string `json:"bullet"`
-		NodeList `json:"nodeList"`
-	}{
-		Type:     nodeTypes[b.Type],
-		Bullet:   b.Bullet,
-		NodeList: b.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", b.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"bullet\": %q,", b.Bullet))
+	n, err := json.Marshal(b.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(n) == "null" {
+		n = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(n)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // BulletListItemNode defines a Bullet List Item element.
@@ -921,13 +963,18 @@ func (b BulletListItemNode) String() string { return fmt.Sprintf("%#v", b) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (b BulletListItemNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type     string `json:"type"`
-		NodeList `json:"nodeList"`
-	}{
-		Type:     nodeTypes[b.Type],
-		NodeList: b.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", b.Type.String()))
+	n, err := json.Marshal(b.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(n) == "null" {
+		n = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(n)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // EnumListNode defines an enumerated list element.
@@ -971,17 +1018,20 @@ func (e EnumListNode) String() string { return fmt.Sprintf("%#v", e) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (e EnumListNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type     string `json:"type"`
-		EnumType string `json:"enumType"`
-		Affix    string `json:"affix"`
-		NodeList `json:"nodeList"`
-	}{
-		Type:     nodeTypes[e.Type],
-		EnumType: e.EnumType.String(),
-		Affix:    e.Affix.String(),
-		NodeList: e.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", e.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"enumType\": %q,", e.EnumType))
+	buffer.WriteString(fmt.Sprintf("\"affix\": %q,", e.Affix))
+	b, err := json.Marshal(e.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // DefinitionListNode defines a definition list element.
@@ -1002,13 +1052,18 @@ func (d DefinitionListNode) String() string { return fmt.Sprintf("%#v", d) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (d DefinitionListNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type     string `json:"type"`
-		NodeList `json:"nodeList"`
-	}{
-		Type:     nodeTypes[d.Type],
-		NodeList: d.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", d.Type.String()))
+	b, err := json.Marshal(d.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }
 
 // DefinitionListItemNode defines a definition list item element.
@@ -1099,13 +1154,17 @@ func (d DefinitionNode) String() string { return fmt.Sprintf("%#v", d) }
 
 // MarshalJSON satisfies the Marshaler interface.
 func (d DefinitionNode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type     string `json:"type"`
-		Line     int    `json:"line,omitempty"`
-		NodeList `json:"nodeList"`
-	}{
-		Type:     nodeTypes[d.Type],
-		Line:     d.Line,
-		NodeList: d.NodeList,
-	})
+	buffer := bytes.NewBufferString("{")
+	buffer.WriteString(fmt.Sprintf("\"type\": %q,", d.Type.String()))
+	buffer.WriteString(fmt.Sprintf("\"line\": %d,", d.Line))
+	b, err := json.Marshal(d.NodeList)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) == "null" {
+		b = []byte{'[', ' ', ']'}
+	}
+	buffer.WriteString(fmt.Sprintf("\"nodeList\": %s", string(b)))
+	buffer.WriteString("}")
+	return buffer.Bytes(), nil
 }

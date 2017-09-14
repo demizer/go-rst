@@ -41,11 +41,7 @@ loop:
 	for {
 		switch tTok := p.token; tTok.Type {
 		case tok.Title:
-			s.sectionTitle = doc.NewTitleNode()
-			s.sectionTitle.Append(doc.NewText(tTok))
-			s.sectionTitle.Length = tTok.Length
-			s.sectionTitle.StartPosition = tTok.StartPosition
-			s.sectionTitle.Line = tTok.Line
+			s.sectionTitle = doc.NewTitleNodeWithText(tTok)
 			p.next(1)
 		case tok.Space:
 			s.sectionIndent = tTok
@@ -58,31 +54,30 @@ loop:
 	return true
 }
 
-func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
+func parseSectionTitleNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) bool {
 	tLen := p.token.Length
 	pBack := p.peekBack(1)
 	p.Msgr("last item type", "type", pBack.Type)
-	// Section with no overline Check for errors
 	if pBack.Type == tok.Space {
 		pBack := p.peekBack(2)
 		if pBack != nil && pBack.Type == tok.Title {
 			// The section underline is indented
 			return p.systemMessage(mes.SectionErrorUnexpectedSectionTitle)
 		}
-	} else if tLen < 3 && tLen != pBack.Length {
+	} else if pBack.Type == tok.SectionAdornment && tLen < 3 && tLen != pBack.Length {
+		p.DumpExit(pBack)
 		// Short underline
 		return p.systemMessage(mes.SectionWarningUnderlineTooShortForTitle)
 	}
 
 	// Section OKAY
-	s.sectionTitle = doc.NewTitleNode()
-	s.sectionTitle.Append(doc.NewText(pBack))
+	s.sectionTitle = doc.NewTitleNodeWithText(pBack)
 	s.sectionUnderAdorn = i
 
 	return true
 }
 
-func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
+func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *Parser, i *tok.Item) bool {
 	var titleLen int
 	titleToks := p.peekLine(p.token.Line - 1)
 	secAdorn := p.token
@@ -128,7 +123,7 @@ func parseSectionTitleWithInlineMarkupAndNoOverline(s *sectionParseSubState, p *
 	return true
 }
 
-func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
+func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) bool {
 	if s.sectionSpace != nil && s.sectionSpace.Type == tok.Text {
 		//
 		// If sectionSpace is set to a tok.Text,
@@ -170,7 +165,7 @@ func sectionOK(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	return true
 }
 
-func parseSection(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
+func parseSection(s *sectionParseSubState, p *Parser, i *tok.Item) bool {
 	pBack := p.peekBack(1)
 	pBackTitle := p.peekBackTo(tok.Title)
 
@@ -190,10 +185,10 @@ func parseSection(s *sectionParseSubState, p *Parser, i *tok.Item) (ok bool) {
 	}
 
 	p.Msg("IN HERE 8")
-	return
+	return false
 }
 
-func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) (ok bool) {
+func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) bool {
 	msg := p.sectionLevels.Add(sec)
 	p.Msgr("Using section level", "level", len(p.sectionLevels.levels), "rune", string(sec.UnderLine.Rune))
 	if msg != mes.ParserMessageNil {
@@ -220,7 +215,7 @@ func checkSectionLevel(s *sectionParseSubState, p *Parser, sec *doc.SectionNode)
 	return true
 }
 
-func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) (ok bool) {
+func checkSectionLengths(s *sectionParseSubState, p *Parser, sec *doc.SectionNode) bool {
 	// The following checks have to be made after the doc.SectionNode has been initialized so that any parserMessages can be
 	// appended to the doc.SectionNode.NodeList.
 	oLen := s.sectionTitle.Length
@@ -242,10 +237,10 @@ func (p *Parser) section(i *tok.Item) {
 
 	s := &sectionParseSubState{sectionSpace: p.peekSkip(tok.Space)}
 	if !parseSection(s, p, i) {
+		p.Msg("Failed to parse section!")
 		return
 	}
 
-	// p.DumpExit(p.buf)
 	// Determine the level of the section and where to append it to in p.Nodes
 	sec := doc.NewSection(s.sectionTitle, s.sectionOverAdorn, s.sectionUnderAdorn, s.sectionIndent)
 
@@ -254,6 +249,8 @@ func (p *Parser) section(i *tok.Item) {
 
 	p.nodeTarget.Append(sec)
 	p.nodeTarget.SetParent(sec)
+
+	// p.DumpExit(p.Nodes)
 }
 
 func (p *Parser) isInlineMarkupInSectionTitle(i *tok.Item) bool {
