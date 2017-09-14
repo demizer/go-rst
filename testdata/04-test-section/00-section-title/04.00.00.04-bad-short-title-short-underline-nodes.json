@@ -3,10 +3,9 @@
         "type": "NodeSystemMessages",
         "nodeList": [
             {
-                "type": "NodeSystemMessage",
-                "messageType": "infoUnderlineTooShortForTitle",
-                "severity": "INFO",
-                "line": 1,
+                "type": "SectionWarningUnderlineTooShortForTitle",
+                "severity": "WARNING",
+                "line": 2,
                 "nodeList": [
                     {
                         "type": "NodeText",
