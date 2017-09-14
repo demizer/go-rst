@@ -1,23 +1,28 @@
 [
     {
-        "type": "NodeComment",
-        "text": "A comment.",
-        "startPosition": 4,
-        "line": 1,
-        "length": 10
-    },
-    {
-        "type": "NodeSystemMessage",
-        "messageType": "warningExplicitMarkupWithUnIndent",
-        "severity": "WARNING",
-        "line": 2,
+        "type": "NodeSystemMessages",
         "nodeList": [
             {
-                "type": "NodeText",
-                "text": "Explicit markup ends without a blank line; unexpected unindent.",
-                "length": 63
+                "type": "InlineMarkupWarningExplicitMarkupWithUnIndent",
+                "severity": "WARNING",
+                "line": 2,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Explicit markup ends without a blank line; unexpected unindent.",
+                        "length": 63
+                    }
+                ]
             }
         ]
+    },
+    {
+        "type": "NodeComment",
+        "text": "A comment.",
+        "length": 10,
+        "line": 1,
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -25,9 +30,9 @@
             {
                 "type": "NodeText",
                 "text": "no blank line",
-                "startPosition": 1,
+                "length": 13,
                 "line": 2,
-                "length": 13
+                "startPosition": 1
             }
         ]
     },
@@ -37,9 +42,9 @@
             {
                 "type": "NodeText",
                 "text": "A paragraph.",
-                "startPosition": 1,
+                "length": 12,
                 "line": 4,
-                "length": 12
+                "startPosition": 1
             }
         ]
     }
