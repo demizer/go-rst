@@ -823,101 +823,11 @@ func Test_05_00_00_00_LexerLiteralBlockGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_00_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.00-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.00-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.00-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_00_00_01_LexerLiteralBlockGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.00.00.01-literal-block-space-after-colons")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.01-literal-block-space-after-colons")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.01-literal-block-space-after-colons")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.01-literal-block-space-after-colons")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.02-bad-unindented-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.02-bad-unindented-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.02-bad-unindented-literal-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -943,101 +853,11 @@ func Test_05_00_00_03_LexerLiteralBlockBad(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_00_00_03_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.03-bad-no-blankline-after-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_03_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.03-bad-no-blankline-after-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_03_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.03-bad-no-blankline-after-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_00_00_04_LexerLiteralBlockGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.00.00.04-multiline-paragraph-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_04_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.04-multiline-paragraph-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_04_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.04-multiline-paragraph-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_04_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.04-multiline-paragraph-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_05_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.05-bad-no-blankline-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_05_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.05-bad-no-blankline-before-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_05_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.05-bad-no-blankline-before-literal-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -1063,66 +883,6 @@ func Test_05_00_00_06_LexerLiteralBlockGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_00_00_06_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.06-paragraph-space-double-colon-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_06_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.06-paragraph-space-double-colon-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_06_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.06-paragraph-space-double-colon-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_07_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.07-paragraph-colon-newline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_07_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.07-paragraph-colon-newline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_07_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.07-paragraph-colon-newline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_00_00_07_LexerLiteralBlockGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
@@ -1138,66 +898,6 @@ func Test_05_00_00_08_LexerLiteralBlockBad(t *testing.T) {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.00.00.08-bad-section-underline-not-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_08_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.08-bad-section-underline-not-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_08_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.08-bad-section-underline-not-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_08_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.08-bad-section-underline-not-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_09_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.09-bad-eof-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_09_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.09-bad-eof-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_00_09_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.00.09-bad-eof-literal-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -1233,101 +933,11 @@ func Test_05_00_01_01_LexerLiteralBlockGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_00_01_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.01.01-wonky-multiline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_01_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.01.01-wonky-multiline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_01_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.01.01-wonky-multiline-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_00_02_00_LexerLiteralBlockGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.00.02.00-double-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.00-double-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.00-double-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.00-double-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.01-literal-block-and-escaped-colon-blockquote")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.01-literal-block-and-escaped-colon-blockquote")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_00_02_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.00.02.01-literal-block-and-escaped-colon-blockquote")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -1353,101 +963,11 @@ func Test_05_01_00_00_LexerLiteralBlockGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_01_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.00-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.00-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.00-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_01_00_01_LexerLiteralBlockGood(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.01.00.01-quoted-literal-block-two-blanklines")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.01-quoted-literal-block-two-blanklines")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.01-quoted-literal-block-two-blanklines")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_01_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.01-quoted-literal-block-two-blanklines")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.02-bad-inconsistent-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.02-bad-inconsistent-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_00_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.00.02-bad-inconsistent-quoted-literal-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -1473,101 +993,11 @@ func Test_05_01_01_00_LexerLiteralBlockGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
-func Test_05_01_01_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.00-quoted-literal-block-multiline")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.00-quoted-literal-block-multiline")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_00_LexerLiteralBlockGood(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.00-quoted-literal-block-multiline")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
 func Test_05_01_01_01_LexerLiteralBlockBad(t *testing.T) {
 	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("05.01.01.01-bad-indented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_01_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.01-bad-indented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_01_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.01-bad-indented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_01_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.01-bad-indented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.02-bad-unindented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.02-bad-unindented-line-after-quoted-literal-block")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_05_01_01_02_LexerLiteralBlockBad(t *testing.T) {
-	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
-		t.SkipNow()
-	}
-	testPath := testutil.TestPathFromName("05.01.01.02-bad-unindented-line-after-quoted-literal-block")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)
@@ -3017,13 +2447,6 @@ func Test_10_00_00_00_LexerListOptionGood(t *testing.T) {
 		t.SkipNow()
 	}
 	testPath := testutil.TestPathFromName("10.00.00.00-three-short-options")
-	test := LoadLexTest(t, testPath)
-	items := lexTest(t, test)
-	equal(t, test.ExpectItemData, items)
-}
-
-func Test_11_00_00_00_LexerListOptionGood(t *testing.T) {
-	testPath := testutil.TestPathFromName("11.00.00.00-three-short-options")
 	test := LoadLexTest(t, testPath)
 	items := lexTest(t, test)
 	equal(t, test.ExpectItemData, items)

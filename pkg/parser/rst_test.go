@@ -2539,10 +2539,3 @@ func Test_10_00_00_00_ParserListOptionGood(t *testing.T) {
 	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
 }
 
-func Test_11_00_00_00_ParserListOptionGood(t *testing.T) {
-	testPath := testutil.TestPathFromName("11.00.00.00-three-short-options")
-	test := LoadParserTest(t, testPath)
-	pTree := parseTest(t, test)
-	checkParseNodes(t, test.ExpectParseData, pTree, testPath)
-}
-
