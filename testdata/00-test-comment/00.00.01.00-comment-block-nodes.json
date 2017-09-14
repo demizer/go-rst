@@ -1,10 +1,14 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeComment",
         "text": "A comment\nblock.",
-        "startPosition": 4,
+        "length": 16,
         "line": 1,
-        "length": 16
+        "startPosition": 4
     },
     {
         "type": "NodeParagraph",
@@ -12,9 +16,9 @@
             {
                 "type": "NodeText",
                 "text": "Paragraph.",
-                "startPosition": 1,
+                "length": 10,
                 "line": 4,
-                "length": 10
+                "startPosition": 1
             }
         ]
     }
