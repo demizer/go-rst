@@ -10,6 +10,7 @@ import (
 func (p *Parser) inlineEmphasis(i *tok.Item, titleCheck bool) {
 	// Make sure inline markup is not in a section title
 	isInTitle := p.isInlineMarkupInSectionTitle(i)
+	// p.DumpExit(isInTitle)
 	if titleCheck && isInTitle {
 		return
 	}

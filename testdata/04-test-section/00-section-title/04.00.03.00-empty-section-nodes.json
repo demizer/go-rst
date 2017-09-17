@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
@@ -17,6 +21,7 @@
                 }
             ]
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
@@ -24,7 +29,6 @@
             "length": 13,
             "startPosition": 1
         },
-        "nodeList": null,
-        "overLine": null
+        "nodeList": []
     }
 ]

@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeBulletList",
         "bullet": "+",
         "nodeList": [
@@ -12,18 +16,18 @@
                             {
                                 "type": "NodeText",
                                 "text": "bullet paragraph 1",
-                                "startPosition": 3,
+                                "length": 18,
                                 "line": 1,
-                                "length": 18
+                                "startPosition": 3
                             }
                         ]
                     },
                     {
                         "type": "NodeComment",
                         "text": "comment between bullet paragraphs 1 (leader) and 2",
-                        "startPosition": 6,
+                        "length": 50,
                         "line": 3,
-                        "length": 50
+                        "startPosition": 6
                     },
                     {
                         "type": "NodeParagraph",
@@ -31,9 +35,9 @@
                             {
                                 "type": "NodeText",
                                 "text": "bullet paragraph 2",
-                                "startPosition": 3,
+                                "length": 18,
                                 "line": 5,
-                                "length": 18
+                                "startPosition": 3
                             }
                         ]
                     }

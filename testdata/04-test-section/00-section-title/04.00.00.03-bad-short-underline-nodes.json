@@ -1,8 +1,27 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionWarningShortUnderline",
+                "severity": "WARNING",
+                "line": 2,
+                "startLine": 1,
+                "endLine": 2,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title underline too short.",
+                        "length": 26
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "type": "NodeSection",
         "level": 1,
-        "overLine": null,
         "title": {
             "type": "NodeTitle",
             "length": 5,
@@ -18,40 +37,30 @@
                 }
             ]
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 2,
             "length": 4,
+            "line": 2,
             "startPosition": 1
         },
         "nodeList": [
-            {
-                "type": "NodeSystemMessage",
-                "messageType": "warningShortUnderline",
-                "severity": "WARNING",
-                "line": 1,
-                "nodeList": [
-                    {
-                        "type": "NodeText",
-                        "text": "Title underline too short.",
-                        "length": 26
-                    },
-                    {
-                        "type": "NodeLiteralBlock",
-                        "text": "Title\n====",
-                        "length": 10
-                    }
-                ]
-            },
             {
                 "type": "NodeParagraph",
                 "nodeList": [
                     {
                         "type": "NodeText",
+                        "text": "Title\n====",
+                        "length": 10,
+                        "line": 1,
+                        "startPosition": 1
+                    },
+                    {
+                        "type": "NodeText",
                         "text": "Test short underline.",
-                        "line": 4,
                         "length": 21,
+                        "line": 4,
                         "startPosition": 1
                     }
                 ]

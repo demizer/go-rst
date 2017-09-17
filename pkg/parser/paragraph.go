@@ -87,7 +87,7 @@ outer:
 			p.backup()
 			break outer
 		}
-		p.DumpExit(p.Nodes)
+		// p.DumpExit(p.Nodes)
 		p.Msg("Continuing...")
 	}
 	p.Msgr("number of indents", "p.indents.len", p.indents.len())

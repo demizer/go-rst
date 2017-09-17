@@ -147,6 +147,15 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 }
 
 func (t *tokenBuffer) peekLine(line int) (toks []*tok.Item) {
+	// peek the parser until line > p.line
+	x := 1
+	for {
+		pt := t.peek(x)
+		if pt == nil || pt.Type == tok.EOF || pt.Line > line {
+			break
+		}
+		x++
+	}
 	for x := 0; x < len(t.buf)-1; x++ {
 		if t.buf[x] != nil && t.buf[x].Line == line {
 			toks = append(toks, t.buf[x])

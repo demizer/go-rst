@@ -1,12 +1,16 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
                 "type": "NodeText",
                 "text": "Two paragraphs test.",
-                "line": 1,
                 "length": 20,
+                "line": 1,
                 "startPosition": 1
             }
         ]
@@ -17,8 +21,8 @@
             {
                 "type": "NodeText",
                 "text": "Paragraph 2.",
-                "line": 3,
                 "length": 12,
+                "line": 3,
                 "startPosition": 1
             }
         ]

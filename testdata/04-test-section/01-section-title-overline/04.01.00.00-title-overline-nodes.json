@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
@@ -20,15 +24,15 @@
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 1,
             "length": 5,
+            "line": 1,
             "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 3,
             "length": 5,
+            "line": 3,
             "startPosition": 1
         },
         "nodeList": [
@@ -38,8 +42,8 @@
                     {
                         "type": "NodeText",
                         "text": "Test overline title.",
-                        "line": 5,
                         "length": 20,
+                        "line": 5,
                         "startPosition": 1
                     }
                 ]

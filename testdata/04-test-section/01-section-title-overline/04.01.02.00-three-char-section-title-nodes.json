@@ -1,26 +1,38 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "One",
-            "line": 2,
             "length": 3,
-            "startPosition": 1
+            "line": 2,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "One",
+                    "length": 3,
+                    "line": 2,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 1,
             "length": 3,
+            "line": 1,
             "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 3,
             "length": 3,
+            "line": 3,
             "startPosition": 1
         },
         "nodeList": [
@@ -30,8 +42,8 @@
                     {
                         "type": "NodeText",
                         "text": "Paragraph 1.",
-                        "line": 5,
                         "length": 12,
+                        "line": 5,
                         "startPosition": 1
                     }
                 ]
@@ -43,23 +55,31 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Two",
-            "line": 8,
             "length": 3,
-            "startPosition": 1
+            "line": 8,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Two",
+                    "length": 3,
+                    "line": 8,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 7,
             "length": 3,
+            "line": 7,
             "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 9,
             "length": 3,
+            "line": 9,
             "startPosition": 1
         },
         "nodeList": [
@@ -69,8 +89,8 @@
                     {
                         "type": "NodeText",
                         "text": "Paragraph 2.",
-                        "line": 11,
                         "length": 12,
+                        "line": 11,
                         "startPosition": 1
                     }
                 ]

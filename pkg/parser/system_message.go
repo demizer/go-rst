@@ -7,20 +7,44 @@ import (
 )
 
 func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserMessage) {
+	// panic("foo")
 	switch err.Type {
 	case mes.SectionWarningOverlineTooShortForTitle:
-		overline := p.buf[p.index-2]
-		title := p.buf[p.index-1]
-		// For title with only overline, combine two tokens and insert into buffer
-		err.LiteralText = overline.Text + "\n" + p.token.Text
-		// For title with overline and underline, combine 3 tokens and insert into buffer
-		if p.index-2 >= 0 && overline != nil && overline.Type == tok.SectionAdornment {
-			err.LiteralText = overline.Text + "\n" + title.Text + "\n" + p.token.Text
+		var ml, sl, el, sp int
+		var overline *tok.Item
+
+		overline = p.token
+		title := p.peek(1)
+		underline := p.peek(2)
+
+		// if underline != nil && underline.Type == tok.SectionAdornment {
+		// // there is an underline
+		// }
+		// p.DumpExit(p.token)
+		// p.DumpExit(underline)
+
+		// if p.peekBackTo(tok.SectionAdornment) != nil {
+		// overline = p.buf[p.index-2]
+		// }
+
+		if overline.Type == tok.SectionAdornment && underline.Type != tok.SectionAdornment {
+			// For title with only overline (no underline)
+			err.LiteralText = overline.Text + "\n" + title.Text
+			ml, sl, el, sp = overline.Line, overline.Line, title.Line, overline.StartPosition
+			p.next(1)
+		} else if overline.Type == tok.SectionAdornment && underline.Type == tok.SectionAdornment {
+			// For title with overline and underline
+			err.LiteralText = overline.Text + "\n" + title.Text + "\n" + underline.Text
+			ml, sl, el, sp = overline.Line, overline.Line, underline.Line, overline.StartPosition
+			// } else {
+			// // For title with underline
+			// err.LiteralText = title.Text + "\n" + underline.Text
+			// ml, sl, el, sp = underline.Line, title.Line, underline.Line, title.StartPosition
 		}
-		err.StartLine = overline.Line
-		err.EndLine = title.Line
-		err.MessageLine = overline.Line
-		err.StartPosition = overline.StartPosition
+
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = ml, sl, el, sp
+		// panic("BLAH")
+		// p.DumpExit(buf)
 	case mes.SectionWarningUnexpectedTitleOverlineOrTransition:
 		err.LiteralText = p.peekBackTo(tok.SectionAdornment).Text + "\n" + p.peekBackTo(tok.Title).Text + "\n" + p.token.Text
 	case mes.SectionWarningUnderlineTooShortForTitle:
@@ -31,30 +55,49 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		err.EndLine = underline.Line
 		err.MessageLine = underline.Line
 		err.StartPosition = underline.StartPosition
+		// p.DumpExit(p.buf)
 	case mes.SectionWarningShortOverline, mes.SectionErrorOverlineUnderlineMismatch:
-		var indent string
 		backIndex := p.index - 2
 		if p.peekBack(2).Type == tok.Space {
 			backIndex = p.index - 3
-			indent = p.buf[p.index-2].Text
 		}
-		overLine := p.buf[backIndex].Text
-		title := p.buf[p.index-1].Text
-		underLine := p.token.Text
-		newLine := "\n"
-		err.LiteralText = overLine + newLine + indent + title + newLine + underLine
+		overline := p.buf[backIndex]
+		underline := p.token
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = overline.Line, overline.Line, underline.Line, overline.StartPosition
 	case mes.SectionWarningShortUnderline, mes.SectionErrorUnexpectedSectionTitle:
 		backIndex := p.index - 1
 		if p.peekBack(1).Type == tok.Space {
 			backIndex = p.index - 2
 		}
 		err.LiteralText = p.buf[backIndex].Text + "\n" + p.token.Text
+		err.MessageLine = p.buf[backIndex+1].Line
+		err.StartLine = p.buf[backIndex].Line
+		err.EndLine = p.buf[backIndex+1].Line
+		err.StartPosition = p.buf[backIndex].StartPosition
 		s.Line = p.buf[backIndex].Line
 	case mes.SectionErrorInvalidSectionOrTransitionMarker:
 		err.LiteralText = p.buf[p.index-1].Text + "\n" + p.token.Text
-	case mes.SectionErrorIncompleteSectionTitle,
-		mes.SectionErrorMissingMatchingUnderlineForOverline:
-		err.LiteralText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + p.token.Text
+	case mes.SectionErrorIncompleteSectionTitle, mes.SectionErrorMissingMatchingUnderlineForOverline:
+		overline := p.token
+		var text string
+		// p.DumpExit(overline)
+		for {
+			p.next(1)
+			if p.token.Type == tok.EOF {
+				break
+			}
+			text += p.token.Text
+			if p.token.Line > overline.Line+1 {
+				break
+			}
+		}
+		p.backup()
+		// title := p.peekSkip(tok.Space)
+		// p.DumpExit(text)
+		err.LiteralText = overline.Text + "\n" + text
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = overline.Line, overline.Line, overline.Line+1, overline.StartPosition
+		// p.DumpExit(err)
+		// panic("foo")
 	case mes.SectionErrorUnexpectedSectionTitleOrTransition:
 		err.LiteralText = p.token.Text
 	case mes.SectionErrorTitleLevelInconsistent:
@@ -70,9 +113,9 @@ func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err *mes.Pa
 	switch err.Type {
 	case mes.InlineMarkupWarningExplicitMarkupWithUnIndent:
 		tok := p.peek(1)
-		err.StartLine = tok.Line
-		err.EndLine = tok.Line
 		err.MessageLine = tok.Line
+		err.StartLine = tok.Line - 1
+		err.EndLine = tok.Line
 		err.StartPosition = tok.StartPosition
 	}
 }
@@ -92,17 +135,22 @@ func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
 			Line:          nm.StartLine,
 			StartPosition: nm.StartPosition,
 		}, p.index+1)
+		// p.DumpExit(p.buf)
 	}
 
 	if mes.IsSectionMessage(err) {
 		p.systemMessageSection(s, nm)
-		insertText()
+		if len(nm.LiteralText) > 0 {
+			insertText()
+		}
 	} else if mes.IsInlineMarkupMessage(err) {
 		p.systemMessageInlineMarkup(s, nm)
 	}
 
 	s.Line = nm.MessageLine
 	s.StartPosition = nm.StartPosition
+	s.StartLine = nm.StartLine
+	s.EndLine = nm.EndLine
 	p.Messages.Append(s)
 
 	// p.DumpExit(p.Messages)

@@ -6,6 +6,9 @@
                 "type": "SectionWarningUnderlineTooShortForTitle",
                 "severity": "WARNING",
                 "line": 2,
+                "startLine": 1,
+                "endLine": 2,
+                "startPosition": 1,
                 "nodeList": [
                     {
                         "type": "NodeText",

@@ -1,19 +1,33 @@
 [
     {
-        "type": "NodeSystemMessage",
-        "messageType": "severeIncompleteSectionTitle",
-        "severity": "SEVERE",
-        "line": 1,
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionErrorIncompleteSectionTitle",
+                "severity": "ERROR",
+                "line": 1,
+                "startLine": 1,
+                "endLine": 2,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Incomplete section title.",
+                        "length": 25
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
         "nodeList": [
             {
                 "type": "NodeText",
-                "text": "Incomplete section title.",
-                "length": 25
-            },
-            {
-                "type": "NodeLiteralBlock",
                 "text": "========================\n Test Missing Underline",
-                "length": 48
+                "length": 48,
+                "line": 1,
+                "startPosition": 1
             }
         ]
     }

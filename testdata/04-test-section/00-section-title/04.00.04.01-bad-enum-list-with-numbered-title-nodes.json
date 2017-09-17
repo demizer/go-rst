@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeEnumList",
         "enumType": "enumListArabic",
         "affix": "enumAffixPeriod",
@@ -10,9 +14,9 @@
                     {
                         "type": "NodeText",
                         "text": "Item 1.",
-                        "startPosition": 4,
+                        "length": 7,
                         "line": 1,
-                        "length": 7
+                        "startPosition": 4
                     }
                 ]
             },
@@ -22,9 +26,9 @@
                     {
                         "type": "NodeText",
                         "text": "Item 2.",
-                        "startPosition": 4,
+                        "length": 7,
                         "line": 2,
-                        "length": 7
+                        "startPosition": 4
                     }
                 ]
             }
@@ -52,8 +56,8 @@
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 4,
             "length": 17,
+            "line": 4,
             "startPosition": 1
         },
         "nodeList": [
@@ -63,8 +67,8 @@
                     {
                         "type": "NodeText",
                         "text": "Paragraph.",
-                        "line": 6,
                         "length": 10,
+                        "line": 6,
                         "startPosition": 1
                     }
                 ]

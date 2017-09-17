@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeDefinitionList",
         "nodeList": [
             {
@@ -7,9 +11,9 @@
                 "term": {
                     "type": "NodeDefinitionTerm",
                     "text": "term 1",
-                    "startPosition": 1,
+                    "length": 6,
                     "line": 1,
-                    "length": 6
+                    "startPosition": 1
                 },
                 "definition": {
                     "type": "NodeDefinition",
@@ -20,18 +24,18 @@
                                 {
                                     "type": "NodeText",
                                     "text": "definition 1",
-                                    "startPosition": 3,
+                                    "length": 12,
                                     "line": 2,
-                                    "length": 12
+                                    "startPosition": 3
                                 }
                             ]
                         },
                         {
                             "type": "NodeComment",
                             "text": "a comment",
-                            "startPosition": 6,
+                            "length": 9,
                             "line": 4,
-                            "length": 9
+                            "startPosition": 6
                         }
                     ]
                 }
@@ -41,9 +45,9 @@
                 "term": {
                     "type": "NodeDefinitionTerm",
                     "text": "term 2",
-                    "startPosition": 1,
+                    "length": 6,
                     "line": 6,
-                    "length": 6
+                    "startPosition": 1
                 },
                 "definition": {
                     "type": "NodeDefinition",
@@ -54,9 +58,9 @@
                                 {
                                     "type": "NodeText",
                                     "text": "definition 2",
-                                    "startPosition": 3,
+                                    "length": 12,
                                     "line": 7,
-                                    "length": 12
+                                    "startPosition": 3
                                 }
                             ]
                         }

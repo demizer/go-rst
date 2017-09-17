@@ -1,12 +1,16 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
                 "type": "NodeText",
                 "text": "Line 1: A paragraph with three lines.\nLine 2.\nLine 3.",
-                "line": 1,
                 "length": 53,
+                "line": 1,
                 "startPosition": 1
             }
         ]

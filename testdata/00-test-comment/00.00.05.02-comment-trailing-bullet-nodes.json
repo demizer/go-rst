@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeBulletList",
         "bullet": "+",
         "nodeList": [
@@ -12,18 +16,18 @@
                             {
                                 "type": "NodeText",
                                 "text": "bullet paragraph 1",
-                                "startPosition": 3,
+                                "length": 18,
                                 "line": 1,
-                                "length": 18
+                                "startPosition": 3
                             }
                         ]
                     },
                     {
                         "type": "NodeComment",
                         "text": "trailing comment",
-                        "startPosition": 6,
+                        "length": 16,
                         "line": 3,
-                        "length": 16
+                        "startPosition": 6
                     }
                 ]
             }

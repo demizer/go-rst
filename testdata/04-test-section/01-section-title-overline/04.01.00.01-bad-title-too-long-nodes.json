@@ -1,5 +1,25 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionWarningShortOverline",
+                "severity": "WARNING",
+                "line": 1,
+                "startLine": 1,
+                "endLine": 3,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title overline too short.",
+                        "length": 25
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
@@ -33,24 +53,6 @@
             "startPosition": 1
         },
         "nodeList": [
-            {
-                "type": "NodeSystemMessage",
-                "messageType": "warningShortOverline",
-                "severity": "WARNING",
-                "line": 1,
-                "nodeList": [
-                    {
-                        "type": "NodeText",
-                        "text": "Title overline too short.",
-                        "length": 25
-                    },
-                    {
-                        "type": "NodeLiteralBlock",
-                        "text": "=======\n Long    Title\n=======",
-                        "length": 30
-                    }
-                ]
-            },
             {
                 "type": "NodeParagraph",
                 "nodeList": [

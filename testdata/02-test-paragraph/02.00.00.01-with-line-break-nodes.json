@@ -1,12 +1,16 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
                 "type": "NodeText",
                 "text": "A paragraph with a line\nbreak.",
-                "line": 1,
                 "length": 30,
+                "line": 1,
                 "startPosition": 1
             }
         ]

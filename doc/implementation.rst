@@ -1,7 +1,7 @@
 ============================================================
 Implementation of the Go reStructuredText Parser and Tooling
 ============================================================
-:Modified: Mon Jun 19 01:12 2017
+:Modified: Thu Sep 14 11:38 2017
 
 --------
 Overview
@@ -400,7 +400,7 @@ shown in the other part of the test suite above:
 
 .. code:: console
 
-   $ rst2pseudoxml 10-test-list-option/00-short-posix/10.00.00.00-three-short-options.rst
+   $ rst2pseudoxml --halt=5 10-test-list-option/00-short-posix/10.00.00.00-three-short-options.rst
 
 In this case, the output is the same, so the reStructuredText source is good.
 

@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
@@ -21,8 +25,8 @@
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 2,
             "length": 17,
+            "line": 2,
             "startPosition": 1
         },
         "nodeList": [
@@ -32,8 +36,8 @@
                     {
                         "type": "NodeText",
                         "text": "Paragraph.",
-                        "line": 4,
                         "length": 10,
+                        "line": 4,
                         "startPosition": 1
                     }
                 ]

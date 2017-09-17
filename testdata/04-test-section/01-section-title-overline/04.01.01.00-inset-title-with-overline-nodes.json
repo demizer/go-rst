@@ -1,27 +1,39 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title",
-            "startPosition": 2,
-            "line": 2,
             "indentLength": 1,
-            "length": 5
+            "length": 5,
+            "line": 2,
+            "startPosition": 2,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title",
+                    "length": 5,
+                    "line": 2,
+                    "startPosition": 2
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 1,
             "length": 7,
+            "line": 1,
             "startPosition": 1
         },
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 3,
             "length": 7,
+            "line": 3,
             "startPosition": 1
         },
         "nodeList": [
@@ -31,8 +43,8 @@
                     {
                         "type": "NodeText",
                         "text": "Test overline title with inset.",
-                        "line": 5,
                         "length": 31,
+                        "line": 5,
                         "startPosition": 1
                     }
                 ]

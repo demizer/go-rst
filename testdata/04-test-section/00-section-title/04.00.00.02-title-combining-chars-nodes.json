@@ -1,8 +1,11 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
-        "overLine": null,
         "title": {
             "type": "NodeTitle",
             "length": 22,
@@ -18,11 +21,12 @@
                 }
             ]
         },
+        "overLine": null,
         "underLine": {
             "type": "NodeAdornment",
             "rune": "=",
-            "line": 2,
             "length": 22,
+            "line": 2,
             "startPosition": 1
         },
         "nodeList": [
@@ -32,8 +36,8 @@
                     {
                         "type": "NodeText",
                         "text": "Do not count combining chars in title column width.",
-                        "line": 4,
                         "length": 51,
+                        "line": 4,
                         "startPosition": 1
                     }
                 ]
