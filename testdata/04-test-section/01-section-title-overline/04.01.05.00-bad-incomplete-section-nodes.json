@@ -1,15 +1,21 @@
 [
     {
-        "type": "NodeSystemMessage",
-        "messageType": "infoOverlineTooShortForTitle",
-        "severity": "INFO",
-        "line": 1,
+        "type": "NodeSystemMessages",
         "nodeList": [
             {
-                "type": "NodeText",
-                "type": "NodeText",
-                "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
-                "length": 96
+                "type": "SectionWarningOverlineTooShortForTitle",
+                "severity": "WARNING",
+                "line": 1,
+                "startLine": 1,
+                "endLine": 2,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Possible incomplete section title.\nTreating the overline as ordinary text because it's so short.",
+                        "length": 96
+                    }
+                ]
             }
         ]
     },
@@ -19,8 +25,8 @@
             {
                 "type": "NodeText",
                 "text": "==\nABC",
-                "line": 1,
                 "length": 6,
+                "line": 1,
                 "startPosition": 1
             }
         ]

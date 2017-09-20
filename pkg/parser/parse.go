@@ -29,8 +29,9 @@ type Parser struct {
 
 	bqLevel *doc.BlockQuoteNode // FIXME: will be replaced with blockquoteLevels
 
-	sectionLevels *sectionLevels     // Encountered section levels
-	sections      []*doc.SectionNode // Pointers to encountered sections
+	sectionLevels   *sectionLevels        // Encountered section levels
+	sections        []*doc.SectionNode    // Pointers to encountered sections
+	sectionSubState *sectionParseSubState // Parsing substate for sections
 
 	openList doc.Node // Open Bullet List, Enum List, or Definition List
 
@@ -60,17 +61,18 @@ func NewParser(name, text string, logConf log.Config) (*Parser, error) {
 	ml := make(doc.NodeList, 0)
 	nl := make(doc.NodeList, 0)
 	p := &Parser{
-		Name:          name,
-		Messages:      &ml,
-		Nodes:         &nl,
-		text:          ntext,
-		lex:           l,
-		logConf:       conf,
-		sectionLevels: newSectionLevels(conf),
-		indents:       new(indentQueue),
-		nodeTarget:    doc.NewNodeTarget(&nl, conf),
-		Logger:        log.NewLogger(conf),
-		tokenBuffer:   newTokenBuffer(l, conf),
+		Name:            name,
+		Messages:        &ml,
+		Nodes:           &nl,
+		text:            ntext,
+		lex:             l,
+		logConf:         conf,
+		sectionLevels:   newSectionLevels(conf),
+		sectionSubState: new(sectionParseSubState),
+		indents:         new(indentQueue),
+		nodeTarget:      doc.NewNodeTarget(&nl, conf),
+		Logger:          log.NewLogger(conf),
+		tokenBuffer:     newTokenBuffer(l, conf),
 	}
 
 	p.Msgr("Parser.Nodes pointer", "nodeListPointer", fmt.Sprintf("%p", nl))
@@ -85,6 +87,9 @@ func (p *Parser) Parse() {
 
 		token := p.next(1)
 		p.Msgr("Parser got token", "token", token)
+		// if token.Line == 7 && token.Type == tok.Text && token.Text == "-----" {
+		// p.DumpExit(p.buf[p.index-2 : p.index+3])
+		// }
 
 		if token == nil || token.Type == tok.EOF {
 			break

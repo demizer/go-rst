@@ -84,8 +84,9 @@ func (t *tokenBuffer) peekBackTo(item tok.Type) (tok *tok.Item) {
 // token is kept in the Parser.token buf. If a token pointer already exists in the buf, that token is used instead
 // and no buf are received the the lexer stream (channel).
 func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
+	t.Msgr("peek", "pos", pos, "len", len(t.buf))
 	for i := t.index + 1; i <= t.index+pos; i++ {
-		if t.buf[i] != nil {
+		if i < len(t.buf) && t.buf[i] != nil {
 			pi = t.buf[i]
 			continue
 		} else {
@@ -146,7 +147,48 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	return t.token
 }
 
-func (t *tokenBuffer) peekLine(line int) (toks []*tok.Item) {
+func (t *tokenBuffer) peekLine(line int) (token *tok.Item) {
+	// peek the parser until line > p.line
+	x := 1
+	for {
+		pt := t.peek(x)
+		if pt == nil || pt.Type == tok.EOF || pt.Line > line {
+			break
+		}
+		x++
+	}
+	for x := 0; x < len(t.buf)-1; x++ {
+		if t.buf[x] != nil && t.buf[x].Line == line {
+			token = t.buf[x]
+			break
+		}
+	}
+	return
+}
+
+// peekLineSkipSpace returns the first token from line that is not a space
+func (t *tokenBuffer) peekLineSkipSpace(line int) (token *tok.Item) {
+	// peek the parser until line > p.line
+	x := 1
+	for {
+		pt := t.peek(x)
+		if pt == nil || pt.Type == tok.EOF || pt.Line > line {
+			break
+		}
+		x++
+	}
+	for x := 0; x < len(t.buf)-1; x++ {
+		if t.buf[x] != nil && t.buf[x].Line == line {
+			if t.buf[x].Type != tok.Space {
+				token = t.buf[x]
+				break
+			}
+		}
+	}
+	return
+}
+
+func (t *tokenBuffer) peekLineAllTokens(line int) (toks []*tok.Item) {
 	// peek the parser until line > p.line
 	x := 1
 	for {
@@ -185,4 +227,35 @@ func (t *tokenBuffer) insert(tok *tok.Item, index int) {
 	// t.buf = append(t.buf, 0)
 	copy(t.buf[index+1:], t.buf[index:])
 	t.buf[index] = tok
+}
+
+func (t *tokenBuffer) globText(fromPos, toPos int) string {
+	var text string
+	var lastLine int
+	for x := fromPos; x < toPos; x++ {
+		text += t.buf[x].Text
+		if x+1 < len(t.buf) && t.buf[x].Line != t.buf[x+1].Line && t.buf[x].Line > lastLine {
+			text += "\n"
+			lastLine = t.buf[x].Line
+		}
+	}
+	return text
+}
+
+func (t *tokenBuffer) globTextFromLine(line int) string {
+	var text string
+	for _, v := range t.peekLineAllTokens(line) {
+		text += v.Text
+	}
+	return text
+}
+
+func (t *tokenBuffer) nextToLine(line int) (tmp *tok.Item) {
+	for {
+		tmp := t.next(1)
+		if tmp != nil && tmp.Line == line {
+			break
+		}
+	}
+	return
 }

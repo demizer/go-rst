@@ -454,6 +454,22 @@ func TestParserAppend(t *testing.T) {
 	assert.Equal(t, &tok.Item{ID: 202, Type: tok.EOF, Line: 201, StartPosition: 1, Length: 0}, tr.token, "expect index token")
 }
 
+func TestParserPeekAtEndOfBuffer(t *testing.T) {
+	var input string
+	for x := 0; x < 100; x++ {
+		input += "\na line\n"
+	}
+	tr, err := NewParser("fillcapacitytest", input, testutil.LoggerConfig)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	tr.next(203)
+	tr.peek(1)
+	assert.Equal(t, 201, tr.index, "expect index to equal 201")
+	assert.Equal(t, &tok.Item{ID: 202, Type: tok.EOF, Line: 201, StartPosition: 1, Length: 0}, tr.token, "expect index token")
+}
+
 func TestParserPeekSkip(t *testing.T) {
 	input := "Title 1\n=======\n\nParagraph 1.\n\nParagraph 2."
 	tr, err := NewParser("peekSkip", input, testutil.LoggerConfig)
@@ -494,7 +510,7 @@ func TestParserPeekLine(t *testing.T) {
 		t.Fail()
 	}
 	tr.next(10)
-	toks := tr.peekLine(1)
+	toks := tr.peekLineAllTokens(1)
 
 	if len(toks) != 4 {
 		assert.FailNow(t, fmt.Sprintf("len(toks) = %d", len(toks)), "length should be 4")

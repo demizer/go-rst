@@ -7,6 +7,10 @@
 
     See https://gcc.gnu.org/onlinedocs/gcc-5.2.0/gcc/Warnings-and-Errors.html
 
+* Mon Sep 18 19:30 2017: add underline overline mismatch test with title containing inline markup
+
+  04.01.01.02 is the test where mismatched adornments are first checked
+
 * Sat Jun 17 03:06 2017: Implement section parse test 04.00.05.00
 
   - Add test with inline markup and short underline

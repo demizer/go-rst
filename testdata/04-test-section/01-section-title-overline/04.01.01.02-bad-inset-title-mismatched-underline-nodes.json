@@ -1,19 +1,33 @@
 [
     {
-        "type": "NodeSystemMessage",
-        "messageType": "severeOverlineUnderlineMismatch",
-        "severity": "SEVERE",
-        "line": 1,
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionErrorOverlineUnderlineMismatch",
+                "severity": "ERROR",
+                "line": 1,
+                "startLine": 1,
+                "endLine": 3,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title overline & underline mismatch.",
+                        "length": 36
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
         "nodeList": [
             {
                 "type": "NodeText",
-                "text": "Title overline & underline mismatch.",
-                "length": 36
-            },
-            {
-                "type": "NodeLiteralBlock",
-                "text": "=======\n Title\n-------",
-                "length": 22
+                "text": "=======\n Title\n-------\n",
+                "length": 23,
+                "line": 1,
+                "startPosition": 1
             }
         ]
     },

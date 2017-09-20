@@ -8,55 +8,27 @@ import (
 
 func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserMessage) {
 	// panic("foo")
+	st := p.sectionSubState
 	switch err.Type {
 	case mes.SectionWarningOverlineTooShortForTitle:
-		var ml, sl, el, sp int
-		var overline *tok.Item
-
-		overline = p.token
-		title := p.peek(1)
-		underline := p.peek(2)
-
-		// if underline != nil && underline.Type == tok.SectionAdornment {
-		// // there is an underline
-		// }
-		// p.DumpExit(p.token)
-		// p.DumpExit(underline)
-
-		// if p.peekBackTo(tok.SectionAdornment) != nil {
-		// overline = p.buf[p.index-2]
-		// }
-
-		if overline.Type == tok.SectionAdornment && underline.Type != tok.SectionAdornment {
-			// For title with only overline (no underline)
-			err.LiteralText = overline.Text + "\n" + title.Text
-			ml, sl, el, sp = overline.Line, overline.Line, title.Line, overline.StartPosition
-			p.next(1)
-		} else if overline.Type == tok.SectionAdornment && underline.Type == tok.SectionAdornment {
+		// p.DumpExit(st)
+		// For title with only overline (no underline)
+		err.LiteralText = st.overline.Text + "\n" + st.title.Text
+		ml, sl, el, sp := st.overline.Line, st.overline.Line, st.title.Line, st.overline.StartPosition
+		if st.underline != nil && st.underline.Type != tok.BlankLine {
 			// For title with overline and underline
-			err.LiteralText = overline.Text + "\n" + title.Text + "\n" + underline.Text
-			ml, sl, el, sp = overline.Line, overline.Line, underline.Line, overline.StartPosition
-			// } else {
-			// // For title with underline
-			// err.LiteralText = title.Text + "\n" + underline.Text
-			// ml, sl, el, sp = underline.Line, title.Line, underline.Line, title.StartPosition
+			err.LiteralText = st.overline.Text + "\n" + st.title.Text + "\n" + st.underline.Text
+			ml, sl, el, sp = st.overline.Line, st.overline.Line, st.underline.Line, st.overline.StartPosition
 		}
-
 		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = ml, sl, el, sp
-		// panic("BLAH")
-		// p.DumpExit(buf)
+		p.nextToLine(err.EndLine)
 	case mes.SectionWarningUnexpectedTitleOverlineOrTransition:
 		err.LiteralText = p.peekBackTo(tok.SectionAdornment).Text + "\n" + p.peekBackTo(tok.Title).Text + "\n" + p.token.Text
 	case mes.SectionWarningUnderlineTooShortForTitle:
-		title := p.buf[p.index-1]
-		underline := p.buf[p.index]
-		err.LiteralText = title.Text + "\n" + underline.Text
-		err.StartLine = title.Line
-		err.EndLine = underline.Line
-		err.MessageLine = underline.Line
-		err.StartPosition = underline.StartPosition
+		err.LiteralText = st.title.Text + "\n" + st.underline.Text
+		err.StartLine, err.EndLine, err.MessageLine, err.StartPosition = st.title.Line, st.underline.Line, st.underline.Line, st.underline.StartPosition
 		// p.DumpExit(p.buf)
-	case mes.SectionWarningShortOverline, mes.SectionErrorOverlineUnderlineMismatch:
+	case mes.SectionWarningShortOverline:
 		backIndex := p.index - 2
 		if p.peekBack(2).Type == tok.Space {
 			backIndex = p.index - 3
@@ -64,7 +36,12 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		overline := p.buf[backIndex]
 		underline := p.token
 		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = overline.Line, overline.Line, underline.Line, overline.StartPosition
-	case mes.SectionWarningShortUnderline, mes.SectionErrorUnexpectedSectionTitle:
+	case mes.SectionErrorOverlineUnderlineMismatch:
+		err.LiteralText = p.globText(p.index, p.indexFromToken(st.underline)+1)
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = st.overline.Line, st.overline.Line, st.underline.Line, st.overline.StartPosition
+		p.nextToLine(err.EndLine)
+		// p.DumpExit(err)
+	case mes.SectionWarningShortUnderline:
 		backIndex := p.index - 1
 		if p.peekBack(1).Type == tok.Space {
 			backIndex = p.index - 2
@@ -75,31 +52,27 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		err.EndLine = p.buf[backIndex+1].Line
 		err.StartPosition = p.buf[backIndex].StartPosition
 		s.Line = p.buf[backIndex].Line
+	case mes.SectionErrorUnexpectedSectionTitle:
+		title := p.peekBackTo(tok.Title)
+		underline := p.token
+		err.LiteralText = title.Text + "\n" + underline.Text
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = underline.Line, title.Line, underline.Line, underline.StartPosition
+		p.next(1) // Next past the underline
+		// p.DumpExit(p.buf)
 	case mes.SectionErrorInvalidSectionOrTransitionMarker:
-		err.LiteralText = p.buf[p.index-1].Text + "\n" + p.token.Text
+		err.LiteralText = st.overline.Text + "\n" + st.title.Text
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = st.overline.Line, st.overline.Line, st.title.Line, st.overline.StartPosition
+		p.next(1) // Next past the underline
 	case mes.SectionErrorIncompleteSectionTitle, mes.SectionErrorMissingMatchingUnderlineForOverline:
 		overline := p.token
-		var text string
-		// p.DumpExit(overline)
-		for {
-			p.next(1)
-			if p.token.Type == tok.EOF {
-				break
-			}
-			text += p.token.Text
-			if p.token.Line > overline.Line+1 {
-				break
-			}
-		}
-		p.backup()
-		// title := p.peekSkip(tok.Space)
-		// p.DumpExit(text)
+		text := p.globTextFromLine(overline.Line + 1)
 		err.LiteralText = overline.Text + "\n" + text
 		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = overline.Line, overline.Line, overline.Line+1, overline.StartPosition
-		// p.DumpExit(err)
-		// panic("foo")
+		p.next(2)
 	case mes.SectionErrorUnexpectedSectionTitleOrTransition:
-		err.LiteralText = p.token.Text
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = st.overline.Line, st.overline.Line, st.overline.Line, st.overline.StartPosition
+		p.token.Type = tok.Text
+		p.backup()
 	case mes.SectionErrorTitleLevelInconsistent:
 		if p.peekBack(2).Type == tok.SectionAdornment {
 			err.LiteralText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + "\n" + p.token.Text
@@ -122,9 +95,11 @@ func (p *Parser) systemMessageInlineMarkup(s *doc.SystemMessageNode, err *mes.Pa
 
 // systemMessage generates a Node based on the passed mes.ParserMessage. The generated message is returned as a
 // SystemMessageNode.
-func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
+func (p *Parser) systemMessage(err mes.MessageType) bool {
 	nm := mes.NewParserMessage(err)
 	s := doc.NewSystemMessage(nm, p.token.Line)
+	p.Msgr("Generating system message", "type", err.String())
+	// panic("foo")
 
 	// Insert text into the next buffer position to be picked up in the next pass of the parser
 	insertText := func() {
@@ -135,7 +110,12 @@ func (p *Parser) systemMessage(err mes.MessageType) (ok bool) {
 			Line:          nm.StartLine,
 			StartPosition: nm.StartPosition,
 		}, p.index+1)
-		// p.DumpExit(p.buf)
+		// p.DumpExit(p.buf[:p.index+3])
+		p.Msgr("foooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", "line", p.token.Line)
+		// if p.token.Line == 9 {
+		// // p.DumpExit(p.token)
+		// p.DumpExit(p.buf[p.index-2 : p.index+3])
+		// }
 	}
 
 	if mes.IsSectionMessage(err) {

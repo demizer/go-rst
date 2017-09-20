@@ -10,13 +10,17 @@ import (
 func (p *Parser) paragraph(i *tok.Item) doc.Node {
 	p.Msgr("Have token", "token", i)
 	var np doc.ParagraphNode
-	if !p.nodeTarget.IsParagraphNode() {
+	// pBack := p.peekBack(1)
+	if !p.nodeTarget.IsParagraphNode() && p.bqLevel == nil {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)
 	}
 	nt := doc.NewText(i)
 	p.nodeTarget.Append(nt)
+	// if i.Type == tok.Text && i.Line == 7 {
+	// p.DumpExit(p.bqLevel)
+	// }
 outer:
 	// Paragraphs can contain many different types of elements, so we'll need to loop until blank line or nil
 	for {
@@ -27,12 +31,13 @@ outer:
 
 		pi := p.peekBack(1) // previous item
 		// p.DumpExit(pi)
-		// ni := p.peek(1)     // next item
+		ni := p.peek(1) // next item
 
 		// p.DumpExit(p.Messages)
 		p.Msgr("Previous token", "token", pi)
 		p.Msgr("Have token", "token", ci)
 
+		// if ci == nil || ci.Type == tok.EOF || ci.Type == tok.Title {
 		if ci == nil || ci.Type == tok.EOF {
 			p.Msg("current token == nil or current item type == tok.EOF")
 			break
@@ -53,6 +58,10 @@ outer:
 			if pi != nil && pi.Type == tok.Escape {
 				// Parse Test 02.00.01.00 :: Catch escapes at the end of lines
 				p.Msg("Found escaped space!")
+				continue
+			} else if ni != nil && ni.Type == tok.Title {
+				// Parse test 04.01.03.00 :: Indented section title
+				// Need to make sure the space is not before a title
 				continue
 			}
 			// Parse Test 02.00.03.00 :: Emphasis wrapped in unicode spaces
@@ -86,9 +95,13 @@ outer:
 			p.Msg("Found newline, closing paragraph")
 			p.backup()
 			break outer
+		default:
+			p.Msgr("token not supported in paragraphs", "token", ci)
+			return np
 		}
-		// p.DumpExit(p.Nodes)
 		p.Msg("Continuing...")
+		// p.DumpExit(p.buf)
+		// panic("halt")
 	}
 	p.Msgr("number of indents", "p.indents.len", p.indents.len())
 	if p.indents.len() > 0 {
