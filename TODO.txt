@@ -245,3 +245,7 @@
 
   rst2pseudoxml testdata/04-test-section/02-bad/04.00.04.00-unexpected-titles.rst --debug
 
+* Wed Sep 20 22:56 2017: implement test 04.01.05.01
+
+  Badly formatted section that parses with a few info level system messages. Real nasty looking though, I want to wait until
+  sections and targets are completely implemented before trying to implement this test.

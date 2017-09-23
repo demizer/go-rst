@@ -788,6 +788,9 @@ func Test_04_01_05_00_ParserSectionBad(t *testing.T) {
 }
 
 func Test_04_01_05_01_ParserSectionBad(t *testing.T) {
+	if os.Getenv("GO_RST_SKIP_NOT_IMPLEMENTED") == "1" {
+		t.SkipNow()
+	}
 	testPath := testutil.TestPathFromName("04.01.05.01-bad-incomplete-sections-no-title")
 	test := LoadParserTest(t, testPath)
 	pTree := parseTest(t, test)

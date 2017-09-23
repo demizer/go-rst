@@ -1,5 +1,26 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionWarningUnexpectedTitleOverlineOrTransition",
+                "severity": "WARNING",
+                "line": 3,
+                "startLine": 3,
+                "endLine": 5,
+                "startPosition": 5,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Unexpected possible title overline or transition.\nTreating it as ordinary text because it's so short.",
+                        "length": 101
+                    }
+                ]
+            }
+		]
+	},
+
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
@@ -16,19 +37,6 @@
         "line": 3,
         "startPosition": 1,
         "nodeList": [
-            {
-                "type": "NodeSystemMessage",
-                "messageType": "infoUnexpectedTitleOverlineOrTransition",
-                "severity": "INFO",
-                "line": 3,
-                "nodeList": [
-                    {
-                        "type": "NodeText",
-                        "text": "Unexpected possible title overline or transition.\nTreating it as ordinary text because it's so short.",
-                        "length": 101
-                    }
-                ]
-            },
             {
                 "type": "NodeParagraph",
                 "nodeList": [

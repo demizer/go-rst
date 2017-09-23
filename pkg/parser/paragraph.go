@@ -9,9 +9,10 @@ import (
 
 func (p *Parser) paragraph(i *tok.Item) doc.Node {
 	p.Msgr("Have token", "token", i)
+	// panic("foo")
 	var np doc.ParagraphNode
 	// pBack := p.peekBack(1)
-	if !p.nodeTarget.IsParagraphNode() && p.bqLevel == nil {
+	if !p.nodeTarget.IsParagraphNode() { //&& p.bqLevel == nil {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)

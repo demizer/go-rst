@@ -1,18 +1,21 @@
 [
     {
-        "type": "NodeComment",
-        "line": 1
-    },
-    {
-        "type": "NodeSystemMessage",
-        "messageType": "warningExplicitMarkupWithUnIndent",
-        "severity": "WARNING",
-        "line": 2,
+        "type": "NodeSystemMessages",
         "nodeList": [
             {
-                "type": "NodeText",
-                "text": "Explicit markup ends without a blank line; unexpected unindent.",
-                "length": 63
+                "type": "InlineMarkupWarningExplicitMarkupWithUnIndent",
+                "severity": "WARNING",
+                "line": 2,
+                "startLine": 1,
+                "endLine": 2,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Explicit markup ends without a blank line; unexpected unindent.",
+                        "length": 63
+                    }
+                ]
             }
         ]
     },
@@ -21,10 +24,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Hi",
-            "line": 2,
             "length": 2,
-            "startPosition": 1
+            "line": 2,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Hi",
+                    "length": 2,
+                    "line": 2,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -40,10 +51,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Yo",
-                    "line": 6,
                     "length": 2,
-                    "startPosition": 1
+                    "line": 6,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Yo",
+                            "length": 2,
+                            "line": 6,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",

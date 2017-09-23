@@ -20,17 +20,14 @@ func (p *Parser) sectionTitle() bool {
 	p.Msg("Parsing section title with overline and underline")
 
 	// Section with overline
-	overline := p.token
-	title := p.peekLineSkipSpace(overline.Line + 1)
-	underline := p.peekLineSkipSpace(title.Line + 1)
-
+	overline := p.sectionSubState.overline
+	title := p.sectionSubState.title
+	underline := p.sectionSubState.underline
 	indented := title.StartPosition != 1
 
-	s := p.sectionSubState
-	s.overline, s.title, s.underline = overline, title, underline
 	if indented {
-		s.indent = p.peekLine(title.Line)
-		s.indented = indented
+		p.sectionSubState.indent = p.peekLine(title.Line)
+		p.sectionSubState.indented = indented
 	}
 
 	overlineIndented := indented && (overline != nil && overline.StartPosition != 1)
@@ -53,13 +50,16 @@ func (p *Parser) sectionTitle() bool {
 	} else if hazOverline && overline.Length > 3 && (hazTitle || hazTextTitle) && underlineMissingOrWrongType {
 		// underline is not a section underline
 		return p.systemMessage(mes.SectionErrorIncompleteSectionTitle)
+	} else if hazOverline && overlineIndented && overline.Length < 4 {
+		// Indented line containing section adornment chars
+		return p.systemMessage(mes.SectionWarningUnexpectedTitleOverlineOrTransition)
 	} else if hazOverline && overlineIndented {
 		// Overline is indented
 		return p.systemMessage(mes.SectionErrorUnexpectedSectionTitleOrTransition)
-	} else if hazOverline && overline.Length < 3 {
+	} else if hazOverline && overline.Length < 4 && overline.Length < title.Length {
 		// Overline is less than three chars. In this case the title may be a text token
 		return p.systemMessage(mes.SectionWarningOverlineTooShortForTitle)
-	} else if hazUnderline && underline.Length < 3 {
+	} else if hazUnderline && underline.Length < 4 && underline.Length < title.Length {
 		// Underline is less than three chars. In this case the title may be a text token
 		return p.systemMessage(mes.SectionWarningUnderlineTooShortForTitle)
 	} else if hazOverline && hazUnderline && overlineUnderlineMismatch {
@@ -76,13 +76,13 @@ loop:
 	for {
 		switch cTok := p.token; cTok.Type {
 		case tok.Title:
-			s.titleNode = doc.NewTitleNodeWithText(cTok)
+			p.sectionSubState.titleNode = doc.NewTitleNodeWithText(cTok)
 			p.next(1)
 		case tok.Space:
-			s.indent = cTok
+			p.sectionSubState.indent = cTok
 			p.next(1)
 		case tok.SectionAdornment:
-			s.underline = cTok
+			p.sectionSubState.underline = cTok
 			break loop
 		}
 	}
@@ -91,25 +91,26 @@ loop:
 }
 
 func (p *Parser) sectionTitleNoOverline() bool {
+	p.Msg("Parsing section with no overline")
 	s := p.sectionSubState
-	underline := p.token
 
 	if s.indented {
 		// The section underline is indented
 		return p.systemMessage(mes.SectionErrorUnexpectedSectionTitle)
-	} else if underline.Length < 3 {
+	} else if s.underline.Length < 4 && s.underline.Length < s.title.Length {
 		// Underline too short
 		return p.systemMessage(mes.SectionWarningUnderlineTooShortForTitle)
 	}
 
 	// Section OKAY
 	s.titleNode = doc.NewTitleNodeWithText(s.title)
-	s.underline = underline
 
 	return true
 }
 
 func (p *Parser) sectionTitleWithInlineMarkupAndNoOverline() bool {
+	p.Msg("Parsing section with inline markup and no overline")
+
 	var titleLen int
 	s := p.sectionSubState
 
@@ -145,7 +146,7 @@ func (p *Parser) sectionTitleWithInlineMarkupAndNoOverline() bool {
 	// return p.systemMessage(mes.SectionErrorUnexpectedSectionTitle)
 	// }
 
-	if p.token.Length < 3 && p.token.Length != tn.Length {
+	if p.token.Length < 4 && p.token.Length != tn.Length {
 		// Short underline
 		return p.systemMessage(mes.SectionWarningUnderlineTooShortForTitle)
 	}
@@ -195,16 +196,13 @@ func (p *Parser) parseSection() bool {
 	}
 
 	if titleWithOverline || titleWithIndentedOverline {
-		p.Msg("Parsing section with overline")
 		// section title with an overline and maybe an underline
 		return p.sectionTitle()
 	} else if (titleWithUnderline || titleWithIndentedUnderline) && !titleWithInlineMarkup {
-		p.Msg("Parsing section with no overline")
 		// Title with underline and definitely no overline
 		return p.sectionTitleNoOverline()
 		// } else if titleWithOverline || title.Type == tok.Text { //&& underline.Type == tok.SectionAdornment {
 	} else if titleWithInlineMarkup {
-		p.Msg("Parsing section with inline markup and no overline")
 		return p.sectionTitleWithInlineMarkupAndNoOverline()
 	}
 

@@ -84,7 +84,7 @@ func (t *tokenBuffer) peekBackTo(item tok.Type) (tok *tok.Item) {
 // token is kept in the Parser.token buf. If a token pointer already exists in the buf, that token is used instead
 // and no buf are received the the lexer stream (channel).
 func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
-	t.Msgr("peek", "pos", pos, "len", len(t.buf))
+	// t.Msgr("peek", "pos", pos, "len", len(t.buf))
 	for i := t.index + 1; i <= t.index+pos; i++ {
 		if i < len(t.buf) && t.buf[i] != nil {
 			pi = t.buf[i]
@@ -96,7 +96,7 @@ func (t *tokenBuffer) peek(pos int) (pi *tok.Item) {
 			}
 		}
 	}
-	t.Msgr("peek token", "index", t.index, "token", pi)
+	// t.Msgr("peek token", "index", t.index, "token", pi)
 
 	// XXX: remove this before merging to master
 	// t.Dump(t.buf)

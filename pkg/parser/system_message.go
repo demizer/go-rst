@@ -23,7 +23,9 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = ml, sl, el, sp
 		p.nextToLine(err.EndLine)
 	case mes.SectionWarningUnexpectedTitleOverlineOrTransition:
-		err.LiteralText = p.peekBackTo(tok.SectionAdornment).Text + "\n" + p.peekBackTo(tok.Title).Text + "\n" + p.token.Text
+		err.LiteralText = st.overline.Text + "\n" + st.title.Text + "\n" + st.underline.Text
+		err.StartLine, err.EndLine, err.MessageLine, err.StartPosition = st.overline.Line, st.underline.Line, st.overline.Line, st.overline.StartPosition
+		p.nextToLine(err.EndLine)
 	case mes.SectionWarningUnderlineTooShortForTitle:
 		err.LiteralText = st.title.Text + "\n" + st.underline.Text
 		err.StartLine, err.EndLine, err.MessageLine, err.StartPosition = st.title.Line, st.underline.Line, st.underline.Line, st.underline.StartPosition

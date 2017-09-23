@@ -20,7 +20,8 @@ func (p *Parser) comment(i *tok.Item) doc.Node {
 		// The comment element itself is valid, but we need to add it to the NodeList before the systemMessage.
 		p.Msg("Missing space after comment mark! (mes.InlineMarkupWarningExplicitMarkupWithUnIndent)")
 		p.systemMessage(mes.InlineMarkupWarningExplicitMarkupWithUnIndent)
-		return doc.NewComment(&tok.Item{Line: i.Line})
+		return n
+		// return doc.NewComment(&tok.Item{Line: i.Line})
 	}
 
 	nPara := p.peek(2)

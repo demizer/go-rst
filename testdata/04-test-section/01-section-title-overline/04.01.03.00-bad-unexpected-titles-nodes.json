@@ -67,25 +67,35 @@
         "startPosition": 1,
         "nodeList": [
             {
-                "type": "NodeText",
-                "text": "Title\n=====\nParagraph.",
-                "length": 22,
-                "line": 3,
-                "startPosition": 5
+                "type": "NodeParagraph",
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title\n=====\nParagraph.",
+                        "length": 22,
+                        "line": 3,
+                        "startPosition": 5
+                    }
+                ]
             },
             {
-                "type": "NodeText",
-                "text": "-----",
-                "length": 5,
-                "line": 7,
-                "startPosition": 5
-            },
-            {
-                "type": "NodeText",
-                "text": "Title\n-----\nParagraph.",
-                "length": 22,
-                "line": 8,
-                "startPosition": 5
+                "type": "NodeParagraph",
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "-----",
+                        "length": 5,
+                        "line": 7,
+                        "startPosition": 5
+                    },
+                    {
+                        "type": "NodeText",
+                        "text": "Title\n-----\nParagraph.",
+                        "length": 22,
+                        "line": 8,
+                        "startPosition": 5
+                    }
+                ]
             }
         ]
     }
