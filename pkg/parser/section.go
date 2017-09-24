@@ -269,7 +269,10 @@ func (p *Parser) section(i *tok.Item) {
 	// Determine the level of the section and where to append it to in p.Nodes
 	sec := doc.NewSection(s.titleNode, s.overline, s.underline, s.indent)
 
-	checkSectionLevel(p, sec)
+	if !checkSectionLevel(p, sec) {
+		p.Msg("Section checks failed!")
+		return
+	}
 	checkSectionLengths(p, sec)
 
 	p.nodeTarget.Append(sec)

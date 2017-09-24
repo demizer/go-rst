@@ -76,11 +76,18 @@ func (p *Parser) systemMessageSection(s *doc.SystemMessageNode, err *mes.ParserM
 		p.token.Type = tok.Text
 		p.backup()
 	case mes.SectionErrorTitleLevelInconsistent:
-		if p.peekBack(2).Type == tok.SectionAdornment {
-			err.LiteralText = p.buf[p.index-2].Text + "\n" + p.buf[p.index-1].Text + "\n" + p.token.Text
-			break
+		err.LiteralText = st.title.Text + "\n" + st.underline.Text
+		err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = st.title.Line, st.title.Line, st.underline.Line, st.title.StartPosition
+		if st.overline != nil {
+			err.LiteralText = st.overline.Text + "\n" + st.title.Text + "\n" + st.underline.Text
+			err.MessageLine, err.StartLine, err.EndLine, err.StartPosition = st.title.Line, st.overline.Line, st.underline.Line, st.overline.StartPosition
 		}
-		err.LiteralText = p.buf[p.index-1].Text + "\n" + p.token.Text
+		// p.DumpExit(st)
+		// p.DumpExit(err.EndLine)
+		// p.DumpExit(p.token)
+		// p.nextToLine(err.EndLine)
+		// p.next(1)
+		// p.DumpExit(p.buf[p.index-2 : p.index+3])
 	}
 }
 
@@ -114,9 +121,11 @@ func (p *Parser) systemMessage(err mes.MessageType) bool {
 		}, p.index+1)
 		// p.DumpExit(p.buf[:p.index+3])
 		p.Msgr("foooooooooooooooooooooooooooooooooooooooooooooooooooooooooo", "line", p.token.Line)
-		// if p.token.Line == 9 {
+		// if p.token.Line == 16 {
+		// panic("foo")
 		// // p.DumpExit(p.token)
-		// p.DumpExit(p.buf[p.index-2 : p.index+3])
+		// // // p.DumpExit(p.Nodes)
+		// // // p.DumpExit(p.buf[p.index-2 : p.index+3])
 		// }
 	}
 

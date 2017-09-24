@@ -1,5 +1,25 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionErrorTitleLevelInconsistent",
+                "severity": "ERROR",
+                "line": 19,
+                "startLine": 18,
+                "endLine": 20,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title level inconsistent.",
+                        "length": 25
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
@@ -16,10 +36,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 1",
-            "line": 4,
             "length": 7,
-            "startPosition": 1
+            "line": 4,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 1",
+                    "length": 7,
+                    "line": 4,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
@@ -53,10 +81,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Title 2",
-                    "line": 9,
                     "length": 7,
-                    "startPosition": 1
+                    "line": 9,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Title 2",
+                            "length": 7,
+                            "line": 9,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",
@@ -94,10 +130,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 3",
-            "line": 14,
             "length": 7,
-            "startPosition": 1
+            "line": 14,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 3",
+                    "length": 7,
+                    "line": 14,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
@@ -127,31 +171,13 @@
                 ]
             },
             {
-                "type": "NodeSystemMessage",
-                "messageType": "severeTitleLevelInconsistent",
-                "severity": "SEVERE",
-                "line": 18,
-                "nodeList": [
-                    {
-                        "type": "NodeText",
-                        "text": "Title level inconsistent.",
-                        "length": 25
-                    },
-                    {
-                        "type": "NodeLiteralBlock",
-                        "text": "```````\nTitle 4\n```````",
-                        "length": 23
-                    }
-                ]
-            },
-            {
                 "type": "NodeParagraph",
                 "nodeList": [
                     {
                         "type": "NodeText",
-                        "text": "Paragraph 4.",
-                        "line": 21,
-                        "length": 12,
+                        "text": "```````\nTitle 4\n```````\nParagraph 4.",
+                        "length": 36,
+                        "line": 18,
                         "startPosition": 1
                     }
                 ]

@@ -1,13 +1,25 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Hello",
-            "line": 1,
             "length": 5,
-            "startPosition": 1
+            "line": 1,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Hello",
+                    "length": 5,
+                    "line": 1,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -35,10 +47,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "World",
-                    "line": 7,
                     "length": 5,
-                    "startPosition": 1
+                    "line": 7,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "World",
+                            "length": 5,
+                            "line": 7,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",

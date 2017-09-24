@@ -1,5 +1,9 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
         "type": "NodeParagraph",
         "nodeList": [
             {
@@ -16,10 +20,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 1",
-            "line": 3,
             "length": 7,
-            "startPosition": 1
+            "line": 3,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 1",
+                    "length": 7,
+                    "line": 3,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -47,10 +59,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Title 2",
-                    "line": 7,
                     "length": 7,
-                    "startPosition": 1
+                    "line": 7,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Title 2",
+                            "length": 7,
+                            "line": 7,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": null,
                 "underLine": {
@@ -82,10 +102,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 3",
-            "line": 11,
             "length": 7,
-            "startPosition": 1
+            "line": 11,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 3",
+                    "length": 7,
+                    "line": 11,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -113,10 +141,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Title 4",
-                    "line": 15,
                     "length": 7,
-                    "startPosition": 1
+                    "line": 15,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Title 4",
+                            "length": 7,
+                            "line": 15,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": null,
                 "underLine": {

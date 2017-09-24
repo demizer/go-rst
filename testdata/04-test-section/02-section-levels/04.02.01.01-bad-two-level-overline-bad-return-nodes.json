@@ -1,13 +1,41 @@
 [
     {
+        "type": "NodeSystemMessages",
+        "nodeList": [
+            {
+                "type": "SectionErrorTitleLevelInconsistent",
+                "severity": "ERROR",
+                "line": 18,
+                "startLine": 17,
+                "endLine": 19,
+                "startPosition": 1,
+                "nodeList": [
+                    {
+                        "type": "NodeText",
+                        "text": "Title level inconsistent.",
+                        "length": 25
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "type": "NodeSection",
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Hello",
-            "line": 1,
             "length": 5,
-            "startPosition": 1
+            "line": 1,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Hello",
+                    "length": 5,
+                    "line": 1,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -35,10 +63,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "World",
-                    "line": 7,
                     "length": 5,
-                    "startPosition": 1
+                    "line": 7,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "World",
+                            "length": 5,
+                            "line": 7,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",
@@ -76,10 +112,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Hello 2",
-            "line": 12,
             "length": 7,
-            "startPosition": 1
+            "line": 12,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Hello 2",
+                    "length": 7,
+                    "line": 12,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": null,
         "underLine": {
@@ -103,20 +147,14 @@
                 ]
             },
             {
-                "type": "NodeSystemMessage",
-                "messageType": "severeTitleLevelInconsistent",
-                "severity": "SEVERE",
-                "line": 17,
+                "type": "NodeParagraph",
                 "nodeList": [
                     {
                         "type": "NodeText",
-                        "text": "Title level inconsistent.",
-                        "length": 25
-                    },
-                    {
-                        "type": "NodeLiteralBlock",
                         "text": "-------\nWorld 2\n-------",
-                        "length": 23
+                        "length": 23,
+                        "line": 17,
+                        "startPosition": 1
                     }
                 ]
             },

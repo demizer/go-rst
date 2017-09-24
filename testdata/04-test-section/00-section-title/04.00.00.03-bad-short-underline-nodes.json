@@ -55,7 +55,12 @@
                         "length": 10,
                         "line": 1,
                         "startPosition": 1
-                    },
+                    }
+                ]
+            },
+            {
+                "type": "NodeParagraph",
+                "nodeList": [
                     {
                         "type": "NodeText",
                         "text": "Test short underline.",

@@ -12,7 +12,22 @@ func (p *Parser) paragraph(i *tok.Item) doc.Node {
 	// panic("foo")
 	var np doc.ParagraphNode
 	// pBack := p.peekBack(1)
+	// if i.Line == 18 {
+	// p.DumpExit(i)
+	// }
+
+	tmp := p.peekLine(p.token.Line - 1)
+	newParagraph := tmp != nil && tmp.Type == tok.BlankLine
+	if newParagraph && p.nodeTarget.IsParagraphNode() { //&& p.bqLevel == nil {
+		// p.nodeTarget.Reset()
+		// p.nodeTarget.SetParent(
+		p.nodeTarget.SetParent(p.sectionLevels.lastSectionNode)
+		// p.DumpExit(i)
+		// p.DumpExit(p.token)
+	}
+	// if newParagraph && !p.nodeTarget.IsParagraphNode() { //&& p.bqLevel == nil {
 	if !p.nodeTarget.IsParagraphNode() { //&& p.bqLevel == nil {
+		// if !p.nodeTarget.IsParagraphNode() { //&& p.bqLevel == nil {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
 		p.nodeTarget.SetParent(np)

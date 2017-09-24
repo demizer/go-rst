@@ -1,5 +1,8 @@
 [
-
+    {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
     {
         "type": "NodeParagraph",
         "nodeList": [
@@ -17,10 +20,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 1",
-            "line": 4,
             "length": 7,
-            "startPosition": 1
+            "line": 4,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 1",
+                    "length": 7,
+                    "line": 4,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
@@ -54,10 +65,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Title 2",
-                    "line": 9,
                     "length": 7,
-                    "startPosition": 1
+                    "line": 9,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Title 2",
+                            "length": 7,
+                            "line": 9,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",
@@ -95,10 +114,18 @@
         "level": 1,
         "title": {
             "type": "NodeTitle",
-            "text": "Title 3",
-            "line": 14,
             "length": 7,
-            "startPosition": 1
+            "line": 14,
+            "startPosition": 1,
+            "nodeList": [
+                {
+                    "type": "NodeText",
+                    "text": "Title 3",
+                    "length": 7,
+                    "line": 14,
+                    "startPosition": 1
+                }
+            ]
         },
         "overLine": {
             "type": "NodeAdornment",
@@ -132,10 +159,18 @@
                 "level": 2,
                 "title": {
                     "type": "NodeTitle",
-                    "text": "Title 4",
-                    "line": 19,
                     "length": 7,
-                    "startPosition": 1
+                    "line": 19,
+                    "startPosition": 1,
+                    "nodeList": [
+                        {
+                            "type": "NodeText",
+                            "text": "Title 4",
+                            "length": 7,
+                            "line": 19,
+                            "startPosition": 1
+                        }
+                    ]
                 },
                 "overLine": {
                     "type": "NodeAdornment",

@@ -133,6 +133,10 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 			t.Msgr("got token from lexer", "token", t.buf[ind])
 			t.index = ind
 			t.token = t.buf[t.index]
+			// if t.token.ID == 18 {
+			// t.DumpExit(t.buf)
+			// // panic("foo")
+			// }
 		}
 	}
 
@@ -251,8 +255,14 @@ func (t *tokenBuffer) globTextFromLine(line int) string {
 }
 
 func (t *tokenBuffer) nextToLine(line int) (tmp *tok.Item) {
+	if t.buf[t.index].Line == line {
+		return
+	}
 	for {
 		tmp := t.next(1)
+		if tmp.Type == tok.EOF {
+			break
+		}
 		if tmp != nil && tmp.Line == line {
 			break
 		}
