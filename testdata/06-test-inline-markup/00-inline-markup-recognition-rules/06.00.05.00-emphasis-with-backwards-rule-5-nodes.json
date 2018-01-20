@@ -1,4 +1,8 @@
 [
+    {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
 	{
 	    "type": "NodeParagraph",
 	    "nodeList": [

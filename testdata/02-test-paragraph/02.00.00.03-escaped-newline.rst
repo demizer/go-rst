@@ -1,0 +1,4 @@
+An escaped new\
+line. This should be one paragraph.
+
+A new paragraph.

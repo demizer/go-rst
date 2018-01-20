@@ -1,0 +1,30 @@
+[
+    {
+        "type": "NodeSystemMessages",
+        "nodeList": []
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "An escaped newline. This should be one paragraph.",
+                "length": 49,
+                "line": 1,
+                "startPosition": 1
+            }
+        ]
+    },
+    {
+        "type": "NodeParagraph",
+        "nodeList": [
+            {
+                "type": "NodeText",
+                "text": "A new paragraph.",
+                "length": 16,
+                "line": 4,
+                "startPosition": 1
+            }
+        ]
+    }
+]

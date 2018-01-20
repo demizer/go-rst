@@ -8,6 +8,10 @@ import (
 )
 
 func (p *Parser) inlineEmphasis(i *tok.Item, titleCheck bool) {
+	p.printToken("have token", i)
+	// if i.ID == 104 {
+	// p.DumpExit(p.Nodes)
+	// }
 	// Make sure inline markup is not in a section title
 	isInTitle := p.isInlineMarkupInSectionTitle(i)
 	// p.DumpExit(isInTitle)
@@ -15,6 +19,10 @@ func (p *Parser) inlineEmphasis(i *tok.Item, titleCheck bool) {
 		return
 	}
 	ni := p.next(1)
+	p.printToken("have next token", ni)
+	// if i.ID == 100 {
+	// p.DumpExit(ni)
+	// }
 	if len(*p.Nodes) == 0 && !isInTitle {
 		np := doc.NewParagraph()
 		p.nodeTarget.Append(np)
@@ -23,9 +31,11 @@ func (p *Parser) inlineEmphasis(i *tok.Item, titleCheck bool) {
 main:
 	for {
 		ci := p.next(1)
+		p.printToken("have token in loop", ci)
 		if ci == nil {
 			break
 		}
+
 		switch ci.Type {
 		case tok.InlineEmphasis:
 			ni.Text += "\n" + ci.Text
@@ -35,6 +45,13 @@ main:
 			p.backup()
 			break main
 		}
+		if i.ID == 100 {
+			p.DumpExit(ci)
+		}
+	}
+	if ni.Text == "*" {
+		// p.DumpExit(ni)
+		p.dumpBufferWithContext()
 	}
 	ni.Length = utf8.RuneCountInString(ni.Text)
 	p.nodeTarget.Append(doc.NewInlineEmphasis(ni))

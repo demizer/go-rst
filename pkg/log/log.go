@@ -13,8 +13,8 @@ var spd = spew.ConfigState{ContinueOnMethod: true, Indent: "\t", MaxDepth: 0} //
 // Logger implements the go-kit logger type.
 type Logger struct {
 	name      string      // Shows up in the log output as field "name".
-	caller    bool        // Include the caller field name in the log output.
-	callDepth int         // Call stack depth for logging
+	Caller    bool        // Include the caller field name in the log output.
+	CallDepth int         // Call stack depth for logging
 	log       klog.Logger // The standard logger for which wrapped loggers are based
 	excludes  []string    // exclude named contexts from output
 }
@@ -24,8 +24,8 @@ type Logger struct {
 func NewLogger(conf Config) Logger {
 	return Logger{
 		name:      conf.Name,
-		caller:    conf.Caller,
-		callDepth: conf.CallDepth,
+		Caller:    conf.Caller,
+		CallDepth: conf.CallDepth,
 		log:       conf.Logger,
 		excludes:  conf.Excludes,
 	}
@@ -54,8 +54,8 @@ func (l Logger) Msg(message string) error {
 		return nil
 	}
 	logr := klog.WithPrefix(l.log, "name", l.name)
-	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
+	if l.Caller {
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.CallDepth))
 	}
 	return logr.Log("msg", message)
 }
@@ -66,8 +66,8 @@ func (l Logger) Msgr(message string, keyvals ...interface{}) error {
 		return nil
 	}
 	logr := klog.WithPrefix(l.log, "name", l.name, "msg", message)
-	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth), "msg", message)
+	if l.Caller {
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.CallDepth), "msg", message)
 	}
 	return logr.Log(keyvals...)
 }
@@ -78,8 +78,8 @@ func (l Logger) Err(err error) error {
 		return nil
 	}
 	logr := klog.WithPrefix(l.log, "name", l.name)
-	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
+	if l.Caller {
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.CallDepth))
 	}
 	return logr.Log("error", err.Error())
 }
@@ -90,8 +90,8 @@ func (l Logger) Log(keyvals ...interface{}) error {
 		return nil
 	}
 	logr := klog.WithPrefix(l.log, "name", l.name)
-	if l.caller {
-		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.callDepth))
+	if l.Caller {
+		logr = klog.WithPrefix(l.log, "name", l.name, "caller", klog.Caller(l.CallDepth))
 	}
 	return logr.Log(keyvals...)
 }
@@ -103,7 +103,7 @@ func (l Logger) Log(keyvals ...interface{}) error {
 // echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
 //
 func (l Logger) Dump(v interface{}) {
-	WithCallDepth(l, l.callDepth+1).Msgr("dump", "obj", spd.Sdump(v))
+	WithCallDepth(l, l.CallDepth+1).Msgr("dump", "obj", spd.Sdump(v))
 }
 
 // DumpExit pretty prints the v interface to msg field and terminates program execution.
@@ -113,7 +113,7 @@ func (l Logger) Dump(v interface{}) {
 // echo -e $(go test -v ./pkg/parser -test.run=".*<test_id>*_Parse.*" -debug -exclude=lexer | grep "msg=dump" | sed -n "s/.*obj=\"\(.*\)\"/\1/p")
 //
 func (l Logger) DumpExit(v interface{}) {
-	WithCallDepth(l, l.callDepth+1).Msgr("dump", "obj", spd.Sdump(v))
+	WithCallDepth(l, l.CallDepth+1).Msgr("dump", "obj", spd.Sdump(v))
 	os.Exit(1)
 }
 

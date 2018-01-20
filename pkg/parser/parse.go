@@ -86,11 +86,10 @@ func (p *Parser) Parse() {
 		var n doc.Node
 
 		token := p.next(1)
-		p.Msgr("Parser got token", "token", token)
+		p.printToken("Parser got token", token)
 		// if token.Line == 7 && token.Type == tok.Text && token.Text == "-----" {
 		// p.DumpExit(p.buf[p.index-2 : p.index+3])
 		// }
-
 		if token == nil || token.Type == tok.EOF {
 			break
 		}
@@ -200,4 +199,14 @@ func (p *Parser) subParseInlineMarkup(token *tok.Item) {
 	default:
 		p.Msg(fmt.Sprintf("Token type: %q is not inline markup", token.Type.String()))
 	}
+}
+
+func (p *Parser) printToken(msg string, i *tok.Item) {
+	log.WithCallDepth(p.Logger, p.Logger.CallDepth+1).Msgr(msg,
+		"index", p.index,
+		"type", i.Type,
+		"line", i.Line,
+		"startPosition", i.StartPosition,
+		"text", i.Text,
+	)
 }

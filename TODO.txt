@@ -7,6 +7,12 @@
 
     See https://gcc.gnu.org/onlinedocs/gcc-5.2.0/gcc/Warnings-and-Errors.html
 
+* Sun Sep 24 13:31 2017: l.index should be based on character position not rune width
+
+  It is difficult to see where tokens begin for fixing test 06.02.01.01 because some rune widths are larger than 1.
+
+  see test 06.02.01.01 and lexer.go#209
+
 * Mon Sep 18 19:30 2017: add underline overline mismatch test with title containing inline markup
 
   04.01.01.02 is the test where mismatched adornments are first checked

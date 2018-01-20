@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "type": "Text",
+    "text": "An escaped new",
+    "line": 1,
+    "startPosition": 1,
+    "length": 14
+  },
+  {
+    "id": 2,
+    "type": "Escape",
+    "text": "\\",
+    "line": 1,
+    "startPosition": 15,
+    "length": 1
+  },
+  {
+    "id": 3,
+    "type": "Text",
+    "text": "line. This should be one paragraph.",
+    "line": 2,
+    "startPosition": 1,
+    "length": 35
+  },
+  {
+    "id": 4,
+    "type": "BlankLine",
+    "text": "\n",
+    "line": 3,
+    "startPosition": 1,
+    "length": 1
+  },
+  {
+    "id": 5,
+    "type": "Text",
+    "text": "A new paragraph.",
+    "line": 4,
+    "startPosition": 1,
+    "length": 16
+  },
+  {
+    "id": 6,
+    "type": "EOF",
+    "line": 4,
+    "startPosition": 17
+  }
+]

@@ -21,6 +21,11 @@ This project is not yet usable. See the Road Map below.
 Status
 ------
 
+*ABANDONED*
+
+I no longer have interest in working on this in my spare time. RestructuredText is not an easy format to parse and I no
+longer write my notes in the format.
+
 .. The following is auto-generated using the tools/update-progress.sh
 .. STATUS START
 

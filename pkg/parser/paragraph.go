@@ -8,7 +8,7 @@ import (
 )
 
 func (p *Parser) paragraph(i *tok.Item) doc.Node {
-	p.Msgr("Have token", "token", i)
+	p.printToken("Have token", i)
 	// panic("foo")
 	var np doc.ParagraphNode
 	// pBack := p.peekBack(1)
@@ -50,20 +50,28 @@ outer:
 		ni := p.peek(1) // next item
 
 		// p.DumpExit(p.Messages)
-		p.Msgr("Previous token", "token", pi)
-		p.Msgr("Have token", "token", ci)
+		p.printToken("Previous token", pi)
+		p.printToken("Have token", ci)
+
+		if pi.ID == 99 {
+			// p.DumpExit(ni)
+			p.dumpBufferWithContext()
+		}
 
 		// if ci == nil || ci.Type == tok.EOF || ci.Type == tok.Title {
 		if ci == nil || ci.Type == tok.EOF {
 			p.Msg("current token == nil or current item type == tok.EOF")
 			break
-			// } else if pi != nil && nt.Text != pi.Text && pi.Type == tok.Text && ci.Type == tok.Text {
 		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Text {
-			// p.DumpExit(ci)
-			// p.DumpExit(p.buf)
-			p.Msg("Previous type == tok.Text, current type == tok.Text; Concatenating text!")
+			p.Msg("Found two sequential tok.Text! Concatenating text!")
 			nt.Text += "\n" + ci.Text
 			nt.Length = utf8.RuneCountInString(nt.Text)
+			continue
+		} else if pi != nil && pi.Type == tok.Text && ci.Type == tok.Escape && ni != nil && ni.Type == tok.Text {
+			p.Msg("Found escaped newline! Concatenating text!")
+			nt.Text += ni.Text
+			nt.Length = utf8.RuneCountInString(nt.Text)
+			p.next(1)
 			continue
 		}
 
@@ -112,7 +120,7 @@ outer:
 			p.backup()
 			break outer
 		default:
-			p.Msgr("token not supported in paragraphs", "token", ci)
+			p.printToken("token not supported in paragraphs", ci)
 			return np
 		}
 		p.Msg("Continuing...")

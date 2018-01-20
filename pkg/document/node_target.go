@@ -40,8 +40,16 @@ func (nt *NodeTarget) Reset() {
 func (nt *NodeTarget) Append(n ...Node) {
 	for _, node := range n {
 		// panic("SHOW ME THE STACKS!")
-		nt.Msgr("Adding node", "nodePointer", fmt.Sprintf("%p", &node),
-			"nodeListPointer", fmt.Sprintf("%p", nt.SubList), "node", node.String())
+		// nt.Msgr("Adding node", "nodePointer", fmt.Sprintf("%p", &node),
+		// "nodeListPointer", fmt.Sprintf("%p", nt.SubList), "node", node.String())
+		// switch t := node.(type) {
+		// case *InlineEmphasisNode:
+		// if t.Text == "*" {
+		// // nt.DumpExit(t)
+		// panic("foo")
+		// }
+		// }
+		nt.printNode("Adding node", node)
 		nt.SubList.Append(node)
 	}
 }
@@ -102,4 +110,62 @@ func (nt *NodeTarget) IsParagraphNode() bool {
 		nt.Msg(fmt.Sprintf("nt.parent is type '%T' not type *ParagraphNode!", nt.Parent))
 	}
 	return false
+}
+
+func (nt *NodeTarget) printNode(msg string, n Node) {
+	var typ, text, nlp, np string
+	var length, line, spos int
+
+	// SIGH ...
+	switch t := n.(type) {
+	case *TextNode:
+		typ = "TextNode"
+		text, line, spos, length = t.Text, t.Line, t.StartPosition, t.Length
+	case *InlineEmphasisNode:
+		typ = "InlineEmphasisNode"
+		text, line, spos, length = t.Text, t.Line, t.StartPosition, t.Length
+	case *InlineStrongNode:
+		typ = "InlineStrongNode"
+		text, line, spos, length = t.Text, t.Line, t.StartPosition, t.Length
+	case *InlineLiteralNode:
+		typ = "InlineLiteralNode"
+		text, line, spos, length = t.Text, t.Line, t.StartPosition, t.Length
+	case *InlineInterpretedText:
+		typ = "InlineInterpretedText"
+		text, line, spos, length = t.Text, t.Line, t.StartPosition, t.Length
+	case *ParagraphNode: // do nothing
+	default:
+		nt.Msgr("WARNING: type not supported yet in NodeTarget.printNode()!", "type", fmt.Sprintf("%T", t))
+	}
+
+	np = fmt.Sprintf("%p", &n)
+	nlp = fmt.Sprintf("%p", nt.SubList)
+
+	if len(text) > 0 {
+		log.WithCallDepth(nt.Logger, nt.Logger.CallDepth+1).Msgr("Adding node",
+			"nodePointer", np,
+			"nodeListPointer", nlp,
+			"type", typ,
+			"line", line,
+			"startPosition", spos,
+			"length", length,
+			"text", text,
+		)
+	} else if line > 0 {
+		log.WithCallDepth(nt.Logger, nt.Logger.CallDepth+1).Msgr("Adding node",
+			"nodePointer", np,
+			"nodeListPointer", nlp,
+			"type", typ,
+			"line", line,
+			"startPosition", spos,
+			"length", length,
+		)
+	} else {
+		log.WithCallDepth(nt.Logger, nt.Logger.CallDepth+1).Msgr("Adding node",
+			"nodePointer", np,
+			"nodeListPointer", nlp,
+			"type", typ,
+		)
+	}
+
 }

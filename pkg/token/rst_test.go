@@ -407,6 +407,13 @@ func Test_02_00_00_02_LexerParagraphGood(t *testing.T) {
 	equal(t, test.ExpectItemData, items)
 }
 
+func Test_02_00_00_03_LexerParagraphGood(t *testing.T) {
+	testPath := testutil.TestPathFromName("02.00.00.03-escaped-newline")
+	test := LoadLexTest(t, testPath)
+	items := lexTest(t, test)
+	equal(t, test.ExpectItemData, items)
+}
+
 func Test_02_00_01_00_LexerParagraphGood(t *testing.T) {
 	testPath := testutil.TestPathFromName("02.00.01.00-two-paragraphs")
 	test := LoadLexTest(t, testPath)

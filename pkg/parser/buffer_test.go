@@ -454,10 +454,41 @@ func TestParserAppend(t *testing.T) {
 	assert.Equal(t, &tok.Item{ID: 202, Type: tok.EOF, Line: 201, StartPosition: 1, Length: 0}, tr.token, "expect index token")
 }
 
+func TestParserNextSequential(t *testing.T) {
+	var input string
+	for x := 0; x < 10; x++ {
+		input += "\nA line with *emphasis* and **strong**.\n"
+	}
+	tr, err := NewParser("fillcapacitytest", input, testutil.LoggerConfig)
+	if err != nil {
+		t.Errorf("error: %s", err)
+		t.Fail()
+	}
+	// loop to gather all the tokens
+	for {
+
+		tr.next(1)
+		if tr.token.Type == tok.EOF {
+			break
+		}
+	}
+	// Make sure the tokens are sequential
+	for k, _ := range tr.buf {
+		var nextID tok.ID
+		curID := tr.buf[k].ID
+		if tr.buf[k+1] != nil {
+			nextID = tr.buf[k+1].ID
+		}
+		if curID.IDNumber() != nextID.IDNumber()-1 {
+			t.Fatalf("Expect sequential IDs! Got curID (%d) and nextID (%d)", curID, nextID)
+		}
+	}
+}
+
 func TestParserPeekAtEndOfBuffer(t *testing.T) {
 	var input string
 	for x := 0; x < 100; x++ {
-		input += "\na line\n"
+		input += "\nA line with *emphasis*\n"
 	}
 	tr, err := NewParser("fillcapacitytest", input, testutil.LoggerConfig)
 	if err != nil {
@@ -466,6 +497,7 @@ func TestParserPeekAtEndOfBuffer(t *testing.T) {
 	}
 	tr.next(203)
 	tr.peek(1)
+	tr.dumpBufferFull()
 	assert.Equal(t, 201, tr.index, "expect index to equal 201")
 	assert.Equal(t, &tok.Item{ID: 202, Type: tok.EOF, Line: 201, StartPosition: 1, Length: 0}, tr.token, "expect index token")
 }

@@ -55,7 +55,7 @@ func (t *tokenBuffer) backup() (tok *tok.Item) {
 	}
 	t.token = t.buf[t.index]
 	tok = t.token
-	t.Msgr("buffer index item", "index", t.index, "token", t.token)
+	t.printToken("buffer index item", t.token)
 	return
 }
 
@@ -129,8 +129,11 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 		t.index++
 		t.token = t.buf[t.index]
 	} else {
+		if t.index > 98 { //&& t.buf[t.index+1] == nil {
+			t.dumpBufferFullExit()
+		}
 		if ind := t.append(t.lex.NextItem()); ind != -1 {
-			t.Msgr("got token from lexer", "token", t.buf[ind])
+			t.printToken("got token from lexer", t.buf[ind])
 			t.index = ind
 			t.token = t.buf[t.index]
 			// if t.token.ID == 18 {
@@ -144,9 +147,6 @@ func (t *tokenBuffer) next(pos int) *tok.Item {
 	if pos > 0 {
 		t.next(pos)
 	}
-
-	// XXX: Remove this before merging to master
-	// t.Dump(t.buf)
 
 	return t.token
 }
@@ -268,4 +268,34 @@ func (t *tokenBuffer) nextToLine(line int) (tmp *tok.Item) {
 		}
 	}
 	return
+}
+
+func (t *tokenBuffer) printToken(msg string, i *tok.Item) {
+	log.WithCallDepth(t.Logger, t.Logger.CallDepth+1).Msgr(msg,
+		"index", t.index,
+		"type", i.Type,
+		"line", i.Line,
+		"startPosition", i.StartPosition,
+		"text", i.Text,
+	)
+}
+
+// dumpBuffer will print the buffer with a number of tokens before and after the index of the buffer.
+func (t *tokenBuffer) dumpBuffer(tokensBack, tokensForward int) {
+	t.Dump(t.buf[t.index-tokensBack : t.index+tokensForward+1])
+}
+
+// dumpBufferWithContext will dump the buffer at the index with two tokens before and after
+func (t *tokenBuffer) dumpBufferWithContext() {
+	t.Dump(t.buf[t.index-2 : t.index+3])
+}
+
+// dumpBufferFull will dump the full buffer to the logger
+func (t *tokenBuffer) dumpBufferFull() {
+	t.Dump(t.buf)
+}
+
+// dumpBufferFullExit will dump the full buffer to the logger and exit
+func (t *tokenBuffer) dumpBufferFullExit() {
+	t.DumpExit(t.buf)
 }
